@@ -352,8 +352,8 @@ export default {
       this.setting.loading = true
       let args = {
         page: this.pagination.currentPage,
-        sdate: utils.handleDateTransform(this.filters.dateTime[0]),
-        edate: utils.handleDateTransform(this.filters.dateTime[1])
+        start_date: utils.handleDateTransform(this.filters.dateTime[0]),
+        end_date: utils.handleDateTransform(this.filters.dateTime[1])
       }
       !this.filters.dateTime[0] ? delete args.sdate : args.sdate
       !this.filters.dateTime[1] ? delete args.edate : args.edate
