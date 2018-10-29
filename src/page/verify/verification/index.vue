@@ -5,34 +5,30 @@
       v-loading="setting.loading"
       :element-loading-text="setting.loadingText" 
       class="item-list-wrap">
+      <div style="margin: 0 10px 10px;font-size: 18px;">{{ customer_name }}</div>
       <div 
         class="item-content-wrap">
         <div class="verify-wrap">
           <div class="verify-content">
-            <el-select 
-              v-model="verify.point"
-              filterable
-              clearable 
-              size="small"
-              placeholder="请选择门店" 
-              class="border-none">
-              <el-option label="餐厅名" value="1"></el-option>
-              <el-option label="订单号" value="2"></el-option>
-              <el-option label="用户电话" value="3"></el-option>
-            </el-select>
             <el-input 
-              v-model="verify.order"
+              v-model="verify.order_total"
+              size="small"
+              placeholder="请输入订单金额"
+              class="border-none"/>
+            <el-input 
+              v-model="verify.order_no"
               size="small"
               placeholder="请输入订单号"
               class="border-none border-left"/>
             <el-input 
-              v-model="verify.coupon"
+              v-model="verify.code"
               size="small"
               placeholder="请输入优惠券码"
               class="border-none border-left"/>
           </div>
           <el-button 
-            type="primary">验证</el-button>
+            type="primary"
+            @click="verifyCoupon">验证</el-button>
         </div>
         <h2>
           核销订单列表
@@ -45,40 +41,9 @@
             :inline="true">
             <el-form-item 
               label="" 
-              prop="point">
-              <el-select 
-                v-model="filters.point" 
-                placeholder="门店" 
-                filterable 
-                clearable >
-                <el-option
-                  v-for="item in pointList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"/>
-              </el-select>
-            </el-form-item>
-            <el-form-item 
-              label="" 
-              prop="project">
-              <el-select 
-                v-model="filters.project" 
-                placeholder="节目" 
-                filterable 
-                clearable >
-                <el-option
-                  v-for="item in projetList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"/>
-              </el-select>
-            </el-form-item>
-            <el-form-item 
-              label="" 
               prop="dateTime" >
               <el-date-picker
                 v-model="filters.dateTime"
-                :default-value="filters.dateTime"
                 :clearable="false"
                 :picker-options="pickerOptions"
                 type="daterange"
@@ -116,85 +81,83 @@
                 inline 
                 class="demo-table-expand">
                 <el-form-item label="优惠券码">
-                  <span>{{ scope.row.coupon_id }}</span>
+                  <span>{{ scope.row.code }}</span>
                 </el-form-item>
                 <el-form-item label="订单">
-                  <span>{{ scope.row.order_id }}</span>
+                  <span>{{ scope.row.order_no }}</span>
                 </el-form-item>
-                <el-form-item label="门店ID">
-                  <span>{{ scope.row.point_id }}</span>
+                <el-form-item label="订单金额">
+                  <span>{{ scope.row.order_total }}</span>
                 </el-form-item>
-                <el-form-item 
-                  label="门店名称">
-                  <span>
-                    {{ scope.row.point_name }}
-                  </span>
-                </el-form-item>
-                <el-form-item 
-                  label="节目名称">
-                  <span>{{ scope.row.project_name }}</span>
+                <el-form-item label="订单图片">
+                  <a 
+                    :href="scope.row.media" 
+                    target="_blank" 
+                    style="color: blue">查看</a>
                 </el-form-item>
                 <el-form-item 
                   label="优惠券详情">
-                  <span>{{ scope.row.coupon_name }}</span>
+                  <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item 
                   label="核销时间">
-                  <span>{{ scope.row.created_at }}</span>
-                </el-form-item>
-                <el-form-item 
-                  label="核销方式">
-                  <span>{{ scope.row.status }}</span>
+                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="coupon_id"
+            prop="code"
             label="优惠券码"
             min-width="80"
           />
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="order_id"
-            label="订单"
+            prop="order_no"
+            label="订单号"
             min-width="100"
           />
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="point_id"
-            label="门店ID"
+            prop="order_total"
+            label="订单金额"
+            min-width="100"
+          />
+          <el-table-column
+            prop="media"
+            label="订单图"
             min-width="100">
+            <template 
+              slot-scope="scope">
+              <img 
+                :src="scope.row.media"
+                alt=""
+                class="icon-item">
+            </template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="point_name"
-            label="门店名称"
-            min-width="100">
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="project_name"
-            label="节目名称"
-            min-width="100">
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="coupon_name"
+            prop="name"
             label="优惠券详情"
             min-width="80">
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="created_at"
-            label="核销时间"
+            prop="status"
+            label="状态"
             min-width="80">
+            <template slot-scope="scope">
+              <span v-if="scope.row.status===0">未领取</span> 
+              <span v-if="scope.row.status===1">已使用</span> 
+              <span v-if="scope.row.status===2">停用</span> 
+              <span v-if="scope.row.status===3">未使用</span> 
+            </template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="status"
-            label="核销方式"
+            prop="updated_at"
+            label="核销时间"
             min-width="80">
           </el-table-column>
           <el-table-column 
@@ -231,14 +194,15 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="modifyCoupon">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getProject } from 'service'
+import { getProject, getCouponList, verifyCoupon, modifyCoupon } from 'service'
+import utils from 'service/utils'
 
 import {
   Button,
@@ -249,8 +213,6 @@ import {
   Form,
   FormItem,
   MessageBox,
-  Select,
-  Option,
   DatePicker,
   Dialog
 } from 'element-ui'
@@ -264,20 +226,18 @@ export default {
     'el-pagination': Pagination,
     'el-form': Form,
     'el-form-item': FormItem,
-    'el-select': Select,
-    'el-option': Option,
     'el-date-picker': DatePicker,
     'el-dialog': Dialog
   },
   data() {
     return {
       verify: {
-        order: '',
-        coupon: '',
-        point: ''
+        order_no: '',
+        code: '',
+        order_total: ''
       },
       orderForm: {
-        order: ''
+        order_no: ''
       },
       dialogFormVisible: false,
       pickerOptions: {
@@ -325,70 +285,112 @@ export default {
         }
       },
       filters: {
-        point: '',
-        project: '',
-        dateTime: [
-          new Date().getTime() - 3600 * 1000 * 24 * 7,
-          new Date().getTime() - 3600 * 1000 * 24
-        ]
+        dateTime: []
       },
-      projetList: [],
-      pointList: [],
       setting: {
         loading: false,
         loadingText: '拼命加载中'
       },
       pagination: {
-        total: 2,
+        total: 0,
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [
-        {
-          coupon_id: 2018080808,
-          order_id: 20180930123001,
-          point_id: 102567,
-          point_name: '巴拉巴拉',
-          project_name: '欢度国庆-鞭炮',
-          coupon_name: '精美文具礼盒',
-          created_at: '2018-09-30  12:30',
-          status: '填写券码'
-        },
-        {
-          coupon_id: 2018080809,
-          order_id: 20180930123011,
-          point_id: 102568,
-          point_name: '棒约翰',
-          project_name: '欢度国庆-鞭',
-          coupon_name: '汤姆熊币',
-          created_at: '2018-09-30  12:30',
-          status: '扫二维码'
-        }
-      ]
+      customer_name: '',
+      tableData: []
     }
   },
   created() {
-    this.getProject()
+    this.getCouponList()
+    let coustomer_info = JSON.parse(localStorage.getItem('customer_info'))
+    this.customer_name = coustomer_info.name
   },
   methods: {
-    getProject() {
-      getProject(this)
+    modifyCoupon() {
+      let args = {
+        order_no: this.verify.order_no
+      }
+      modifyCoupon(this, args)
         .then(res => {
-          this.projetList = res
+          this.dialogFormVisible = false
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          })
+          this.getCouponList()
         })
         .catch(err => {
-          console.dir(err)
+          this.dialogFormVisible = false
+          this.$message({
+            message: err.response.data.message,
+            type: 'error'
+          })
+        })
+    },
+    verifyCoupon() {
+      let args = {
+        order_no: this.verify.order_no,
+        code: this.verify.code,
+        order_total: this.verify.order_total
+      }
+      verifyCoupon(this, args)
+        .then(res => {
+          this.$message({
+            message: '核销成功',
+            type: 'success'
+          })
+          this.getCouponList()
+        })
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: 'error'
+          })
+        })
+    },
+    getCouponList() {
+      this.setting.loading = true
+      let args = {
+        page: this.pagination.currentPage,
+        sdate: utils.handleDateTransform(this.filters.dateTime[0]),
+        edate: utils.handleDateTransform(this.filters.dateTime[1])
+      }
+      !this.filters.dateTime[0] ? delete args.sdate : args.sdate
+      !this.filters.dateTime[1] ? delete args.edate : args.edate
+      getCouponList(this, args)
+        .then(res => {
+          this.tableData = res.data
+          this.pagination.total = res.meta.pagination.total
+          console.log(res)
+          this.setting.loading = false
+        })
+        .catch(err => {
+          this.setting.loading = false
         })
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields()
       this.pagination.currentPage = 1
+      this.getCouponList()
     },
     search(formName) {
       this.pagination.currentPage = 1
+      this.getCouponList()
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage
+      this.getCouponList()
+    },
+    handleDateTransform(valueDate) {
+      let date = new Date(valueDate)
+      let year = date.getFullYear() + '-'
+      let mouth =
+        (date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1)
+          : date.getMonth() + 1) + '-'
+      let day =
+        (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ''
+      return year + mouth + day
     }
   }
 }
