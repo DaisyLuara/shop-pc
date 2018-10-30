@@ -1,8 +1,8 @@
 <template>
   <div 
-    class="verify-root">
+    class="coupon-root">
     <second-sidebar 
-      module="verify"/>
+      module="coupon"/>
     <div class="topbar">
       {{ this.$route.meta.title }}
       <headModule/>
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.verify-root {
+.coupon-root {
   height: 100%;
   background-color: #eff2f7;
   .topbar {

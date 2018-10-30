@@ -78,7 +78,7 @@ export default {
               case 'report':
                 m.src = this.IMG_URL + 'ad_shop/img/report-icon.png'
                 break
-              case 'verify':
+              case 'coupon':
                 m.src = this.IMG_URL + 'ad_shop/img/verify-icon.png'
                 break
               default:

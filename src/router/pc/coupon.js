@@ -1,13 +1,13 @@
 let router = {
-  path: 'verify',
-  redirect: 'verify',
+  path: 'coupon',
+  redirect: 'coupon',
   name: '核销',
   meta: {
     title: '核销',
     permission: ''
   },
   component: () =>
-    import(/* webpackChunkName: "page/verify/verifyView" */ 'page/verify/verifyView'),
+    import(/* webpackChunkName: "page/coupon/couponView" */ 'page/coupon/couponView'),
   children: [
     {
       path: 'list',
@@ -17,7 +17,7 @@ let router = {
         title: '核销列表'
       },
       component: () =>
-        import(/* webpackChunkName: "page/verify/verification/routerView" */ 'page/verify/verification/routerView'),
+        import(/* webpackChunkName: "page/coupon/verification/routerView" */ 'page/coupon/verification/routerView'),
       children: [
         {
           path: '/',
@@ -26,7 +26,7 @@ let router = {
             title: '核销列表集合'
           },
           component: () =>
-            import(/* webpackChunkName: "page/verify/verification/index" */ 'page/verify/verification/index')
+            import(/* webpackChunkName: "page/coupon/verification/index" */ 'page/coupon/verification/index')
         },
       ]
     },
@@ -38,7 +38,7 @@ let router = {
     //     title: '核销账号'
     //   },
     //   component: () =>
-    //     import(/* webpackChunkName: "page/verify/verifyAccount/routerView" */ 'page/verify/verifyAccount/routerView'),
+    //     import(/* webpackChunkName: "page/coupon/verifyAccount/routerView" */ 'page/verify/verifyAccount/routerView'),
     //   children: [
     //     {
     //       path: '/',
@@ -77,7 +77,7 @@ let router = {
 router.redirect = () => {
   let routes = router.children
   for (let route of routes) {
-    return '/verify/' + route.path
+    return '/coupon/' + route.path
   }
 }
 

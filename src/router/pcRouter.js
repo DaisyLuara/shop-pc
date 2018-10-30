@@ -4,7 +4,7 @@ import ad from 'router/pc/ad'
 import resource from 'router/pc/resource'
 import point from 'router/pc/point'
 import report from 'router/pc/report'
-import verify from 'router/pc/verify'
+import coupon from 'router/pc/coupon'
 
 export default {
   path: '/',
@@ -13,5 +13,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, ad, resource, point, report, verify]
+  children: [account, ad, resource, point, report, coupon]
 }
