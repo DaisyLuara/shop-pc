@@ -167,7 +167,7 @@
             slot-scope="scope">
             <i 
               class="el-icon-edit-outline edit-icon"
-              @click="dialogFormVisible = true"/>
+              @click="editHandle(scope.row)"/>
           </template>
         </el-table-column>
         </el-table>
@@ -237,6 +237,7 @@ export default {
         order_total: ''
       },
       orderForm: {
+        code: '',
         order_no: ''
       },
       dialogFormVisible: false,
@@ -306,9 +307,15 @@ export default {
     this.customer_name = coustomer_info.name
   },
   methods: {
+    editHandle(data) {
+      this.orderForm.code = data.code
+      this.dialogFormVisible = true
+    },
     modifyCoupon() {
+      this.setting.loading = true
       let args = {
-        order_no: this.verify.order_no
+        code: this.orderForm.code,
+        order_no: this.orderForm.order_no
       }
       modifyCoupon(this, args)
         .then(res => {
@@ -328,6 +335,7 @@ export default {
         })
     },
     verifyCoupon() {
+      this.setting.loading = true
       let args = {
         order_no: this.verify.order_no,
         code: this.verify.code,
@@ -342,6 +350,7 @@ export default {
           this.getCouponList()
         })
         .catch(err => {
+          this.setting.loading = false
           this.$message({
             message: err.response.data.message,
             type: 'error'

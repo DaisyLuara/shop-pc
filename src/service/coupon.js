@@ -16,7 +16,7 @@ const getCouponList = (context, params) => {
 const verifyCoupon = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .post(HOST + COUPONS_API, { params: params })
+      .post(HOST + COUPONS_API, params)
       .then(response => {
         resolve(response.data)
       })
