@@ -29,6 +29,9 @@
           <el-button 
             type="primary"
             @click="verifyCoupon">验证</el-button>
+          <el-button 
+            type="default"
+            @click="resetverifyCoupon" >重置</el-button>
         </div>
         <h2>
           核销订单列表
@@ -186,10 +189,10 @@
     <el-dialog title="核销修改" :visible.sync="dialogFormVisible">
       <el-form :model="orderForm">
         <el-form-item label="优惠券码" label-width="80">
-          <span>2018080808</span>
+          <span>{{orderForm.code}}</span>
         </el-form-item>
         <el-form-item label="订单号" label-width="80">
-          <el-input v-model="orderForm.order" class="item-input"/>
+          <el-input v-model="orderForm.order_no" class="item-input"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -307,6 +310,11 @@ export default {
     this.customer_name = coustomer_info.name
   },
   methods: {
+    resetverifyCoupon() {
+      this.verify.order_no = ''
+      this.verify.code = ''
+      this.verify.order_total = ''
+    },
     editHandle(data) {
       this.orderForm.code = data.code
       this.dialogFormVisible = true
@@ -327,6 +335,7 @@ export default {
           this.getCouponList()
         })
         .catch(err => {
+          this.setting.loading = false
           this.dialogFormVisible = false
           this.$message({
             message: err.response.data.message,
@@ -364,8 +373,8 @@ export default {
         start_date: utils.handleDateTransform(this.filters.dateTime[0]),
         end_date: utils.handleDateTransform(this.filters.dateTime[1])
       }
-      !this.filters.dateTime[0] ? delete args.sdate : args.sdate
-      !this.filters.dateTime[1] ? delete args.edate : args.edate
+      !this.filters.dateTime[0] ? delete args.start_date : args.start_date
+      !this.filters.dateTime[1] ? delete args.end_date : args.end_date
       getCouponList(this, args)
         .then(res => {
           this.tableData = res.data

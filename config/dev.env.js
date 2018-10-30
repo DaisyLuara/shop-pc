@@ -3,7 +3,7 @@ var prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
     NODE_ENV: '"development"',
-    SERVER_URL: '"http://mapi.jingfree.top"',
+    SERVER_URL: '"http://mapi.newgls.cn"',
     HTTPS_SERVER_URL: '"http://mapi.jingfree.top"',
     IMG_URL: '"http://p22vy0aug.bkt.clouddn.com/"'
 })
