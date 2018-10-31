@@ -15,11 +15,11 @@
               size="small"
               placeholder="请输入订单金额"
               class="border-none"/>
-            <el-input 
+            <!-- <el-input 
               v-model="verify.order_no"
               size="small"
               placeholder="请输入订单号"
-              class="border-none border-left"/>
+              class="border-none border-left"/> -->
             <el-input 
               v-model="verify.code"
               size="small"
@@ -235,7 +235,7 @@ export default {
   data() {
     return {
       verify: {
-        order_no: '',
+        // order_no: '',
         code: '',
         order_total: ''
       },
@@ -311,7 +311,7 @@ export default {
   },
   methods: {
     resetverifyCoupon() {
-      this.verify.order_no = ''
+      // this.verify.order_no = ''
       this.verify.code = ''
       this.verify.order_total = ''
     },
@@ -346,9 +346,12 @@ export default {
     verifyCoupon() {
       this.setting.loading = true
       let args = {
-        order_no: this.verify.order_no,
+        // order_no: this.verify.order_no,
         code: this.verify.code,
         order_total: this.verify.order_total
+      }
+      if (this.verify.order_total === '') {
+        delete args.order_total
       }
       verifyCoupon(this, args)
         .then(res => {
