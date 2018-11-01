@@ -50,14 +50,6 @@
                   <span>{{ scope.row.id }}</span> 
                 </el-form-item>
                 <el-form-item 
-                  label="公司">
-                  <span>{{ scope.row.company.name }}</span> 
-                </el-form-item>
-                <el-form-item 
-                  label="创建人">
-                  <span>{{ scope.row.user.name }}</span> 
-                </el-form-item>
-                <el-form-item 
                   label="优惠券名称">
                   <span>{{ scope.row.name }}</span> 
                 </el-form-item>
@@ -133,28 +125,6 @@
             label="ID"
             min-width="100"
           />
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="company_id"
-            label="公司"
-            min-width="100"
-          >
-            <template 
-              slot-scope="scope">
-              {{ scope.row.company.name }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="user_name"
-            label="创建人"
-            min-width="100"
-          >
-            <template 
-              slot-scope="scope">
-              {{ scope.row.user.name }}
-            </template>
-          </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             prop="name"
@@ -262,7 +232,6 @@ export default {
     getCouponRulesList() {
       this.setting.loading = true
       let args = {
-        include: 'user,company',
         page: this.pagination.currentPage,
         name: this.filters.name
       }
