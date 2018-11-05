@@ -60,11 +60,10 @@
               class="error-tip" 
             >{{ validateErrorText.account }}</div>
           </el-form-item>
-          <el-form-item 
+          <!-- <el-form-item 
             :class="{'error': validateError.imageCaptcha,'active': itemFocus.imageCaptcha}"
             prop="imageCaptcha.value" 
-            class="account-form-item image-code" 
-          >
+            class="account-form-item image-code">
             <el-col 
               :xs="4" 
               :sm="5" 
@@ -113,7 +112,7 @@
             <div 
               v-show="validateError.imageCaptcha"
               class="error-tip">{{ validateErrorText.imageCaptcha }}</div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item  
             :class="{'error': validateError.password,'active': itemFocus.password}"
             prop="password" 
@@ -270,10 +269,10 @@ export default {
       accountForm: {
         account: '',
         password: '',
-        imageCaptcha: {
-          key: '',
-          value: ''
-        }
+        // imageCaptcha: {
+        //   key: '',
+        //   value: ''
+        // }
       },
       setting: {
         submiting: false,
@@ -288,7 +287,7 @@ export default {
       rules: {
         account: [{ validator: va, trigger: 'blur' }],
         password: [{ validator: vp, trigger: 'submit' }],
-        'imageCaptcha.value': [{ validator: vic, trigger: 'blur' }]
+        // 'imageCaptcha.value': [{ validator: vic, trigger: 'blur' }]
       },
       validateError: {
         account: false,
@@ -309,7 +308,7 @@ export default {
   },
   created() {
     // 从localstorage中取 记住密码的配置
-    this.getImageCaptcha()
+    // this.getImageCaptcha()
   },
   methods: {
     onSubmit(type) {
@@ -324,8 +323,8 @@ export default {
             let loginParams = {
               username: this.accountForm.account,
               password: this.accountForm.password,
-              captcha_key: this.accountForm.imageCaptcha.key,
-              captcha_code: this.accountForm.imageCaptcha.value
+              // captcha_key: this.accountForm.imageCaptcha.key,
+              // captcha_code: this.accountForm.imageCaptcha.value
             }
             auth.login(this, loginParams, this.setting.redirect_url)
           } else {
