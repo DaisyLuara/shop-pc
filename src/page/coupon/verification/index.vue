@@ -55,6 +55,21 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"/>
             </el-form-item>
+            <el-form-item 
+              label="" 
+              prop="status">
+              <el-select 
+                v-model="filters.status" 
+                placeholder="请选择优惠券状态" 
+                clearable
+                class="coupon-form-select">
+                <el-option
+                  v-for="item in statusList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
             <el-button
               type="warning" 
               @click="search('filters')">搜索</el-button>
@@ -217,7 +232,9 @@ import {
   FormItem,
   MessageBox,
   DatePicker,
-  Dialog
+  Dialog,
+  Option,
+  Select
 } from 'element-ui'
 
 export default {
@@ -230,7 +247,9 @@ export default {
     'el-form': Form,
     'el-form-item': FormItem,
     'el-date-picker': DatePicker,
-    'el-dialog': Dialog
+    'el-dialog': Dialog,
+    'el-select': Select,
+    'el-option': Option
   },
   data() {
     return {
@@ -289,8 +308,27 @@ export default {
         }
       },
       filters: {
-        dateTime: []
+        dateTime: [],
+        status: ''
       },
+      statusList: [
+        {
+          id: 0,
+          name: '未领取'
+        },
+        {
+          id: 1,
+          name: '已使用'
+        },
+        {
+          id: 2,
+          name: '停用'
+        },
+        {
+          id: 3,
+          name: '未使用'
+        }
+      ],
       setting: {
         loading: false,
         loadingText: '拼命加载中'
@@ -373,16 +411,19 @@ export default {
       this.setting.loading = true
       let args = {
         page: this.pagination.currentPage,
+        status: this.filters.status,
         start_date: utils.handleDateTransform(this.filters.dateTime[0]),
         end_date: utils.handleDateTransform(this.filters.dateTime[1])
       }
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date
+      if (this.filters.status === '') {
+        delete args.status
+      }
       getCouponList(this, args)
         .then(res => {
           this.tableData = res.data
           this.pagination.total = res.meta.pagination.total
-          console.log(res)
           this.setting.loading = false
         })
         .catch(err => {
