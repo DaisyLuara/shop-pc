@@ -47,8 +47,8 @@
                 type="daterange"
                 align="right"
                 unlink-panels
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"/>
+                start-placeholder="核销开始日期"
+                end-placeholder="核销结束日期"/>
             </el-form-item>
             <el-form-item 
               label="" 
@@ -362,10 +362,7 @@ export default {
               picker.$emit('pick', [start, end])
             }
           }
-        ],
-        disabledDate: time => {
-          return time.getTime() > Date.now() - 8.64e7
-        }
+        ]
       },
       pointList: [],
       filters: {
