@@ -15,11 +15,6 @@
               size="small"
               placeholder="请输入订单金额"
               class="border-none"/>
-            <!-- <el-input 
-              v-model="verify.order_no"
-              size="small"
-              placeholder="请输入订单号"
-              class="border-none border-left"/> -->
             <el-input 
               v-model="verify.code"
               size="small"
@@ -54,6 +49,70 @@
                 unlink-panels
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"/>
+            </el-form-item>
+            <el-form-item 
+              label="" 
+              prop="status">
+              <el-select 
+                v-model="filters.status" 
+                placeholder="请选择优惠券状态" 
+                clearable
+                class="coupon-form-select">
+                <el-option
+                  v-for="item in statusList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item 
+              label="" 
+              prop="shop_customer_id">
+              <el-select 
+                v-model="filters.shop_customer_id" 
+                placeholder="请搜索核销人员" 
+                :loading="searchLoading"
+                filterable 
+                clearable
+                class="coupon-form-select">
+                <el-option
+                  v-for="item in shopCustomerList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item 
+              label=""
+              prop="coupon_batch_id">
+              <el-select 
+                v-model="filters.coupon_batch_id" 
+                :loading="searchLoading"
+                placeholder="请选择优惠详情" 
+                filterable 
+                clearable>
+                <el-option
+                  v-for="item in couponList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item 
+              label=""
+              prop="point_id">
+              <el-select 
+                v-model="filters.point_id" 
+                :loading="searchLoading"
+                placeholder="请选择点位" 
+                filterable 
+                clearable>
+                <el-option
+                  v-for="item in pointList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
             </el-form-item>
             <el-button
               type="warning" 
@@ -106,6 +165,14 @@
                   label="核销时间">
                   <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
+                <el-form-item 
+                  label="核销人">
+                  <span>{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</span>
+                </el-form-item>
+                <el-form-item 
+                  label="点位">
+                  <span>{{ scope.row.point !== undefined ? scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name : '' }}</span>
+                </el-form-item>
               </el-form>
             </template>
           </el-table-column>
@@ -117,33 +184,15 @@
           />
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="order_no"
-            label="订单号"
-            min-width="100"
-          />
-          <el-table-column
-            :show-overflow-tooltip="true"
             prop="order_total"
             label="订单金额"
-            min-width="100"
+            min-width="80"
           />
-          <el-table-column
-            prop="media"
-            label="订单图"
-            min-width="100">
-            <template 
-              slot-scope="scope">
-              <img 
-                :src="scope.row.media"
-                alt=""
-                class="icon-item">
-            </template>
-          </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             prop="name"
             label="优惠券详情"
-            min-width="80">
+            min-width="100">
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -155,6 +204,24 @@
               <span v-if="scope.row.status===1">已使用</span> 
               <span v-if="scope.row.status===2">停用</span> 
               <span v-if="scope.row.status===3">未使用</span> 
+            </template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            prop="name"
+            label="核销人"
+            min-width="100">
+            <template slot-scope="scope">
+              {{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            prop="point"
+            label="点位"
+            min-width="100">
+            <template slot-scope="scope">
+              {{ scope.row.point !== undefined ? scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name : '' }}
             </template>
           </el-table-column>
           <el-table-column
@@ -204,7 +271,14 @@
 </template>
 
 <script>
-import { getProject, getCouponList, verifyCoupon, modifyCoupon } from 'service'
+import {
+  getCouponList,
+  verifyCoupon,
+  modifyCoupon,
+  getCouponBatches,
+  getCustomer,
+  getPoint
+} from 'service'
 import utils from 'service/utils'
 
 import {
@@ -217,7 +291,9 @@ import {
   FormItem,
   MessageBox,
   DatePicker,
-  Dialog
+  Dialog,
+  Option,
+  Select
 } from 'element-ui'
 
 export default {
@@ -230,7 +306,9 @@ export default {
     'el-form': Form,
     'el-form-item': FormItem,
     'el-date-picker': DatePicker,
-    'el-dialog': Dialog
+    'el-dialog': Dialog,
+    'el-select': Select,
+    'el-option': Option
   },
   data() {
     return {
@@ -243,6 +321,7 @@ export default {
         code: '',
         order_no: ''
       },
+      searchLoading: false,
       dialogFormVisible: false,
       pickerOptions: {
         shortcuts: [
@@ -288,9 +367,34 @@ export default {
           return time.getTime() > Date.now() - 8.64e7
         }
       },
+      pointList: [],
       filters: {
-        dateTime: []
+        dateTime: [],
+        status: '',
+        shop_customer_id: '',
+        coupon_batch_id: '',
+        point_id: ''
       },
+      statusList: [
+        {
+          id: 0,
+          name: '未领取'
+        },
+        {
+          id: 1,
+          name: '已使用'
+        },
+        {
+          id: 2,
+          name: '停用'
+        },
+        {
+          id: 3,
+          name: '未使用'
+        }
+      ],
+      shopCustomerList: [],
+      couponList: [],
       setting: {
         loading: false,
         loadingText: '拼命加载中'
@@ -308,8 +412,46 @@ export default {
     this.getCouponList()
     let coustomer_info = JSON.parse(localStorage.getItem('customer_info'))
     this.customer_name = coustomer_info.name
+    this.getCustomer()
+    this.getPoint()
+    this.getCouponBatches()
   },
   methods: {
+    getPoint() {
+      getPoint(this)
+        .then(res => {
+          this.pointList = res
+          this.searchLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.searchLoading = false
+        })
+    },
+    getCouponBatches() {
+      this.searchLoading = true
+      getCouponBatches(this)
+        .then(res => {
+          this.couponList = res
+          this.searchLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.searchLoading = false
+        })
+    },
+    getCustomer() {
+      this.searchLoading = true
+      getCustomer(this)
+        .then(res => {
+          this.shopCustomerList = res
+          this.searchLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.searchLoading = false
+        })
+    },
     resetverifyCoupon() {
       // this.verify.order_no = ''
       this.verify.code = ''
@@ -372,17 +514,33 @@ export default {
     getCouponList() {
       this.setting.loading = true
       let args = {
+        include: 'customer,point.market.area',
         page: this.pagination.currentPage,
-        start_date: utils.handleDateTransform(this.filters.dateTime[0]),
-        end_date: utils.handleDateTransform(this.filters.dateTime[1])
+        status: this.filters.status,
+        coupon_batch_id: this.filters.coupon_batch_id,
+        shop_customer_id: this.filters.shop_customer_id,
+        point_id: this.filters.point_id,
+        start_date: this.handleDateTransform(this.filters.dateTime[0]),
+        end_date: this.handleDateTransform(this.filters.dateTime[1])
       }
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date
+      if (this.filters.status === '') {
+        delete args.status
+      }
+      if (this.filters.shop_customer_id === '') {
+        delete args.shop_customer_id
+      }
+      if (this.filters.coupon_batch_id === '') {
+        delete args.coupon_batch_id
+      }
+      if (this.filters.point_id === '') {
+        delete args.point_id
+      }
       getCouponList(this, args)
         .then(res => {
           this.tableData = res.data
           this.pagination.total = res.meta.pagination.total
-          console.log(res)
           this.setting.loading = false
         })
         .catch(err => {
@@ -468,7 +626,7 @@ export default {
         align-items: center;
         margin-bottom: 10px;
         .el-form-item {
-          margin-bottom: 0;
+          margin-bottom: 10px;
         }
         .el-select {
           width: 200px;
