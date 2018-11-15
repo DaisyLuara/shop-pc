@@ -206,7 +206,7 @@
             label="核销人"
             min-width="100">
             <template slot-scope="scope">
-              {{ scope.row.customer.name }}
+              {{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}
             </template>
           </el-table-column>
           <el-table-column
