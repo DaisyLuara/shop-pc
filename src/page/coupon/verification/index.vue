@@ -171,7 +171,7 @@
                 </el-form-item>
                 <el-form-item 
                   label="点位">
-                  <span>{{ scope.row.point !== undefined ? scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name : '' }}</span>
+                  <span>{{ scope.row.point !== undefined ? scope.row.point.market.area.name + '-' + scope.row.point.market.name + '-' + scope.row.point.name : '' }}</span>
                 </el-form-item>
               </el-form>
             </template>
@@ -221,7 +221,7 @@
             label="点位"
             min-width="100">
             <template slot-scope="scope">
-              {{ scope.row.point !== undefined ? scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name : '' }}
+              {{ scope.row.point !== undefined ? scope.row.point.market.area.name + '-'+ scope.row.point.market.name + '-'+ scope.row.point.name : '' }}
             </template>
           </el-table-column>
           <el-table-column
@@ -518,7 +518,7 @@ export default {
         shop_customer_id: this.filters.shop_customer_id,
         point_id: this.filters.point_id,
         start_date: this.handleDateTransform(this.filters.dateTime[0]),
-        end_date: this.handleDateTransform(this.filters.dateTime[1])
+        end_date: utils.handleDateTransform(this.filters.dateTime[1])
       }
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date
@@ -557,16 +557,33 @@ export default {
       this.pagination.currentPage = currentPage
       this.getCouponList()
     },
-    handleDateTransform(valueDate) {
-      let date = new Date(valueDate)
-      let year = date.getFullYear() + '-'
-      let mouth =
-        (date.getMonth() + 1 < 10
-          ? '0' + (date.getMonth() + 1)
-          : date.getMonth() + 1) + '-'
-      let day =
-        (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ''
-      return year + mouth + day
+    handleDateTransform: function(time) {
+      var d = new Date(time)
+      var year = d.getFullYear()
+      var month = change(d.getMonth() + 1)
+      var day = change(d.getDate())
+      var hour = change(d.getHours())
+      var minute = change(d.getMinutes())
+      var second = change(d.getSeconds())
+      function change(t) {
+        if (t < 10) {
+          return '0' + t
+        } else {
+          return t
+        }
+      }
+      return (time =
+        year +
+        '-' +
+        month +
+        '-' +
+        day +
+        ' ' +
+        hour +
+        ':' +
+        minute +
+        ':' +
+        second)
     }
   }
 }
