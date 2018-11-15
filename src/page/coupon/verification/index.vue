@@ -168,12 +168,12 @@
             :show-overflow-tooltip="true"
             prop="order_total"
             label="订单金额"
-            min-width="100"
+            min-width="80"
           />
           <el-table-column
             prop="media"
             label="订单图"
-            min-width="100">
+            min-width="80">
             <template 
               slot-scope="scope">
               <img 
@@ -186,7 +186,7 @@
             :show-overflow-tooltip="true"
             prop="name"
             label="优惠券详情"
-            min-width="80">
+            min-width="100">
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -198,6 +198,15 @@
               <span v-if="scope.row.status===1">已使用</span> 
               <span v-if="scope.row.status===2">停用</span> 
               <span v-if="scope.row.status===3">未使用</span> 
+            </template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            prop="name"
+            label="核销人"
+            min-width="100">
+            <template slot-scope="scope">
+              {{ scope.row.customer.name }}
             </template>
           </el-table-column>
           <el-table-column
@@ -475,6 +484,7 @@ export default {
     getCouponList() {
       this.setting.loading = true
       let args = {
+        include: 'customer',
         page: this.pagination.currentPage,
         status: this.filters.status,
         coupon_batch_id: this.filters.coupon_batch_id,
@@ -582,7 +592,7 @@ export default {
         align-items: center;
         margin-bottom: 10px;
         .el-form-item {
-          margin-bottom: 0;
+          margin-bottom: 10px;
         }
         .el-select {
           width: 200px;
