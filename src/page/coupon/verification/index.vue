@@ -372,7 +372,8 @@ export default {
         dateTime: [],
         status: '',
         shop_customer_id: '',
-        coupon_batch_id: ''
+        coupon_batch_id: '',
+        point_id: ''
       },
       statusList: [
         {
@@ -518,6 +519,7 @@ export default {
         status: this.filters.status,
         coupon_batch_id: this.filters.coupon_batch_id,
         shop_customer_id: this.filters.shop_customer_id,
+        point_id: this.filters.point_id,
         start_date: this.handleDateTransform(this.filters.dateTime[0]),
         end_date: this.handleDateTransform(this.filters.dateTime[1])
       }
@@ -531,6 +533,9 @@ export default {
       }
       if (this.filters.coupon_batch_id === '') {
         delete args.coupon_batch_id
+      }
+      if (this.filters.point_id === '') {
+        delete args.point_id
       }
       getCouponList(this, args)
         .then(res => {
