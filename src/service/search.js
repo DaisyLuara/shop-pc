@@ -3,6 +3,8 @@ const MARKET_API = '/api/markets/query'
 const PROJECT_API = '/api/projects/query'
 const POINT_API = '/api/points/query'
 const AUTH_API = '/api/weixin_ar_user/query'
+const CUSTOMER_API = '/api/customers/query'
+const COUPON_BATCHES_API = '/api/coupon_batches/query'
 
 const HOST = process.env.SERVER_URL
 
@@ -66,4 +68,38 @@ const getPoint = (context, params) => {
       })
   })
 }
-export { getPoint, getProject, getAuthList, getMarket, getAeraList }
+// 客户查询
+const getCustomer = (context, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + CUSTOMER_API, { params: params })
+      .then(response => {
+        resolve(response.data.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+// 优惠券规则查询
+const getCouponBatches = (context, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + COUPON_BATCHES_API, { params: params })
+      .then(response => {
+        resolve(response.data.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+export {
+  getPoint,
+  getProject,
+  getAuthList,
+  getMarket,
+  getAeraList,
+  getCouponBatches,
+  getCustomer
+}

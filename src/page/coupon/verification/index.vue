@@ -15,11 +15,6 @@
               size="small"
               placeholder="请输入订单金额"
               class="border-none"/>
-            <!-- <el-input 
-              v-model="verify.order_no"
-              size="small"
-              placeholder="请输入订单号"
-              class="border-none border-left"/> -->
             <el-input 
               v-model="verify.code"
               size="small"
@@ -65,6 +60,39 @@
                 class="coupon-form-select">
                 <el-option
                   v-for="item in statusList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item 
+              label="" 
+              prop="shop_customer_id">
+              <el-select 
+                v-model="filters.shop_customer_id" 
+                placeholder="请搜索核销人员" 
+                :loading="searchLoading"
+                filterable 
+                clearable
+                class="coupon-form-select">
+                <el-option
+                  v-for="item in shopCustomerList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item 
+              label=""
+              prop="coupon_batch_id">
+              <el-select 
+                v-model="filters.coupon_batch_id" 
+                :loading="searchLoading"
+                placeholder="请选择优惠详情" 
+                filterable 
+                clearable>
+                <el-option
+                  v-for="item in couponList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"/>
@@ -219,7 +247,13 @@
 </template>
 
 <script>
-import { getProject, getCouponList, verifyCoupon, modifyCoupon } from 'service'
+import {
+  getCouponList,
+  verifyCoupon,
+  modifyCoupon,
+  getCouponBatches,
+  getCustomer
+} from 'service'
 import utils from 'service/utils'
 
 import {
@@ -262,6 +296,7 @@ export default {
         code: '',
         order_no: ''
       },
+      searchLoading: false,
       dialogFormVisible: false,
       pickerOptions: {
         shortcuts: [
@@ -309,7 +344,9 @@ export default {
       },
       filters: {
         dateTime: [],
-        status: ''
+        status: '',
+        shop_customer_id: '',
+        coupon_batch_id: ''
       },
       statusList: [
         {
@@ -329,6 +366,8 @@ export default {
           name: '未使用'
         }
       ],
+      shopCustomerList: [],
+      couponList: [],
       setting: {
         loading: false,
         loadingText: '拼命加载中'
@@ -346,8 +385,34 @@ export default {
     this.getCouponList()
     let coustomer_info = JSON.parse(localStorage.getItem('customer_info'))
     this.customer_name = coustomer_info.name
+    this.getCustomer()
+    this.getCouponBatches()
   },
   methods: {
+    getCouponBatches() {
+      this.searchLoading = true
+      getCouponBatches(this)
+        .then(res => {
+          this.couponList = res
+          this.searchLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.searchLoading = false
+        })
+    },
+    getCustomer() {
+      this.searchLoading = true
+      getCustomer(this)
+        .then(res => {
+          this.shopCustomerList = res
+          this.searchLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.searchLoading = false
+        })
+    },
     resetverifyCoupon() {
       // this.verify.order_no = ''
       this.verify.code = ''
@@ -412,13 +477,21 @@ export default {
       let args = {
         page: this.pagination.currentPage,
         status: this.filters.status,
-        start_date: utils.handleDateTransform(this.filters.dateTime[0]),
-        end_date: utils.handleDateTransform(this.filters.dateTime[1])
+        coupon_batch_id: this.filters.coupon_batch_id,
+        shop_customer_id: this.filters.shop_customer_id,
+        start_date: this.handleDateTransform(this.filters.dateTime[0]),
+        end_date: this.handleDateTransform(this.filters.dateTime[1])
       }
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date
       if (this.filters.status === '') {
         delete args.status
+      }
+      if (this.filters.shop_customer_id === '') {
+        delete args.shop_customer_id
+      }
+      if (this.filters.coupon_batch_id === '') {
+        delete args.coupon_batch_id
       }
       getCouponList(this, args)
         .then(res => {
