@@ -98,6 +98,22 @@
                   :value="item.id"/>
               </el-select>
             </el-form-item>
+            <el-form-item 
+              label=""
+              prop="point_id">
+              <el-select 
+                v-model="filters.point_id" 
+                :loading="searchLoading"
+                placeholder="请选择点位" 
+                filterable 
+                clearable>
+                <el-option
+                  v-for="item in pointList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"/>
+              </el-select>
+            </el-form-item>
             <el-button
               type="warning" 
               @click="search('filters')">搜索</el-button>
@@ -149,6 +165,14 @@
                   label="核销时间">
                   <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
+                <el-form-item 
+                  label="核销人">
+                  <span>{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</span>
+                </el-form-item>
+                <el-form-item 
+                  label="点位">
+                  <span>{{ scope.row.point.id !== 0 ? scope.row.point.name : '' }}</span>
+                </el-form-item>
               </el-form>
             </template>
           </el-table-column>
@@ -160,28 +184,10 @@
           />
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="order_no"
-            label="订单号"
-            min-width="100"
-          />
-          <el-table-column
-            :show-overflow-tooltip="true"
             prop="order_total"
             label="订单金额"
             min-width="80"
           />
-          <el-table-column
-            prop="media"
-            label="订单图"
-            min-width="80">
-            <template 
-              slot-scope="scope">
-              <img 
-                :src="scope.row.media"
-                alt=""
-                class="icon-item">
-            </template>
-          </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             prop="name"
@@ -207,6 +213,15 @@
             min-width="100">
             <template slot-scope="scope">
               {{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            prop="point"
+            label="点位"
+            min-width="100">
+            <template slot-scope="scope">
+              {{ scope.row.point.id !==0 ? scope.row.point.name : '' }}
             </template>
           </el-table-column>
           <el-table-column
@@ -261,7 +276,8 @@ import {
   verifyCoupon,
   modifyCoupon,
   getCouponBatches,
-  getCustomer
+  getCustomer,
+  getPoint
 } from 'service'
 import utils from 'service/utils'
 
@@ -351,11 +367,13 @@ export default {
           return time.getTime() > Date.now() - 8.64e7
         }
       },
+      pointList: [],
       filters: {
         dateTime: [],
         status: '',
         shop_customer_id: '',
-        coupon_batch_id: ''
+        coupon_batch_id: '',
+        point_id: ''
       },
       statusList: [
         {
@@ -395,9 +413,21 @@ export default {
     let coustomer_info = JSON.parse(localStorage.getItem('customer_info'))
     this.customer_name = coustomer_info.name
     this.getCustomer()
+    this.getPoint()
     this.getCouponBatches()
   },
   methods: {
+    getPoint() {
+      getPoint(this)
+        .then(res => {
+          this.pointList = res
+          this.searchLoading = false
+        })
+        .catch(err => {
+          console.log(err)
+          this.searchLoading = false
+        })
+    },
     getCouponBatches() {
       this.searchLoading = true
       getCouponBatches(this)
@@ -484,11 +514,12 @@ export default {
     getCouponList() {
       this.setting.loading = true
       let args = {
-        include: 'customer',
+        include: 'customer,point',
         page: this.pagination.currentPage,
         status: this.filters.status,
         coupon_batch_id: this.filters.coupon_batch_id,
         shop_customer_id: this.filters.shop_customer_id,
+        point_id: this.filters.point_id,
         start_date: this.handleDateTransform(this.filters.dateTime[0]),
         end_date: this.handleDateTransform(this.filters.dateTime[1])
       }
@@ -502,6 +533,9 @@ export default {
       }
       if (this.filters.coupon_batch_id === '') {
         delete args.coupon_batch_id
+      }
+      if (this.filters.point_id === '') {
+        delete args.point_id
       }
       getCouponList(this, args)
         .then(res => {

@@ -56,6 +56,7 @@ const getProject = context => {
       })
   })
 }
+// 点位列表
 const getPoint = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
