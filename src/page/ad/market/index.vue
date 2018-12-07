@@ -35,38 +35,12 @@
 import Exe from './com/exeMarket'
 import Auth from './com/authList'
 
-import {
-  Button,
-  MessageBox,
-  Input,
-  Table,
-  Select,
-  Option,
-  Col,
-  TableColumn,
-  Pagination,
-  Form,
-  FormItem,
-  Row,
-  Tabs,
-  TabPane
-} from 'element-ui'
+import { Button, MessageBox, Tabs, TabPane } from 'element-ui'
 
 export default {
   components: {
     'el-tabs': Tabs,
     'el-tab-pane': TabPane,
-    'el-table': Table,
-    'el-table-column': TableColumn,
-    'el-button': Button,
-    'el-input': Input,
-    'el-pagination': Pagination,
-    'el-form': Form,
-    'el-select': Select,
-    'el-option': Option,
-    'el-form-item': FormItem,
-    'el-col': Col,
-    'el-row': Row,
     Exe,
     Auth
   },

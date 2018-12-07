@@ -4,7 +4,7 @@ let router = {
   name: '数据',
   meta: {
     title: '数据',
-    permission: 'report'
+    permission: ''
   },
   component: () =>
     import(/* webpackChunkName: "page/report/reportView" */ 'page/report/reportView'),

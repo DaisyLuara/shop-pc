@@ -107,8 +107,7 @@
 </template>
 
 <script>
-import ad from 'service/ad'
-import { getMarket } from 'service'
+import { getMarket, getPermissionsList } from 'service'
 
 import {
   Button,
@@ -183,7 +182,7 @@ export default {
       if (!this.adSearchForm.market_id) {
         delete args.marketid
       }
-      ad.getPermissionsList(this, args)
+      getPermissionsList(this, args)
         .then(res => {
           this.data = res.data
           this.pagination.total = res.meta.pagination.total

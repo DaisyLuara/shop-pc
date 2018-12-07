@@ -277,9 +277,9 @@ import {
   modifyCoupon,
   getCouponBatches,
   getCustomer,
-  getPoint
+  getPoint,
+  handleDateTimesTransform
 } from 'service'
-import utils from 'service/utils'
 
 import {
   Button,
@@ -517,8 +517,8 @@ export default {
         coupon_batch_id: this.filters.coupon_batch_id,
         shop_customer_id: this.filters.shop_customer_id,
         point_id: this.filters.point_id,
-        start_date: this.handleDateTransform(this.filters.dateTime[0]),
-        end_date: utils.handleDateTransform(this.filters.dateTime[1])
+        start_date: handleDateTimesTransform(this.filters.dateTime[0]),
+        end_date: handleDateTimesTransform(this.filters.dateTime[1])
       }
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date
@@ -557,34 +557,7 @@ export default {
       this.pagination.currentPage = currentPage
       this.getCouponList()
     },
-    handleDateTransform: function(time) {
-      var d = new Date(time)
-      var year = d.getFullYear()
-      var month = change(d.getMonth() + 1)
-      var day = change(d.getDate())
-      var hour = change(d.getHours())
-      var minute = change(d.getMinutes())
-      var second = change(d.getSeconds())
-      function change(t) {
-        if (t < 10) {
-          return '0' + t
-        } else {
-          return t
-        }
-      }
-      return (time =
-        year +
-        '-' +
-        month +
-        '-' +
-        day +
-        ' ' +
-        hour +
-        ':' +
-        minute +
-        ':' +
-        second)
-    }
+    
   }
 }
 </script>

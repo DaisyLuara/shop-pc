@@ -74,29 +74,6 @@ let router = {
             import(/* webpackChunkName: "page/ad/list/add" */ 'page/ad/list/add')
         }
       ]
-    },
-    {
-      path: 'data',
-      name: '投放数据',
-      redirect: 'data',
-      meta: {
-        title: '投放数据',
-        permission: ''
-      },
-      component: () =>
-        import(/* webpackChunkName: "page/ad/data/routerView" */ 'page/ad/data/routerView'),
-      children: [
-        {
-          path: '/',
-          name: '投放数据图表',
-          meta: {
-            title: '投放数据图表',
-            permission: ''
-          },
-          component: () =>
-            import(/* webpackChunkName: "page/ad/data/index" */ 'page/ad/data/index')
-        }
-      ]
     }
   ]
 }
