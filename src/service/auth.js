@@ -2,7 +2,7 @@ import { Message, MessageBox } from 'element-ui'
 const HOST = process.env.SERVER_URL
 const LOGIN_API = '/api/authorizations'
 const LOGOUT_API = '/api/authorizations/current'
-const CUSTOMER_API = '/api/customer?include=roles,permissions,company'
+const CUSTOMER_API = '/api/customer?include=roles,permissions'
 const IMAGE_CAPTCHA = '/api/captcha'
 export default {
   login(context, creds, redirect) {
@@ -77,7 +77,6 @@ export default {
           user.ar_id = result.ar_user_id
           user.display_name = result.roles
           user.perms = result.permissions,
-          user.company = result.company
           localStorage.removeItem('customer_info')
           localStorage.setItem('customer_info', JSON.stringify(user))
           resolve(result.data)

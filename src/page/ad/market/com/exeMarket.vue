@@ -108,8 +108,7 @@
   </div>
 </template>
 <script>
-import { getAeraList } from 'service'
-import ad from 'service/ad'
+import { getAeraList, getMarketExe, createPermission } from 'service'
 import {
   Button,
   MessageBox,
@@ -245,7 +244,7 @@ export default {
       if (!this.adSearchForm.market_name) {
         delete args.market_name
       }
-      ad.getMarketExe(this, args)
+      getMarketExe(this, args)
         .then(res => {
           this.data = res.data
           this.pagination.total = res.meta.pagination.total
@@ -260,7 +259,7 @@ export default {
       let args = {
         marketid: `${marketid}`
       }
-      ad.createPermission(this, args)
+      createPermission(this, args)
         .then(res => {
           this.$message({
             type: 'success',

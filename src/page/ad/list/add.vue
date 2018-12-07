@@ -299,9 +299,14 @@
 </template>
 
 <script>
-import { getMarket, getAuthList } from 'service'
+import {
+  getMarket,
+  getAuthList,
+  handleDateTransform,
+  getAd,
+  createAd
+} from 'service'
 import ad from 'service/ad'
-import utils from 'service/utils'
 import picturePanel from 'components/common/picturePanel'
 import videoPanel from 'components/common/videoPanel'
 
@@ -424,7 +429,7 @@ export default {
   },
   methods: {
     getAd() {
-      ad.getAd(this, this.adID)
+      getAd(this, this.adID)
         .then(res => {
           this.adForm = res
           if (res.purl || res.lurl) {
@@ -595,7 +600,7 @@ export default {
         })
     },
     createAd() {
-      this.adForm.edate = utils.handleDateTransform(this.adForm.edate)
+      this.adForm.edate = handleDateTransform(this.adForm.edate)
       let args = this.adForm
       if (this.putType === '0') {
         args.looknum = this.adForm.count
@@ -603,7 +608,7 @@ export default {
         args.playnum = this.adForm.count
       }
       delete args.count
-      ad.createAd(this, args)
+      createAd(this, args)
         .then(res => {
           this.$message({
             message: '创建成功',
@@ -618,7 +623,7 @@ export default {
         })
     },
     modifyAd() {
-      this.adForm.edate = utils.handleDateTransform(this.adForm.edate)
+      this.adForm.edate = handleDateTransform(this.adForm.edate)
       let args = this.adForm
       let adId = this.adID
       if (this.putType === '0') {
@@ -627,7 +632,7 @@ export default {
         args.playnum = this.adForm.count
       }
       delete args.count
-      ad.createAd(this, args, adId)
+      createAd(this, args, adId)
         .then(res => {
           this.$message({
             message: '修改成功',
