@@ -163,7 +163,11 @@
                 </el-form-item>
                 <el-form-item 
                   label="核销时间">
-                  <span>{{ scope.row.updated_at }}</span>
+                  <span>{{ scope.row.use_date }}</span>
+                </el-form-item>
+                <el-form-item 
+                  label="有效期">
+                  <span>{{ scope.row.effect_date }}</span>
                 </el-form-item>
                 <el-form-item 
                   label="核销人">
@@ -226,7 +230,7 @@
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="updated_at"
+            prop="use_date"
             label="核销时间"
             min-width="80">
           </el-table-column>
