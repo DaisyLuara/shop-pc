@@ -1,35 +1,40 @@
 <template>
   <div>
-    <el-popover
-      ref="popover"
-      v-model="visible"
-      placement="left"
-      width="80"
-      trigger="hover"
-      popper-class="popper-logout">
-      <span 
-        class="logout-btn"
-        @click="logout">登出</span>
-    </el-popover>
-    <div 
-      v-popover:popover
+    <el-dropdown 
+      :hide-on-click="true"
       class="avatar-wrap">
-      <div style="height: 75px;">
+      <div class="avatar-block">
+        <!-- <span>
+        {{ name }}
+        </span> -->
         <img 
           src="~assets/images/user-default-icon.png" 
           alt="" 
           class="avatar">
       </div>
-    </div>
+      <el-dropdown-menu
+        placement="bottom" 
+        slot="dropdown">
+        <el-dropdown-item>
+          <span 
+            @click="logout"
+            class="item-info">
+            退出
+          </span>
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
 </template>
 <script>
-import { Popover } from 'element-ui'
+import { Dropdown, DropdownItem, DropdownMenu } from 'element-ui'
 import auth from 'service/auth'
 
 export default {
   components: {
-    'el-popover': Popover
+    'el-dropdown': Dropdown,
+    'el-dropdown-item': DropdownItem,
+    'el-dropdown-menu': DropdownMenu
   },
   data() {
     return {
@@ -61,12 +66,26 @@ export default {
 }
 .avatar-wrap {
   position: absolute;
-  top: 0;
+  top: 8px;
   right: 30px;
-  height: 75px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
   cursor: pointer;
+  .avatar-block {
+    span {
+      margin-right: 10px;
+    }
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+  }
   .avatar {
-    height: 50%;
+    height: 70%;
     border-radius: 50%;
   }
 }

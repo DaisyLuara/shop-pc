@@ -213,7 +213,7 @@
 </template>
 
 <script>
-import point from 'service/point'
+import { getPointList } from 'service'
 
 import {
   Button,
@@ -286,8 +286,7 @@ export default {
       if (this.filters.status === '') {
         delete args.screen_status
       }
-      point
-        .getPointList(this, args)
+      getPointList(this, args)
         .then(res => {
           this.tableData = res.data
           this.pagination.total = res.meta.pagination.total
