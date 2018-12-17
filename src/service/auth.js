@@ -76,7 +76,7 @@ export default {
           user.name = result.name
           user.ar_id = result.ar_user_id
           user.display_name = result.roles
-          user.perms = result.permissions
+          user.perms = result.permissions,
           localStorage.removeItem('customer_info')
           localStorage.setItem('customer_info', JSON.stringify(user))
           resolve(result.data)

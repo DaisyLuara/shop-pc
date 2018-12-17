@@ -91,8 +91,7 @@
   </div>
 </template>
 <script>
-import ad from 'service/ad'
-import { getAeraList } from 'service'
+import { getAeraList, getMarketOwn } from 'service'
 
 import {
   Button,
@@ -161,7 +160,7 @@ export default {
       if (!this.adSearchForm.market_name) {
         delete args.market_name
       }
-      ad.getMarketOwn(this, args)
+      getMarketOwn(this, args)
         .then(res => {
           this.data = res.data
           this.pagination.total = res.meta.pagination.total

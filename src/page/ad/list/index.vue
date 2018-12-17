@@ -361,9 +361,13 @@
   </div>
 </template>
 <script>
-import { getMarket, getAeraList } from 'service'
-import ad from 'service/ad'
-import utils from 'service/utils'
+import {
+  getMarket,
+  getAeraList,
+  handleDateTransform,
+  getExcelData,
+  getAdList
+} from 'service'
 import {
   Row,
   Col,
@@ -513,8 +517,7 @@ export default {
       let args = {
         type: 'download'
       }
-      return chart
-        .getExcelData(this, args)
+      return getExcelData(this, args)
         .then(response => {
           const a = document.createElement('a')
           a.href = response
@@ -536,7 +539,7 @@ export default {
         areaid: this.searchForm.areaid,
         state: this.searchForm.state,
         sdate: this.searchForm.dateTime[0],
-        edate: utils.handleDateTransform(this.searchForm.dateTime[1])
+        edate: handleDateTransform(this.searchForm.dateTime[1])
       }
       !this.searchForm.title ? delete args.title : args.title
       !this.searchForm.marketid ? delete args.marketid : args.marketid
@@ -544,7 +547,7 @@ export default {
       !this.searchForm.state ? delete args.state : args.state
       !this.searchForm.dateTime[0] ? delete args.sdate : args.sdate
       !this.searchForm.dateTime[1] ? delete args.edate : args.edate
-      ad.getAdList(this, args)
+      getAdList(this, args)
         .then(res => {
           this.tableData = res.data
           this.pagination.total = res.meta.pagination.total
@@ -593,17 +596,6 @@ export default {
     resetSearch(formName) {
       this.$refs[formName].resetFields()
       this.getAdList()
-    },
-    handleDateTransform(valueDate) {
-      let date = new Date(valueDate)
-      let year = date.getFullYear() + '-'
-      let mouth =
-        (date.getMonth() + 1 < 10
-          ? '0' + (date.getMonth() + 1)
-          : date.getMonth() + 1) + '-'
-      let day =
-        (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ''
-      return year + mouth + day
     }
   }
 }
