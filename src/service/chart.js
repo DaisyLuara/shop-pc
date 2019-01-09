@@ -1,5 +1,6 @@
 const CHART_API = '/api/chart_data'
 const STATS_API = '/api/stats'
+const EXCEL_API = '/api/export'
 const HOST = process.env.SERVER_URL
 
 const getChartData = (context, args) => {
