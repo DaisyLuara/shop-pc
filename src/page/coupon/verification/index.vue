@@ -110,6 +110,9 @@
         </div>
         <div class="actions-wrap">
           <span class="label">合计核销优惠券: {{ pagination.total }}</span>
+          <div>
+            <el-button type="success" size="small" @click="downloadTable()">下载</el-button>
+          </div>
         </div>
         <el-table ref="multipleTable" :data="tableData" style="width: 100%" type="expand">
           <el-table-column type="expand">
@@ -219,7 +222,8 @@ import {
   getCouponBatches,
   getCustomer,
   getPoint,
-  handleDateTimesTransform
+  handleDateTimesTransform,
+  getExcelData
 } from "service";
 
 import {
@@ -355,6 +359,23 @@ export default {
     this.getCouponBatches();
   },
   methods: {
+    downloadTable() {
+      let args = this.setArgs();
+      delete args.include;
+      delete args.page;
+      args.type = "coupon";
+      return getExcelData(this, args)
+        .then(response => {
+          const a = document.createElement("a");
+          a.href = response;
+          a.download = "download";
+          a.click();
+          window.URL.revokeObjectURL(response);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     getPoint() {
       getPoint(this)
         .then(res => {
@@ -449,8 +470,7 @@ export default {
           });
         });
     },
-    getCouponList() {
-      this.setting.loading = true;
+    setArgs() {
       let args = {
         include: "customer,point.market.area",
         page: this.pagination.currentPage,
@@ -475,6 +495,11 @@ export default {
       if (this.filters.point_id === "") {
         delete args.point_id;
       }
+      return args;
+    },
+    getCouponList() {
+      this.setting.loading = true;
+      let args = this.setArgs();
       getCouponList(this, args)
         .then(res => {
           this.tableData = res.data;
