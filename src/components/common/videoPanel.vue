@@ -1,98 +1,68 @@
 <template>
-  <div 
-    class="video-panel">
-    <el-dialog 
-      :visible.sync="videoVisible" 
-      :before-close="cancel"
-      @open="handleOpen()">
-      <div 
-        slot="title">
-        <span 
-          class="video-panel__title">视频管理</span>
-        <input 
-          v-model="serch.name" 
+  <div class="video-panel">
+    <el-dialog :visible.sync="videoVisible" :before-close="cancel" @open="handleOpen()">
+      <div slot="title">
+        <span class="video-panel__title">视频管理</span>
+        <input
+          v-model="serch.name"
           placeholder="搜索"
           clearable
-          class="video-panel__search" 
-          @keyup.enter="searchMedia()">
+          class="video-panel__search"
+          @keyup.enter="searchMedia()"
+        >
       </div>
       <div>
-        <div 
-          v-loading="loading"
-          class="video-panel__body">
-          <li 
-            v-for="obj in dataVideo" 
+        <div v-loading="loading" class="video-panel__body">
+          <li
+            v-for="obj in dataVideo"
             :key="obj.id"
-            class="video-panel__img-item"  
-            @click="selectImg(obj)" >
-            <video
-              :src="obj.url" 
-              controls="controls"
-              class="video-panel__img">
-              您的浏览器不支持
-            </video>
-            <div 
-              class="video-panel__img-name">{{ obj.name }}</div>
-            <div 
-              v-for="selectedObj in selectedImgs" 
-              :key="selectedObj.id">
-              <div 
-                v-if="obj.id == selectedObj.id">
-                <div 
-                  class="video-panel__arrow-wrap"/>
-                <i 
-                  class="video-panel__arrow"/>
+            class="video-panel__img-item"
+            @click="selectImg(obj)"
+          >
+            <video :src="obj.url" controls="controls" class="video-panel__img">您的浏览器不支持</video>
+            <div class="video-panel__img-name">{{ obj.name }}</div>
+            <div v-for="selectedObj in selectedImgs" :key="selectedObj.id">
+              <div v-if="obj.id == selectedObj.id">
+                <div class="video-panel__arrow-wrap"/>
+                <i class="video-panel__arrow"/>
               </div>
             </div>
           </li>
         </div>
-        <div 
-          class="video-panel__footer">
-          <el-upload 
-            :action="SERVER_URL + '/api/media'" 
-            :data="{type: type}" 
-            :headers="formHeader" 
-            :before-upload="beforeUpload" 
+        <div class="video-panel__footer">
+          <el-upload
+            :action="SERVER_URL + '/api/video'"
+            :data="{type: type}"
+            :headers="formHeader"
+            :before-upload="beforeUpload"
             :on-success="handleSuccess"
             :on-error="handleError"
-            :multiple="false" 
-            :auto-upload="true" 
-            :show-file-list="false" 
+            :multiple="false"
+            :auto-upload="true"
+            :show-file-list="false"
             :disabled="uploadDisabled"
-            list-type="picture" 
-            class="video-panel__upload">
-            <el-button 
-              size="small" 
-              type="primary"
-            >点击上传</el-button>
+            list-type="picture"
+            class="video-panel__upload"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
-          <span 
-            class="image-type">仅支持mp4一种格式, 大小为50M以内</span>
-          <div 
-            class="video-panel__page">
-            <el-pagination 
-              :total="pagination.count" 
-              :page-size="pagination.limit" 
+          <span class="image-type">仅支持mp4一种格式, 大小为50M以内</span>
+          <div class="video-panel__page">
+            <el-pagination
+              :total="pagination.count"
+              :page-size="pagination.limit"
               :current-page.sync="pagination.page_num"
-              layout="total, prev, pager, next, jumper" 
-              @current-change="changeCurrent"/>
+              layout="total, prev, pager, next, jumper"
+              @current-change="changeCurrent"
+            />
           </div>
         </div>
       </div>
-      <div 
-        slot="footer">
-        <div 
-          name="footer" 
-          class="footer">
-          <div 
-            class="video-panel__choose-num">
-            已选择{{ selectedImgs.length }}个视频
-          </div>
-          <el-button 
-            @click="cancel()">取 消</el-button>
-          <el-button 
-            type="primary" 
-            @click="confirm()">确 定</el-button>
+      <div slot="footer">
+        <div name="footer" class="footer">
+          <div class="video-panel__choose-num">已选择{{ selectedImgs.length }}个视频</div>
+          <el-button @click="cancel()">取 消</el-button>
+          <el-button type="primary" @click="confirm()">确 定</el-button>
         </div>
       </div>
     </el-dialog>
@@ -100,7 +70,7 @@
 </template>
 
 <script>
-import picture from 'service/picture'
+import { getVideoMediaList } from "service";
 
 import {
   Button,
@@ -110,18 +80,18 @@ import {
   Pagination,
   MessageBox,
   Dialog
-} from 'element-ui'
-import auth from 'service/auth'
+} from "element-ui";
+import auth from "service/auth";
 
 export default {
-  name: 'VideoPanel',
+  name: "VideoPanel",
   components: {
-    'el-button': Button,
-    'el-tabs': Tabs,
-    'el-tab-pane': TabPane,
-    'el-upload': Upload,
-    'el-pagination': Pagination,
-    'el-dialog': Dialog
+    "el-button": Button,
+    "el-tabs": Tabs,
+    "el-tab-pane": TabPane,
+    "el-upload": Upload,
+    "el-pagination": Pagination,
+    "el-dialog": Dialog
   },
   props: {
     videoVisible: {
@@ -136,13 +106,13 @@ export default {
   data() {
     return {
       loading: true,
-      type: 'video',
+      type: "video",
       dataVideo: [],
       serch: {
-        name: ''
+        name: ""
       },
       formHeader: {
-        Authorization: 'Bearer' + auth.getToken()
+        Authorization: "Bearer" + auth.getToken()
       },
       pagination: {
         limit: 10,
@@ -152,96 +122,95 @@ export default {
       selectedImgs: [],
       SERVER_URL: process.env.SERVER_URL,
       uploadDisabled: false
-    }
+    };
   },
   created() {},
   methods: {
     handleError() {
-      this.loading = false
+      this.loading = false;
     },
     handleOpen() {
-      this.getMediaList()
+      this.getVideoMediaList();
     },
     changeCurrent(currentPage) {
-      this.pagination.page_num = currentPage
-      this.getMediaList()
+      this.pagination.page_num = currentPage;
+      this.getVideoMediaList();
     },
     handleClose(selectedImgs) {
-      this.serch.name = ''
-      this.searchedMediaList = []
-      this.selectedImgs = []
-      this.uploadDisabled = false
-      this.$emit('update:videoVisible', false)
-      this.$emit('close', selectedImgs)
+      this.serch.name = "";
+      this.searchedMediaList = [];
+      this.selectedImgs = [];
+      this.uploadDisabled = false;
+      this.$emit("update:videoVisible", false);
+      this.$emit("close", selectedImgs);
     },
 
     cancel() {
-      this.handleClose([])
+      this.handleClose([]);
     },
 
     confirm() {
-      this.handleClose(this.selectedImgs)
+      this.handleClose(this.selectedImgs);
     },
 
     selectImg(obj) {
-      var isExsisted = false
+      var isExsisted = false;
       if (this.singleFlag) {
-        this.selectedImgs = []
-        this.selectedImgs.push(obj)
+        this.selectedImgs = [];
+        this.selectedImgs.push(obj);
       } else {
         for (let i = 0; i < this.selectedImgs.length; i++) {
           if (this.selectedImgs[i].id == obj.id) {
-            isExsisted = true
-            this.selectedImgs.splice(i, 1)
-            break
+            isExsisted = true;
+            this.selectedImgs.splice(i, 1);
+            break;
           }
         }
       }
     },
-    getMediaList() {
+    getVideoMediaList() {
       let params = {
         page: this.pagination.page_num,
-        type: 'video',
+        type: "video",
         name: this.serch.name
-      }
-      picture
-        .getMediaList(this, params)
+      };
+      getVideoMediaList(this, params)
         .then(res => {
-          this.dataVideo = res.data
-          this.pagination.count = res.meta.pagination.total
-          this.loading = false
+          this.dataVideo = res.data;
+          this.pagination.count = res.meta.pagination.total;
+          this.loading = false;
         })
         .catch(err => {
-          console.log(err)
-          this.loading = false
-        })
+          console.log(err);
+          this.loading = false;
+        });
     },
     searchMedia() {
-      this.loading = true
-      this.getMediaList()
+      this.loading = true;
+      this.getVideoMediaList();
     },
 
     handleSuccess(response, file, fileList) {
-      this.getMediaList()
+      this.getVideoMediaList();
     },
 
     beforeUpload(file) {
-      this.loading = true
-      const isJPG = file.type === 'video/mp4'
-      const isLt2M = file.size / 1024 / 1024 < 10
+      this.loading = true;
+      const isJPG = file.type === "video/mp4";
+      const isLt2M = file.size / 1024 / 1024 < 10;
       if (!isJPG) {
-        this.loading = false
-        this.$message.error('上传图片仅支持mp4一种格式!')
-        return isJPG
+        this.loading = false;
+        this.$message.error("上传图片仅支持mp4一种格式!");
+        return isJPG;
       }
       if (!isLt2M) {
-        this.loading = false
-        this.$message.error('上传图片大小不能超过 50MB!')
-        return isLt2M
+        this.loading = false;
+        this.$message.error("上传图片大小不能超过 50MB!");
+        return isLt2M;
       }
     }
   }
-}
+};
 </script>
 
 
@@ -314,7 +283,7 @@ export default {
   width: 163px;
   height: 33px;
   background-color: #eff2f7;
-  background-image: url('../../assets/images/icons/search-icon.png');
+  background-image: url("../../assets/images/icons/search-icon.png");
   background-repeat: no-repeat;
   background-position: 5% 50%;
 }
@@ -357,7 +326,7 @@ export default {
   overflow: hidden;
 }
 .video-panel__arrow {
-  background-image: url('../../assets/images/icons/selected.png');
+  background-image: url("../../assets/images/icons/selected.png");
   background-repeat: no-repeat;
   height: 15px;
   position: absolute;

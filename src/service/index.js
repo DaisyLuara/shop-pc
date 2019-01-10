@@ -14,3 +14,6 @@ export * from './ad'
 
 // 点位
 export * from './point'
+
+// 图片
+export * from './picture'

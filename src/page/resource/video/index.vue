@@ -4,101 +4,99 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>图片管理</el-breadcrumb-item>
       </el-breadcrumb>
-    </div> -->
-    <div 
+    </div>-->
+    <div
       v-loading="setting.loading"
       :element-loading-text="setting.loadingText"
-      class="video-manage">
+      class="video-manage"
+    >
       <div class="grouping-image-wrap">
         <div class="image-warp">
           <div class="image-title-group">
-            <el-checkbox 
-              v-model="checkbox.allChecked" 
-              size="small" 
-              @change="allCheckedHandle">全选</el-checkbox>
-            <el-popover 
-              ref="delete-image" 
-              v-model="mediaVideo.mediaDelete" 
-              :disabled="mediaVideo.disabledFlag" 
-              placement="bottom" 
-              width="260" >
+            <el-checkbox v-model="checkbox.allChecked" size="small" @change="allCheckedHandle">全选</el-checkbox>
+            <el-popover
+              ref="delete-image"
+              v-model="mediaVideo.mediaDelete"
+              :disabled="mediaVideo.disabledFlag"
+              placement="bottom"
+              width="260"
+            >
               <p>确定删除该视频?</p>
               <p class="hint">若删除，不会对目前已使用该图片的相关业务造成影响。</p>
               <div class="btn-wrap">
-                <el-button 
-                  type="primary" 
-                  size="small" 
-                  @click="imageDeleteHandle">确定</el-button>
-                <el-button 
-                  size="small" 
-                  @click="mediaVideo.mediaDelete = false,setModelFlag(mediaVideo.mediaList)">取消</el-button>
+                <el-button type="primary" size="small" @click="imageDeleteHandle">确定</el-button>
+                <el-button
+                  size="small"
+                  @click="mediaVideo.mediaDelete = false,setModelFlag(mediaVideo.mediaList)"
+                >取消</el-button>
               </div>
             </el-popover>
-            <a 
-              v-popover:delete-image 
-              :class="{ haveChooseImage : !mediaVideo.disabledFlag }">删除</a>
+            <a v-popover:delete-image :class="{ haveChooseImage : !mediaVideo.disabledFlag }">删除</a>
           </div>
           <!-- 视频列表 -->
           <ul class="image-list">
-            <div  
+            <div
               v-show="mediaVideo.mediaList.length == 0"
-              class="hint-message">暂无数据，可点击左下角“上传图片”按钮添加</div>
-            <li 
-              v-for="(imageItem, index) in mediaVideo.mediaList" 
-              :key="imageItem.id">
+              class="hint-message"
+            >暂无数据，可点击左下角“上传图片”按钮添加</div>
+            <li v-for="(imageItem, index) in mediaVideo.mediaList" :key="imageItem.id">
               <video
-                :src="imageItem.url" 
-                class="image-file" 
+                :src="imageItem.url"
+                class="image-file"
                 controls="controls"
-                @click="mediaVideo.imageVisible = true, mediaVideo.mediaVideoUrl = imageItem.url">
-                您的浏览器不支持
-              </video>
-              <p
-                class="item-text">
-                <el-checkbox 
-                  v-model="checkbox.checkboxList[index].flag" 
-                  size="small" 
-                  @change="checkBoxChange(index,imageItem.id)">
-                  {{ imageItem.name }}
-                </el-checkbox>
+                @click="mediaVideo.imageVisible = true, mediaVideo.mediaVideoUrl = imageItem.url"
+              >您的浏览器不支持</video>
+              <p class="item-text">
+                <el-checkbox
+                  v-model="checkbox.checkboxList[index].flag"
+                  size="small"
+                  @change="checkBoxChange(index,imageItem.id)"
+                >{{ imageItem.name }}</el-checkbox>
               </p>
               <div class="image-operation">
                 <!-- 编辑名称 -->
-                <el-popover 
+                <el-popover
                   v-model="operate.renamePopoverArray[index].flag"
-                  placement="bottom" 
-                  width="260" >
+                  placement="bottom"
+                  width="260"
+                >
                   <p>编辑名称</p>
-                  <el-input 
-                    v-model="operate.renameValueArray[index].name" 
-                    placeholder="请输入名称" 
-                    class="rename-input"/>
+                  <el-input
+                    v-model="operate.renameValueArray[index].name"
+                    placeholder="请输入名称"
+                    class="rename-input"
+                  />
                   <div class="btn-wrap">
-                    <el-button 
-                      type="primary" 
-                      size="small" 
-                      @click="mediaRenameHandle(index,imageItem.id)">确定</el-button>
-                    <el-button 
-                      size="small" 
-                      @click="handleOperationButtonClick(index, 'rename', imageItem.id)">取消</el-button>
+                    <el-button
+                      type="primary"
+                      size="small"
+                      @click="mediaRenameHandle(index,imageItem.id)"
+                    >确定</el-button>
+                    <el-button
+                      size="small"
+                      @click="handleOperationButtonClick(index, 'rename', imageItem.id)"
+                    >取消</el-button>
                   </div>
                   <a slot="reference">重命名</a>
                 </el-popover>
                 <!-- 删除 -->
                 <el-popover
                   v-model="operate.deletePopoverArray[index].flag"
-                  placement="bottom" 
-                  width="260" >
+                  placement="bottom"
+                  width="260"
+                >
                   <p>确定删除该视频?</p>
                   <p class="hint">若删除，不会对目前已使用该图片的相关业务造成影响。</p>
                   <div class="btn-wrap">
-                    <el-button 
-                      type="primary" 
-                      size="small" 
-                      @click="imageDeleteHandle(index, imageItem.id)">确定</el-button>
-                    <el-button 
-                      size="small" 
-                      @click="handleOperationButtonClick(index, '', imageItem.id)">取消</el-button>
+                    <el-button
+                      type="primary"
+                      size="small"
+                      @click="imageDeleteHandle(index, imageItem.id)"
+                    >确定</el-button>
+                    <el-button
+                      size="small"
+                      @click="handleOperationButtonClick(index, '', imageItem.id)"
+                    >取消</el-button>
                   </div>
                   <a slot="reference">删除</a>
                 </el-popover>
@@ -109,29 +107,29 @@
           <div class="submit-warp">
             <el-upload
               ref="upload"
-              :action="SERVER_URL + '/api/media'" 
+              :action="SERVER_URL + '/api/video'"
               :data="{type: mediaVideo.type}"
               :headers="formHeader"
-              :before-upload="beforeUpload" 
-              :on-success="handleSuccess" 
+              :before-upload="beforeUpload"
+              :on-success="handleSuccess"
               :multiple="false"
-              :auto-upload="true" 
-              :show-file-list="false" 
+              :auto-upload="true"
+              :show-file-list="false"
               :on-error="handleError"
-              list-type="picture" 
-              class="upload">
-              <el-button 
-                size="small" 
-                type="success">上传视频</el-button>
+              list-type="picture"
+              class="upload"
+            >
+              <el-button size="small" type="success">上传视频</el-button>
             </el-upload>
             <span class="image-type">仅支持mp4一种格式, 大小为50M以内</span>
             <div class="pagination">
-              <el-pagination 
-                :page-size="pagination.limit" 
-                :total="pagination.count" 
-                :current-page.sync="pagination.page_num" 
+              <el-pagination
+                :page-size="pagination.limit"
+                :total="pagination.count"
+                :current-page.sync="pagination.page_num"
                 layout="prev, pager, next, jumper, total"
-                @current-change="changeCurrent"/>
+                @current-change="changeCurrent"
+              />
             </div>
           </div>
         </div>
@@ -141,8 +139,8 @@
 </template>
 
 <script>
-import picture from 'service/picture'
-import Vue from 'vue'
+import { getVideoMediaList, deleteVideoMedia, modifyVideoMedia } from "service";
+import Vue from "vue";
 import {
   Popover,
   Button,
@@ -151,23 +149,23 @@ import {
   Upload,
   Pagination,
   Message
-} from 'element-ui'
-import auth from 'service/auth'
+} from "element-ui";
+import auth from "service/auth";
 
 export default {
   components: {
-    'el-button': Button,
-    'el-popover': Popover,
-    'el-input': Input,
-    'el-checkbox': Checkbox,
-    'el-upload': Upload,
-    'el-pagination': Pagination
+    "el-button": Button,
+    "el-popover": Popover,
+    "el-input": Input,
+    "el-checkbox": Checkbox,
+    "el-upload": Upload,
+    "el-pagination": Pagination
   },
   data() {
     return {
       setting: {
         loading: true,
-        loadingText: '拼命加载中'
+        loadingText: "拼命加载中"
       },
       pagination: {
         limit: 10,
@@ -185,226 +183,223 @@ export default {
         checkedList: []
       },
       mediaVideo: {
-        type: 'video',
+        type: "video",
         disabledFlag: true,
         imageVisible: false,
         mediaDelete: false,
         mediaRename: false,
-        mediaVideoUrl: '',
+        mediaVideoUrl: "",
         mediaList: []
       },
       formHeader: {
-        Authorization: 'Bearer ' + auth.getToken()
+        Authorization: "Bearer " + auth.getToken()
       },
       SERVER_URL: process.env.SERVER_URL
-    }
+    };
   },
   created: function() {
-    this.getMediaList()
+    this.getVideoMediaList();
   },
   methods: {
     handleError() {
-      this.setting.loading = false
+      this.setting.loading = false;
     },
     handleImageClose() {
-      this.mediaVideo.imageVisible = false
+      this.mediaVideo.imageVisible = false;
     },
     changeCurrent(currentPage) {
-      this.pagination.page_num = currentPage
-      this.getMediaList()
+      this.pagination.page_num = currentPage;
+      this.getVideoMediaList();
     },
     // 获取图片列表
-    getMediaList() {
-      let _this = this
+    getVideoMediaList() {
+      let _this = this;
       let args = {
         page: this.pagination.page_num,
-        type: 'video'
-      }
-      picture
-        .getMediaList(this, args)
+        type: "video"
+      };
+      getVideoMediaList(this, args)
         .then(res => {
-          this.mediaVideo.mediaList = res.data
-          this.pagination.count = res.meta.pagination.total
-          this.setModelFlag(this.mediaVideo.mediaList)
-          this.setting.loading = false
+          this.mediaVideo.mediaList = res.data;
+          this.pagination.count = res.meta.pagination.total;
+          this.setModelFlag(this.mediaVideo.mediaList);
+          this.setting.loading = false;
         })
         .catch(err => {
-          _this.setting.loading = false
-          console.log(err)
-        })
+          _this.setting.loading = false;
+          console.log(err);
+        });
     },
     // 设置for循环列表中的v-model值
     setModelFlag(dataList) {
-      this.checkbox.checkboxList = []
-      this.operate.renameValueArray = []
-      this.operate.renamePopoverArray = []
-      this.operate.deletePopoverArray = []
+      this.checkbox.checkboxList = [];
+      this.operate.renameValueArray = [];
+      this.operate.renamePopoverArray = [];
+      this.operate.deletePopoverArray = [];
       dataList.map(v => {
-        this.operate.renamePopoverArray.push({ flag: false })
-        this.operate.deletePopoverArray.push({ flag: false })
-        this.checkbox.checkboxList.push({ flag: false })
-        this.operate.renameValueArray.push({ name: v.name })
-      })
-      this.checkbox.allChecked = false
-      this.mediaVideo.disabledFlag = true
-      this.checkbox.checkedList = []
+        this.operate.renamePopoverArray.push({ flag: false });
+        this.operate.deletePopoverArray.push({ flag: false });
+        this.checkbox.checkboxList.push({ flag: false });
+        this.operate.renameValueArray.push({ name: v.name });
+      });
+      this.checkbox.allChecked = false;
+      this.mediaVideo.disabledFlag = true;
+      this.checkbox.checkedList = [];
     },
     // 处理图片列表中按钮的确定和取消操作的标记
     handleOperationButtonClick(index, modelName, imageId) {
-      if (modelName === 'rename') {
+      if (modelName === "rename") {
         this.operate.renameValueArray[index].name = this.mediaVideo.mediaList[
           index
-        ].name
-        this.operate.renamePopoverArray[index].flag = false
+        ].name;
+        this.operate.renamePopoverArray[index].flag = false;
       } else {
-        this.operate.deletePopoverArray[index].flag = false
+        this.operate.deletePopoverArray[index].flag = false;
       }
-      this.checkbox.checkboxList[index].flag = false
-      this.disabledHandle(imageId)
+      this.checkbox.checkboxList[index].flag = false;
+      this.disabledHandle(imageId);
     },
     // 处理删除是否给以点击
     disabledHandle(imageId, type) {
-      if (type != 'boxChange') {
-        let indexArr = this.checkbox.checkedList.indexOf(imageId)
+      if (type != "boxChange") {
+        let indexArr = this.checkbox.checkedList.indexOf(imageId);
         if (indexArr !== -1) {
-          this.checkbox.checkedList.splice(indexArr, 1)
+          this.checkbox.checkedList.splice(indexArr, 1);
         }
       }
       if (this.checkbox.checkedList.length > 0) {
-        this.mediaVideo.disabledFlag = false
+        this.mediaVideo.disabledFlag = false;
         if (
           this.checkbox.checkedList.length == this.checkbox.checkboxList.length
         ) {
-          this.checkbox.allChecked = true
+          this.checkbox.allChecked = true;
         }
       } else {
-        this.mediaVideo.disabledFlag = true
-        this.checkbox.allChecked = false
+        this.mediaVideo.disabledFlag = true;
+        this.checkbox.allChecked = false;
       }
     },
     // 图片的重命名处理
     mediaRenameHandle(index, imageId) {
       if (this.operate.renameValueArray[index].name.trim()) {
-        this.setting.loading = true
-        let name = this.operate.renameValueArray[index].name
-        this.operate.renamePopoverArray[index].flag = false
-        this.modifyMedia(imageId, name)
+        this.setting.loading = true;
+        let name = this.operate.renameValueArray[index].name;
+        this.operate.renamePopoverArray[index].flag = false;
+        this.modifyMedia(imageId, name);
       } else {
         this.operate.renameValueArray[index].name = this.mediaVideo.mediaList[
           index
-        ].name
-        this.operate.renamePopoverArray[index].flag = false
+        ].name;
+        this.operate.renamePopoverArray[index].flag = false;
         this.$message({
-          message: '请输入要重命名的内容',
-          type: 'warning'
-        })
+          message: "请输入要重命名的内容",
+          type: "warning"
+        });
       }
     },
     // 修改名称
     modifyMedia(id, name) {
       let args = {
         name: name
-      }
-      picture
-        .modifyMedia(this, id, args)
+      };
+      modifyVideoMedia(this, id, args)
         .then(res => {
-          this.getMediaList()
+          this.getVideoMediaList();
         })
         .catch(err => {
-          this.setting.loading = false
-          console.log(err)
-        })
+          this.setting.loading = false;
+          console.log(err);
+        });
     },
     beforeUpload(file) {
-      this.setting.loading = true
-      const isJPG = file.type === 'video/mp4'
-      const isLt2M = file.size / 1024 / 1024 < 50
+      this.setting.loading = true;
+      const isJPG = file.type === "video/mp4";
+      const isLt2M = file.size / 1024 / 1024 < 50;
       if (!isJPG) {
-        this.$message.error('上传图片仅支持mp4一种格式!')
-        this.setting.loading = false
-        return isJPG
+        this.$message.error("上传图片仅支持mp4一种格式!");
+        this.setting.loading = false;
+        return isJPG;
       }
       if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 50MB!')
-        this.setting.loading = false
-        return isLt2M
+        this.$message.error("上传图片大小不能超过 50MB!");
+        this.setting.loading = false;
+        return isLt2M;
       }
     },
     // 上传成功后的处理
     handleSuccess() {
-      this.getMediaList()
+      this.getVideoMediaList();
     },
     // 图片的删除操作
     imageDeleteHandle(index, imageId) {
-      this.setting.loading = true
+      this.setting.loading = true;
       if (imageId) {
-        this.checkbox.checkedList.push(imageId)
-        this.deleteMedia(index, imageId)
+        this.checkbox.checkedList.push(imageId);
+        this.deleteMedia(index, imageId);
       } else {
-        this.deleteMedia(index, this.checkbox.checkedList)
+        this.deleteMedia(index, this.checkbox.checkedList);
       }
     },
     // 删除视频方法
     deleteMedia(index, ids) {
-      let arr = []
+      let arr = [];
       if (this.mediaVideo.mediaDelete) {
-        this.mediaVideo.mediaDelete = false
+        this.mediaVideo.mediaDelete = false;
       } else {
-        this.operate.deletePopoverArray[index].flag = false
+        this.operate.deletePopoverArray[index].flag = false;
       }
-      if (typeof ids === 'object') {
-        arr = ids
+      if (typeof ids === "object") {
+        arr = ids;
       } else {
-        arr.push(ids)
+        arr.push(ids);
       }
       let args = {
         ids: arr
-      }
-      picture
-        .deleteMedia(this, args)
+      };
+      deleteVideoMedia(this, args)
         .then(res => {
-          this.pagination.page_num = 1
-          this.getMediaList()
+          this.pagination.page_num = 1;
+          this.getVideoMediaList();
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
     // 多选框改变时候的处理
     checkBoxChange(index, imageId) {
       if (this.checkbox.checkboxList[index].flag === true) {
-        this.checkbox.checkedList.push(imageId)
+        this.checkbox.checkedList.push(imageId);
       } else {
-        let indexArr = this.checkbox.checkedList.indexOf(imageId)
-        this.checkbox.checkedList.splice(indexArr, 1)
+        let indexArr = this.checkbox.checkedList.indexOf(imageId);
+        this.checkbox.checkedList.splice(indexArr, 1);
       }
-      this.disabledHandle(imageId, 'boxChange')
+      this.disabledHandle(imageId, "boxChange");
     },
     // 全选框处理
     allCheckedHandle() {
       if (this.checkbox.allChecked) {
-        this.checkbox.checkedList = []
+        this.checkbox.checkedList = [];
         for (let item of this.checkbox.checkboxList) {
-          item.flag = true
+          item.flag = true;
         }
         for (let imageItem of this.mediaVideo.mediaList) {
-          this.checkbox.checkedList.push(imageItem.id)
+          this.checkbox.checkedList.push(imageItem.id);
         }
         if (this.mediaVideo.mediaList.length != 0) {
-          this.mediaVideo.disabledFlag = false
+          this.mediaVideo.disabledFlag = false;
         } else {
-          this.mediaVideo.disabledFlag = true
+          this.mediaVideo.disabledFlag = true;
         }
       } else {
         for (let item of this.checkbox.checkboxList) {
-          item.flag = false
+          item.flag = false;
         }
-        this.checkbox.checkedList = []
-        this.mediaVideo.disabledFlag = true
+        this.checkbox.checkedList = [];
+        this.mediaVideo.disabledFlag = true;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
