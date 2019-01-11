@@ -38,7 +38,7 @@
             <div
               v-show="mediaVideo.mediaList.length == 0"
               class="hint-message"
-            >暂无数据，可点击左下角“上传图片”按钮添加</div>
+            >暂无数据，可点击左下角“上传视频”按钮添加</div>
             <li v-for="(imageItem, index) in mediaVideo.mediaList" :key="imageItem.id">
               <video
                 :src="imageItem.url"
@@ -121,7 +121,7 @@
             >
               <el-button size="small" type="success">上传视频</el-button>
             </el-upload>
-            <span class="image-type">仅支持mp4一种格式, 大小为50M以内</span>
+            <span class="image-type">仅支持mp4一种格式, 大小为20M以内</span>
             <div class="pagination">
               <el-pagination
                 :page-size="pagination.limit"

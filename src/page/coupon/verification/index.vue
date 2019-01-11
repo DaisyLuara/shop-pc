@@ -353,7 +353,7 @@ export default {
   created() {
     this.getCouponList();
     let coustomer_info = JSON.parse(localStorage.getItem("customer_info"));
-    this.customer_name = coustomer_info.name;
+    this.customer_name = coustomer_info.company.name;
     this.getCustomer();
     this.getPoint();
     this.getCouponBatches();
