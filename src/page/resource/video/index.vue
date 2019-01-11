@@ -314,14 +314,14 @@ export default {
     beforeUpload(file) {
       this.setting.loading = true;
       const isJPG = file.type === "video/mp4";
-      const isLt2M = file.size / 1024 / 1024 < 50;
+      const isLt2M = file.size / 1024 / 1024 < 20;
       if (!isJPG) {
         this.$message.error("上传图片仅支持mp4一种格式!");
         this.setting.loading = false;
         return isJPG;
       }
       if (!isLt2M) {
-        this.$message.error("上传图片大小不能超过 50MB!");
+        this.$message.error("上传图片大小不能超过 20MB!");
         this.setting.loading = false;
         return isLt2M;
       }

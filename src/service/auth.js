@@ -71,6 +71,7 @@ export default {
       context.$http
         .get(HOST + CUSTOMER_API)
         .then(response => {
+          console.log(response)
           let result = response.data
           let user = {}
           user.name = result.name
