@@ -2,7 +2,7 @@ import { Message, MessageBox } from 'element-ui'
 const HOST = process.env.SERVER_URL
 const LOGIN_API = '/api/authorizations'
 const LOGOUT_API = '/api/authorizations/current'
-const CUSTOMER_API = '/api/customer?include=roles,permissions'
+const CUSTOMER_API = '/api/customer?include=roles'
 const IMAGE_CAPTCHA = '/api/captcha'
 export default {
   login(context, creds, redirect) {
