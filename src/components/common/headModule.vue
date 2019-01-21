@@ -1,53 +1,44 @@
 <template>
   <div>
-    <el-dropdown 
-      :hide-on-click="true"
-      class="avatar-wrap">
+    <el-dropdown :hide-on-click="true" class="avatar-wrap">
       <div class="avatar-block">
-        <!-- <span>
-        {{ name }}
-        </span> -->
-        <img 
-          src="~assets/images/user-default-icon.png" 
-          alt="" 
-          class="avatar">
+        <span>{{ name }}</span>
+        <img src="~assets/images/user-default-icon.png" alt class="avatar">
       </div>
-      <el-dropdown-menu
-        placement="bottom" 
-        slot="dropdown">
+      <el-dropdown-menu placement="bottom" slot="dropdown">
         <el-dropdown-item>
-          <span 
-            @click="logout"
-            class="item-info">
-            退出
-          </span>
+          <span @click="logout" class="item-info">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
 </template>
 <script>
-import { Dropdown, DropdownItem, DropdownMenu } from 'element-ui'
-import auth from 'service/auth'
+import { Dropdown, DropdownItem, DropdownMenu } from "element-ui";
+import auth from "service/auth";
 
 export default {
   components: {
-    'el-dropdown': Dropdown,
-    'el-dropdown-item': DropdownItem,
-    'el-dropdown-menu': DropdownMenu
+    "el-dropdown": Dropdown,
+    "el-dropdown-item": DropdownItem,
+    "el-dropdown-menu": DropdownMenu
   },
   data() {
     return {
-      visible: false
-    }
+      visible: false,
+      name: ""
+    };
+  },
+  created() {
+    this.name = this.$store.state.curUserInfo.company.name;
   },
   methods: {
     logout() {
-      this.visible = false
-      auth.logout(this)
+      this.visible = false;
+      auth.logout(this);
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

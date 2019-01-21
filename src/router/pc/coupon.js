@@ -1,29 +1,28 @@
+import auth from 'service/auth'
 let router = {
   path: 'coupon',
-  redirect: 'coupon',
   name: '核销',
   meta: {
     title: '核销',
-    permission: ''
+    permission: 'shop_coupon'
   },
   component: () =>
     import(/* webpackChunkName: "page/coupon/couponView" */ 'page/coupon/couponView'),
   children: [
     {
       path: 'list',
-      name: '核销列表',
-      redirect: 'list',
       meta: {
-        title: '核销列表'
+        title: '核销列表',
+        permission: 'shop_coupon.list'
       },
       component: () =>
         import(/* webpackChunkName: "page/coupon/verification/routerView" */ 'page/coupon/verification/routerView'),
       children: [
         {
           path: '/',
-          name: '核销列表集合',
           meta: {
-            title: '核销列表集合'
+            title: '核销列表集合',
+            permission: 'shop_coupon.list.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/coupon/verification/index" */ 'page/coupon/verification/index')
@@ -32,19 +31,18 @@ let router = {
     },
     {
       path: 'rules',
-      name: '优惠券规则',
-      redirect: 'rules',
       meta: {
-        title: '优惠券规则'
+        title: '优惠券规则',
+        permission: 'shop_coupon.rules'
       },
       component: () =>
         import(/* webpackChunkName: "page/coupon/rules/routerView" */ 'page/coupon/rules/routerView'),
       children: [
         {
           path: '/',
-          name: '优惠券规则列表',
           meta: {
-            title: '优惠券规则列表'
+            title: '优惠券规则列表',
+            permission: 'shop_coupon.rules.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/coupon/rules/index" */ 'page/coupon/rules/index')
@@ -57,7 +55,9 @@ let router = {
 router.redirect = () => {
   let routes = router.children
   for (let route of routes) {
-    return '/coupon/' + route.path
+    if (auth.checkPathPermission(route)) {
+      return '/coupon/' + route.path
+    }
   }
 }
 

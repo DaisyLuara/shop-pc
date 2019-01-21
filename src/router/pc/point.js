@@ -1,35 +1,34 @@
+import auth from 'service/auth'
 let router = {
   path: 'point',
-  redirect: 'point',
   name: '点位',
   meta: {
     title: '点位',
-    permission: 'point'
+    permission: 'shop_point'
   },
   component: () =>
     import(/* webpackChunkName: "page/point/pointView" */ 'page/point/pointView'),
   children: [
     {
       path: 'list',
-      name: '点位列表',
-      redirect: 'list',
       meta: {
-        title: '点位列表'
+        title: '点位列表',
+        permission: 'shop_point.list'
       },
       component: () =>
         import(/* webpackChunkName: "page/point/item/routerView" */ 'page/point/item/routerView'),
       children: [
         {
           path: '/',
-          name: '点位列表集合',
           meta: {
-            title: '点位列表集合'
+            title: '点位列表集合',
+            permission: 'shop_point.list.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/point/item/index" */ 'page/point/item/index')
-        },
+        }
       ]
-    },
+    }
     // {
     //   path: 'data',
     //   name: '营收数据',
@@ -57,7 +56,9 @@ let router = {
 router.redirect = () => {
   let routes = router.children
   for (let route of routes) {
-    return '/point/' + route.path
+    if (auth.checkPathPermission(route)) {
+      return '/point/' + route.path
+    }
   }
 }
 
