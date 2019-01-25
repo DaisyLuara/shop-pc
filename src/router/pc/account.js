@@ -1,35 +1,34 @@
+import auth from 'service/auth'
 let router = {
   path: 'account',
-  redirect: 'account/datum',
   name: '账户',
   meta: {
     title: '账户',
-    permission: 'account'
+    permission: 'shop_account'
   },
   component: () =>
     import(/* webpackChunkName: "page/account/accountView" */ 'page/account/accountView'),
   children: [
     {
       path: 'datum',
-      name: '我的资料',
-      redirect: 'datum',
       meta: {
-        title: '我的资料'
+        title: '我的资料',
+        permission: 'shop_account.datum'
       },
       component: () =>
         import(/* webpackChunkName: "page/account/account/routerView" */ 'page/account/account/routerView'),
       children: [
         {
           path: '/',
-          name: '我的账号',
           meta: {
-            title: '我的账号'
+            title: '我的账号',
+            permission: 'shop_account.datum.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/account/account/index" */ 'page/account/account/index')
         }
       ]
-    },
+    }
     // {
     //   path: 'deal',
     //   name: '交易明细',
@@ -57,7 +56,9 @@ let router = {
 router.redirect = () => {
   let routes = router.children
   for (let route of routes) {
-    return '/account/' + route.path
+    if (auth.checkPathPermission(route)) {
+      return '/account/' + route.path
+    }
   }
 }
 

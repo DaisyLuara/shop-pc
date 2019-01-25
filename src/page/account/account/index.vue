@@ -371,7 +371,7 @@ export default {
     }
   },
   created() {
-    this.name = this.$store.state.curUserInfo.name
+    this.name = this.$store.state.curUserInfo.company.name
     this.setting.loading = false
   },
   methods: {

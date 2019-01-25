@@ -2,7 +2,7 @@ import { Message, MessageBox } from 'element-ui'
 const HOST = process.env.SERVER_URL
 const LOGIN_API = '/api/authorizations'
 const LOGOUT_API = '/api/authorizations/current'
-const CUSTOMER_API = '/api/customer?include=roles,permissions'
+const CUSTOMER_API = '/api/customer?include=roles,company'
 const IMAGE_CAPTCHA = '/api/captcha'
 export default {
   login(context, creds, redirect) {
@@ -71,12 +71,14 @@ export default {
       context.$http
         .get(HOST + CUSTOMER_API)
         .then(response => {
+          console.log(response)
           let result = response.data
           let user = {}
           user.name = result.name
           user.ar_id = result.ar_user_id
           user.display_name = result.roles
-          user.perms = result.permissions,
+          user.perms = result.permissions
+          user.company = result.company
           localStorage.removeItem('customer_info')
           localStorage.setItem('customer_info', JSON.stringify(user))
           resolve(result.data)
@@ -178,9 +180,20 @@ function hasPermission(name, perms) {
   if (!perms) {
     return false
   }
-  for (let i in perms.data) {
-    if (name == perms.data[i]['name']) {
+  if (name == perms.name) {
+    return true
+  }
+  if (perms.children && perms.children.length == 0) {
+    return false
+  }
+  for (let i in perms) {
+    if (name == perms[i]['name']) {
       return true
+    } else if (
+      name.indexOf(perms[i]['name']) == 0 &&
+      perms[i].children.length > 0
+    ) {
+      return hasPermission(name, perms[i]['children'])
     }
   }
   return false

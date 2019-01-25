@@ -1,31 +1,28 @@
+import auth from 'service/auth'
 let router = {
   path: 'report',
-  redirect: 'report/detail',
   name: '数据',
   meta: {
     title: '数据',
-    permission: 'report'
+    permission: 'shop_report'
   },
   component: () =>
     import(/* webpackChunkName: "page/report/reportView" */ 'page/report/reportView'),
   children: [
     {
       path: 'detail',
-      name: '数据管理',
-      redirect: 'detail',
       meta: {
         title: '数据管理',
-        permission: ''
+        permission: 'shop_report.detail'
       },
       component: () =>
         import(/* webpackChunkName: "page/report/detail/routerView" */ 'page/report/detail/routerView'),
       children: [
         {
           path: '/',
-          name: '数据展示',
           meta: {
             title: '数据展示',
-            permission: ''
+            permission: 'shop_report.detail.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/report/detail/index" */ 'page/report/detail/index')
@@ -38,7 +35,9 @@ let router = {
 router.redirect = () => {
   let routes = router.children
   for (let route of routes) {
-    return '/report/' + route.path
+    if (auth.checkPathPermission(route)) {
+      return '/report/' + route.path
+    }
   }
 }
 
