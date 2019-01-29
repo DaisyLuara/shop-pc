@@ -30,7 +30,7 @@ const getStaus = (context, args) => {
 const getExcelData = (context, args) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + EXCEL_API, { params: args })
+      .post(HOST + EXCEL_API, args)
       .then(response => {
         resolve(response.data)
       })
