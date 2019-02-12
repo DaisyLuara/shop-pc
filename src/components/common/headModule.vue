@@ -67,6 +67,7 @@ export default {
   cursor: pointer;
   .avatar-block {
     span {
+      color: #000;
       margin-right: 10px;
     }
     height: 60px;
