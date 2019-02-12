@@ -53,7 +53,16 @@ import { getPoint } from "service";
 import PeopleNum from "./com/people_num";
 import PersonTimes from "./com/person_times";
 
-import { DatePicker, Select, Option, Button, Form, FormItem } from "element-ui";
+import {
+  DatePicker,
+  Select,
+  Option,
+  Button,
+  Form,
+  FormItem,
+  Tabs,
+  TabPane
+} from "element-ui";
 
 export default {
   components: {
