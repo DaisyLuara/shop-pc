@@ -1,8 +1,8 @@
 import pcHome from 'page/home'
 import account from 'router/pc/account'
-import ad from 'router/pc/ad'
-import resource from 'router/pc/resource'
-import point from 'router/pc/point'
+// import ad from 'router/pc/ad'
+// import resource from 'router/pc/resource'
+import site from 'router/pc/site'
 import report from 'router/pc/report'
 import coupon from 'router/pc/coupon'
 
@@ -13,5 +13,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, ad, resource, point, report, coupon]
+  children: [account, site, report, coupon]
 }
