@@ -57,10 +57,6 @@
                 type="text"
                 placeholder="请输入用户名"
               />
-              <!-- <div   
-                v-show="validateError.account"
-                class="error-tip"
-              >{{ validateErrorText.account }}</div> -->
             </el-form-item>
             <el-form-item
               prop="password"
@@ -88,12 +84,7 @@
                   @click="setting.showPassword = !setting.showPassword"
                 >
               </div>
-              <!-- <div
-                v-show="validateError.password"
-                class="error-tip"
-              >{{ validateErrorText.password }}</div> -->
             </el-form-item>
-            <!-- <el-form-item class="account-form-item checks"></el-form-item> -->
             <el-form-item class="account-form-submit">
               <el-button
                 :loading="setting.submiting"
@@ -101,9 +92,6 @@
                 @click="onSubmit(type)"
               >登入</el-button>
             </el-form-item>
-            <!-- <el-form-item class="account-form-item create_link">
-              <a>创建新账号</a>
-            </el-form-item> -->
           </el-form>
         </div>
       </el-col>
