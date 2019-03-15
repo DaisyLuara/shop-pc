@@ -1,4 +1,4 @@
-.account-form{
+.account-form {
   position: fixed;
   width: 100%;
   top: 0;
@@ -6,90 +6,85 @@
   right: 0;
   bottom: 0;
   margin: 0;
-  overflow-y: scroll;
-  background-image: url('http://cdn.exe666.com/ad/img/bg.jpg');
+  background-image: url('http://cdn.exe666.com/ad_shop/img/login/bg.jpg');
   display: flex;
   justify-content: center;
   align-items: center;
-  .account-form__container{
-    //position: absolute;
-    border-radius: 2px;
-    background-color: white;
-    //top: 0;
-    //left: 0;
-    //right: 0;
-    width: 468px;
+  .top-logo {
+    width: 9.2%;
+    position: absolute;
+    top: 3%;
+    right: 4%;
+    z-index: 999;
+  }
+  .circle2 {
+    width: 30%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    transform: translate(-60%, -60%);
+    z-index: 0;
+  }
+  .circle1 {
+    width: 30%;
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    transform: translate(20%, 40%);
+    z-index: 0;
+  }
+  .account-form__container {
+    // width: 468px;
+    width: 56%;
     min-height: 424px;
-    //margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .account-form__header{
-    padding: 5px 0 8px;
-    border-bottom: 1px solid #e4e4e4;
-    .header-logo-wrap{
-      float: left;
-      .icon-header{
-        // width: 102px;
-        // height: 47px;
-        padding-right: 10px;
-        border-right: 1px solid #E4E4E4;
-        margin-bottom: 4px;
-      }
-      .title-header{
-        color: #444444;
-        font-size: 16px;
-        line-height: 47px;
-        padding-left: 22px;
-      }
-    }
-    .header-link{
-      float: right;
-      cursor: pointer;
-      padding-right: 15px;
-      .register-label{
-        line-height: 50px;
-        font-size: 14px;
-        color: #20A0FF;
-      }
+  .account-form_left {
+    position: relative;
+    z-index: 9;
+    .center {
+      max-width: 100%;
     }
   }
-  .account-form__body{
+  .account-form_right {
+    position: relative;
+    text-align: center;
+    z-index: 0;
+    background-color: #fff;
     width: 300px;
     max-width: 320px;
     font-size: 14px;
-    margin: 56px auto 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    .account-form-item{
+    padding-bottom: 10%;
+    .account-form-item {
+      width: 75%;
       position: relative;
-      height: 43px;
-      margin-bottom: 34px;
-      border-bottom: 1px solid #e4e4e4;
-      .btn-code-wrap{
+      min-height: 43px;
+      margin: 0 auto;
+      margin-bottom: 14px;
+      .btn-code-wrap {
         text-align: right;
         font-size: 10px;
-        color: #20A0FF;
+        color: #1933d2;
       }
-      .btn-code-label__countdown{
+      .btn-code-label__countdown {
         cursor: pointer;
-        color: #20A0FF;
+        color: #1933d2;
       }
-      &.active{
-        border-bottom: 2px solid #20A0FF;
-      }
-      &.error{
-        border-bottom: 2px solid #FF4949;
-      }
-      .error-tip{
+      .error-tip {
         position: absolute;
         left: 0;
         width: 100%;
         bottom: -46px;
-        color: #FF4949;
+        color: #ff4949;
         font-size: 12px;
         text-align: left;
       }
-      .voice-tip{
+      .voice-tip {
         position: absolute;
         left: 0;
         width: 100%;
@@ -98,62 +93,70 @@
         color: #474747;
         font-size: 12px;
       }
-      .btn-voice-captcha{
+      .btn-voice-captcha {
         font-size: 12px;
-        color: #20A0FF;
+        color: #1933d2;
         cursor: pointer;
       }
-      .voice-wait-tip__top{
+      .voice-wait-tip__top {
         line-height: 12px;
         font-size: 12px;
         color: #474747;
       }
-      .voice-wait-tip__bottom{
+      .voice-wait-tip__bottom {
         line-height: 12px;
         font-size: 12px;
         margin-top: 2px;
-        color: #CDCDCD;
+        color: #cdcdcd;
       }
-      input{
+      input {
         width: 100%;
         height: 36px;
-        border: none;
         font-size: 14px;
-        padding-left: 20px;
-        background-color: #fff;
+        padding-left: 12%;
+        background: transparent;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.1);
         &::-webkit-input-placeholder {
-          color: #CECECE;
+          color: #cecece;
+          font-size: 12px;
         }
-        &:-webkit-autofill{
-          background-color: #fff;
-        }
-      }
-      .account-form-item-label{
-        font-size: 14px;
-        color: #444444;
-        border-right: none;
-      }
-      &.mobile{
-        .account-form-item-label{
-          padding-right: 8px;
-          border-right: 1px solid #E4E4E4;
-          .lable-prefix{
-            float: right;
-          }
+        &:-webkit-autofill {
+          background-color: #fff !important;
         }
       }
-      &.password{
-        .account-form-item-label{
-          border-right: none;
+      &.icon {
+        margin: 0;
+        position: relative;
+        text-align: center;
+        margin: 6% auto 4% auto;
+        img {
+          width: 33%;
+          margin: 0 auto;
         }
       }
-      &.image-code{
-        img{
+      &.mobile {
+        input {
+          background-image: url('http://cdn.exe666.com/ad_shop/img/login/user.png');
+          background-size: auto 40%;
+          background-repeat: no-repeat;
+          background-position: 3% center;
+        }
+      }
+      &.password {
+        input {
+          background-image: url('http://cdn.exe666.com/ad_shop/img/login/lock.png');
+          background-size: auto 40%;
+          background-repeat: no-repeat;
+          background-position: 3% center;
+        }
+      }
+      &.image-code {
+        img {
           float: right;
           width: 100%;
         }
-        .image-code-wrap{
-          .check-image-code{
+        .image-code-wrap {
+          .check-image-code {
             width: 20px;
             height: 20px;
             margin: 9px 5px 9px 0;
@@ -161,76 +164,44 @@
           text-align: right;
         }
       }
-      &.sms-code{
-        .sms-code-wrap{
-          text-align: right;
-          font-size: 14px;
-          color: #20A0FF;
-        }
-        .sms-code-label{
-          cursor: pointer;
-        }
-        .sms-code-label__countdown{
-          color: #9B9B9B;
-        }
-      }
     }
-    .account-form-submit{
-      margin-top: 40px;
-      .btn-login{
+    .account-form-submit {
+      width: 75%;
+      margin: 0 auto;
+      border-radius: 5px;
+      .btn-login {
         color: #fff;
         width: 100%;
         height: 38px;
         font-size: 16px;
         text-align: center;
-        background-color: #20A0FF;
+        background-color: #1933d2;
       }
     }
   }
-  .account-form__footer{
-    width: 300px;
-    max-width: 417px;
-    margin: 0 auto;
-    padding-bottom: 20px;
-    .auto-login{
-      color: #8a8a8a;
-      font-weight: 300;
-      font-size: 16px;
-      float: left;
-    }
-    .find-password{
-      float: right;
-      color: #4A4A4A;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  }
+
   @media (max-width: 768px) {
-    .account-form__body{
+    .account-form__body {
       width: 96%;
       margin: 10px auto 0;
-      .account-form-item input{
+      .account-form-item input {
         font-size: 1em;
       }
     }
-    .m-label{
-        display: none;
-      }
-    .account-form__footer{
+    .m-label {
+      display: none;
+    }
+    .account-form__footer {
       width: 96%;
     }
   }
-  .icp {
-    position: absolute;
-    color: white;
-    bottom: 21px;
-    font-size: 14px;
-    margin: 0 auto;
-    padding: 20px 0;
-  }
 }
 .switch-show-off-password {
-  width: 25px;
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
   img {
     width: 100%;
   }
