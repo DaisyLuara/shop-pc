@@ -75,12 +75,12 @@
               <div class="switch-show-off-password">
                 <img
                   v-show="setting.showPassword"
-                  src="../../assets/images/icon_show_pwd.png"
+                  :src="IMG_URL+'/ad_shop/img/login/icon_show_pwd.png'"
                   @click="setting.showPassword = !setting.showPassword"
                 >
                 <img
                   v-show="!setting.showPassword"
-                  src="../../assets/images/icon_hide_pwd.png"
+                  :src="IMG_URL+'/ad_shop/img/login/icon_hide_pwd.png'"
                   @click="setting.showPassword = !setting.showPassword"
                 >
               </div>
