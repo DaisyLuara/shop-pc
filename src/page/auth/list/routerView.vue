@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-root">
+  <div class="auth-child-root">
     <router-view/>
   </div>
 </template>

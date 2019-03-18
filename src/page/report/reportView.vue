@@ -1,25 +1,24 @@
 <template>
-  <div 
-    class="report-root">
-    <second-sidebar 
-      module="report"/>
+  <div class="report-root">
+    <!-- <second-sidebar module="report"/> -->
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: 'ReportView',
+  name: "ReportView",
   data() {
-    return {}
+    return {};
   },
   methods: {}
-}
+};
 </script>
 
 <style lang="less" scoped>
 .report-root {
+  margin-left: -110px;
   height: 100%;
-  padding: 0px 50px;
-  background-color: #eff2f7;
+  padding: 76px 50px 0;
+  background-color: #1f1848;
 }
 </style>

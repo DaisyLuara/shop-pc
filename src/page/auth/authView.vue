@@ -16,7 +16,7 @@ export default {
 
 <style lang="less" scoped>
 .auth-root {
-  padding: 0px 50px;
+  padding: 76px 50px 0;
   height: 100%;
   background-color: #eff2f7;
 }

@@ -16,8 +16,8 @@ export default {
 
 <style lang="less" scoped>
 .smart-root {
-  padding: 0px 50px;
   height: 100%;
+  padding: 76px 50px 0;
   background-color: #eff2f7;
 }
 </style>

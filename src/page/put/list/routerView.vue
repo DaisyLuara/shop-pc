@@ -1,5 +1,5 @@
 <template>
-  <div class="put-root">
+  <div class="put-child-root">
     <router-view/>
   </div>
 </template>

@@ -42,174 +42,165 @@
       </div>
     </div>
     <!-- 其他图表 -->
-    <el-collapse v-model="activeNames" @change="handleChange">
-      <!-- 年龄分布图 -->
-      <el-collapse-item title="年龄分布图" name="1" class="echart-person-times-data">
-        <div v-loading="ageFlag" class="age-person-sex-wrapper">
-          <div class="sex-person-part">
-            <chart ref="pieSexChart" :options="pieSexChart" @click="onClick"/>
-          </div>
-          <div class="age-person-part">
-            <chart ref="agePersonChart" :options="agePersonChart"/>
-          </div>
-        </div>
-      </el-collapse-item>
-      <!-- 时间段与人群特征 -->
-      <el-collapse-item title="时间段与人群特征" name="2" class="echart-person-times-data">
-        <div v-loading="crowdFlag" class="time-crowd-person-wrapper">
-          <div class="crowd-person-part">
-            <chart ref="crowdPersonChart" :options="timeAndCrowdPersonChart"/>
-          </div>
-        </div>
-      </el-collapse-item>
-      <!-- 节目日化人气 -->
-      <el-collapse-item title="节目日化人气" name="3" class="echart-person-times-data">
-        <div class="ranking-person-wrap">
-          <div v-loading="projectPersonFlag" class="project-person-part">
-            <chart ref="projectPersonChar" :options="projectPersonOptions" @click="clickProject"/>
-          </div>
-          <div v-loading="userFlag" class="project-age-person-part">
-            <div style="font-size: 16px;">{{ projectAgeTitle }}</div>
-            <chart ref="PersonprojectAgeChart" :options="PersonprojectAgeChart"/>
-          </div>
-        </div>
-      </el-collapse-item>
-      <!-- 报表部分 -->
-      <el-collapse-item title="点位列表" name="4" class="echart-person-times-data">
-        <div v-loading="tableSetting.loading" class="table-wrap">
-          <div class="actions-wrap">
-            <span class="label">
-              <span class="point-title">点位列表</span>
-              数量: {{ pagination.total }}
+    <!-- <el-collapse v-model="activeNames" @change="handleChange"> -->
+    <!-- 年龄分布图 -->
+    <!-- <el-collapse-item title="年龄分布图" name="1" class="echart-person-times-data"> -->
+    <div v-loading="ageFlag" class="age-person-sex-wrapper">
+      <div class="sex-person-part">
+        <chart ref="pieSexChart" :options="pieSexChart" @click="onClick"/>
+      </div>
+      <div class="age-person-part">
+        <chart ref="agePersonChart" :options="agePersonChart"/>
+      </div>
+    </div>
+    <!-- </el-collapse-item> -->
+    <!-- 时间段与人群特征 -->
+    <!-- <el-collapse-item title="时间段与人群特征" name="2" class="echart-person-times-data"> -->
+    <div v-loading="crowdFlag" class="time-crowd-person-wrapper">
+      <div class="crowd-person-part">
+        <chart ref="crowdPersonChart" :options="timeAndCrowdPersonChart"/>
+      </div>
+    </div>
+    <!-- </el-collapse-item> -->
+    <!-- 节目日化人气 -->
+    <!-- <el-collapse-item title="节目日化人气" name="3" class="echart-person-times-data"> -->
+    <div class="ranking-person-wrap">
+      <div v-loading="projectPersonFlag" class="project-person-part">
+        <chart ref="projectPersonChar" :options="projectPersonOptions" @click="clickProject"/>
+      </div>
+      <div v-loading="userFlag" class="project-age-person-part">
+        <div style="font-size: 16px;">{{ projectAgeTitle }}</div>
+        <chart ref="PersonprojectAgeChart" :options="PersonprojectAgeChart"/>
+      </div>
+    </div>
+    <!-- </el-collapse-item> -->
+    <!-- 报表部分 -->
+    <!-- <el-collapse-item title="点位列表" name="4" class="echart-person-times-data"> -->
+    <div v-loading="tableSetting.loading" class="table-wrap">
+      <div class="actions-wrap">
+        <span class="label">
+          <span class="point-title">点位节目列表</span>
+        </span>
+      </div>
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        :row-style="{background:'#24215b',color:'#fff'}"
+        :cell-style="{background:'#24215b',color:'#fff'}"
+        :header-cell-style="{background:'#24215b',color:'#fff'}"
+      >
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item label="ID">
+                <span>{{ scope.row.id }}</span>
+              </el-form-item>
+              <el-form-item
+                label="点位"
+              >{{ scope.row.area_name }} {{ scope.row.market_name }} {{ scope.row.point_name }}</el-form-item>
+              <el-form-item label="节目">{{ scope.row.projects }}</el-form-item>
+              <el-form-item label="围观">
+                <span>{{ scope.row.looktimes }}</span>
+              </el-form-item>
+              <el-form-item label="7″fCPE">
+                <span>{{ scope.row.playtimes7 }}</span>
+              </el-form-item>
+              <el-form-item label="7″fCPE">
+                <span>{{ scope.row.playtimes7 }}</span>
+              </el-form-item>
+              <el-form-item label="15″fCPE">
+                <span>{{ scope.row.playtimes15 }}</span>
+              </el-form-item>
+              <el-form-item label="21″fCPE">
+                <span>{{ scope.row.playtimes21 }}</span>
+              </el-form-item>
+              <el-form-item label="fCPR(二维码生成数)">
+                <span>{{ scope.row.outnum }}</span>
+              </el-form-item>
+              <el-form-item label="fCPA(扫码跳转次数)">
+                <span>{{ scope.row.omo_scannum }}</span>
+              </el-form-item>
+              <el-form-item label="fCPL(拉新会员数)">
+                <span>{{ scope.row.lovetimes }}</span>
+              </el-form-item>
+              <el-form-item label="时间">
+                <span>{{ scope.row.min_date }} - {{ scope.row.max_date }}</span>
+              </el-form-item>
+              <el-form-item label="输出">
+                <div>
+                  <span>7″fCPE: {{ scope.row.rate.fCPE7 }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span>15″fCPE:{{ scope.row.rate.fCPE15 }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span>21″fCPE: {{ scope.row.rate.fCPE21 }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </div>
+                <div>
+                  <span>fCPR: {{ scope.row.rate.fCPR }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span>fCPA: {{ scope.row.rate.fCPA }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span>fCPL: {{ scope.row.rate.fCPL }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span>fCPS: {{ scope.row.rate.fCPS }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </div>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column label="ID" prop="id" width="100"/>
+        <el-table-column :show-overflow-tooltip="true" label="点位" prop="point" min-width="130">
+          <template
+            slot-scope="props"
+          >{{ props.row.area_name }} {{ props.row.market_name }} {{ props.row.point_name }}</template>
+        </el-table-column>
+        <el-table-column :show-overflow-tooltip="true" label="节目" prop="projects" min-width="130"/>
+        <el-table-column label="围观" prop="looktimes" min-width="90"/>
+        <el-table-column
+          :show-overflow-tooltip="true"
+          label="7″fCPE"
+          prop="playtimes7"
+          min-width="90"
+        />
+        <el-table-column
+          :show-overflow-tooltip="true"
+          label="15″fCPE"
+          prop="playtimes15"
+          min-width="90"
+        />
+        <el-table-column
+          :show-overflow-tooltip="true"
+          label="21″fCPE"
+          prop="playtimes21"
+          min-width="90"
+        />
+        <el-table-column :show-overflow-tooltip="true" label="输出" prop="scannum" min-width="120">
+          <template slot-scope="props">
+            <span>
+              <span>7″fCPE: {{ props.row.rate.fCPE7 }}</span>
+              <span>15″fCPE: {{ props.row.rate.fCPE15 }}</span>
+              <span>21″fCPE: {{ props.row.rate.fCPE21 }}</span>
+              <span>fCPR: {{ props.row.rate.fCPR }}</span>
+              <span>fCPA: {{ props.row.rate.fCPA }}</span>
+              <span>fCPL: {{ props.row.rate.fCPL }}</span>
+              <span>fCPS: {{ props.row.rate.fCPS }}</span>
             </span>
-          </div>
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column type="expand">
-              <template slot-scope="scope">
-                <el-form label-position="left" inline class="demo-table-expand">
-                  <el-form-item label="ID">
-                    <span>{{ scope.row.id }}</span>
-                  </el-form-item>
-                  <el-form-item
-                    label="点位"
-                  >{{ scope.row.area_name }} {{ scope.row.market_name }} {{ scope.row.point_name }}</el-form-item>
-                  <el-form-item label="节目">{{ scope.row.projects }}</el-form-item>
-                  <el-form-item label="围观">
-                    <span>{{ scope.row.looktimes }}</span>
-                  </el-form-item>
-                  <el-form-item label="7″fCPE">
-                    <span>{{ scope.row.playtimes7 }}</span>
-                  </el-form-item>
-                  <el-form-item label="7″fCPE">
-                    <span>{{ scope.row.playtimes7 }}</span>
-                  </el-form-item>
-                  <el-form-item label="15″fCPE">
-                    <span>{{ scope.row.playtimes15 }}</span>
-                  </el-form-item>
-                  <el-form-item label="21″fCPE">
-                    <span>{{ scope.row.playtimes21 }}</span>
-                  </el-form-item>
-                  <el-form-item label="fCPR(二维码生成数)">
-                    <span>{{ scope.row.outnum }}</span>
-                  </el-form-item>
-                  <el-form-item label="fCPA(扫码跳转次数)">
-                    <span>{{ scope.row.omo_scannum }}</span>
-                  </el-form-item>
-                  <el-form-item label="fCPL(拉新会员数)">
-                    <span>{{ scope.row.lovetimes }}</span>
-                  </el-form-item>
-                  <el-form-item label="时间">
-                    <span>{{ scope.row.min_date }} - {{ scope.row.max_date }}</span>
-                  </el-form-item>
-                  <el-form-item label="输出">
-                    <div>
-                      <span>7″fCPE: {{ scope.row.rate.fCPE7 }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      <span>15″fCPE:{{ scope.row.rate.fCPE15 }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      <span>21″fCPE: {{ scope.row.rate.fCPE21 }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </div>
-                    <div>
-                      <span>fCPR: {{ scope.row.rate.fCPR }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      <span>fCPA: {{ scope.row.rate.fCPA }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      <span>fCPL: {{ scope.row.rate.fCPL }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      <span>fCPS: {{ scope.row.rate.fCPS }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </div>
-                  </el-form-item>
-                </el-form>
-              </template>
-            </el-table-column>
-            <el-table-column label="ID" prop="id" width="100"/>
-            <el-table-column :show-overflow-tooltip="true" label="点位" prop="point" min-width="130">
-              <template
-                slot-scope="props"
-              >{{ props.row.area_name }} {{ props.row.market_name }} {{ props.row.point_name }}</template>
-            </el-table-column>
-            <el-table-column
-              :show-overflow-tooltip="true"
-              label="节目"
-              prop="projects"
-              min-width="130"
-            />
-            <el-table-column label="围观" prop="looktimes" min-width="90"/>
-            <el-table-column
-              :show-overflow-tooltip="true"
-              label="7″fCPE"
-              prop="playtimes7"
-              min-width="90"
-            />
-            <el-table-column
-              :show-overflow-tooltip="true"
-              label="15″fCPE"
-              prop="playtimes15"
-              min-width="90"
-            />
-            <el-table-column
-              :show-overflow-tooltip="true"
-              label="21″fCPE"
-              prop="playtimes21"
-              min-width="90"
-            />
-            <el-table-column
-              :show-overflow-tooltip="true"
-              label="输出"
-              prop="scannum"
-              min-width="120"
-            >
-              <template slot-scope="props">
-                <span>
-                  <span>7″fCPE: {{ props.row.rate.fCPE7 }}</span>
-                  <span>15″fCPE: {{ props.row.rate.fCPE15 }}</span>
-                  <span>21″fCPE: {{ props.row.rate.fCPE21 }}</span>
-                  <span>fCPR: {{ props.row.rate.fCPR }}</span>
-                  <span>fCPA: {{ props.row.rate.fCPA }}</span>
-                  <span>fCPL: {{ props.row.rate.fCPL }}</span>
-                  <span>fCPS: {{ props.row.rate.fCPS }}</span>
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :show-overflow-tooltip="true"
-              label="时间"
-              min-width="120"
-              prop="created_at"
-            >
-              <template slot-scope="props">
-                <span>{{ props.row.min_date }} - {{ props.row.max_date }}</span>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="pagination-wrap">
-            <el-pagination
-              :total="pagination.total"
-              :page-size="pagination.pageSize"
-              :current-page="pagination.currentPage"
-              layout="prev, pager, next, jumper, total"
-              @current-change="changePage"
-            />
-          </div>
-        </div>
-      </el-collapse-item>
-    </el-collapse>
-
+          </template>
+        </el-table-column>
+        <el-table-column :show-overflow-tooltip="true" label="时间" min-width="120" prop="created_at">
+          <template slot-scope="props">
+            <span>{{ props.row.min_date }} - {{ props.row.max_date }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination-wrap">
+        <el-pagination
+          class="data-pagination"
+          :background="true"
+          :total="pagination.total"
+          :page-size="pagination.pageSize"
+          :current-page="pagination.currentPage"
+          layout="prev, pager, next, jumper, total"
+          @current-change="changePage"
+        />
+      </div>
+    </div>
+    <!-- </el-collapse-item> -->
+    <!-- </el-collapse> -->
     <!-- 弹窗for 性别细节 -->
     <div v-loading="dialogLoading" v-show="shouldDialogShow" class="chart-dialog">
       <div class="dialog-close" @click="handleDialogClose">关闭</div>
@@ -278,6 +269,7 @@ export default {
     return {
       projectAgeTitle: "",
       active: null,
+      RowStyle: { background: "#6b3ec2", color: "#fff" },
       PersonprojectAgeChart: {
         tooltip: {
           trigger: "item",
@@ -286,7 +278,10 @@ export default {
         color: ["#3b9aca", "#8CC63F", "#FBB03B", "#F15A24", "#662D91"],
         legend: {
           x: "left",
-          data: ["10后", "00后", "90后", "80后", "70前/后"]
+          data: ["10后", "00后", "90后", "80后", "70前/后"],
+          textStyle: {
+            color: "#fff"
+          }
         },
         series: [
           {
@@ -298,6 +293,13 @@ export default {
         ]
       },
       projectPersonOptions: {
+        title: {
+          text: "节目日化人气",
+          left: "left",
+          textStyle: {
+            color: "#fff"
+          }
+        },
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -312,11 +314,21 @@ export default {
           containLabel: true
         },
         xAxis: {
-          type: "value"
+          type: "value",
+          axisLine: {
+            lineStyle: {
+              color: "#fff"
+            }
+          }
         },
         yAxis: {
           type: "category",
-          data: null
+          data: null,
+          axisLine: {
+            lineStyle: {
+              color: "#fff"
+            }
+          }
         },
         series: [
           {
@@ -416,7 +428,10 @@ export default {
             "fCPA转化率",
             "fCPL转化率",
             "fCPS转化率"
-          ]
+          ],
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: [
           {
@@ -436,7 +451,12 @@ export default {
             type: "category",
             boundaryGap: false,
             axisLine: { onZero: true },
-            data: null
+            data: null,
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            }
           },
           {
             // show: false,
@@ -445,18 +465,33 @@ export default {
             boundaryGap: false,
             axisLine: { onZero: true },
             data: null,
-            position: "top"
+            position: "top",
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            }
           }
         ],
         yAxis: [
           {
             gridIndex: 0,
-            type: "value"
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            }
           },
           {
             inverse: true,
             gridIndex: 1,
-            type: "value"
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            }
           }
         ],
         series: []
@@ -465,7 +500,10 @@ export default {
         color: ["#0071BC", "#ED1E79"],
         title: {
           text: "用户渗透率",
-          left: "left"
+          left: "left",
+          textStyle: {
+            color: "#fff"
+          }
         },
         tooltip: {
           trigger: "item"
@@ -473,7 +511,10 @@ export default {
         legend: {
           top: 30,
           left: "0",
-          data: ["女", "男"]
+          data: ["女", "男"],
+          textStyle: {
+            color: "#fff"
+          }
         },
         series: [
           {
@@ -549,10 +590,20 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+          axisLine: {
+            lineStyle: {
+              color: "#fff"
+            }
+          }
         },
         yAxis: {
-          type: "value"
+          type: "value",
+          axisLine: {
+            lineStyle: {
+              color: "#fff"
+            }
+          }
         },
         series: [
           {
@@ -580,7 +631,10 @@ export default {
       timeAndCrowdPersonChart: {
         title: {
           text: "时间段与人群特征",
-          align: "left"
+          align: "left",
+          textStyle: {
+            color: "#fff"
+          }
         },
         color: [
           "#3b9aca",
@@ -595,7 +649,7 @@ export default {
           axisPointer: {
             type: "cross",
             crossStyle: {
-              color: "#999"
+              color: "#000"
             }
           },
           formatter: function(data) {
@@ -689,7 +743,10 @@ export default {
           data: ["10后", "00后", "90后", "80后", "70前/后", "女"],
           align: "left",
           left: 10,
-          top: 30
+          top: 30,
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
           left: "5%",
@@ -702,6 +759,11 @@ export default {
             // data: [],
             axisPointer: {
               type: "shadow"
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
             }
           }
         ],
@@ -712,6 +774,11 @@ export default {
             min: 0,
             axisLabel: {
               formatter: "{value}"
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
             }
           },
           {
@@ -721,6 +788,11 @@ export default {
             min: 0,
             axisLabel: {
               formatter: "{value} %"
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
             }
           }
         ],
@@ -773,7 +845,10 @@ export default {
       },
       sexAndAgeChart: {
         title: {
-          text: "性别年龄分布"
+          text: "性别年龄分布",
+          textStyle: {
+            color: "#fff"
+          }
         },
         tooltip: {
           trigger: "item"
@@ -783,7 +858,10 @@ export default {
           right: 10,
           top: "bottom",
           bottom: 10,
-          data: null
+          data: null,
+          textStyle: {
+            color: "#fff"
+          }
         },
         series: [
           {
@@ -816,6 +894,9 @@ export default {
   },
   created() {},
   methods: {
+    tableRowStyle({ row, rowIndex }) {
+      return "background-color: pink";
+    },
     typeHandle(type) {
       switch (type) {
         case 0:
@@ -1075,7 +1156,7 @@ export default {
                   normal: {
                     show: true,
                     position: "top",
-                    color: "#000",
+                    color: "#fff",
                     fontSize: 16,
                     formatter: function(data) {
                       let content = "";
@@ -1600,11 +1681,11 @@ export default {
         cursor: pointer;
         .person-btn-title {
           font-size: 12px;
-          color: #222;
+          color: #fff;
         }
         .person-btn-count {
           font-size: 16px;
-          color: #222;
+          color: #fff;
         }
       }
       .person-btn-left {
@@ -1646,7 +1727,7 @@ export default {
           .person-rate-content {
             width: 20px;
             height: 20px;
-            background: #fff;
+            background: #24215b;
             border-radius: 50%;
             margin: 5px;
           }
@@ -1677,18 +1758,18 @@ export default {
         }
         .person-rate-item {
           .person-btn-name {
-            color: #222;
+            color: #fff;
             font-weight: 500;
             font-size: 14px;
             margin-bottom: 10px;
           }
           .person-btn-title {
             font-size: 12px;
-            color: #222;
+            color: #fff;
           }
           .person-btn-count {
             font-size: 14px;
-            color: #222;
+            color: #fff;
           }
         }
       }
@@ -1704,7 +1785,8 @@ export default {
     margin: auto;
     width: 600px;
     height: 620px;
-    background-color: white;
+    background: #24215b;
+    opacity: 0.95;
     border: 1px solid black;
     .dialog-close {
       position: absolute;
@@ -1719,188 +1801,10 @@ export default {
     }
   }
 
-  .pic-times-dialog {
-    position: absolute;
-    z-index: 10000;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    min-width: 1000px;
-    overflow-x: scroll;
-    background-color: white;
-    border: 1px solid black;
-    .dialog-close {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      cursor: pointer;
-      z-index: 200;
-    }
-    .pic-times-content {
-      padding: 30px;
-      height: 100%;
-      .actions-wrap-pic {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        font-size: 16px;
-        align-items: center;
-        margin-top: 40px;
-        margin-bottom: 30px;
-
-        .label {
-          flex: 1;
-          font-size: 14px;
-          .date {
-            padding: 10px 20px;
-            border: 1px solid #969292;
-            border-radius: 4px;
-            width: 205px;
-          }
-          .item-text {
-            margin: 10px 0;
-          }
-
-          .icon-wrap {
-            display: inline;
-            margin-right: 30px;
-            img {
-              width: 3%;
-            }
-            .icon-num {
-              font-size: 30px;
-              color: #444;
-              font-weight: 600;
-              display: inline-block;
-              sub {
-                font-size: 14px;
-                font-weight: 500;
-              }
-            }
-          }
-        }
-      }
-      .funnel {
-        .legend {
-          margin-bottom: 30px;
-          .legend-text {
-            font-size: 12px;
-            color: #222;
-            cursor: pointer;
-            span {
-              height: 11px;
-              margin-right: 5px;
-              width: 25px;
-              display: inline-block;
-              border-radius: 5px;
-            }
-
-            .legend-text-one {
-              background: #007bff;
-            }
-            .legend-text-two {
-              background: #05a254;
-            }
-            .legend-text-three {
-              background: #ffdd00;
-            }
-            .legend-text-four {
-              background: #90007d;
-            }
-            .legend-text-five {
-              background: #ff0089;
-            }
-            .legend-text-six {
-              background: #eb1000;
-            }
-            .legend-text-seven {
-              background: #956e32;
-            }
-            .label-gray {
-              background: #aba6a6;
-            }
-          }
-        }
-      }
-      .rate-chart {
-        height: 100%;
-        width: 100%;
-        min-height: 550px;
-      }
-    }
-    .looknum {
-      position: absolute;
-      width: 80%;
-      left: 10%;
-      z-index: 11;
-      top: 31%;
-      text-align: center;
-      color: white;
-      font-weight: 800;
-    }
-    .playernum7 {
-      position: absolute;
-      width: 80%;
-      left: 10%;
-      z-index: 11;
-      top: 45.5%;
-      text-align: center;
-      color: white;
-      font-weight: 800;
-    }
-    .playernum {
-      position: absolute;
-      width: 80%;
-      left: 10%;
-      z-index: 11;
-      top: 62%;
-      text-align: center;
-      color: white;
-      font-weight: 800;
-    }
-    .lovenum {
-      position: absolute;
-      width: 80%;
-      left: 10%;
-      z-index: 11;
-      top: 77%;
-      text-align: center;
-      color: white;
-      font-weight: 800;
-    }
-    .cpr {
-      position: absolute;
-      width: 20%;
-      left: 3%;
-      top: 65%;
-      font-weight: 800;
-      text-align: center;
-      color: white;
-    }
-    .cph {
-      position: absolute;
-      width: 15%;
-      right: 12%;
-      top: 54%;
-      font-weight: 800;
-      text-align: center;
-      color: white;
-    }
-    .cpl {
-      position: absolute;
-      width: 23%;
-      right: 5%;
-      top: 85%;
-      font-weight: 800;
-      text-align: center;
-      color: white;
-    }
-  }
   .content-wrapper {
     padding: 15px;
-    background-color: #fff;
+    background: #24215b;
+    opacity: 0.95;
     .chart-person-times-wrapper {
       padding-top: 30px;
       width: 100%;
@@ -1909,11 +1813,12 @@ export default {
   }
   .table-wrap {
     padding: 15px;
-    background: #fff;
+    background: #24215b;
+    opacity: 0.95;
     margin: 15px 0;
     .point-title {
       font-size: 18px;
-      color: #000;
+      color: #fff;
       font-weight: 600;
     }
     .demo-table-expand {
@@ -1932,6 +1837,7 @@ export default {
   .pagination-wrap {
     margin: 10px auto;
     text-align: right;
+    
   }
   .actions-wrap {
     display: flex;
@@ -1939,7 +1845,6 @@ export default {
     justify-content: space-between;
     font-size: 16px;
     align-items: center;
-    margin-top: 40px;
     margin-bottom: 30px;
     .label {
       font-size: 14px;
@@ -1951,10 +1856,12 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background: #24215b;
+    opacity: 0.95;
     min-height: 600px;
     .transfer {
-      background-color: #fff;
+      background: #24215b;
+      opacity: 0.95;
       width: 50%;
       padding: 10px;
       position: relative;
@@ -1962,7 +1869,8 @@ export default {
     .sex-age {
       position: relative;
       padding: 10px;
-      background-color: #fff;
+      background: #24215b;
+      opacity: 0.95;
       width: 50%;
       min-height: 600px;
       z-index: 10;
@@ -1974,7 +1882,8 @@ export default {
   }
   .age-person-sex-wrapper {
     margin-top: 15px;
-    background-color: #fff;
+    background: #24215b;
+    opacity: 0.95;
     height: 600px;
     padding: 20px;
     display: flex;
@@ -1996,7 +1905,8 @@ export default {
   }
   .time-crowd-person-wrapper {
     margin-top: 15px;
-    background-color: #fff;
+    background: #24215b;
+    opacity: 0.95;
     height: 600px;
     padding: 20px;
     display: flex;
@@ -2013,7 +1923,8 @@ export default {
   }
   .ranking-person-wrap {
     margin-top: 15px;
-    background-color: #fff;
+    background: #24215b;
+    opacity: 0.95;
     height: 600px;
     padding: 20px;
     display: flex;

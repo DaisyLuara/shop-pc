@@ -182,3 +182,6 @@
 .el-button-cancel {
   padding: 10px 35px;
 }
+.test.el-tabs__item {
+  color: #fff !important;
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="point-data-wrapper">
-    <el-tabs v-model="activeName" type="card" class="report-data-card" @tab-click="handleTab">
+    <el-tabs v-model="activeName"  class="report-data-card" @tab-click="handleTab">
       <!-- 搜索 -->
       <div class="search-wrap">
         <el-form :inline="true" ref="searchForm" :model="searchForm" class="search-form">
@@ -39,7 +39,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-tab-pane label="按人次计" name="first">
+      <el-tab-pane label="按人次计" name="first" class="test">
         <PersonTimes ref="personTimes" :searchForm="searchForm"/>
       </el-tab-pane>
       <el-tab-pane label="按人数计" name="second">
@@ -155,7 +155,7 @@ export default {
     };
   },
   created() {
-    this.getPoint();
+    // this.getPoint();
   },
   methods: {
     handleTab(tab, event) {
@@ -205,10 +205,13 @@ export default {
 </script>
 <style lang="less" scoped>
 .point-data-wrapper {
-  background: #fff;
+  background: #1f1848;
+  .el-tabs__item {
+    color: #fff !important;
+  }
   .search-wrap {
     padding: 30px;
-    background: #fff;
+    background: #1f1848;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -218,6 +221,7 @@ export default {
     .search-form {
       width: 865px;
     }
+
     .more-pic {
       position: absolute;
       top: 10px;
