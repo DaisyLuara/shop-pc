@@ -52,7 +52,7 @@
                 end-placeholder="结束时间"
               />
             </el-form-item>
-            <el-button class="el-button-search" @click="search('filters')">搜索</el-button>
+            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
             <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
           </el-form>
         </div>
@@ -309,7 +309,7 @@ export default {
         .el-select {
           width: 250px;
         }
-        
+
         .warning {
           background: #ebf1fd;
           padding: 8px;
