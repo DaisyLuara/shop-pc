@@ -108,6 +108,10 @@
 .el-table .col-td {
   border-bottom: 1px solid #e8e8e8;
 }
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #f5f3fd !important;
+}
 .el-table .col-td:hover {
   background-color: #fbfdf7 !important;
   cursor: pointer;
@@ -183,11 +187,14 @@
 }
 
 .el-button-success {
-  padding: 12px 35px;
+  padding: 10px 35px;
   color: #6b3dc4;
   border-color: #6b3dc4;
   background-color: #f2eefa;
 }
+.el-button-data {
+  padding: 10px 35px;
+}
 .el-button-cancel {
-  padding: 12px 35px;
+  padding: 10px 35px;
 }

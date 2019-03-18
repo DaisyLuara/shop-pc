@@ -1,204 +1,160 @@
 <template>
-  <div 
-    class="root">
-    <div  
+  <div class="root">
+    <div
       v-loading="setting.loading"
-      :element-loading-text="setting.loadingText" 
-      class="item-list-wrap">
-      <div 
-        class="item-content-wrap">
-        <div 
-          class="search-wrap">
-          <el-form 
-            ref="filters"
-            :model="filters" 
-            :inline="true">
-            <el-form-item 
-              label="" 
-              prop="name">
-              <el-input 
-                v-model="filters.name" 
-                placeholder="点位名称"
-                class="item-input"/>
+      :element-loading-text="setting.loadingText"
+      class="item-list-wrap"
+    >
+      <div class="item-content-wrap">
+        <!-- 搜索 -->
+        <div class="search-wrap">
+          <el-form ref="filters" :model="filters" :inline="true">
+            <el-form-item label prop="point_id">
+              <el-select
+                icon="el-icon-search"
+                v-model="filters.point_id"
+                placeholder="请选择点位名称"
+                filterable
+                clearable
+              >
+                <el-option
+                  v-for="item in pointList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
             </el-form-item>
-            <el-form-item 
-              label="" 
-              prop="status">
-              <el-select 
-                v-model="filters.status" 
-                placeholder="状态" 
-                filterable 
-                clearable >
+            <el-form-item label prop="site_id">
+              <el-select
+                icon="el-icon-search"
+                v-model="filters.site_id"
+                placeholder="请选择场地名称"
+                filterable
+                clearable
+              >
+                <el-option
+                  v-for="item in siteList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label prop="status">
+              <el-select
+                icon="el-icon-search"
+                v-model="filters.status"
+                placeholder="请选择状态"
+                filterable
+                clearable
+              >
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id"/>
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
-            <el-button
-              type="primary" 
-              @click="search('filters')">搜索</el-button>
-            <el-button 
-              type="default"
-              @click="resetSearch('filters')" >重置</el-button>
+            <el-form-item label>
+              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            </el-form-item>
           </el-form>
         </div>
-        <div 
-          class="actions-wrap">
-          <span 
-            class="label">
-            点位数量: {{ pagination.total }}
-          </span>
+        <div class="actions-wrap">
+          <span class="label">点位列表（ {{ pagination.total }} ）</span>
         </div>
-        <el-table 
-          ref="multipleTable" 
-          :data="tableData" 
-          style="width: 100%" 
-          type="expand">
-          <el-table-column 
-            type="expand">
-            <template 
-              slot-scope="scope">
-              <el-form 
-                label-position="left" 
-                inline 
-                class="demo-table-expand">
-                <el-form-item label="ID">
+        <!-- 表格 -->
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          style="width: 100%"
+          :row-style="{height:'70px'}"
+          type="expand"
+          :header-cell-style="headerStyle"
+        >
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="点位名称">
+                <el-form-item label="点位名称:">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
-                <!-- <el-form-item 
-                  label="楼层">
-                  <span>{{ scope.row.floor }}</span>
-                </el-form-item> -->
-                <el-form-item 
-                  label="位置">
-                  <span>
-                    {{ scope.row.area.name + scope.row.market.name + scope.row.name }}
-                  </span>
+                <el-form-item label="区域:">
+                  <span>{{ scope.row.area }}</span>
                 </el-form-item>
-                <!-- <el-form-item 
-                  label="利润率">
-                  <span>{{ scope.row.rate }}</span>
+                <el-form-item label="场地名称:">
+                  <span>{{ scope.row.site_name }}</span>
                 </el-form-item>
-                <el-form-item 
-                  label="广告客户数">
-                  <span>{{ scope.row.adCount }}</span>
+                <el-form-item label="状态:">
+                  <span
+                    :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.status }}</span>
                 </el-form-item>
-                <el-form-item 
-                  label="每日平均收益">
-                  <span>{{ scope.row.aver }}</span>
+                <el-form-item label="上次互动:">
+                  <span>{{ scope.row.interact }}</span>
                 </el-form-item>
-                <el-form-item 
-                  label="收益">
-                  <span>{{ scope.row.earnings }}</span>
-                </el-form-item> -->
-                <el-form-item 
-                  label="状态">
-                  <span>{{ scope.row.device.screenStatus !== null  ? (scope.row.device.screenStatus === 0 ? '关闭' : '开启') : '' }}</span>
-                </el-form-item>
-                <el-form-item 
-                  label="上次互动">
-                  <span>{{ scope.row.device.faceDate }}</span>
-                </el-form-item>
-                <el-form-item 
-                  label="联网时间">
-                  <span>{{ scope.row.device.networkDate }}</span>
+                <el-form-item label="联网时间:">
+                  <span>{{ scope.row.created_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
+          <el-table-column sortable prop="id" label="ID" width="80"/>
           <el-table-column
-            prop="id"
-            label="ID"
-            width="80"
-          />
-          <el-table-column
+            sortable
             :show-overflow-tooltip="true"
             prop="name"
             label="点位名称"
             min-width="100"
           />
           <el-table-column
+            sortable
             :show-overflow-tooltip="true"
             prop="area"
-            label="位置"
-            min-width="100">
-            <template slot-scope="scope">
-              {{ scope.row.area.name + scope.row.market.name + scope.row.name }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="faceDate"
-            label="上次互动"
-            min-width="100">
-            <template slot-scope="scope">
-              {{ scope.row.device.faceDate }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="networkDate"
-            label="联网时间"
-            min-width="100">
-            <template slot-scope="scope">
-              {{ scope.row.device.networkDate }}
-            </template>
-          </el-table-column>
-          <!-- <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="rate"
-            label="利润率"
-            min-width="80"
-          />
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="adCount"
-            label="广告数"
-            min-width="80"
-          />
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="aver"
-            label="每日平均收益"
+            label="区域"
             min-width="100"
           />
           <el-table-column
-            :show-overflow-tooltip="true"
             sortable
-            prop="earnings"
-            label="收益"
-            min-width="80"
-          /> -->
-          <el-table-column
             :show-overflow-tooltip="true"
-            prop="screenStatus"
+            prop="site_name"
+            label="场地名称"
+            min-width="100"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="status"
             label="状态"
-            min-width="80">
+            min-width="100"
+          >
             <template slot-scope="scope">
-             {{ scope.row.device.screenStatus !== null ? (scope.row.device.screenStatus === 0 ? '关闭' : '开启') : '' }}
+              <span
+                :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'"
+              >{{ scope.row.status }}</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column 
-            label="操作" 
-            width="80">
-            <template 
-              slot-scope="scope">
-              <el-button 
-                type="warning" 
-                size="small">数据</el-button>
-            </template>
-          </el-table-column> -->
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="interact"
+            label="上次互动"
+            min-width="100"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="created_at"
+            label="联网时间"
+            min-width="100"
+          />
         </el-table>
-        <div 
-          class="pagination-wrap">
+        <div class="pagination-wrap">
           <el-pagination
             :total="pagination.total"
             :page-size="pagination.pageSize"
@@ -213,11 +169,10 @@
 </template>
 
 <script>
-import { getPointList } from 'service'
+import { getPointList } from "service";
 
 import {
   Button,
-  Input,
   Table,
   TableColumn,
   Pagination,
@@ -226,101 +181,116 @@ import {
   MessageBox,
   Select,
   Option
-} from 'element-ui'
+} from "element-ui";
 
 export default {
   components: {
-    'el-table': Table,
-    'el-table-column': TableColumn,
-    'el-button': Button,
-    'el-input': Input,
-    'el-pagination': Pagination,
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-select': Select,
-    'el-option': Option
+    "el-table": Table,
+    "el-table-column": TableColumn,
+    "el-button": Button,
+    "el-pagination": Pagination,
+    "el-form": Form,
+    "el-form-item": FormItem,
+    "el-select": Select,
+    "el-option": Option
   },
   data() {
     return {
       filters: {
-        name: '',
-        status: ''
+        point_id: null,
+        site_id: null,
+        status: ""
       },
-      statusList: [
-        {
-          id: 0,
-          name: '关闭'
-        },
-        {
-          id: 1,
-          name: '开启'
-        }
-      ],
+      siteList: [],
+      pointList: [],
+      statusList: [],
+      headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
         loading: false,
-        loadingText: '拼命加载中'
+        loadingText: "拼命加载中"
       },
       pagination: {
         total: 0,
         pageSize: 10,
         currentPage: 1
       },
-      tableData: []
-    }
+      tableData: [
+        {
+          id: 1,
+          area: "服南",
+          name: "4F—电梯口",
+          site_name: "4F—电梯口",
+          status: "运营中",
+          interact: "12分钟前",
+          created_at: "2019-01-16 19:01:01"
+        },
+        {
+          id: 2,
+          area: "服南",
+          name: "4F—电梯口",
+          site_name: "4F—电梯口",
+          status: "下架",
+          interact: "12分钟前",
+          created_at: "2019-01-16 19:01:01"
+        }
+      ]
+    };
   },
   created() {
-    this.getPointList()
+    // this.getPointList();
   },
   methods: {
     getPointList() {
-      this.setting.loading = true
+      this.setting.loading = true;
       let args = {
-        include: 'device,market,area',
+        include: "device,market,area",
         page: this.pagination.currentPage,
         point_name: this.filters.name,
         screen_status: this.filters.status
+      };
+      if (this.filters.name === "" || this.filters.name === null) {
+        delete args.point_name;
       }
-      if (this.filters.name === '' || this.filters.name === null) {
-        delete args.point_name
-      }
-      if (this.filters.status === '') {
-        delete args.screen_status
+      if (this.filters.status === "") {
+        delete args.screen_status;
       }
       getPointList(this, args)
         .then(res => {
-          this.tableData = res.data
-          this.pagination.total = res.meta.pagination.total
-          this.setting.loading = false
+          this.tableData = res.data;
+          this.pagination.total = res.meta.pagination.total;
+          this.setting.loading = false;
         })
         .catch(err => {
-          console.log(err)
-          this.setting.loading = false
-        })
+          console.log(err);
+          this.setting.loading = false;
+        });
     },
     resetSearch(formName) {
-      this.$refs[formName].resetFields()
-      this.pagination.currentPage = 1
-      this.getPointList()
+      this.$refs[formName].resetFields();
+      this.pagination.currentPage = 1;
+      this.getPointList();
     },
     search(formName) {
-      this.pagination.currentPage = 1
-      this.getPointList()
+      this.pagination.currentPage = 1;
+      this.getPointList();
     },
     changePage(currentPage) {
-      this.pagination.currentPage = currentPage
-      this.getPointList()
+      this.pagination.currentPage = currentPage;
+      this.getPointList();
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
 .root {
   font-size: 14px;
   color: #5e6d82;
+
   .item-list-wrap {
     background: #fff;
     padding: 30px;
+
     .item-content-wrap {
       .icon-item {
         padding: 10px;
@@ -338,6 +308,39 @@ export default {
         margin-bottom: 0;
         width: 50%;
       }
+      .point-btn {
+        background: #05c99a;
+        color: #fff;
+        border-color: #05c99a;
+      }
+      .sold-out {
+        background: #ff7696;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .operating {
+        background: #05c99a;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .sold-out-expand {
+        background: #ff7696;
+        color: #fff;
+        font-weight: 600;
+        padding: 3px 5px;
+        border-radius: 5px;
+      }
+      .operating-expand {
+        background: #05c99a;
+        color: #fff;
+        font-weight: 600;
+        padding: 3px 5px;
+        border-radius: 5px;
+      }
       .search-wrap {
         margin-top: 5px;
         display: flex;
@@ -347,14 +350,12 @@ export default {
         align-items: center;
         margin-bottom: 10px;
         .el-form-item {
-          margin-bottom: 0;
+          margin-bottom: 10px;
         }
         .el-select {
           width: 200px;
         }
-        .item-input {
-          width: 200px;
-        }
+
         .warning {
           background: #ebf1fd;
           padding: 8px;
@@ -373,9 +374,11 @@ export default {
         justify-content: space-between;
         font-size: 16px;
         align-items: center;
-        margin-bottom: 10px;
+        margin: 20px 0;
         .label {
-          font-size: 14px;
+          color: #6b3dc4;
+          font-size: 16px;
+          font-weight: 600;
         }
       }
       .pagination-wrap {

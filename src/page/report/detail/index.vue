@@ -34,8 +34,8 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="searchHandle">搜索</el-button>
-            <el-button size="small" @click="resetSearch">重置</el-button>
+            <el-button type="primary" size="small" @click="searchHandle" class="el-button-data">搜索</el-button>
+            <el-button size="small" @click="resetSearch" class="el-button-cancel">重置</el-button>
           </el-form-item>
         </el-form>
       </div>

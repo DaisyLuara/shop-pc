@@ -36,7 +36,7 @@
     "copy-webpack-plugin": "^4.4.1",
     "css-loader": "^0.28.0",
     "element-theme": "^2.0.1",
-    "element-ui": "^2.3.7",
+    "element-ui": "2.4.11",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
     "file-loader": "^0.10.0",
     "happypack": "^5.0.0",

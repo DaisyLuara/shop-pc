@@ -2326,9 +2326,9 @@ element-theme@^2.0.1:
     ora "^0.3.0"
     run-sequence "^1.2.2"
 
-element-ui@^2.3.7:
-  version "2.3.8"
-  resolved "http://registry.npm.taobao.org/element-ui/download/element-ui-2.3.8.tgz#5d24ab1ea66363d7ffa651b7ec47b3f93cdffd7c"
+element-ui@2.4.11:
+  version "2.4.11"
+  resolved "http://registry.npm.taobao.org/element-ui/download/element-ui-2.4.11.tgz#db6a2d37001b8fe5fff9f176fb58bb3908cfa9c9"
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"

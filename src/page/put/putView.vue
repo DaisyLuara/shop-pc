@@ -17,6 +17,7 @@ export default {
 <style lang="less" scoped>
 .put-root {
   height: 100%;
+  padding: 0px 50px;
   background-color: #eff2f7;
 }
 </style>

@@ -6,9 +6,10 @@
       class="item-list-wrap"
     >
       <div class="item-content-wrap">
+        <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="name">
+            <el-form-item label prop="area_id">
               <el-select
                 icon="el-icon-search"
                 v-model="filters.area_id"
@@ -24,7 +25,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="status">
+            <el-form-item label prop="site_id">
               <el-select
                 icon="el-icon-search"
                 v-model="filters.site_id"
@@ -52,71 +53,78 @@
                 end-placeholder="结束时间"
               />
             </el-form-item>
-            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-            <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            <el-form-item label>
+              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            </el-form-item>
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">点位数量: {{ pagination.total }}</span>
+          <span class="label">场地列表（ {{ pagination.total }} ）</span>
         </div>
-        <el-table ref="multipleTable" :data="tableData" style="width: 100%" type="expand">
+        <!-- 表格 -->
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          style="width: 100%"
+          :row-style="{height:'70px'}"
+          type="expand"
+          :header-cell-style="headerStyle"
+        >
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="ID">
+                <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="点位名称">
+                <el-form-item label="区域:">
+                  <span>{{ scope.row.area }}</span>
+                </el-form-item>
+                <el-form-item label="场地名称:">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
-                <el-form-item label="位置">
-                  <span>{{ scope.row.area.name + scope.row.market.name + scope.row.name }}</span>
+                <el-form-item label="点位数量:">
+                  <span>{{ scope.row.num }}</span>
                 </el-form-item>
-                <el-form-item label="状态">
-                  <span>{{ scope.row.device.screenStatus !== null ? (scope.row.device.screenStatus === 0 ? '关闭' : '开启') : '' }}</span>
-                </el-form-item>
-                <el-form-item label="上次互动">
-                  <span>{{ scope.row.device.faceDate }}</span>
-                </el-form-item>
-                <el-form-item label="联网时间">
-                  <span>{{ scope.row.device.networkDate }}</span>
+                <el-form-item label="时间:">
+                  <span>{{ scope.row.created_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="id" label="ID" width="80"/>
-          <el-table-column :show-overflow-tooltip="true" prop="name" label="点位名称" min-width="100"/>
-          <el-table-column :show-overflow-tooltip="true" prop="area" label="位置" min-width="100">
-            <template
-              slot-scope="scope"
-            >{{ scope.row.area.name + scope.row.market.name + scope.row.name }}</template>
-          </el-table-column>
+          <el-table-column sortable prop="id" label="ID" width="80"/>
           <el-table-column
+            sortable
             :show-overflow-tooltip="true"
-            prop="faceDate"
-            label="上次互动"
+            prop="area"
+            label="区域"
             min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.device.faceDate }}</template>
-          </el-table-column>
+          />
           <el-table-column
+            sortable
             :show-overflow-tooltip="true"
-            prop="networkDate"
-            label="联网时间"
+            prop="name"
+            label="场地名称"
             min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.device.networkDate }}</template>
-          </el-table-column>
-
+          />
           <el-table-column
+            sortable
             :show-overflow-tooltip="true"
-            prop="screenStatus"
-            label="状态"
-            min-width="80"
-          >
-            <template
-              slot-scope="scope"
-            >{{ scope.row.device.screenStatus !== null ? (scope.row.device.screenStatus === 0 ? '关闭' : '开启') : '' }}</template>
+            prop="num"
+            label="点位数量"
+            min-width="100"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="created_at"
+            label="时间"
+            min-width="100"
+          />
+          <el-table-column label="操作" width="80">
+            <template slot-scope="scope">
+              <el-button class="point-btn" @click="pointList(scope.row)">点位</el-button>
+            </template>
           </el-table-column>
         </el-table>
         <div class="pagination-wrap">
@@ -138,7 +146,6 @@ import { getPointList } from "service";
 
 import {
   Button,
-  Input,
   Table,
   TableColumn,
   Pagination,
@@ -155,7 +162,6 @@ export default {
     "el-table": Table,
     "el-table-column": TableColumn,
     "el-button": Button,
-    "el-input": Input,
     "el-pagination": Pagination,
     "el-form": Form,
     "el-form-item": FormItem,
@@ -172,6 +178,7 @@ export default {
       },
       siteList: [],
       areaList: [],
+      headerStyle: { background: "#6b3ec2", color: "#fff" },
       pickerOptions: {
         shortcuts: [
           {
@@ -222,13 +229,33 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: []
+      tableData: [
+        {
+          id: 1,
+          area: "服南",
+          name: "福州仓山万达百货",
+          num: 10,
+          created_at: "2019-01-16 19:01:01"
+        },
+        {
+          id: 2,
+          area: "湖南",
+          name: "福州仓山万达百货",
+          num: 10,
+          created_at: "2019-01-16 19:01:01"
+        }
+      ]
     };
   },
   created() {
     // this.getPointList();
   },
   methods: {
+    pointList(data) {
+      this.$router.push({
+        path: "/site/point"
+      });
+    },
     getPointList() {
       this.setting.loading = true;
       let args = {
@@ -275,9 +302,11 @@ export default {
 .root {
   font-size: 14px;
   color: #5e6d82;
+
   .item-list-wrap {
     background: #fff;
     padding: 30px;
+
     .item-content-wrap {
       .icon-item {
         padding: 10px;
@@ -295,6 +324,12 @@ export default {
         margin-bottom: 0;
         width: 50%;
       }
+      .point-btn {
+        background: #05c99a;
+        color: #fff;
+        border-color: #05c99a;
+      }
+
       .search-wrap {
         margin-top: 5px;
         display: flex;
@@ -307,7 +342,7 @@ export default {
           margin-bottom: 10px;
         }
         .el-select {
-          width: 250px;
+          width: 200px;
         }
 
         .warning {
@@ -328,9 +363,11 @@ export default {
         justify-content: space-between;
         font-size: 16px;
         align-items: center;
-        margin-bottom: 10px;
+        margin: 20px 0;
         .label {
-          font-size: 14px;
+          color: #6b3dc4;
+          font-size: 16px;
+          font-weight: 600;
         }
       }
       .pagination-wrap {
