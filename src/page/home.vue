@@ -70,8 +70,14 @@ export default {
               case "smart":
                 m.src = "ad_shop/img/smart_icon";
                 break;
+              case "put":
+                m.src = "ad_shop/img/put_icon";
+                break;
+              case "prize":
+                m.src = "ad_shop/img/gift_icon";
+                break;
               case "report":
-                m.src = this.IMG_URL + "ad_shop/img/report-icon.png";
+                m.src = "ad_shop/img/chart_icon";
                 break;
               default:
                 m.src = "";
