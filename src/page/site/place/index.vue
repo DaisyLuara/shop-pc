@@ -25,6 +25,7 @@
               label="" 
               prop="status">
               <el-select 
+                icon="el-icon-search"
                 v-model="filters.status" 
                 placeholder="状态" 
                 filterable 

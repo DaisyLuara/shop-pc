@@ -64,6 +64,12 @@ export default {
               case "account":
                 m.src = "ad_shop/img/user_icon";
                 break;
+              case "auth":
+                m.src = "ad_shop/img/auth_icon";
+                break;
+              case "smart":
+                m.src = "ad_shop/img/smart_icon";
+                break;
               case "report":
                 m.src = this.IMG_URL + "ad_shop/img/report-icon.png";
                 break;

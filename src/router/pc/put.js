@@ -1,13 +1,13 @@
 import auth from 'service/auth'
 let router = {
-  path: 'auth',
+  path: 'put',
   name: '授权',
   meta: {
     title: '授权'
     // permission: 'shop_auth'
   },
   component: () =>
-    import(/* webpackChunkName: "page/auth/authView" */ 'page/auth/authView'),
+    import(/* webpackChunkName: "page/put/putView" */ 'page/put/putView'),
   children: [
     {
       path: 'list',
@@ -16,7 +16,7 @@ let router = {
         // permission: 'shop_auth.datum'
       },
       component: () =>
-        import(/* webpackChunkName: "page/auth/list/routerView" */ 'page/auth/list/routerView'),
+        import(/* webpackChunkName: "page/put/list/routerView" */ 'page/put/list/routerView'),
       children: [
         {
           path: '/',
@@ -25,7 +25,7 @@ let router = {
             // permission: 'shop_auth.datum.read'
           },
           component: () =>
-            import(/* webpackChunkName: "page/auth/list/index" */ 'page/auth/list/index')
+            import(/* webpackChunkName: "page/put/list/index" */ 'page/put/list/index')
         }
       ]
     }
@@ -36,7 +36,7 @@ router.redirect = () => {
   let routes = router.children
   for (let route of routes) {
     if (auth.checkPathPermission(route)) {
-      return '/auth/' + route.path
+      return '/put/' + route.path
     }
   }
 }
