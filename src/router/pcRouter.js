@@ -6,6 +6,7 @@ import auth from 'router/pc/auth'
 import site from 'router/pc/site'
 import smart from 'router/pc/smart'
 import put from 'router/pc/put'
+import prize from 'router/pc/prize'
 import report from 'router/pc/report'
 import coupon from 'router/pc/coupon'
 
@@ -16,5 +17,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, auth, site, smart, put, report, coupon]
+  children: [account, auth, site, smart, put, prize, report, coupon]
 }
