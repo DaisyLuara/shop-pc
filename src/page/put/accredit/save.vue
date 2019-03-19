@@ -5,46 +5,6 @@
       <el-form ref="accreditForm" :model="accreditForm" label-width="150px">
         <div class="deploy-model">
           <h4 class="deploy-model-title">投放基础配置</h4>
-          <el-form-item
-            :rules="[{ required: true, message: '请选择区域', trigger: 'submit'}]"
-            label="区域"
-            prop="area_id"
-          >
-            <el-select
-              v-model="accreditForm.area_id"
-              :loading="searchLoading"
-              filterable
-              placeholder="请选择区域"
-              clearable
-            >
-              <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            :rules="[{ required: true, message: '请选择场地', trigger: 'submit'}]"
-            label="场地"
-            prop="site_id"
-          >
-            <el-select
-              v-model="accreditForm.site_id"
-              :loading="searchLoading"
-              placeholder="请选择场地"
-              filterable
-              clearable
-            >
-              <el-option
-                v-for="item in siteList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
           <el-form-item label="点位" prop="point_id">
             <el-select
               v-model="accreditForm.point_id"
@@ -194,8 +154,6 @@ export default {
         loadingText: "拼命加载中"
       },
       AccreditID: null,
-      siteList: [],
-      areaList: [],
       pointList: [],
       typeList: [],
       projectList: [],
@@ -207,8 +165,6 @@ export default {
         link_id: null,
         status: 1,
         point_id: [],
-        area_id: null,
-        site_id: null,
         off_support: 0,
         off_link: ""
       }

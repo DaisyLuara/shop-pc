@@ -9,42 +9,10 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="area_id">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.area_id"
-                placeholder="请选择点位名称"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in areaList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="site_id">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.site_id"
-                placeholder="请选择场地"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in siteList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
             <el-form-item label prop="project_id">
               <el-select
-                icon="el-icon-search"
                 v-model="filters.project_id"
+                :oading="searchLoading"
                 placeholder="请选择节目"
                 filterable
                 clearable
@@ -59,8 +27,8 @@
             </el-form-item>
             <el-form-item label prop="link_id">
               <el-select
-                icon="el-icon-search"
                 v-model="filters.link_id"
+                :loading="searchLoading"
                 placeholder="请选择授权链接"
                 filterable
                 clearable
@@ -68,19 +36,13 @@
                 <el-option
                   v-for="item in linkList"
                   :key="item.id"
-                  :label="item.name"
+                  :label="item.nick_name"
                   :value="item.id"
                 />
               </el-select>
             </el-form-item>
             <el-form-item label prop="status">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.status"
-                placeholder="请选择状态"
-                filterable
-                clearable
-              >
+              <el-select v-model="filters.status" placeholder="请选择状态" filterable clearable>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -115,31 +77,30 @@
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="区域:">
-                  <span>{{ scope.row.area }}</span>
+                  <span>{{ scope.row.point.market.area.name }}</span>
                 </el-form-item>
                 <el-form-item label="场地:">
-                  <span>{{ scope.row.site_name }}</span>
+                  <span>{{ scope.row.point.market.name }}</span>
                 </el-form-item>
                 <el-form-item label="点位:">
-                  <span>{{ scope.row.point }}</span>
+                  <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目:">
-                  <span>{{ scope.row.project }}</span>
+                  <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="授权链接:">
-                  <span>{{ scope.row.link }}</span>
+                  <span>{{ scope.row.wechat.nick_name }}</span>
                 </el-form-item>
                 <el-form-item label="类型:">
-                  <span>{{ scope.row.type }}</span>
+                  <span>{{ typeTransform(scope.row) }}</span>
                 </el-form-item>
                 <el-form-item label="状态:">
                   <span
-                    :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.status }}</span>
+                    :class="(scope.row.visible === 0) ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.visible ===0 ? '下架': '运营中' }}</span>
                 </el-form-item>
-
                 <el-form-item label="时间:">
-                  <span>{{ scope.row.created_at }}</span>
+                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
@@ -151,25 +112,31 @@
             prop="area"
             label="区域"
             min-width="80"
-          />
+          >
+            <template slot-scope="scope">{{ scope.row.point.market.area.name }}</template>
+          </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
             prop="site_name"
             label="场地"
             min-width="80"
-          />
+          >
+            <template slot-scope="scope">{{ scope.row.point.market.name }}</template>
+          </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
             prop="point"
             label="点位"
             min-width="80"
-          />
+          >
+            <template slot-scope="scope">{{ scope.row.point.name }}</template>
+          </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="project"
+            prop="name"
             label="节目"
             min-width="80"
           />
@@ -179,7 +146,9 @@
             prop="link"
             label="授权链接"
             min-width="90"
-          />
+          >
+            <template slot-scope="scope">{{ scope.row.wechat.nick_name }}</template>
+          </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
@@ -189,14 +158,14 @@
           >
             <template slot-scope="scope">
               <span
-                :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'"
-              >{{ scope.row.status }}</span>
+                :class="(scope.row.visible === 0) ? 'sold-out' : 'operating'"
+              >{{ scope.row.visible===0 ? '下架': '运营中' }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
             <template slot-scope="scope">
               <el-button size="small" @click="editAccredit(scope.row)">编辑</el-button>
-              <el-button size="small">下架</el-button>
+              <el-button v-if="scope.row.visible !== 0" size="small">下架</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -215,7 +184,7 @@
 </template>
 
 <script>
-// import { getAccreditDeliveryList } from "service";
+import { getProject, getAuthorizer, getLaunchWechatList } from "service";
 
 import {
   Button,
@@ -228,6 +197,7 @@ import {
   Select,
   Option
 } from "element-ui";
+import { truncate } from "fs";
 
 export default {
   components: {
@@ -243,17 +213,22 @@ export default {
   data() {
     return {
       filters: {
-        area_id: null,
-        site_id: null,
         status: "",
         project_id: null,
         link_id: null
       },
-      siteList: [],
-      areaList: [],
       projectList: [],
       linkList: [],
-      statusList: [],
+      statusList: [
+        {
+          id: 0,
+          name: "下架"
+        },
+        {
+          id: 1,
+          name: "运营中"
+        }
+      ],
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
         loading: false,
@@ -264,36 +239,69 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [
-        {
-          id: 1,
-          area: "服南",
-          point: "4F—电梯口",
-          site_name: "4F—电梯口",
-          status: "运营中",
-          project: "幻境",
-          link: "株洲大汉希尔顿",
-          type: "公众号",
-          created_at: "2019-01-16 19:01:01"
-        },
-        {
-          id: 2,
-          area: "服南",
-          point: "4F—电梯口",
-          site_name: "4F—电梯口",
-          project: "圣诞糖果屋",
-          status: "下架",
-          link: "株洲大汉希尔顿",
-          type: "小程序",
-          created_at: "2019-01-16 19:01:01"
-        }
-      ]
+      tableData: [],
+      searchLoading: false
     };
   },
   created() {
-    // this.getAccreditDeliveryList();
+    this.getLaunchWechatList();
+    this.getProject();
+    this.getAuthorizer();
   },
   methods: {
+    typeTransform(data) {
+      let type = data.type;
+      switch (type) {
+        case "normal":
+          return "普通";
+          break;
+        case "mobile":
+          return "手机号";
+          break;
+        case "publick":
+          return "公众号";
+          break;
+        case "subk":
+          return "订阅号";
+          break;
+        case "apps":
+          return "小程序";
+          break;
+        case "tmall":
+          return "天猫";
+          break;
+      }
+    },
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(res => {
+          this.searchLoading = false;
+          this.projectList = res;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
+        });
+    },
+    getAuthorizer() {
+      this.searchLoading = true;
+      getAuthorizer(this)
+        .then(res => {
+          this.searchLoading = false;
+          this.linkList = res;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
+        });
+    },
     addAccredit() {
       this.$router.push({
         path: "/put/accredit/save"
@@ -305,21 +313,21 @@ export default {
         uid: data.id
       });
     },
-    getAccreditDeliveryList() {
+    getLaunchWechatList() {
       this.setting.loading = true;
       let args = {
-        include: "device,market,area",
-        page: this.pagination.currentPage,
-        point_name: this.filters.name,
-        screen_status: this.filters.status
+        include: "point.market.area,project,wechat",
+        page: this.pagination.currentPage
+        // point_name: this.filters.name,
+        // screen_status: this.filters.status
       };
-      if (this.filters.name === "" || this.filters.name === null) {
-        delete args.point_name;
-      }
-      if (this.filters.status === "") {
-        delete args.screen_status;
-      }
-      getAccreditDeliveryList(this, args)
+      // if (this.filters.name === "" || this.filters.name === null) {
+      //   delete args.point_name;
+      // }
+      // if (this.filters.status === "") {
+      //   delete args.screen_status;
+      // }
+      getLaunchWechatList(this, args)
         .then(res => {
           this.tableData = res.data;
           this.pagination.total = res.meta.pagination.total;
@@ -332,15 +340,15 @@ export default {
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getAccreditDeliveryList();
+      this.getLaunchWechatList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getAccreditDeliveryList();
+      this.getLaunchWechatList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getAccreditDeliveryList();
+      this.getLaunchWechatList();
     }
   }
 };

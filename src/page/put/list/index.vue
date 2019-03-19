@@ -9,34 +9,15 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="name">
-              <el-select v-model="filters.name" placeholder="请选择节目名称" filterable clearable>
+            <el-form-item label prop="project_name">
+              <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
                 <i slot="prefix" class="el-input__icon el-icon-name"></i>
-                <el-option
-                  v-for="item in nameList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="visiable">
-              <el-select v-model="filters.visiable" placeholder="请选择点位状态" filterable clearable>
-                <i slot="prefix" class="el-input__icon el-icon-pointer"></i>
-                <el-option
-                  v-for="item in visiableList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
+              </el-input>
             </el-form-item>
             <el-form-item label prop>
               <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
               <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
-            <!-- </el-col>
-            </el-row>-->
           </el-form>
         </div>
         <div class="actions-wrap">
@@ -61,22 +42,17 @@
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="节目名称">
-                  <span>{{ scope.row.name }}</span>
+                <el-form-item label="节目名称:">
+                  <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
-                <el-form-item label="节目icon">
-                  <img :src="scope.row.icon" alt="image" style="width: 20%;">
+                <el-form-item label="点位:">
+                  <span>{{ scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name }}</span>
                 </el-form-item>
-                <el-form-item label="点位">
-                  <span>{{ scope.row.name }}</span>
+                <el-form-item label="节目icon:">
+                  <img :src="scope.row.project.icon" alt="image" style="width: 40%;">
                 </el-form-item>
-                <el-form-item label="状态:">
-                  <span
-                    :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.status }}</span>
-                </el-form-item>
-                <el-form-item label="时间">
-                  <span>{{ scope.row.created_at }}</span>
+                <el-form-item label="时间:">
+                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
@@ -87,16 +63,15 @@
             :show-overflow-tooltip="true"
             prop="name"
             label="节目名称"
-            min-width="150"
+            min-width="100"
           >
-            <template slot-scope="scope">{{ scope.row.name }}</template>
+            <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
           <el-table-column sortable prop="icon" label="节目icon" min-width="100">
             <template slot-scope="scope">
-              <img :src="scope.row.icon" alt class="icon-item">
+              <img :src="scope.row.project.icon" alt class="icon-item">
             </template>
           </el-table-column>
-
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
@@ -104,33 +79,22 @@
             label="点位"
             min-width="100"
           >
-            <template slot-scope="scope">{{ scope.row.point }}</template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="status"
-            label="状态"
-            min-width="100"
-          >
-            <template slot-scope="scope">
-              <span
-                :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'"
-              >{{ scope.row.status }}</span>
-            </template>
+            <template
+              slot-scope="scope"
+            >{{ scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="created_at"
+            prop="updated_at"
             label="时间"
             min-width="100"
           >
-            <template slot-scope="scope">{{ scope.row.created_at }}</template>
+            <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="180">
+          <el-table-column label="操作" width="250">
             <template slot-scope="scope">
-              <el-button type="success" size="small" @click="modifyEditName">名称</el-button>
-              <el-button type="info" size="small" @click="modifyEditTime">时间</el-button>
+              <el-button size="small" @click="modifyEditName(scope.row)">更换节目</el-button>
+              <el-button size="small" @click="modifyEditTime(scope.row)">更改时间</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -145,22 +109,20 @@
         </div>
       </div>
       <!-- 节目名称修改 -->
-      <el-dialog v-loading="loading" :visible.sync="editVisible" title="修改" @close="dialogClose">
+      <el-dialog v-loading="loading" :visible.sync="editVisible" title="修改" :show-close="false">
         <el-form ref="projectForm" :model="projectForm" label-width="150px">
           <el-form-item
             v-if="modifyOptionFlag.project"
-            :rules="[{ required: true, message: '请输入节目', trigger: 'submit'}]"
+            :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
             label="节目名称"
-            prop="project"
+            prop="project_id"
           >
             <el-select
-              v-model="projectForm.project"
-              :remote-method="getProject"
-              :multiple-limit="1"
-              multiple
+              class="modify-width"
+              v-loading="searchLoading"
+              v-model="projectForm.project_id"
               filterable
-              placeholder="请搜索"
-              remote
+              placeholder="请选择节目"
               clearable
             >
               <el-option
@@ -171,16 +133,28 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item v-if="modifyOptionFlag.time" label="开始时间" prop="sdate">
+          <el-form-item
+            v-if="modifyOptionFlag.time"
+            label="开始时间"
+            prop="sdate"
+            :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
+          >
             <el-date-picker
+              class="modify-width"
               v-model="projectForm.sdate"
               :editable="false"
               type="date"
               placeholder="选择开始时间"
             />
           </el-form-item>
-          <el-form-item v-if="modifyOptionFlag.defineTemplate" label="结束时间" prop="edate">
+          <el-form-item
+            v-if="modifyOptionFlag.time"
+            label="结束时间"
+            prop="edate"
+            :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
+          >
             <el-date-picker
+              class="modify-width"
               v-model="projectForm.edate"
               :editable="false"
               type="date"
@@ -188,7 +162,8 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitModify('projectForm')">完成</el-button>
+            <el-button class="el-button-success" @click="submitModify('projectForm')">完成</el-button>
+            <el-button class="el-button-cancel" @click="cancel">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -196,13 +171,11 @@
   </div>
 </template>
 <script>
-import {} from "service";
+import { getLaunchProjectList, getProject, modifyLaunchProject } from "service";
 import {
   Button,
   Input,
   Table,
-  Row,
-  Col,
   TableColumn,
   Pagination,
   Dialog,
@@ -211,9 +184,7 @@ import {
   MessageBox,
   DatePicker,
   Select,
-  Option,
-  CheckboxGroup,
-  Checkbox
+  Option
 } from "element-ui";
 
 export default {
@@ -228,28 +199,17 @@ export default {
     "el-form-item": FormItem,
     "el-select": Select,
     "el-option": Option,
-    "el-checkbox-group": CheckboxGroup,
-    "el-checkbox": Checkbox,
     "el-dialog": Dialog
   },
   data() {
     return {
+      searchLoading: false,
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       filters: {
-        name: "",
-        visiable: ""
+        project_name: null
       },
-      nameList: [],
-      visiableList: [
-        {
-          id: 1,
-          name: "运营中"
-        },
-        {
-          id: 0,
-          name: "下架"
-        }
-      ],
+      editID: null,
+      projectList: [],
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -262,7 +222,7 @@ export default {
       },
       editVisible: false,
       projectForm: {
-        project: [],
+        project_id: null,
         sdate: "",
         edate: ""
       },
@@ -270,30 +230,29 @@ export default {
         project: false,
         time: false
       },
-      tableData: [
-        {
-          id: 1,
-          name: "大融城",
-          icon: "http://image.exe666.com/1007/image/479_1550230064.png",
-          point: "上海浦东新区额",
-          status: "下架",
-          created_at: "2019-09-10"
-        },
-        {
-          id: 2,
-          name: "大融城",
-          icon: "http://image.exe666.com/1007/image/479_1550230064.png",
-          point: "上海浦东新区额",
-          status: "下架",
-          created_at: "2019-09-10"
-        }
-      ]
+      tableData: []
     };
   },
   created() {
-    // this.getProjectList();
+    this.getLaunchProjectList();
+    this.getProject();
   },
   methods: {
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(res => {
+          this.projectList = res;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
     addProjectPut() {
       this.$router.push({
         path: "/put/list/save"
@@ -302,86 +261,106 @@ export default {
     dialogClose() {
       if (!this.editVisible) {
         this.editCondition.conditionList = [];
-        this.$refs.multipleTable.clearSelection();
+        this.$refs.multipleTable.resetFields();
       }
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
       this.editCondition.conditionList = [];
-      this.getProjectList();
+      this.getLaunchProjectList();
     },
-    modifyEditName() {
+    modifyEditName(data) {
+      this.editID = data.id;
+
       this.editVisible = true;
       this.modifyOptionFlag.project = true;
       this.modifyOptionFlag.time = false;
     },
-    modifyEditTime() {
+    cancel() {
+      this.$refs["projectForm"].resetFields();
+      this.editVisible = false;
+    },
+    modifyEditTime(data) {
+      this.projectForm.sdate = data.start_date;
+      this.projectForm.edate = data.end_date;
+      this.editID = data.id;
       this.editVisible = true;
       this.modifyOptionFlag.time = true;
       this.modifyOptionFlag.project = false;
     },
-    dialogClose() {
-      if (!this.editVisible) {
-        this.editCondition.conditionList = [];
-        this.$refs.multipleTable.clearSelection();
-      }
+    submitModify(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let args = {};
+          this.setting.loading = true;
+          if (this.modifyOptionFlag.project) {
+            args = {
+              default_plid: this.projectForm.project_id
+            };
+          }
+          if (this.modifyOptionFlag.time) {
+            let edate =
+              (new Date(this.projectForm.edate).getTime() +
+                ((23 * 60 + 59) * 60 + 59) * 1000) /
+              1000;
+            args = {
+              sdate: new Date(this.projectForm.sdate).getTime() / 1000,
+              edate: edate
+            };
+          }
+          return modifyLaunchProject(this, this.editID, args)
+            .then(response => {
+              this.setting.loading = false;
+              this.$message({
+                message: "更改成功",
+                type: "success"
+              });
+              this.cancel();
+              this.getLaunchProjectList();
+            })
+            .catch(err => {
+              this.setting.loading = false;
+              this.cancel();
+              this.$message({
+                message: err.response.data.message,
+                type: "success"
+              });
+            });
+        }
+      });
     },
-    getProject(query) {
-      if (query !== "") {
-        this.searchLoading = true;
-        let args = {
-          name: query
-        };
-        return getSearchProjectList(this, args)
-          .then(response => {
-            this.projectList = response.data;
-            if (this.projectList.length == 0) {
-              this.projectForm.project = [];
-              this.projectList = [];
-            }
-            this.searchLoading = false;
-          })
-          .catch(err => {
-            console.log(err);
-            this.searchLoading = false;
-          });
-      } else {
-        this.projectList = [];
-      }
-    },
-    getProjectList() {
-      this.setting.loadingText = "拼命加载中";
+    getLaunchProjectList() {
       this.setting.loading = true;
       let searchArgs = {
         page: this.pagination.currentPage,
-        include: "point.scene,point.market,point.area,project",
-        project_name: this.filters.name,
-        visiable: this.filters.visiable
+        include: "point.market.area,project",
+        project_name: this.filters.project_name
       };
-      if (this.filters.visiable === "") {
-        delete searchArgs.visiable;
+      if (!this.filters.project_name) {
+        delete searchArgs.project_name;
       }
-      getPutProjectList(this, searchArgs)
+      getLaunchProjectList(this, searchArgs)
         .then(response => {
-          let data = response.data;
-          this.tableData = data;
+          this.tableData = response.data;
           this.pagination.total = response.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(error => {
-          console.log(error);
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
           this.setting.loading = false;
         });
     },
-
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getProjectList();
+      this.getLaunchProjectList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getProjectList();
+      this.getLaunchProjectList();
     }
   }
 };
@@ -396,6 +375,9 @@ export default {
     .el-select,
     .item-input,
     .el-input {
+      width: 200px;
+    }
+    .modify-width {
       width: 380px;
     }
     background: #fff;

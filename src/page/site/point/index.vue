@@ -9,53 +9,10 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="point_id">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.point_id"
-                placeholder="请选择点位名称"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in pointList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="site_id">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.site_id"
-                placeholder="请选择场地名称"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in siteList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="status">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.status"
-                placeholder="请选择状态"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in statusList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
+            <el-form-item label prop="point_name">
+              <el-input v-model="filters.point_name" placeholder="请填写点位名称" clearable>
+                <i slot="prefix" class="el-input__icon el-icon-name"></i>
+              </el-input>
             </el-form-item>
             <el-form-item label>
               <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
@@ -85,21 +42,15 @@
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="区域:">
-                  <span>{{ scope.row.area }}</span>
+                  <span>{{ scope.row.area.name }}</span>
                 </el-form-item>
                 <el-form-item label="场地名称:">
-                  <span>{{ scope.row.site_name }}</span>
+                  <span>{{ scope.row.market.name }}</span>
                 </el-form-item>
-                <el-form-item label="状态:">
+                <el-form-item label="运营状态:">
                   <span
-                    :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.status }}</span>
-                </el-form-item>
-                <el-form-item label="上次互动:">
-                  <span>{{ scope.row.interact }}</span>
-                </el-form-item>
-                <el-form-item label="联网时间:">
-                  <span>{{ scope.row.created_at }}</span>
+                    :class="(scope.row.visiable === 0) ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.visiable === 0 ? '下架':'运营中' }}</span>
                 </el-form-item>
               </el-form>
             </template>
@@ -118,41 +69,31 @@
             prop="area"
             label="区域"
             min-width="100"
-          />
+          >
+            <template slot-scope="scope">{{ scope.row.area.name }}</template>
+          </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
             prop="site_name"
             label="场地名称"
             min-width="100"
-          />
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="status"
-            label="状态"
-            min-width="100"
           >
-            <template slot-scope="scope">
-              <span
-                :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'"
-              >{{ scope.row.status }}</span>
-            </template>
+            <template slot-scope="scope">{{ scope.row.market.name }}</template>
           </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="interact"
-            label="上次互动"
+            prop="status"
+            label="运营状态"
             min-width="100"
-          />
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="created_at"
-            label="联网时间"
-            min-width="100"
-          />
+          >
+            <template slot-scope="scope">
+              <span
+                :class="(scope.row.visiable === 0) ? 'sold-out-expand' : 'operating-expand'"
+              >{{ scope.row.visiable === 0 ? '下架':'运营中' }}</span>
+            </template>
+          </el-table-column>
         </el-table>
         <div class="pagination-wrap">
           <el-pagination
@@ -179,8 +120,7 @@ import {
   Form,
   FormItem,
   MessageBox,
-  Select,
-  Option
+  Input
 } from "element-ui";
 
 export default {
@@ -191,15 +131,12 @@ export default {
     "el-pagination": Pagination,
     "el-form": Form,
     "el-form-item": FormItem,
-    "el-select": Select,
-    "el-option": Option
+    "el-input": Input
   },
   data() {
     return {
       filters: {
-        point_id: null,
-        site_id: null,
-        status: ""
+        point_name: null
       },
       siteList: [],
       pointList: [],
@@ -214,45 +151,22 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [
-        {
-          id: 1,
-          area: "服南",
-          name: "4F—电梯口",
-          site_name: "4F—电梯口",
-          status: "运营中",
-          interact: "12分钟前",
-          created_at: "2019-01-16 19:01:01"
-        },
-        {
-          id: 2,
-          area: "服南",
-          name: "4F—电梯口",
-          site_name: "4F—电梯口",
-          status: "下架",
-          interact: "12分钟前",
-          created_at: "2019-01-16 19:01:01"
-        }
-      ]
+      tableData: []
     };
   },
   created() {
-    // this.getPointList();
+    this.getPointList();
   },
   methods: {
     getPointList() {
       this.setting.loading = true;
       let args = {
-        include: "device,market,area",
+        include: "market,area",
         page: this.pagination.currentPage,
-        point_name: this.filters.name,
-        screen_status: this.filters.status
+        point_name: this.filters.point_name
       };
-      if (this.filters.name === "" || this.filters.name === null) {
+      if (!this.filters.point_name) {
         delete args.point_name;
-      }
-      if (this.filters.status === "") {
-        delete args.screen_status;
       }
       getPointList(this, args)
         .then(res => {
@@ -261,7 +175,10 @@ export default {
           this.setting.loading = false;
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
           this.setting.loading = false;
         });
     },
@@ -283,6 +200,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@imgurl: "https://cdn.exe666.com/ad_shop/img/";
 .root {
   font-size: 14px;
   color: #5e6d82;
@@ -355,7 +273,20 @@ export default {
         .el-select {
           width: 200px;
         }
-
+        .el-icon-name {
+          &:before {
+            content: " ";
+            display: inline-block;
+            background: url("@{imgurl}name_icon.png") center center/100% auto
+              no-repeat;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 50%;
+            left: 3%;
+            transform: translateY(-50%);
+          }
+        }
         .warning {
           background: #ebf1fd;
           padding: 8px;

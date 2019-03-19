@@ -1,5 +1,6 @@
 // 搜索
 export * from './search'
+
 // 优惠券
 export * from './coupon'
 
@@ -12,8 +13,17 @@ export * from './chart'
 // 广告
 export * from './ad'
 
-// 点位
-export * from './point'
-
 // 图片
 export * from './picture'
+
+// 智造
+export * from './smart'
+
+// 授权
+export * from './authorization'
+
+// 场地
+export * from './site'
+
+// 投放
+export * from './launch'
