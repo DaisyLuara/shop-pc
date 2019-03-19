@@ -37,8 +37,6 @@
           :rules="[{ required: true, message: '请输入点位', trigger: 'submit',type: 'array'}]"
           label="点位"
           prop="point"
-          multiple
-          :limit="5"
         >
           <el-select
             v-model="projectForm.point"

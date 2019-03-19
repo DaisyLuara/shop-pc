@@ -85,7 +85,6 @@
             >新增节目投放</el-button>
           </div>
         </div>
-
         <!-- 节目投放列表 -->
         <el-table
           ref="multipleTable"
@@ -186,7 +185,7 @@
             label="操作"
             width="180"
           >
-            <template>
+            <template slot-scope="scope">
               <el-button
                 type="success"
                 size="small"
@@ -210,89 +209,82 @@
           />
         </div>
       </div>
-    </div>
-    <!-- 修改 -->
-    <el-dialog
-      v-loading="loading"
-      :visible.sync="editVisible"
-      title="修改"
-      @close="dialogClose"
-    >
-      <el-form
-        ref="projectForm"
-        :model="projectForm"
-        label-width="150px"
+      <!-- 节目名称修改 -->
+      <el-dialog
+        v-loading="loading"
+        :visible.sync="editVisible"
+        title="修改"
+        @close="dialogClose"
       >
-        <el-form-item
-          v-if="modifyOptionFlag.project"
-          :rules="[{ required: true, message: '请输入节目', trigger: 'submit'}]"
-          label="节目名称"
-          prop="project"
+        <el-form
+          ref="projectForm"
+          :model="projectForm"
+          label-width="150px"
         >
-          <el-select
-            v-model="projectForm.project"
-            :remote-method="getProject"
-            :multiple-limit="1"
-            multiple
-            filterable
-            placeholder="请搜索"
-            remote
-            clearable
+          <el-form-item
+            v-if="modifyOptionFlag.project"
+            :rules="[{ required: true, message: '请输入节目', trigger: 'submit'}]"
+            label="节目名称"
+            prop="project"
           >
-            <el-option
-              v-for="item in projectList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+            <el-select
+              v-model="projectForm.project"
+              :remote-method="getProject"
+              :multiple-limit="1"
+              multiple
+              filterable
+              placeholder="请搜索"
+              remote
+              clearable
+            >
+              <el-option
+                v-for="item in projectList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            v-if="modifyOptionFlag.time"
+            label="开始时间"
+            prop="sdate"
+          >
+            <el-date-picker
+              v-model="projectForm.sdate"
+              :editable="false"
+              type="date"
+              placeholder="选择开始时间"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item
-          v-if="modifyOptionFlag.defineTemplate"
-          label="开始时间"
-          prop="sdate"
-        >
-          <el-date-picker
-            v-model="projectForm.sdate"
-            :editable="false"
-            type="date"
-            placeholder="选择开始时间"
-          />
-        </el-form-item>
-        <el-form-item
-          v-if="modifyOptionFlag.defineTemplate"
-          label="结束时间"
-          prop="edate"
-        >
-          <el-date-picker
-            v-model="projectForm.edate"
-            :editable="false"
-            type="date"
-            placeholder="选择结束时间"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitModify('projectForm')"
-          >完成</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+          </el-form-item>
+          <el-form-item
+            v-if="modifyOptionFlag.defineTemplate"
+            label="结束时间"
+            prop="edate"
+          >
+            <el-date-picker
+              v-model="projectForm.edate"
+              :editable="false"
+              type="date"
+              placeholder="选择结束时间"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              @click="submitModify('projectForm')"
+            >完成</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
-
 <script>
 import {
-  modifyProjectLaunch,
   getPutProjectList,
-  getSearchMarketList,
-  getSearchSceneList,
-  getSearchAeraList,
-  getSearchModuleList,
   getSearchProjectList
 } from "service";
-
 import {
   Button,
   Input,
@@ -356,15 +348,35 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [{
-        id: 1,
-        name: '大融城',
-        icon: 'http://image.exe666.com/1007/image/479_1550230064.png',
-        point: '上海浦东新区额',
-        status: '下架',
-        created_at: '2019-09-10'
-      }],
-    };
+      editVisible: false,
+      projectForm: {
+        project: [],
+        sdate: "",
+        edate: "",
+      },
+      modifyOptionFlag: {
+        project: false,
+        time: false
+      },
+      tableData: [
+        {
+          id: 1,
+          name: '大融城',
+          icon: 'http://image.exe666.com/1007/image/479_1550230064.png',
+          point: '上海浦东新区额',
+          status: '下架',
+          created_at: '2019-09-10'
+        },
+        {
+          id: 2,
+          name: '大融城',
+          icon: 'http://image.exe666.com/1007/image/479_1550230064.png',
+          point: '上海浦东新区额',
+          status: '下架',
+          created_at: '2019-09-10'
+        },
+      ],
+    }
   },
   created() {
     // this.getProjectList();
@@ -387,8 +399,22 @@ export default {
       this.editCondition.conditionList = [];
       this.getProjectList();
     },
-    modifyEditName() { },
-    modifyEditTime() { },
+    modifyEditName() {
+      this.editVisible = true
+      this.modifyOptionFlag.project = true
+      this.modifyOptionFlag.time = false
+    },
+    modifyEditTime() {
+      this.editVisible = true
+      this.modifyOptionFlag.time = true
+      this.modifyOptionFlag.project = false
+    },
+    dialogClose() {
+      if (!this.editVisible) {
+        this.editCondition.conditionList = [];
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
     getProject(query) {
       if (query !== "") {
         this.searchLoading = true;
