@@ -99,7 +99,7 @@
             </svg>
             <el-progress
               type="circle"
-              width="60"
+              :width="60"
               :percentage="78"
               :show-text='false'
               color="url(#grad1)"

@@ -11,7 +11,7 @@
           <img :src="IMG_URL+'ad_shop/img/avatar_white.png'">
         </div>
         <div class="user-name">
-          <span>测试登录名称</span>
+          <span>{{ user_name }}</span>
         </div>
       </div>
       <el-menu :default-active="'/' + currModule" router>
@@ -21,6 +21,9 @@
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
+      <div class="logout-btn">
+        <img :src="logo" class="logout-icon" @click="logout">
+      </div>
     </div>
     <div class="modules">
       <router-view/>
@@ -45,7 +48,9 @@ export default {
   data() {
     return {
       IMG_URL: IMG_URL,
-      visible: false
+      visible: false,
+      user_name: "",
+      logo: null
     };
   },
   computed: {
@@ -104,9 +109,14 @@ export default {
         : "";
     }
   },
+  mounted() {},
   created() {
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
+    this.user_name = customer.company.name;
+    this.logo = customer.company.logo
+      ? customer.company.logo
+      : this.IMG_URL + "ad_shop/img/logout_icon.png";
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
@@ -142,12 +152,20 @@ export default {
   text-align: center;
 }
 .logout-btn {
-  display: block;
+  position: absolute;
+  bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   width: 100%;
-  height: 35px;
-  line-height: 35px;
+  padding: 20px;
   cursor: pointer;
-  font-size: 14px;
+  flex-direction: row;
+  cursor: pointer;
+  .logout-icon {
+    width: 20%;
+    height: 20%;
+  }
 }
 
 .icon-default {
