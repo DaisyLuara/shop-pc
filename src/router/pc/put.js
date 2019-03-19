@@ -26,6 +26,73 @@ let router = {
           },
           component: () =>
             import(/* webpackChunkName: "page/put/list/index" */ 'page/put/list/index')
+        },
+        {
+          path: 'save',
+          meta: {
+            title: '节目投放新增'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/list/save" */ 'page/put/list/save')
+        }
+      ]
+    },
+    {
+      path: 'schedule',
+      meta: {
+        title: '节目模板'
+        // permission: 'shop_auth.datum'
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/put/schedule/routerView" */ 'page/put/schedule/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '节目模板列表'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/schedule/index" */ 'page/put/schedule/index')
+        }
+      ]
+    },
+    {
+      path: 'accredit',
+      meta: {
+        title: '授权投放'
+        // permission: 'shop_auth.datum'
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/put/accredit/routerView" */ 'page/put/accredit/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '授权投放列表'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/accredit/index" */ 'page/put/accredit/index')
+        },
+        {
+          path: 'save',
+          meta: {
+            title: '授权投放新增'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/accredit/save" */ 'page/put/accredit/save')
+        },
+        {
+          path: 'eidt/:uid',
+          meta: {
+            title: '授权投放新增'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/accredit/save" */ 'page/put/accredit/save')
         }
       ]
     }

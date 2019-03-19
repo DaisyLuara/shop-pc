@@ -1,11 +1,11 @@
 <template>
-  <div class="put-child-root">
-    <router-view/>
+  <div class="accredit-root">
+    <router-view />
   </div>
 </template>
 <script>
 export default {
-  name: "ListView"
+  name: "AccreditView"
 };
 </script>
 

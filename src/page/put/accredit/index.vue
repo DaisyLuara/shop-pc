@@ -8,53 +8,72 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form
-            ref="filters"
-            :model="filters"
-            :inline="true"
-          >
-            <el-form-item
-              label
-              prop="auth_id"
-            >
+          <el-form ref="filters" :model="filters" :inline="true">
+            <el-form-item label prop="area_id">
               <el-select
                 icon="el-icon-search"
-                v-model="filters.auth_id"
+                v-model="filters.area_id"
+                placeholder="请选择点位名称"
+                filterable
+                clearable
+              >
+                <el-option
+                  v-for="item in areaList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label prop="site_id">
+              <el-select
+                icon="el-icon-search"
+                v-model="filters.site_id"
+                placeholder="请选择场地"
+                filterable
+                clearable
+              >
+                <el-option
+                  v-for="item in siteList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label prop="project_id">
+              <el-select
+                icon="el-icon-search"
+                v-model="filters.project_id"
+                placeholder="请选择节目"
+                filterable
+                clearable
+              >
+                <el-option
+                  v-for="item in projectList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label prop="link_id">
+              <el-select
+                icon="el-icon-search"
+                v-model="filters.link_id"
                 placeholder="请选择授权链接"
                 filterable
                 clearable
               >
                 <el-option
-                  v-for="item in authList"
+                  v-for="item in linkList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop="type"
-            >
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.type"
-                placeholder="请选择授权类型"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in typeList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              label
-              prop="status"
-            >
+            <el-form-item label prop="status">
               <el-select
                 icon="el-icon-search"
                 v-model="filters.status"
@@ -70,39 +89,15 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop="dateTime"
-            >
-              <el-date-picker
-                v-model="filters.dateTime"
-                :clearable="false"
-                :picker-options="pickerOptions"
-                type="daterange"
-                align="right"
-                unlink-panels
-                start-placeholder="授权开始时间"
-                end-placeholder="授权结束时间"
-              />
-            </el-form-item>
             <el-form-item label>
-              <el-button
-                class="el-button-success"
-                @click="search('filters')"
-              >搜索</el-button>
-              <el-button
-                class="el-button-cancel"
-                @click="resetSearch('filters')"
-              >重置</el-button>
+              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">授权列表（ {{ pagination.total }} ）</span>
-          <el-button
-            type="primary"
-            icon="el-icon-circle-plus-outline"
-          >新增授权</el-button>
+          <span class="label">授权投放列表（ {{ pagination.total }} ）</span>
+          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addAccredit">新增投放</el-button>
         </div>
         <!-- 表格 -->
         <el-table
@@ -115,16 +110,21 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form
-                label-position="left"
-                inline
-                class="demo-table-expand"
-              >
+              <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="原始ID:">
-                  <span>{{ scope.row.appid }}</span>
+                <el-form-item label="区域:">
+                  <span>{{ scope.row.area }}</span>
+                </el-form-item>
+                <el-form-item label="场地:">
+                  <span>{{ scope.row.site_name }}</span>
+                </el-form-item>
+                <el-form-item label="点位:">
+                  <span>{{ scope.row.point }}</span>
+                </el-form-item>
+                <el-form-item label="节目:">
+                  <span>{{ scope.row.project }}</span>
                 </el-form-item>
                 <el-form-item label="授权链接:">
                   <span>{{ scope.row.link }}</span>
@@ -133,36 +133,44 @@
                   <span>{{ scope.row.type }}</span>
                 </el-form-item>
                 <el-form-item label="状态:">
-                  <span :class="(scope.row.status !== '正常') ? 'sold-out-expand' : 'operating-expand'">{{ scope.row.status }}</span>
+                  <span
+                    :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.status }}</span>
                 </el-form-item>
+
                 <el-form-item label="时间:">
                   <span>{{ scope.row.created_at }}</span>
-                </el-form-item>
-                <el-form-item label="开通权限:">
-                  <div>
-                    <span>消息管理权限</span>
-                  </div>
-                  <div>
-                    <span>微信卡券权限</span>
-                  </div>
-                  <div>
-                    <span>微信卡券权限</span>
-                  </div>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
+          <el-table-column sortable :show-overflow-tooltip="true" prop="id" label="ID" width="70"/>
           <el-table-column
             sortable
-            prop="id"
-            label="ID"
+            :show-overflow-tooltip="true"
+            prop="area"
+            label="区域"
             min-width="80"
           />
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="appid"
-            label="原始ID"
+            prop="site_name"
+            label="场地"
+            min-width="80"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="point"
+            label="点位"
+            min-width="80"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="project"
+            label="节目"
             min-width="80"
           />
           <el-table-column
@@ -170,14 +178,7 @@
             :show-overflow-tooltip="true"
             prop="link"
             label="授权链接"
-            min-width="80"
-          />
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="type"
-            label="类型"
-            min-width="80"
+            min-width="90"
           />
           <el-table-column
             sortable
@@ -187,37 +188,17 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span :class="(scope.row.status !== '正常') ? 'sold-out' : 'operating'">{{ scope.row.status }}</span>
+              <span
+                :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'"
+              >{{ scope.row.status }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop
-            label="开通权限"
-            min-width="100"
-          >
+          <el-table-column label="操作" width="150">
             <template slot-scope="scope">
-              <span>
-                <div>
-                  <span>消息管理权限</span>
-                </div>
-                <div>
-                  <span>微信卡券权限</span>
-                </div>
-                <div>
-                  <span>微信卡券权限</span>
-                </div>
-              </span>
+              <el-button size="small" @click="editAccredit(scope.row)">编辑</el-button>
+              <el-button size="small">下架</el-button>
             </template>
           </el-table-column>
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="created_at"
-            label="时间"
-            min-width="80"
-          />
         </el-table>
         <div class="pagination-wrap">
           <el-pagination
@@ -234,7 +215,7 @@
 </template>
 
 <script>
-import { getPointList } from "service";
+// import { getAccreditDeliveryList } from "service";
 
 import {
   Button,
@@ -245,8 +226,7 @@ import {
   FormItem,
   MessageBox,
   Select,
-  Option,
-  DatePicker
+  Option
 } from "element-ui";
 
 export default {
@@ -258,60 +238,21 @@ export default {
     "el-form": Form,
     "el-form-item": FormItem,
     "el-select": Select,
-    "el-option": Option,
-    "el-date-picker": DatePicker
+    "el-option": Option
   },
   data() {
     return {
       filters: {
-        auth_id: null,
-        template_id: null,
+        area_id: null,
+        site_id: null,
         status: "",
-        dateTime: []
+        project_id: null,
+        link_id: null
       },
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "昨天",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24);
-              end.setTime(end.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date().getTime() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
-      typeList: [],
-      authList: [],
+      siteList: [],
+      areaList: [],
+      projectList: [],
+      linkList: [],
       statusList: [],
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
@@ -326,28 +267,45 @@ export default {
       tableData: [
         {
           id: 1,
-          appid: "wxb7413f441363722c",
-          link: "福州仓山万达百货",
+          area: "服南",
+          point: "4F—电梯口",
+          site_name: "4F—电梯口",
+          status: "运营中",
+          project: "幻境",
+          link: "株洲大汉希尔顿",
           type: "公众号",
-          status: "正常",
           created_at: "2019-01-16 19:01:01"
         },
         {
           id: 2,
-          appid: "wxb7413f441363722c",
-          link: "福州仓山万达百货",
-          type: "订阅号",
-          status: "未认证",
+          area: "服南",
+          point: "4F—电梯口",
+          site_name: "4F—电梯口",
+          project: "圣诞糖果屋",
+          status: "下架",
+          link: "株洲大汉希尔顿",
+          type: "小程序",
           created_at: "2019-01-16 19:01:01"
         }
       ]
     };
   },
   created() {
-    // this.getPointList();
+    // this.getAccreditDeliveryList();
   },
   methods: {
-    getPointList() {
+    addAccredit() {
+      this.$router.push({
+        path: "/put/accredit/save"
+      });
+    },
+    editAccredit(data) {
+      this.$router.push({
+        path: "/put/accredit/save",
+        uid: data.id
+      });
+    },
+    getAccreditDeliveryList() {
       this.setting.loading = true;
       let args = {
         include: "device,market,area",
@@ -361,29 +319,28 @@ export default {
       if (this.filters.status === "") {
         delete args.screen_status;
       }
-      getPointList(this, args)
+      getAccreditDeliveryList(this, args)
         .then(res => {
           this.tableData = res.data;
           this.pagination.total = res.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(err => {
-          console.log(err);
           this.setting.loading = false;
         });
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getPointList();
+      this.getAccreditDeliveryList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getPointList();
+      this.getAccreditDeliveryList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getPointList();
+      this.getAccreditDeliveryList();
     }
   }
 };
@@ -448,7 +405,6 @@ export default {
         padding: 3px 5px;
         border-radius: 5px;
       }
-
       .search-wrap {
         margin-top: 5px;
         display: flex;
