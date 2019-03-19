@@ -1,6 +1,6 @@
 <template>
-  <div class="auth-root">
-    <router-view/>
+  <div class="auth-child-root">
+    <router-view />
   </div>
 </template>
 <script>

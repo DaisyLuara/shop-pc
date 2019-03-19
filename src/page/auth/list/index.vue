@@ -8,8 +8,15 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="auth_id">
+          <el-form
+            ref="filters"
+            :model="filters"
+            :inline="true"
+          >
+            <el-form-item
+              label
+              prop="auth_id"
+            >
               <el-select
                 icon="el-icon-search"
                 v-model="filters.auth_id"
@@ -25,7 +32,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="type">
+            <el-form-item
+              label
+              prop="type"
+            >
               <el-select
                 icon="el-icon-search"
                 v-model="filters.type"
@@ -41,7 +51,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="status">
+            <el-form-item
+              label
+              prop="status"
+            >
               <el-select
                 icon="el-icon-search"
                 v-model="filters.status"
@@ -57,7 +70,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="dateTime">
+            <el-form-item
+              label
+              prop="dateTime"
+            >
               <el-date-picker
                 v-model="filters.dateTime"
                 :clearable="false"
@@ -70,14 +86,23 @@
               />
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button
+                class="el-button-success"
+                @click="search('filters')"
+              >搜索</el-button>
+              <el-button
+                class="el-button-cancel"
+                @click="resetSearch('filters')"
+              >重置</el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="actions-wrap">
           <span class="label">授权列表（ {{ pagination.total }} ）</span>
-          <el-button type="primary" icon="el-icon-circle-plus-outline">新增授权</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-circle-plus-outline"
+          >新增授权</el-button>
         </div>
         <!-- 表格 -->
         <el-table
@@ -90,7 +115,11 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -104,9 +133,7 @@
                   <span>{{ scope.row.type }}</span>
                 </el-form-item>
                 <el-form-item label="状态:">
-                  <span
-                    :class="(scope.row.status !== '正常') ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.status }}</span>
+                  <span :class="(scope.row.status !== '正常') ? 'sold-out-expand' : 'operating-expand'">{{ scope.row.status }}</span>
                 </el-form-item>
                 <el-form-item label="时间:">
                   <span>{{ scope.row.created_at }}</span>
@@ -125,7 +152,12 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" min-width="80"/>
+          <el-table-column
+            sortable
+            prop="id"
+            label="ID"
+            min-width="80"
+          />
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
@@ -155,12 +187,16 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span
-                :class="(scope.row.status !== '正常') ? 'sold-out' : 'operating'"
-              >{{ scope.row.status }}</span>
+              <span :class="(scope.row.status !== '正常') ? 'sold-out' : 'operating'">{{ scope.row.status }}</span>
             </template>
           </el-table-column>
-          <el-table-column sortable :show-overflow-tooltip="true" prop label="开通权限" min-width="100">
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop
+            label="开通权限"
+            min-width="100"
+          >
             <template slot-scope="scope">
               <span>
                 <div>

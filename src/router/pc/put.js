@@ -26,6 +26,35 @@ let router = {
           },
           component: () =>
             import(/* webpackChunkName: "page/put/list/index" */ 'page/put/list/index')
+        },
+        {
+          path: 'save',
+          meta: {
+            title: '节目投放新增'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/list/save" */ 'page/put/list/save')
+        }
+      ]
+    },
+    {
+      path: 'schedule',
+      meta: {
+        title: '节目模板'
+        // permission: 'shop_auth.datum'
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/put/schedule/routerView" */ 'page/put/schedule/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '节目模板列表'
+            // permission: 'shop_auth.datum.read'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/schedule/index" */ 'page/put/schedule/index')
         }
       ]
     }
