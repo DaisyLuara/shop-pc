@@ -10,7 +10,7 @@
         <el-form-item label prop="name">
           <el-select v-model="searchForm.name" placeholder="请选择节目模板名称" filterable clearable>
             <el-option
-              v-for="item in sceneList"
+              v-for="item in projectList"
               :key="item.id"
               :label="item.name"
               :value="item.id"
@@ -178,14 +178,6 @@ import {
   MessageBox,
   Input
 } from "element-ui";
-import // modifySchedule,
-// saveSchedule,
-// getScheduleList,
-// saveTemplate,
-// getSearchModuleList,
-// getSearchProjectList,
-// modifyTemplate,
-"service";
 
 export default {
   components: {
@@ -207,6 +199,19 @@ export default {
     return {
       activeNames: 0,
       templateVisible: false,
+      searchForm: {
+        name: ""
+      },
+      setting: {
+        loading: false,
+        loadingText: "拼命加载中"
+      },
+      pagination: {
+        total: 0,
+        pageSize: 10,
+        currentPage: 1
+      },
+      searchLoading: false,
       loading: false,
       title: "",
       templateList: [],
@@ -215,13 +220,6 @@ export default {
         name: ""
       },
       projectList: [],
-      tableData: [
-        {
-          id: "1",
-          name: "情人节",
-          number: 4
-        }
-      ],
       pagination: {
         total: 0,
         pageSize: 10,
@@ -230,11 +228,116 @@ export default {
       searchForm: {
         name: ""
       },
-      setting: {
-        loading: false,
-        loadingText: "拼命加载中"
-      },
-      searchLoading: false
+      tableData: [
+        {
+          id: 51,
+          name: "闵行-汉翔书法",
+          schedules: {
+            data: [
+              {
+                id: 177,
+                tpl_id: 51,
+                date_start: "13:00",
+                date_end: "16:00",
+                project: {
+                  alias: "hanXiangHw",
+                  created_at: "2019-03-05 18:30:53",
+                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
+                  id: 439,
+                  image: "http://image.exe666.com/1007/image/816_bg.png",
+                  info: "汉翔书法",
+                  link:
+                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
+                  name: "汉翔书法-颛桥万达",
+                  operation: "秦洁莲",
+                  policy_id: 69,
+                  tester: "方圆,杨昀",
+                  updated_at: "2019-03-05 18:30:53",
+                  version_code: "2019030116",
+                  versionname: "hanXiangHw"
+                }
+              },
+              {
+                id: 177,
+                tpl_id: 51,
+                date_start: "13:00",
+                date_end: "16:00",
+                project: {
+                  alias: "hanXiangHw",
+                  created_at: "2019-03-05 18:30:53",
+                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
+                  id: 439,
+                  image: "http://image.exe666.com/1007/image/816_bg.png",
+                  info: "汉翔书法",
+                  link:
+                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
+                  name: "汉翔书法-颛桥万达",
+                  operation: "秦洁莲",
+                  policy_id: 69,
+                  tester: "方圆,杨昀",
+                  updated_at: "2019-03-05 18:30:53",
+                  version_code: "2019030116",
+                  versionname: "hanXiangHw"
+                }
+              }
+            ]
+          }
+        },
+        {
+          id: 51,
+          name: "闵行-汉翔书法",
+          schedules: {
+            data: [
+              {
+                id: 177,
+                tpl_id: 51,
+                date_start: "13:00",
+                date_end: "16:00",
+                project: {
+                  alias: "hanXiangHw",
+                  created_at: "2019-03-05 18:30:53",
+                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
+                  id: 439,
+                  image: "http://image.exe666.com/1007/image/816_bg.png",
+                  info: "汉翔书法",
+                  link:
+                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
+                  name: "汉翔书法-颛桥万达",
+                  operation: "秦洁莲",
+                  policy_id: 69,
+                  tester: "方圆,杨昀",
+                  updated_at: "2019-03-05 18:30:53",
+                  version_code: "2019030116",
+                  versionname: "hanXiangHw"
+                }
+              },
+              {
+                id: 177,
+                tpl_id: 51,
+                date_start: "13:00",
+                date_end: "16:00",
+                project: {
+                  alias: "hanXiangHw",
+                  created_at: "2019-03-05 18:30:53",
+                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
+                  id: 439,
+                  image: "http://image.exe666.com/1007/image/816_bg.png",
+                  info: "汉翔书法",
+                  link:
+                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
+                  name: "汉翔书法-颛桥万达",
+                  operation: "秦洁莲",
+                  policy_id: 69,
+                  tester: "方圆,杨昀",
+                  updated_at: "2019-03-05 18:30:53",
+                  version_code: "2019030116",
+                  versionname: "hanXiangHw"
+                }
+              }
+            ]
+          }
+        }
+      ]
     };
   },
   created() {

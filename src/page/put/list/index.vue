@@ -8,25 +8,10 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form
-            ref="filters"
-            :model="filters"
-            :inline="true"
-          >
-            <el-form-item
-              label
-              prop="name"
-            >
-              <el-select
-                v-model="filters.name"
-                placeholder="请选择节目名称"
-                filterable
-                clearable
-              >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-name"
-                ></i>
+          <el-form ref="filters" :model="filters" :inline="true">
+            <el-form-item label prop="name">
+              <el-select v-model="filters.name" placeholder="请选择节目名称" filterable clearable>
+                <i slot="prefix" class="el-input__icon el-icon-name"></i>
                 <el-option
                   v-for="item in nameList"
                   :key="item.id"
@@ -35,20 +20,9 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop="visiable"
-            >
-              <el-select
-                v-model="filters.visiable"
-                placeholder="请选择点位状态"
-                filterable
-                clearable
-              >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-pointer"
-                ></i>
+            <el-form-item label prop="visiable">
+              <el-select v-model="filters.visiable" placeholder="请选择点位状态" filterable clearable>
+                <i slot="prefix" class="el-input__icon el-icon-pointer"></i>
                 <el-option
                   v-for="item in visiableList"
                   :key="item.id"
@@ -57,22 +31,12 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop=""
-            >
-              <el-button
-                class="el-button-success"
-                @click="search('filters')"
-              >搜索</el-button>
-              <el-button
-                class="el-button-cancel"
-                @click="resetSearch('filters')"
-              >重置</el-button>
+            <el-form-item label prop>
+              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
             <!-- </el-col>
-            </el-row> -->
-
+            </el-row>-->
           </el-form>
         </div>
         <div class="actions-wrap">
@@ -85,7 +49,6 @@
             >新增节目投放</el-button>
           </div>
         </div>
-
         <!-- 节目投放列表 -->
         <el-table
           ref="multipleTable"
@@ -97,26 +60,20 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form
-                label-position="left"
-                inline
-                class="demo-table-expand"
-              >
+              <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="节目名称">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目icon">
-                  <img
-                    :src="scope.row.icon"
-                    alt="image"
-                    style="width: 20%;"
-                  >
+                  <img :src="scope.row.icon" alt="image" style="width: 20%;">
                 </el-form-item>
                 <el-form-item label="点位">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="状态:">
-                  <span :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'">{{ scope.row.status }}</span>
+                  <span
+                    :class="(scope.row.status === '下架') ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.status }}</span>
                 </el-form-item>
                 <el-form-item label="时间">
                   <span>{{ scope.row.created_at }}</span>
@@ -124,12 +81,7 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column
-            sortable
-            prop="id"
-            label="ID"
-            width="80"
-          />
+          <el-table-column sortable prop="id" label="ID" width="80"/>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
@@ -139,18 +91,9 @@
           >
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
-          <el-table-column
-            sortable
-            prop="icon"
-            label="节目icon"
-            min-width="100"
-          >
+          <el-table-column sortable prop="icon" label="节目icon" min-width="100">
             <template slot-scope="scope">
-              <img
-                :src="scope.row.icon"
-                alt
-                class="icon-item"
-              >
+              <img :src="scope.row.icon" alt class="icon-item">
             </template>
           </el-table-column>
 
@@ -171,7 +114,9 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'">{{ scope.row.status }}</span>
+              <span
+                :class="(scope.row.status === '下架') ? 'sold-out' : 'operating'"
+              >{{ scope.row.status }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -182,21 +127,10 @@
           >
             <template slot-scope="scope">{{ scope.row.created_at }}</template>
           </el-table-column>
-          <el-table-column
-            label="操作"
-            width="180"
-          >
-            <template>
-              <el-button
-                type="success"
-                size="small"
-                @click="modifyEditName"
-              >名称</el-button>
-              <el-button
-                type="info"
-                size="small"
-                @click="modifyEditTime"
-              >时间</el-button>
+          <el-table-column label="操作" width="180">
+            <template slot-scope="scope">
+              <el-button type="success" size="small" @click="modifyEditName">名称</el-button>
+              <el-button type="info" size="small" @click="modifyEditTime">时间</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -210,89 +144,59 @@
           />
         </div>
       </div>
-    </div>
-    <!-- 修改 -->
-    <el-dialog
-      v-loading="loading"
-      :visible.sync="editVisible"
-      title="修改"
-      @close="dialogClose"
-    >
-      <el-form
-        ref="projectForm"
-        :model="projectForm"
-        label-width="150px"
-      >
-        <el-form-item
-          v-if="modifyOptionFlag.project"
-          :rules="[{ required: true, message: '请输入节目', trigger: 'submit'}]"
-          label="节目名称"
-          prop="project"
-        >
-          <el-select
-            v-model="projectForm.project"
-            :remote-method="getProject"
-            :multiple-limit="1"
-            multiple
-            filterable
-            placeholder="请搜索"
-            remote
-            clearable
+      <!-- 节目名称修改 -->
+      <el-dialog v-loading="loading" :visible.sync="editVisible" title="修改" @close="dialogClose">
+        <el-form ref="projectForm" :model="projectForm" label-width="150px">
+          <el-form-item
+            v-if="modifyOptionFlag.project"
+            :rules="[{ required: true, message: '请输入节目', trigger: 'submit'}]"
+            label="节目名称"
+            prop="project"
           >
-            <el-option
-              v-for="item in projectList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+            <el-select
+              v-model="projectForm.project"
+              :remote-method="getProject"
+              :multiple-limit="1"
+              multiple
+              filterable
+              placeholder="请搜索"
+              remote
+              clearable
+            >
+              <el-option
+                v-for="item in projectList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="modifyOptionFlag.time" label="开始时间" prop="sdate">
+            <el-date-picker
+              v-model="projectForm.sdate"
+              :editable="false"
+              type="date"
+              placeholder="选择开始时间"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item
-          v-if="modifyOptionFlag.defineTemplate"
-          label="开始时间"
-          prop="sdate"
-        >
-          <el-date-picker
-            v-model="projectForm.sdate"
-            :editable="false"
-            type="date"
-            placeholder="选择开始时间"
-          />
-        </el-form-item>
-        <el-form-item
-          v-if="modifyOptionFlag.defineTemplate"
-          label="结束时间"
-          prop="edate"
-        >
-          <el-date-picker
-            v-model="projectForm.edate"
-            :editable="false"
-            type="date"
-            placeholder="选择结束时间"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitModify('projectForm')"
-          >完成</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+          </el-form-item>
+          <el-form-item v-if="modifyOptionFlag.defineTemplate" label="结束时间" prop="edate">
+            <el-date-picker
+              v-model="projectForm.edate"
+              :editable="false"
+              type="date"
+              placeholder="选择结束时间"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitModify('projectForm')">完成</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
-
 <script>
-import {
-  // modifyProjectLaunch,
-  // getPutProjectList,
-  // getSearchMarketList,
-  // getSearchSceneList,
-  // getSearchAeraList,
-  // getSearchModuleList,
-  // getSearchProjectList
-} from "service";
-
+import {} from "service";
 import {
   Button,
   Input,
@@ -333,7 +237,7 @@ export default {
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       filters: {
         name: "",
-        visiable: "",
+        visiable: ""
       },
       nameList: [],
       visiableList: [
@@ -356,14 +260,34 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [{
-        id: 1,
-        name: '大融城',
-        icon: 'http://image.exe666.com/1007/image/479_1550230064.png',
-        point: '上海浦东新区额',
-        status: '下架',
-        created_at: '2019-09-10'
-      }],
+      editVisible: false,
+      projectForm: {
+        project: [],
+        sdate: "",
+        edate: ""
+      },
+      modifyOptionFlag: {
+        project: false,
+        time: false
+      },
+      tableData: [
+        {
+          id: 1,
+          name: "大融城",
+          icon: "http://image.exe666.com/1007/image/479_1550230064.png",
+          point: "上海浦东新区额",
+          status: "下架",
+          created_at: "2019-09-10"
+        },
+        {
+          id: 2,
+          name: "大融城",
+          icon: "http://image.exe666.com/1007/image/479_1550230064.png",
+          point: "上海浦东新区额",
+          status: "下架",
+          created_at: "2019-09-10"
+        }
+      ]
     };
   },
   created() {
@@ -387,8 +311,22 @@ export default {
       this.editCondition.conditionList = [];
       this.getProjectList();
     },
-    modifyEditName() { },
-    modifyEditTime() { },
+    modifyEditName() {
+      this.editVisible = true;
+      this.modifyOptionFlag.project = true;
+      this.modifyOptionFlag.time = false;
+    },
+    modifyEditTime() {
+      this.editVisible = true;
+      this.modifyOptionFlag.time = true;
+      this.modifyOptionFlag.project = false;
+    },
+    dialogClose() {
+      if (!this.editVisible) {
+        this.editCondition.conditionList = [];
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
     getProject(query) {
       if (query !== "") {
         this.searchLoading = true;
@@ -421,8 +359,8 @@ export default {
         project_name: this.filters.name,
         visiable: this.filters.visiable
       };
-      if (this.filters.visiable === '') {
-        delete searchArgs.visiable
+      if (this.filters.visiable === "") {
+        delete searchArgs.visiable;
       }
       getPutProjectList(this, searchArgs)
         .then(response => {
@@ -444,8 +382,7 @@ export default {
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
       this.getProjectList();
-    },
-
+    }
   }
 };
 </script>
