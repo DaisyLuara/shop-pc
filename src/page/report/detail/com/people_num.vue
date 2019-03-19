@@ -1,11 +1,17 @@
 <template>
   <div
     v-loading="setting.loading"
+    :element-loading-background="setting.loadingBackGround"
     :element-loading-text="setting.loadingText"
     class="people_num_wrapper"
   >
     <!-- 主要图表部分 -->
-    <div v-loading="poepleCountFlag" class="content-wrapper">
+    <div
+      v-loading="poepleCountFlag"
+      :element-loading-background="setting.loadingBackGround"
+      :element-loading-text="setting.loadingText"
+      class="content-wrapper"
+    >
       <ul class="btns-wrapper">
         <li
           v-for="(item, key) in peopleCount.concat([{ index: 'cpf', display_name: 'CPF转化率' }, { index: 'cpr', display_name:'CPR转化率' }, { index: 'cpa', display_name:'CPA转化率' }, { index: 'cpl', display_name:'CPL转化率' }])"
@@ -45,7 +51,12 @@
       </div>
     </div>
 
-    <div v-loading="ageFlag" class="age-sex-wrapper">
+    <div
+      v-loading="ageFlag"
+      :element-loading-background="setting.loadingBackGround"
+      :element-loading-text="setting.loadingText"
+      class="age-sex-wrapper"
+    >
       <div class="sex-part">
         <chart ref="pieChart" :options="pieChart" @click="onClick"/>
       </div>
@@ -54,22 +65,42 @@
       </div>
     </div>
 
-    <div v-loading="crowdFlag" class="time-crowd-wrapper">
+    <div
+      v-loading="crowdFlag"
+      :element-loading-background="setting.loadingBackGround"
+      :element-loading-text="setting.loadingText"
+      class="time-crowd-wrapper"
+    >
       <div class="crowd-part">
         <chart ref="crowdChart" :options="timeAndCrowdChart"/>
       </div>
     </div>
 
     <div class="ranking-wrap">
-      <div v-loading="projectFlag" class="project-part">
+      <div
+        v-loading="projectFlag"
+        :element-loading-background="setting.loadingBackGround"
+        :element-loading-text="setting.loadingText"
+        class="project-part"
+      >
         <chart ref="projectChar" :options="projectOptions" @click="clickProject"/>
       </div>
-      <div v-loading="userFlag" class="project-age-part">
+      <div
+        v-loading="userFlag"
+        :element-loading-background="setting.loadingBackGround"
+        :element-loading-text="setting.loadingText"
+        class="project-age-part"
+      >
         <chart ref="projectAgeChart" :options="projectAgeChart"/>
       </div>
     </div>
 
-    <div v-loading="tableSetting.loading" class="table-wrap">
+    <div
+      v-loading="tableSetting.loading"
+      :element-loading-background="tableSetting.loadingBackGround"
+      :element-loading-text="tableSetting.loadingText"
+      class="table-wrap"
+    >
       <div class="actions-wrap">
         <span class="label">
           <span class="point-title">点位节目列表</span>
@@ -340,13 +371,15 @@ export default {
       },
       tableSetting: {
         loading: false,
-        loadingText: "拼命加载中"
+        loadingText: "拼命加载中",
+        loadingBackGround: "#24215b"
       },
       shouldDialogShow: false,
       setting: {
         isOpenSelectAll: true,
         loading: false,
-        loadingText: "拼命加载中"
+        loadingText: "拼命加载中",
+        loadingBackGround: "#24215b"
       },
       rateOption: {
         title: {
@@ -682,8 +715,8 @@ export default {
           trigger: "axis",
           axisPointer: {
             type: "cross",
-            crossStyle: {
-              color: "#fff"
+            label: {
+              backgroundColor: "#6a7985"
             }
           },
           formatter: function(data) {
@@ -879,7 +912,11 @@ export default {
       },
       sexAndAgeChart: {
         title: {
-          text: "性别年龄分布"
+          left: "left",
+          text: "性别年龄分布",
+          textStyle: {
+            color: "#fff"
+          }
         },
         tooltip: {
           trigger: "item"
@@ -889,7 +926,10 @@ export default {
           right: 10,
           top: "bottom",
           bottom: 10,
-          data: null
+          data: null,
+          textStyle: {
+            color: "#fff"
+          }
         },
         series: [
           {
@@ -1636,7 +1676,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .people_num_wrapper {
-  
   .chart-dialog {
     position: fixed;
     z-index: 10000;
@@ -1654,6 +1693,7 @@ export default {
       position: absolute;
       top: 5px;
       right: 5px;
+      color: #fff;
       cursor: pointer;
     }
     .echarts {
@@ -2007,7 +2047,7 @@ export default {
     padding: 15px;
     background: #24215b;
     opacity: 0.95;
-    margin: 15px 0;
+    margin: 15px 0 0;
     .point-title {
       font-size: 18px;
       color: #fff;

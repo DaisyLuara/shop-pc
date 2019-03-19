@@ -2,10 +2,16 @@
   <div
     v-loading="setting.loading"
     :element-loading-text="setting.loadingText"
+    :element-loading-background="setting.loadingBackGround"
     class="person-times-wrap"
   >
     <!-- 主要图表部分 -->
-    <div v-loading="poepleCountFlag" class="content-wrapper">
+    <div
+      v-loading="poepleCountFlag"
+      :element-loading-background="setting.loadingBackGround"
+      :element-loading-text="setting.loadingText"
+      class="content-wrapper"
+    >
       <ul class="btns-wrapper">
         <li v-for="(item, key) in peopleCount" :key="item.number.index">
           <div class="person-btn-wrap">
@@ -42,10 +48,13 @@
       </div>
     </div>
     <!-- 其他图表 -->
-    <!-- <el-collapse v-model="activeNames" @change="handleChange"> -->
     <!-- 年龄分布图 -->
-    <!-- <el-collapse-item title="年龄分布图" name="1" class="echart-person-times-data"> -->
-    <div v-loading="ageFlag" class="age-person-sex-wrapper">
+    <div
+      v-loading="ageFlag"
+      :element-loading-background="setting.loadingBackGround"
+      :element-loading-text="setting.loadingText"
+      class="age-person-sex-wrapper"
+    >
       <div class="sex-person-part">
         <chart ref="pieSexChart" :options="pieSexChart" @click="onClick"/>
       </div>
@@ -53,30 +62,44 @@
         <chart ref="agePersonChart" :options="agePersonChart"/>
       </div>
     </div>
-    <!-- </el-collapse-item> -->
     <!-- 时间段与人群特征 -->
-    <!-- <el-collapse-item title="时间段与人群特征" name="2" class="echart-person-times-data"> -->
-    <div v-loading="crowdFlag" class="time-crowd-person-wrapper">
+    <div
+      v-loading="crowdFlag"
+      :element-loading-background="setting.loadingBackGround"
+      :element-loading-text="setting.loadingText"
+      class="time-crowd-person-wrapper"
+    >
       <div class="crowd-person-part">
         <chart ref="crowdPersonChart" :options="timeAndCrowdPersonChart"/>
       </div>
     </div>
-    <!-- </el-collapse-item> -->
     <!-- 节目日化人气 -->
-    <!-- <el-collapse-item title="节目日化人气" name="3" class="echart-person-times-data"> -->
     <div class="ranking-person-wrap">
-      <div v-loading="projectPersonFlag" class="project-person-part">
+      <div
+        v-loading="projectPersonFlag"
+        :element-loading-background="setting.loadingBackGround"
+        :element-loading-text="setting.loadingText"
+        class="project-person-part"
+      >
         <chart ref="projectPersonChar" :options="projectPersonOptions" @click="clickProject"/>
       </div>
-      <div v-loading="userFlag" class="project-age-person-part">
+      <div
+        v-loading="userFlag"
+        :element-loading-background="setting.loadingBackGround"
+        :element-loading-text="setting.loadingText"
+        class="project-age-person-part"
+      >
         <div style="font-size: 16px;">{{ projectAgeTitle }}</div>
         <chart ref="PersonprojectAgeChart" :options="PersonprojectAgeChart"/>
       </div>
     </div>
-    <!-- </el-collapse-item> -->
     <!-- 报表部分 -->
-    <!-- <el-collapse-item title="点位列表" name="4" class="echart-person-times-data"> -->
-    <div v-loading="tableSetting.loading" class="table-wrap">
+    <div
+      v-loading="tableSetting.loading"
+      :element-loading-background="tableSetting.loadingBackGround"
+      :element-loading-text="tableSetting.loadingText"
+      class="table-wrap"
+    >
       <div class="actions-wrap">
         <span class="label">
           <span class="point-title">点位节目列表</span>
@@ -199,8 +222,6 @@
         />
       </div>
     </div>
-    <!-- </el-collapse-item> -->
-    <!-- </el-collapse> -->
     <!-- 弹窗for 性别细节 -->
     <div v-loading="dialogLoading" v-show="shouldDialogShow" class="chart-dialog">
       <div class="dialog-close" @click="handleDialogClose">关闭</div>
@@ -356,13 +377,15 @@ export default {
       },
       tableSetting: {
         loading: false,
-        loadingText: "拼命加载中"
+        loadingText: "拼命加载中",
+        loadingBackGround: "#24215b"
       },
       shouldDialogShow: false,
       setting: {
         isOpenSelectAll: true,
         loading: false,
-        loadingText: "拼命加载中"
+        loadingText: "拼命加载中",
+        loadingBackGround: "#24215b"
       },
       pagination: {
         total: 0,
@@ -648,9 +671,12 @@ export default {
           trigger: "axis",
           axisPointer: {
             type: "cross",
-            crossStyle: {
-              color: "#000"
+            label: {
+              backgroundColor: "#6a7985"
             }
+            // crossStyle: {
+            //   color: "#000"
+            // }
           },
           formatter: function(data) {
             let century10 = (
@@ -845,6 +871,7 @@ export default {
       },
       sexAndAgeChart: {
         title: {
+          left: "left",
           text: "性别年龄分布",
           textStyle: {
             color: "#fff"
@@ -1792,6 +1819,7 @@ export default {
       position: absolute;
       top: 5px;
       right: 5px;
+      color: #fff;
       cursor: pointer;
     }
     .echarts {
@@ -1815,7 +1843,7 @@ export default {
     padding: 15px;
     background: #24215b;
     opacity: 0.95;
-    margin: 15px 0;
+    margin: 15px 0 0;
     .point-title {
       font-size: 18px;
       color: #fff;
@@ -1837,7 +1865,6 @@ export default {
   .pagination-wrap {
     margin: 10px auto;
     text-align: right;
-    
   }
   .actions-wrap {
     display: flex;
