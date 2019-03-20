@@ -86,7 +86,7 @@ let router = {
             import(/* webpackChunkName: "page/put/accredit/save" */ 'page/put/accredit/save')
         },
         {
-          path: 'eidt/:uid',
+          path: 'edit/:uid',
           meta: {
             title: '授权投放新增'
             // permission: 'shop_auth.datum.read'

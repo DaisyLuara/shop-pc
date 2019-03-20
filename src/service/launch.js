@@ -58,9 +58,37 @@ const getLaunchWechatList = (context, params) => {
   })
 }
 
+// 新增授权投放
+const saveLaunchWechat = (context, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .post(HOST + LAUNCH_WECHAT_API, params)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+// 修改授权投放
+const modifyLaunchWechat = (context, id, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .patch(HOST + LAUNCH_WECHAT_API + '/' + id, params)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
 export {
   getLaunchProjectList,
   saveLaunchProject,
   modifyLaunchProject,
-  getLaunchWechatList
+  getLaunchWechatList,
+  saveLaunchWechat,
+  modifyLaunchWechat
 }

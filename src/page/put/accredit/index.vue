@@ -9,9 +9,9 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="project_id">
+            <el-form-item label prop="piid">
               <el-select
-                v-model="filters.project_id"
+                v-model="filters.piid"
                 :oading="searchLoading"
                 placeholder="请选择节目"
                 filterable
@@ -25,9 +25,9 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="link_id">
+            <el-form-item label prop="wiid">
               <el-select
-                v-model="filters.link_id"
+                v-model="filters.wiid"
                 :loading="searchLoading"
                 placeholder="请选择授权链接"
                 filterable
@@ -41,8 +41,8 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="status">
-              <el-select v-model="filters.status" placeholder="请选择状态" filterable clearable>
+            <el-form-item label prop="visiable">
+              <el-select v-model="filters.visiable" placeholder="请选择状态" filterable clearable>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -165,7 +165,11 @@
           <el-table-column label="操作" width="150">
             <template slot-scope="scope">
               <el-button size="small" @click="editAccredit(scope.row)">编辑</el-button>
-              <el-button v-if="scope.row.visible !== 0" size="small">下架</el-button>
+              <el-button
+                v-if="scope.row.visible !== 0"
+                size="small"
+                @click="modifyLaunchWechat(scope.row)"
+              >下架</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -184,7 +188,12 @@
 </template>
 
 <script>
-import { getProject, getAuthorizer, getLaunchWechatList } from "service";
+import {
+  getProject,
+  getAuthorizer,
+  getLaunchWechatList,
+  modifyLaunchWechat
+} from "service";
 
 import {
   Button,
@@ -213,9 +222,9 @@ export default {
   data() {
     return {
       filters: {
-        status: "",
-        project_id: null,
-        link_id: null
+        visiable: "",
+        piid: null,
+        wiid: null
       },
       projectList: [],
       linkList: [],
@@ -272,6 +281,41 @@ export default {
           break;
       }
     },
+    modifyLaunchWechat(data) {
+      let id = data.id;
+      let args = {
+        visiable: 0
+      };
+      this.$confirm("此操作将下架, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          modifyLaunchWechat(this, id, args)
+            .then(res => {
+              this.setting.loading = false;
+              this.$message({
+                message: "下架成功",
+                type: "success"
+              });
+              this.getLaunchWechatList();
+            })
+            .catch(err => {
+              this.$message({
+                message: err.response.data.message,
+                type: "success"
+              });
+              this.setting.loading = false;
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消下架"
+          });
+        });
+    },
     getProject() {
       this.searchLoading = true;
       getProject(this)
@@ -309,24 +353,27 @@ export default {
     },
     editAccredit(data) {
       this.$router.push({
-        path: "/put/accredit/save",
-        uid: data.id
+        path: "/put/accredit/edit/" + data.id
       });
     },
     getLaunchWechatList() {
       this.setting.loading = true;
       let args = {
         include: "point.market.area,project,wechat",
-        page: this.pagination.currentPage
-        // point_name: this.filters.name,
-        // screen_status: this.filters.status
+        page: this.pagination.currentPage,
+        piid: this.filters.piid,
+        wiid: this.filters.wiid,
+        visiable: this.filters.visiable
       };
-      // if (this.filters.name === "" || this.filters.name === null) {
-      //   delete args.point_name;
-      // }
-      // if (this.filters.status === "") {
-      //   delete args.screen_status;
-      // }
+      if (!this.filters.piid) {
+        delete args.piid;
+      }
+      if (!this.filters.wiid) {
+        delete args.wiid;
+      }
+      if (this.filters.visiable === "") {
+        delete args.visiable;
+      }
       getLaunchWechatList(this, args)
         .then(res => {
           this.tableData = res.data;
