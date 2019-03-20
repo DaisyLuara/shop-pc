@@ -71,7 +71,7 @@
                   >{{ scope.row.state !== 200 ? scope.row.state : '正常' }}</span>
                 </el-form-item>
                 <el-form-item label="时间:">
-                  <span>{{ scope.row.created_at }}</span>
+                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
                 <el-form-item label="开通权限:">
                   <span v-html="perShow(scope.row.per)"/>
@@ -130,7 +130,7 @@
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="created_at"
+            prop="updated_at"
             label="时间"
             min-width="80"
           />
