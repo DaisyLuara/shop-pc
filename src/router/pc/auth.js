@@ -3,8 +3,8 @@ let router = {
   path: 'auth',
   name: '授权',
   meta: {
-    title: '授权'
-    // permission: 'shop_auth'
+    title: '授权',
+    permission: 'shop_wechat'
   },
   component: () =>
     import(/* webpackChunkName: "page/auth/authView" */ 'page/auth/authView'),
@@ -12,8 +12,8 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '授权列表'
-        // permission: 'shop_auth.datum'
+        title: '授权列表',
+        permission: 'shop_wechat.wechat'
       },
       component: () =>
         import(/* webpackChunkName: "page/auth/list/routerView" */ 'page/auth/list/routerView'),
@@ -21,8 +21,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '授权投放列表'
-            // permission: 'shop_auth.datum.read'
+            title: '授权投放列表',
+            permission: 'shop_wechat.wechat.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/auth/list/index" */ 'page/auth/list/index')
@@ -30,7 +30,8 @@ let router = {
         {
           path: 'add',
           meta: {
-            title: '授权新增'
+            title: '授权新增',
+            permission: 'shop_wechat.wechat.create'
           },
           component: () =>
             import(/* webpackChunkName: "page/auth/list/add" */ 'page/auth/list/add')

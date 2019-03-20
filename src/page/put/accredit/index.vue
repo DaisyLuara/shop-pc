@@ -99,8 +99,8 @@
                 </el-form-item>
                 <el-form-item label="状态:">
                   <span
-                    :class="(scope.row.visible === 0) ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.visible ===0 ? '下架': '运营中' }}</span>
+                    :class="(scope.row.visiable === 0) ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.visiable ===0 ? '下架': '运营中' }}</span>
                 </el-form-item>
                 <el-form-item label="时间:">
                   <span>{{ scope.row.updated_at }}</span>
@@ -161,15 +161,15 @@
           >
             <template slot-scope="scope">
               <span
-                :class="(scope.row.visible === 0) ? 'sold-out' : 'operating'"
-              >{{ scope.row.visible===0 ? '下架': '运营中' }}</span>
+                :class="(scope.row.visiable === 0) ? 'sold-out' : 'operating'"
+              >{{ scope.row.visiable === 0 ? '下架': '运营中' }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
             <template slot-scope="scope">
               <el-button size="small" @click="editAccredit(scope.row)">编辑</el-button>
               <el-button
-                v-if="scope.row.visible !== 0"
+                v-if="scope.row.visiable !== 0"
                 size="small"
                 @click="modifyLaunchWechat(scope.row)"
               >下架</el-button>
