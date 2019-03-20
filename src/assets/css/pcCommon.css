@@ -102,12 +102,13 @@
 .el-table--enable-row-hover .el-table__body tr:hover > td {
   background-color: #f5f3fd !important;
 }
-.el-table .col-td:hover {
-  background-color: #fbfdf7 !important;
+.el-table .data-row:hover {
+  background-color: #3b335b !important;
   cursor: pointer;
 }
-.el-badge__content {
-  border: none !important;
+.el-table--enable-row-hover .el-table__body tr:hover > td,
+.data-row:hover {
+  background-color: #3b335b !important;
 }
 .el-badge__content.is-fixed {
   position: absolute;
