@@ -6,6 +6,7 @@
         <el-form :inline="true" ref="searchForm" :model="searchForm" class="search-form">
           <el-form-item label prop="point_id">
             <el-select
+              class="chart-data-select"
               v-model="searchForm.point_id"
               :loading="searchLoading"
               placeholder="请选择点位"
@@ -22,10 +23,11 @@
           </el-form-item>
           <el-form-item label prop="date">
             <el-date-picker
+              class="chart-data-date"
               v-model="searchForm.dateTime"
               :default-value="searchForm.dateTime"
               :clearable="false"
-              :picker-options="pickerOptions2"
+              :picker-options="pickerOptions"
               type="daterange"
               align="right"
               unlink-panels
@@ -34,12 +36,12 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="searchHandle">搜索</el-button>
-            <el-button size="small" @click="resetSearch">重置</el-button>
+            <el-button type="primary" size="small" @click="searchHandle" class="el-button-data">搜索</el-button>
+            <el-button size="small" @click="resetSearch" class="el-button-data-cancel">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <el-tab-pane label="按人次计" name="first">
+      <el-tab-pane label="按人次计" name="first" class="test">
         <PersonTimes ref="personTimes" :searchForm="searchForm"/>
       </el-tab-pane>
       <el-tab-pane label="按人数计" name="second">
@@ -86,7 +88,7 @@ export default {
           new Date().getTime() - 3600 * 1000 * 24
         ]
       },
-      pickerOptions2: {
+      pickerOptions: {
         shortcuts: [
           {
             text: "昨天",
@@ -168,6 +170,7 @@ export default {
       }
     },
     getPoint() {
+      this.searchLoading = true;
       getPoint(this)
         .then(res => {
           this.pointList = res;
@@ -205,10 +208,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .point-data-wrapper {
-  background: #fff;
   .search-wrap {
     padding: 30px;
-    background: #fff;
+    background: #1f1848;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -218,6 +220,7 @@ export default {
     .search-form {
       width: 865px;
     }
+
     .more-pic {
       position: absolute;
       top: 10px;

@@ -11,9 +11,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.detail-root {
-  height: 100%;
-  margin: 10px;
-  background-color: #eff2f7;
-}
+// .detail-root {
+//   height: 100%;
+//   margin: 10px;
+//   background-color: #eff2f7;
+// }
 </style>

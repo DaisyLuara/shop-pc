@@ -1,199 +1,101 @@
 <template>
-  <div 
-    class="account-form">
-    <div 
-      class="account-form__container">
-      <div 
-        class="account-form__header clearfix">
-        <div 
-          class="header-logo-wrap">
-          <span 
-            class="title-header">用户登录</span>
+  <div class="account-form">
+    <img
+      :src="IMG_URL + '/ad_shop/img/login/logo.png'"
+      class="top-logo"
+    >
+    <img
+      :src="IMG_URL + '/ad_shop/img/login/circle1.png'"
+      class="circle1"
+    >
+    <img
+      :src="IMG_URL + '/ad_shop/img/login/circle2.png'"
+      class="circle2"
+    >
+    <div class="account-form__container">
+      <el-col
+        :xs="15"
+        :sm="15"
+        :md="15"
+        :lg="15"
+      >
+        <div class="account-form_left">
+          <img
+            :src="IMG_URL + '/ad_shop/img/login/center.jpg'"
+            class="center"
+          >
         </div>
-      </div>
-      <div 
-        class="account-form__body">
-        <el-form 
-          ref="accountForm" 
-          :model="accountForm" 
-          :rules="rules" 
-          label-position="top" 
-          label-width="0px" 
-          @submit.native.prevent >
-          <el-form-item 
-            :class="{'error': validateError.account,'active': itemFocus.account}" 
-            prop="account" 
-            class="account-form-item mobile" >
-            <el-col 
-              :xs="10" 
-              :sm="8" 
-              :md="8" 
-              :lg="8">
-              <div 
-                class="account-form-item-label">
-                <span 
-                  class="lable-text">手机号码</span>
-                <span 
-                  class="lable-prefix">+86</span>
+      </el-col>
+      <el-col
+        :xs="8"
+        :sm="8"
+        :md="8"
+        :lg="8"
+      >
+        <div class="account-form_right">
+          <el-form
+            ref="accountForm"
+            :model="accountForm"
+            :rules="rules"
+            label-position="top"
+            label-width="0px"
+            @submit.native.prevent
+          >
+            <el-form-item class="account-form-item icon">
+              <div class="top-icon">
+                <img :src="IMG_URL + '/ad_shop/img/login/top.png'">
               </div>
-            </el-col>
-            <el-col 
-              :xs="14" 
-              :sm="16" 
-              :md="16" 
-              :lg="16">
-              <el-col 
-                :xs="16" 
-                :sm="16" 
-                :md="16" 
-                :lg="16">
-                <el-input 
-                  v-model="accountForm.account"
-                  :maxlength="11" 
-                  type="text"  
-                  auto-complete="off"
-                  placeholder="请输入手机号"/>
-              </el-col>
-            </el-col>
-            <div 
-              v-show="validateError.account"
-              class="error-tip" 
-            >{{ validateErrorText.account }}</div>
-          </el-form-item>
-          <!-- <el-form-item 
-            :class="{'error': validateError.imageCaptcha,'active': itemFocus.imageCaptcha}"
-            prop="imageCaptcha.value" 
-            class="account-form-item image-code">
-            <el-col 
-              :xs="4" 
-              :sm="5" 
-              :md="5" 
-              :lg="5">
-              <div 
-                class="account-form-item-label">
-                <span 
-                  class="lable-text">验证码</span>
+            </el-form-item>
+            <el-form-item
+              prop="account"
+              class="account-form-item mobile"
+            >
+              <el-input
+                v-model="accountForm.account"
+                auto-complete="off"
+                :maxlength="11"
+                type="text"
+                placeholder="请输入用户名"
+              />
+            </el-form-item>
+            <el-form-item
+              prop="password"
+              class="account-form-item password"
+            >
+              <el-input
+                v-model="accountForm.password"
+                :type="setting.showPassword ? 'text' : 'password'"
+                :maxlength="20"
+                auto-complete="off"
+                placeholder="请输入密码"
+                @keyup.enter.native="onSubmit(type)"
+                @focus="itemFocus.password=true;validateError.password=false"
+                @blur="itemFocus.password=false"
+              />
+              <div class="switch-show-off-password">
+                <img
+                  v-show="setting.showPassword"
+                  :src="IMG_URL+'/ad_shop/img/login/icon_show_pwd.png'"
+                  @click="setting.showPassword = !setting.showPassword"
+                >
+                <img
+                  v-show="!setting.showPassword"
+                  :src="IMG_URL+'/ad_shop/img/login/icon_hide_pwd.png'"
+                  @click="setting.showPassword = !setting.showPassword"
+                >
               </div>
-            </el-col>
-            <el-col 
-              :xs="20" 
-              :sm="19" 
-              :md="19" 
-              :lg="19">
-              <el-col 
-                :xs="12" 
-                :sm="13" 
-                :md="13" 
-                :lg="13">
-                <el-input 
-                  v-model="accountForm.imageCaptcha.value" 
-                  :maxlength="5" 
-                  type="text" 
-                  placeholder="请输入验证码"
-                  auto-complete="off"
-                  @focus="itemFocus.imageCaptcha=true;validateError.imageCaptcha=false" 
-                  @blur="itemFocus.imageCaptcha=false"/>
-              </el-col>
-              <el-col 
-                :xs="12" 
-                :sm="11" 
-                :md="11" 
-                :lg="11">
-                <div 
-                  class="image-code-wrap">
-                  <img 
-                    :src="setting.imageCaptcha.image_url" 
-                    class="image-code" 
-                    alt="验证码图片"
-                    @click="getImageCaptcha()" >
-                </div>
-              </el-col>
-            </el-col>
-            <div 
-              v-show="validateError.imageCaptcha"
-              class="error-tip">{{ validateErrorText.imageCaptcha }}</div>
-          </el-form-item> -->
-          <el-form-item  
-            :class="{'error': validateError.password,'active': itemFocus.password}"
-            prop="password" 
-            class="account-form-item password">
-            <el-col 
-              :xs="6" 
-              :sm="5"
-              :md="5"
-              :lg="5">
-              <div 
-                class="account-form-item-label password">
-                <div 
-                  class="lable-text">登录密码</div>
-              </div>
-            </el-col>
-            <el-col 
-              :xs="18" 
-              :sm="19" 
-              :md="19" 
-              :lg="19">
-              <el-col 
-                :xs="20" 
-                :sm="21" 
-                :md="21" 
-                :lg="21">
-                <el-input 
-                  v-model="accountForm.password"
-                  :type="setting.showPassword ? 'text' : 'password'" 
-                  :maxlength="20" 
-                  auto-complete="off"
-                  placeholder="请输入密码"
-                  @keyup.enter.native="onSubmit(type)" 
-                  @focus="itemFocus.password=true;validateError.password=false" 
-                  @blur="itemFocus.password=false" />
-              </el-col>
-              <el-col 
-                :xs="4" 
-                :sm="3" 
-                :md="3" 
-                :lg="3">
-                <div 
-                  class="switch-show-off-password">
-                  <img 
-                    v-show="setting.showPassword"
-                    src="../../assets/images/icon_show_pwd.png" 
-                    @click="setting.showPassword = !setting.showPassword" >
-                  <img 
-                    v-show="!setting.showPassword"
-                    src="../../assets/images/icon_hide_pwd.png"
-                    @click="setting.showPassword = !setting.showPassword" >
-                </div>
-              </el-col>
-            </el-col>
-            <div 
-              v-show="validateError.password"
-              class="error-tip" >{{ validateErrorText.password }}</div>
-          </el-form-item>
-          <el-form-item 
-            style="width:100%;" 
-            class="account-form-submit">
-            <el-button 
-              :loading="setting.submiting"
-              class="btn-login" 
-              @click="onSubmit(type)" 
-            >登录</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
+            </el-form-item>
+            <el-form-item class="account-form-submit">
+              <el-button
+                :loading="setting.submiting"
+                class="btn-login"
+                @click="onSubmit(type)"
+              >登入</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
     </div>
-    <div class="icp">
-      <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502008032" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
-        <p style="height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#fff;">
-          Copyright©2018 星视度 版权所有 <img :src="IMG_URL + 'ad_shop/img/reference.png'"/> 沪公网安备 31011502008032号
-        </p>
-      </a>
-      <a target="_blank" href="http://www.miitbeian.gov.cn" class="m-contact-text" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
-        <p style="height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#fff;">
-          沪ICP备 17045724号
-        </p>
-      </a>
-		</div>
   </div>
 </template>
 <script>
@@ -285,9 +187,8 @@ export default {
         redirect_url: '/account/datum'
       },
       rules: {
-        account: [{ validator: va, trigger: 'blur' }],
-        password: [{ validator: vp, trigger: 'submit' }],
-        // 'imageCaptcha.value': [{ validator: vic, trigger: 'blur' }]
+        // account: [{ validator: va, trigger: 'blur' }],
+        // password: [{ validator: vp, trigger: 'submit' }],
       },
       validateError: {
         account: false,
@@ -360,7 +261,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import '../../assets/css/accountForm.less';
+@import "../../assets/css/accountForm.less";
 </style>
 <style lang="less" scoped>
 .account-form-wrap {

@@ -1,24 +1,17 @@
 <template>
-  <div 
-    class="account-root">
+  <div class="person-root">
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: 'AccountView',
+  name: "AccountView",
   data() {
-    return {
-    }
+    return {};
   },
-  methods: {
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="less" scoped>
-  .account-root {
-    height: 100%;
-    background-color: #EFF2F7;
-  }
 </style>
