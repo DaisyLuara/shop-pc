@@ -17,6 +17,7 @@
                 filterable
                 clearable
               >
+                <i slot="prefix" class="el-input__icon el-icon-name"></i>
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -33,6 +34,7 @@
                 filterable
                 clearable
               >
+                <i slot="prefix" class="el-input__icon el-icon-link"></i>
                 <el-option
                   v-for="item in linkList"
                   :key="item.id"
@@ -43,6 +45,7 @@
             </el-form-item>
             <el-form-item label prop="visiable">
               <el-select v-model="filters.visiable" placeholder="请选择状态" filterable clearable>
+                <i slot="prefix" class="el-input__icon el-icon-status"></i>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -402,6 +405,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@imgurl: "https://cdn.exe666.com/ad_shop/img/";
 .root {
   font-size: 14px;
   color: #5e6d82;
@@ -474,7 +478,48 @@ export default {
         .el-select {
           width: 200px;
         }
-
+        .el-icon-name {
+          &:before {
+            content: " ";
+            display: inline-block;
+            background: url("@{imgurl}name_icon.png") center center/100% auto
+              no-repeat;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 50%;
+            left: 3%;
+            transform: translateY(-50%);
+          }
+        }
+        .el-icon-link {
+          &:before {
+            content: " ";
+            display: inline-block;
+            background: url("@{imgurl}link_icon.png") center center/100% auto
+              no-repeat;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 50%;
+            left: 3%;
+            transform: translateY(-50%);
+          }
+        }
+        .el-icon-status {
+          &:before {
+            content: " ";
+            display: inline-block;
+            background: url("@{imgurl}status_icon.png") center center/100% auto
+              no-repeat;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 50%;
+            left: 3%;
+            transform: translateY(-50%);
+          }
+        }
         .warning {
           background: #ebf1fd;
           padding: 8px;

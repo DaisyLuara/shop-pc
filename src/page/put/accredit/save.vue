@@ -131,7 +131,8 @@ import {
   getPoint,
   getProject,
   getAuthorizer,
-  modifyLaunchWechat
+  modifyLaunchWechat,
+  getLaunchWechatDetail
 } from "service";
 import {
   Form,
@@ -145,6 +146,7 @@ import {
   RadioGroup,
   Radio
 } from "element-ui";
+import { truncate } from "fs";
 
 export default {
   components: {
@@ -217,9 +219,55 @@ export default {
     this.getAuthorizer();
     this.AccreditID = this.$route.params.uid;
     if (this.AccreditID) {
+      this.getLaunchWechatDetail();
     }
   },
   methods: {
+    typeTransform(type) {
+      switch (type) {
+        case "normal":
+          return 101;
+          break;
+        case "mobile":
+          return 100;
+          break;
+        case "publick":
+          return 2;
+          break;
+        case "subk":
+          return 1;
+          break;
+        case "apps":
+          return 0;
+          break;
+        case "tmall":
+          return 200;
+          break;
+      }
+    },
+    getLaunchWechatDetail() {
+      this.setting.loading = true;
+      let args = {
+        include: "point.market.area,project,wechat"
+      };
+      getLaunchWechatDetail(this, this.AccreditID, args)
+        .then(res => {
+          this.setting.loading = false;
+          this.accreditForm.oid = res.point.id;
+          this.accreditForm.piid = res.project.id;
+          this.accreditForm.type = this.typeTransform(res.type);
+          this.accreditForm.wiid = res.wiid;
+          this.accreditForm.reply_url = res.reply_url;
+          this.accreditForm.visiable = res.visiable;
+        })
+        .catch(err => {
+          this.setting.loading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
     back() {
       historyBack();
     },

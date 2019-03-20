@@ -84,11 +84,25 @@ const modifyLaunchWechat = (context, id, params) => {
       })
   })
 }
+// 授权链接投放详情
+const getLaunchWechatDetail = (context, id, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + LAUNCH_WECHAT_API + '/' + id, { params: params })
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
 export {
   getLaunchProjectList,
   saveLaunchProject,
   modifyLaunchProject,
   getLaunchWechatList,
   saveLaunchWechat,
-  modifyLaunchWechat
+  modifyLaunchWechat,
+  getLaunchWechatDetail
 }

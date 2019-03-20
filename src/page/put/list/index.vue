@@ -367,7 +367,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@imgurl: "https://cdn.exe666.com/ad_shop/img/put/";
+@imgurl: "https://cdn.exe666.com/ad_shop/img/";
 .root {
   font-size: 14px;
   color: #5e6d82;
@@ -448,22 +448,8 @@ export default {
           &:before {
             content: " ";
             display: inline-block;
-            background: url("@{imgurl}put_name_icon.png") center center/100%
-              auto no-repeat;
-            width: 15px;
-            height: 15px;
-            position: absolute;
-            top: 50%;
-            left: 3%;
-            transform: translateY(-50%);
-          }
-        }
-        .el-icon-pointer {
-          &:before {
-            content: " ";
-            display: inline-block;
-            background: url("@{imgurl}put_point_icon.png") center center/100%
-              auto no-repeat;
+            background: url("@{imgurl}project_icon.png") center center/100% auto
+              no-repeat;
             width: 15px;
             height: 15px;
             position: absolute;
