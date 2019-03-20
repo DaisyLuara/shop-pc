@@ -10,7 +10,7 @@
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="name">
-              <el-input v-model="filters.name" placeholder="请填写点位名称" clearable>
+              <el-input v-model="filters.name" placeholder="请填写节目名称" clearable>
                 <i slot="prefix" class="el-input__icon el-icon-name"></i>
               </el-input>
             </el-form-item>

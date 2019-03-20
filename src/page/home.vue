@@ -158,13 +158,12 @@ export default {
   justify-content: center;
   align-content: center;
   width: 100%;
-  padding: 20px;
   cursor: pointer;
   flex-direction: row;
   cursor: pointer;
   .logout-icon {
-    width: 20%;
-    height: 20%;
+    width: 15%;
+    height: 15%;
   }
 }
 
