@@ -102,6 +102,7 @@
           <el-button
             type="primary"
             icon="el-icon-circle-plus-outline"
+            @click="naviToAdd"
           >新增授权</el-button>
         </div>
         <!-- 表格 -->
@@ -384,6 +385,11 @@ export default {
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
       this.getPointList();
+    },
+    naviToAdd() {
+      this.$router.push({
+        path: "/auth/list/add"
+      });
     }
   }
 };

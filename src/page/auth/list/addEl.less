@@ -1,0 +1,67 @@
+.config-intro-wrap {
+  .el-tabs--border-card {
+    border: none;
+    box-shadow: none;
+    & > .el-tabs__content {
+      padding: 0;
+    }
+    & > .el-tabs__header {
+      border: none;
+      background: #eff2f7;
+      .el-tabs__item {
+        border: none;
+        background: #FFF;
+        color: #BF9AF4;
+        height: 45px;
+        line-height: 45px;
+        &.is-active {
+          background: #BF9AF4;
+          color: #FFF;
+        }
+      }
+    }
+    .el-tabs__nav {
+      float: right;
+    }
+  }
+
+  .el-table--border {
+    // border: none;
+    tr:first-child {
+      th {
+        border-right: none;
+      }
+    }
+  }
+
+  .auth-table {
+    .hide-right-border {
+      border-right: none;
+    }
+    .el-table:last-child {
+      border-top: 10px solid #F4F7F9;
+    }
+    .el-table--enable-row-hover .el-table__body tr:hover > td {
+      background: #FFF !important;
+    }
+    .required-col {
+      padding: 0;
+      height: 65px;
+      .cell {
+        height: 100%;
+        padding: 0;
+        .is-required {
+          width: 100%;
+          height: 100%;
+          background: #00CFAD;
+          line-height: 65px;
+          color: #FFF;
+          font-weight: bold;
+          &.is-danger {
+            background: #FF8DA7;
+          }
+        }
+      }
+    }
+  }
+}

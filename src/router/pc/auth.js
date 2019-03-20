@@ -26,6 +26,14 @@ let router = {
           },
           component: () =>
             import(/* webpackChunkName: "page/auth/list/index" */ 'page/auth/list/index')
+        },
+        {
+          path: 'add',
+          meta: {
+            title: '授权新增'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/auth/list/add" */ 'page/auth/list/add')
         }
       ]
     }
