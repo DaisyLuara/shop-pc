@@ -272,7 +272,6 @@ export default {
     },
     modifyEditName(data) {
       this.editID = data.id;
-
       this.editVisible = true;
       this.modifyOptionFlag.project = true;
       this.modifyOptionFlag.time = false;
@@ -347,11 +346,11 @@ export default {
           this.setting.loading = false;
         })
         .catch(error => {
+          this.setting.loading = false;
           this.$message({
             type: "warning",
             message: err.response.data.message
           });
-          this.setting.loading = false;
         });
     },
     search(formName) {

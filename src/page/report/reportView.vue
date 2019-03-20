@@ -16,7 +16,7 @@ export default {
 
 <style lang="less" scoped>
 .report-root {
-  margin-left: -110px;
+  margin-left: -100px;
   height: 100%;
   padding: 76px 50px 0;
   background-color: #1f1848;
