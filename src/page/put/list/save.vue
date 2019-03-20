@@ -1,25 +1,15 @@
 <template>
   <div class="item-wrap-template">
-    <div
-      v-loading="setting.loading"
-      :element-loading-text="setting.loadingText"
-      class="pane"
-    >
-      <div class="pane-title">
-        新增节目投放
-      </div>
-      <el-form
-        ref="projectForm"
-        :model="projectForm"
-        label-width="150px"
-      >
+    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
+      <div class="pane-title">新增节目投放</div>
+      <el-form ref="projectLaunchForm" :model="projectLaunchForm" label-width="150px">
         <el-form-item
           :rules="[{ required: true, message: '请输入节目名称', trigger: 'submit'}]"
           label="节目名称"
-          prop="project"
+          prop="project_id"
         >
           <el-select
-            v-model="projectForm.project"
+            v-model="projectLaunchForm.project_id"
             :loading="searchLoading"
             filterable
             placeholder="请搜索"
@@ -34,12 +24,12 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          :rules="[{ required: true, message: '请输入点位', trigger: 'submit',type: 'array'}]"
+          :rules="[{ required: true, message: '请输入点位', trigger: 'submit'}]"
           label="点位"
-          prop="point"
+          prop="point_id"
         >
           <el-select
-            v-model="projectForm.point"
+            v-model="projectLaunchForm.point_id"
             :loading="searchLoading"
             placeholder="请选择"
             filterable
@@ -56,9 +46,10 @@
         <el-form-item
           label="开始时间"
           prop="sdate"
+          :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
         >
           <el-date-picker
-            v-model="projectForm.sdate"
+            v-model="projectLaunchForm.sdate"
             :editable="false"
             type="date"
             placeholder="请选择开始时间"
@@ -67,9 +58,10 @@
         <el-form-item
           label="结束时间"
           prop="edate"
+          :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
         >
           <el-date-picker
-            v-model="projectForm.edate"
+            v-model="projectLaunchForm.edate"
             :editable="false"
             type="date"
             placeholder="请选择结束时间"
@@ -77,14 +69,8 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button
-            class="el-button-success"
-            @click="submit('projectForm')"
-          >完成</el-button>
-          <el-button
-            class="el-button-cancel"
-            @click="back"
-          >返回</el-button>
+          <el-button class="el-button-success" @click="submit('projectLaunchForm')">完成</el-button>
+          <el-button class="el-button-cancel" @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -94,13 +80,10 @@
 <script>
 import {
   historyBack,
-  // savePorjectLaunch,
-  // getSearchModuleList,
-  // getSearchProjectList,
-  // getSearchAeraList,
-  // getSearchMarketList,
-  // getSearchPointList
-} from 'service'
+  saveLaunchProject,
+  getProject,
+  getPoint
+} from "service";
 import {
   Form,
   Select,
@@ -110,7 +93,7 @@ import {
   Input,
   DatePicker,
   MessageBox
-} from 'element-ui'
+} from "element-ui";
 
 export default {
   components: {
@@ -126,100 +109,95 @@ export default {
       setting: {
         isOpenSelectAll: true,
         loading: false,
-        loadingText: '拼命加载中'
+        loadingText: "拼命加载中"
       },
       pointList: [],
       projectList: [],
       searchLoading: false,
-      projectForm: {
-        project: [],
-        point: [],
-        sdate: '',
-        edate: ''
-      },
-    }
+      projectLaunchForm: {
+        project_id: null,
+        point_id: null,
+        sdate: "",
+        edate: ""
+      }
+    };
   },
-  mounted() { },
+  mounted() {},
   created() {
+    this.getProject();
+    this.getPoint();
   },
   methods: {
-    back() {
-      historyBack()
-    },
-    getProject(query) {
-      if (query !== '') {
-        this.searchLoading = true
-        let args = {
-          name: query
-        }
-        return getSearchProjectList(this, args)
-          .then(response => {
-            this.projectList = response.data
-            if (this.projectList.length == 0) {
-              this.projectForm.project = []
-              this.projectList = []
-            }
-            this.searchLoading = false
-          })
-          .catch(err => {
-            console.log(err)
-            this.searchLoading = false
-          })
-      } else {
-        this.projectList = []
-      }
-    },
     getPoint() {
-      let args = {
-        include: 'market',
-        market_id: this.projectForm.market
-      }
-      this.searchLoading = true
-      return getSearchPointList(this, args)
-        .then(response => {
-          this.pointList = response.data
-          this.searchLoading = false
+      this.searchLoading = true;
+      getPoint(this)
+        .then(res => {
+          this.pointList = res;
+          this.searchLoading = false;
         })
         .catch(err => {
-          this.searchLoading = false
-          console.log(err)
-        })
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
     },
-
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(res => {
+          this.projectList = res;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
+    back() {
+      historyBack();
+    },
     submit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.setting.loading = true
+          this.setting.loading = true;
           let edate =
-            (new Date(this.projectForm.edate).getTime() +
+            (new Date(this.projectLaunchForm.edate).getTime() +
               ((23 * 60 + 59) * 60 + 59) * 1000) /
-            1000
+            1000;
           let args = {
-            sdate: new Date(this.projectForm.sdate).getTime() / 1000,
+            sdate: new Date(this.projectLaunchForm.sdate).getTime() / 1000,
             edate: edate,
-            default_plid: this.projectForm.project[0],
-            oids: this.projectForm.point,
-          }
-          return savePorjectLaunch(this, args)
+            default_plid: this.projectLaunchForm.project_id,
+            oid: this.projectLaunchForm.point_id
+          };
+          return saveLaunchProject(this, args)
             .then(response => {
-              this.setting.loading = false
+              this.setting.loading = false;
               this.$message({
-                message: '添加成功',
-                type: 'success'
-              })
+                message: "添加成功",
+                type: "success"
+              });
               this.$router.push({
-                path: '/put/list'
-              })
+                path: "/put/list"
+              });
             })
             .catch(err => {
-              this.setting.loading = false
-              console.log(err)
-            })
+              this.setting.loading = false;
+              this.$message({
+                message: err.response.data.message,
+                type: "success"
+              });
+            });
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -241,6 +219,7 @@ export default {
       }
     }
     .pane-title {
+      color: #6b3dc4;
       padding-bottom: 20px;
       font-size: 18px;
       display: flex;

@@ -9,26 +9,6 @@ let router = {
   component: () =>
     import(/* webpackChunkName: "page/site/siteView" */ 'page/site/siteView'),
   children: [
-    // {
-    //   path: 'place',
-    //   meta: {
-    //     title: '场地管理'
-    //     // permission: 'shop_site.list'
-    //   },
-    //   component: () =>
-    //     import(/* webpackChunkName: "page/site/place/routerView" */ 'page/site/place/routerView'),
-    //   children: [
-    //     {
-    //       path: '/',
-    //       meta: {
-    //         title: '场地列表'
-    //         // permission: 'shop_site.list.read'
-    //       },
-    //       component: () =>
-    //         import(/* webpackChunkName: "page/site/place/index" */ 'page/site/place/index')
-    //     }
-    //   ]
-    // },
     {
       path: 'point',
       meta: {

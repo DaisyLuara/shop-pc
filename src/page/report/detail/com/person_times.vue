@@ -89,7 +89,7 @@
         :element-loading-text="setting.loadingText"
         class="project-age-person-part"
       >
-        <div style="font-size: 16px;">{{ projectAgeTitle }}</div>
+        <div style="font-size: 16px;color:#fff;">{{ projectAgeTitle }}</div>
         <chart ref="PersonprojectAgeChart" :options="PersonprojectAgeChart"/>
       </div>
     </div>
@@ -107,10 +107,10 @@
       </div>
       <el-table
         :data="tableData"
-        style="width: 100%"
-        :row-style="{background:'#24215b',color:'#fff'}"
         :cell-style="{background:'#24215b',color:'#fff'}"
-        :header-cell-style="{background:'#24215b',color:'#fff'}"
+        :header-cell-style="{ background:'#24215b',color:'#fff' }"
+        :cell-class-name="tableColClassName"
+        style="width: 100%"
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
@@ -165,33 +165,54 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="ID" prop="id" width="100"/>
-        <el-table-column :show-overflow-tooltip="true" label="点位" prop="point" min-width="130">
+        <el-table-column sortable label="ID" prop="id" width="100"/>
+        <el-table-column
+          sortable
+          :show-overflow-tooltip="true"
+          label="点位"
+          prop="point"
+          min-width="130"
+        >
           <template
             slot-scope="props"
           >{{ props.row.area_name }} {{ props.row.market_name }} {{ props.row.point_name }}</template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="节目" prop="projects" min-width="130"/>
-        <el-table-column label="围观" prop="looktimes" min-width="90"/>
         <el-table-column
+          sortable
+          :show-overflow-tooltip="true"
+          label="节目"
+          prop="projects"
+          min-width="130"
+        />
+        <el-table-column sortable label="围观" prop="looktimes" min-width="90"/>
+        <el-table-column
+          sortable
           :show-overflow-tooltip="true"
           label="7″fCPE"
           prop="playtimes7"
           min-width="90"
         />
         <el-table-column
+          sortable
           :show-overflow-tooltip="true"
           label="15″fCPE"
           prop="playtimes15"
           min-width="90"
         />
         <el-table-column
+          sortable
           :show-overflow-tooltip="true"
           label="21″fCPE"
           prop="playtimes21"
           min-width="90"
         />
-        <el-table-column :show-overflow-tooltip="true" label="输出" prop="scannum" min-width="120">
+        <el-table-column
+          sortable
+          :show-overflow-tooltip="true"
+          label="输出"
+          prop="scannum"
+          min-width="120"
+        >
           <template slot-scope="props">
             <span>
               <span>7″fCPE: {{ props.row.rate.fCPE7 }}</span>
@@ -204,7 +225,13 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="时间" min-width="120" prop="created_at">
+        <el-table-column
+          sortable
+          :show-overflow-tooltip="true"
+          label="时间"
+          min-width="120"
+          prop="created_at"
+        >
           <template slot-scope="props">
             <span>{{ props.row.min_date }} - {{ props.row.max_date }}</span>
           </template>
@@ -921,8 +948,8 @@ export default {
   },
   created() {},
   methods: {
-    tableRowStyle({ row, rowIndex }) {
-      return "background-color: pink";
+    tableColClassName({ row, column, rowIndex, columnIndex }) {
+      return "data-row";
     },
     typeHandle(type) {
       switch (type) {
@@ -1284,7 +1311,7 @@ export default {
                   normal: {
                     show: true,
                     position: "top",
-                    color: "#000",
+                    color: "#fff",
                     fontSize: 18,
                     formatter: function(data) {
                       let content = "";
@@ -1851,10 +1878,11 @@ export default {
     }
     .demo-table-expand {
       font-size: 0;
+      // background: #3a325c;
     }
     .demo-table-expand label {
       width: 90px;
-      color: #99a9bf;
+      color: #fff;
     }
     .demo-table-expand .el-form-item {
       margin-right: 0;

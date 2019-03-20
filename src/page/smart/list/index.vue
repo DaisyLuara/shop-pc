@@ -9,65 +9,10 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="project_id">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.project_id"
-                placeholder="请选择名称"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in projectList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="template_id">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.template_id"
-                placeholder="请选择模版"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in templateList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="status">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.status"
-                placeholder="请选择状态"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in statusList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="dateTime">
-              <el-date-picker
-                v-model="filters.dateTime"
-                :clearable="false"
-                :picker-options="pickerOptions"
-                type="daterange"
-                align="right"
-                unlink-panels
-                start-placeholder="开始时间"
-                end-placeholder="结束时间"
-              />
+            <el-form-item label prop="name">
+              <el-input v-model="filters.name" placeholder="请填写点位名称" clearable>
+                <i slot="prefix" class="el-input__icon el-icon-name"></i>
+              </el-input>
             </el-form-item>
             <el-form-item label>
               <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
@@ -205,7 +150,7 @@
 </template>
 
 <script>
-import { getPointList } from "service";
+import { getSmartList, getTemplate, getProject } from "service";
 
 import {
   Button,
@@ -215,10 +160,9 @@ import {
   Form,
   FormItem,
   MessageBox,
-  Select,
-  Option,
-  DatePicker
+  Input
 } from "element-ui";
+import { truncate } from "fs";
 
 export default {
   components: {
@@ -228,59 +172,15 @@ export default {
     "el-pagination": Pagination,
     "el-form": Form,
     "el-form-item": FormItem,
-    "el-select": Select,
-    "el-option": Option,
-    "el-date-picker": DatePicker
+    "el-input": Input
   },
   data() {
     return {
       filters: {
-        project_id: null,
-        template_id: null,
-        status: "",
-        dateTime: []
+        name: null
       },
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "昨天",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24);
-              end.setTime(end.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date().getTime() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
+
+      searchLoading: false,
       templateList: [],
       projectList: [],
       statusList: [],
@@ -294,36 +194,13 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [
-        {
-          id: 1,
-          name: "爱的表白	",
-          image: "http://image.exe666.com/1007/image/479_1550230064.png",
-          vedio_desc_url: "http://cdn.exe666.com/1007/video/8671552445178.mp4",
-          template: { name: "镜视界通用场景" },
-          version_code: "2019031810LZPDSpring",
-          updated_at: "2019-01-16 19:01:01",
-          top_num: 3,
-          luck_num: 3,
-          invite_num: 5
-        },
-        {
-          id: 2,
-          name: "爱的表白	",
-          image: "http://image.exe666.com/1007/image/1547123390.jpg",
-          vedio_desc_url: "http://cdn.exe666.com/1007/video/8671552445178.mp4",
-          template: { name: "镜视界通用场景" },
-          version_code: "2019031810LZPDSpring",
-          updated_at: "2019-01-16 19:01:01",
-          top_num: 1,
-          luck_num: 2,
-          invite_num: 4
-        }
-      ]
+      tableData: []
     };
   },
   created() {
-    // this.getPointList();
+    this.getSmartList();
+    this.getTemplate();
+    this.getProject();
   },
   methods: {
     starShow(num) {
@@ -331,52 +208,82 @@ export default {
       for (let i = 0; i < num; i++) {
         star += "<i class='el-icon-star-off' style='color:#6b3dc4;'></i>";
       }
-      console.log(star);
       return star;
     },
-    getPointList() {
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(res => {
+          this.projectList = res;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
+        });
+    },
+    getTemplate() {
+      this.searchLoading = true;
+      getTemplate(this)
+        .then(res => {
+          this.templateList = res;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
+        });
+    },
+    getSmartList() {
       this.setting.loading = true;
       let args = {
-        include: "device,market,area",
+        include: "template",
         page: this.pagination.currentPage,
-        point_name: this.filters.name,
-        screen_status: this.filters.status
+        name: this.filters.name
       };
-      if (this.filters.name === "" || this.filters.name === null) {
-        delete args.point_name;
+      if (!this.filters.name) {
+        delete args.name;
       }
-      if (this.filters.status === "") {
-        delete args.screen_status;
-      }
-      getPointList(this, args)
+      getSmartList(this, args)
         .then(res => {
           this.tableData = res.data;
           this.pagination.total = res.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
           this.setting.loading = false;
         });
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getPointList();
+      this.getSmartList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getPointList();
+      this.getSmartList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getPointList();
+      this.getSmartList();
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@imgurl: "https://cdn.exe666.com/ad_shop/img/";
 .root {
   font-size: 14px;
   color: #5e6d82;
@@ -450,7 +357,20 @@ export default {
         .el-select {
           width: 200px;
         }
-
+        .el-icon-name {
+          &:before {
+            content: " ";
+            display: inline-block;
+            background: url("@{imgurl}name_icon.png") center center/100% auto
+              no-repeat;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 50%;
+            left: 3%;
+            transform: translateY(-50%);
+          }
+        }
         .warning {
           background: #ebf1fd;
           padding: 8px;

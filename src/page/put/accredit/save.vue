@@ -6,50 +6,15 @@
         <div class="deploy-model">
           <h4 class="deploy-model-title">投放基础配置</h4>
           <el-form-item
-            :rules="[{ required: true, message: '请选择区域', trigger: 'submit'}]"
-            label="区域"
-            prop="area_id"
+            :rules="[{ required: true, message: '请选择点位', trigger: 'submit'}]"
+            label="点位"
+            prop="oid"
           >
             <el-select
-              v-model="accreditForm.area_id"
+              v-model="accreditForm.oid"
               :loading="searchLoading"
-              filterable
-              placeholder="请选择区域"
-              clearable
-            >
-              <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            :rules="[{ required: true, message: '请选择场地', trigger: 'submit'}]"
-            label="场地"
-            prop="site_id"
-          >
-            <el-select
-              v-model="accreditForm.site_id"
-              :loading="searchLoading"
-              placeholder="请选择场地"
-              filterable
-              clearable
-            >
-              <el-option
-                v-for="item in siteList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="点位" prop="point_id">
-            <el-select
-              v-model="accreditForm.point_id"
-              :loading="searchLoading"
-              placeholder="请选择场地"
+              :disabled="AccreditID ? true : false"
+              placeholder="请选择点位"
               filterable
               clearable
             >
@@ -64,10 +29,10 @@
           <el-form-item
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
             label="节目"
-            prop="project_id"
+            prop="piid"
           >
             <el-select
-              v-model="accreditForm.project_id"
+              v-model="accreditForm.piid"
               :loading="searchLoading"
               placeholder="请选择节目"
               filterable
@@ -104,10 +69,10 @@
           <el-form-item
             :rules="[{ required: true, message: '请选择授权链接', trigger: 'submit'}]"
             label="授权链接"
-            prop="link_id"
+            prop="wiid"
           >
             <el-select
-              v-model="accreditForm.link_id"
+              v-model="accreditForm.wiid"
               :loading="searchLoading"
               placeholder="请选择授权链接"
               filterable
@@ -116,7 +81,7 @@
               <el-option
                 v-for="item in linkList"
                 :key="item.id"
-                :label="item.name"
+                :label="item.nick_name"
                 :value="item.id"
               />
             </el-select>
@@ -124,9 +89,9 @@
           <el-form-item
             :rules="[{ required: true, message: '请选择状态', trigger: 'submit'}]"
             label="状态"
-            prop="status"
+            prop="visiable"
           >
-            <el-radio-group v-model="accreditForm.status">
+            <el-radio-group v-model="accreditForm.visiable">
               <el-radio :label="1">运营中</el-radio>
               <el-radio :label="0">下架</el-radio>
             </el-radio-group>
@@ -134,15 +99,15 @@
         </div>
         <div class="deploy-model">
           <h4 class="deploy-model-title">脱机配置</h4>
-          <el-form-item label="脱机支持" prop="off_support">
+          <!-- <el-form-item label="脱机支持" prop="off_support">
             <el-radio-group v-model="accreditForm.off_support">
               <el-radio :label="1">微信场景码</el-radio>
               <el-radio :label="0">指定链接</el-radio>
             </el-radio-group>
-          </el-form-item>
-          <el-form-item label="脱机链接" prop="off_link">
+          </el-form-item>-->
+          <el-form-item label="脱机链接" prop="reply_url">
             <el-input
-              v-model="accreditForm.off_link"
+              v-model="accreditForm.reply_url"
               :autosize="{ minRows: 2, maxRows: 10}"
               type="textarea"
               placeholder="请输入脱机链接"
@@ -160,7 +125,15 @@
 </template>
 
 <script>
-import { historyBack } from "service";
+import {
+  historyBack,
+  saveLaunchWechat,
+  getPoint,
+  getProject,
+  getAuthorizer,
+  modifyLaunchWechat,
+  getLaunchWechatDetail
+} from "service";
 import {
   Form,
   Select,
@@ -173,6 +146,7 @@ import {
   RadioGroup,
   Radio
 } from "element-ui";
+import { truncate } from "fs";
 
 export default {
   components: {
@@ -194,101 +168,203 @@ export default {
         loadingText: "拼命加载中"
       },
       AccreditID: null,
-      siteList: [],
-      areaList: [],
       pointList: [],
-      typeList: [],
+      typeList: [
+        {
+          id: 0,
+          name: "小程序"
+        },
+        {
+          id: 1,
+          name: "订阅号"
+        },
+        {
+          id: 2,
+          name: "服务号"
+        },
+        {
+          id: 100,
+          name: "手机号"
+        },
+        {
+          id: 101,
+          name: "普通"
+        },
+        {
+          id: 102,
+          name: "本地"
+        },
+        {
+          id: 200,
+          name: "天猫"
+        }
+      ],
       projectList: [],
       linkList: [],
       searchLoading: false,
       accreditForm: {
-        project_id: null,
+        piid: null,
         type: "",
-        link_id: null,
-        status: 1,
-        point_id: [],
-        area_id: null,
-        site_id: null,
-        off_support: 0,
-        off_link: ""
+        wiid: null,
+        visiable: 1,
+        oid: null,
+        reply_url: ""
       }
     };
   },
   mounted() {},
-  created() {},
+  created() {
+    this.getProject();
+    this.getPoint();
+    this.getAuthorizer();
+    this.AccreditID = this.$route.params.uid;
+    if (this.AccreditID) {
+      this.getLaunchWechatDetail();
+    }
+  },
   methods: {
+    typeTransform(type) {
+      switch (type) {
+        case "normal":
+          return 101;
+          break;
+        case "mobile":
+          return 100;
+          break;
+        case "publick":
+          return 2;
+          break;
+        case "subk":
+          return 1;
+          break;
+        case "apps":
+          return 0;
+          break;
+        case "tmall":
+          return 200;
+          break;
+      }
+    },
+    getLaunchWechatDetail() {
+      this.setting.loading = true;
+      let args = {
+        include: "point.market.area,project,wechat"
+      };
+      getLaunchWechatDetail(this, this.AccreditID, args)
+        .then(res => {
+          this.setting.loading = false;
+          this.accreditForm.oid = res.point.id;
+          this.accreditForm.piid = res.project.id;
+          this.accreditForm.type = this.typeTransform(res.type);
+          this.accreditForm.wiid = res.wiid;
+          this.accreditForm.reply_url = res.reply_url;
+          this.accreditForm.visiable = res.visiable;
+        })
+        .catch(err => {
+          this.setting.loading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
     back() {
       historyBack();
     },
-    getProject(query) {
-      if (query !== "") {
-        this.searchLoading = true;
-        let args = {
-          name: query
-        };
-        return getSearchProjectList(this, args)
-          .then(response => {
-            this.areaList = response.data;
-            if (this.areaList.length == 0) {
-              this.accreditForm.project = [];
-              this.areaList = [];
-            }
-            this.searchLoading = false;
-          })
-          .catch(err => {
-            console.log(err);
-            this.searchLoading = false;
-          });
-      } else {
-        this.areaList = [];
-      }
+    modifyLaunchWechat() {
+      modifyLaunchWechat(this, args)
+        .then(res => {})
+        .catch(err => {});
     },
-    getPoint() {
-      let args = {
-        include: "market",
-        market_id: this.accreditForm.market
-      };
+    getAuthorizer() {
       this.searchLoading = true;
-      return getSearchPointList(this, args)
+      getAuthorizer(this)
         .then(response => {
-          this.siteList = response.data;
+          this.linkList = response;
           this.searchLoading = false;
         })
         .catch(err => {
           this.searchLoading = false;
-          console.log(err);
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
         });
     },
-
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(response => {
+          this.projectList = response;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
+    getPoint() {
+      this.searchLoading = true;
+      getPoint(this)
+        .then(response => {
+          this.pointList = response;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
     submit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.setting.loading = true;
-          let edate =
-            (new Date(this.accreditForm.edate).getTime() +
-              ((23 * 60 + 59) * 60 + 59) * 1000) /
-            1000;
-          let args = {
-            sdate: new Date(this.accreditForm.sdate).getTime() / 1000,
-            edate: edate,
-            default_plid: this.accreditForm.project[0],
-            oids: this.accreditForm.point
-          };
-          return savePorjectLaunch(this, args)
-            .then(response => {
-              this.setting.loading = false;
-              this.$message({
-                message: "添加成功",
-                type: "success"
+          let args = this.accreditForm;
+          if (this.AccreditID) {
+            modifyLaunchWechat(this, this.AccreditID, args)
+              .then(res => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "修改成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/put/accredit"
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err.response.data.message,
+                  type: "success"
+                });
+                this.setting.loading = false;
               });
-              this.$router.push({
-                path: "/put/list"
+          } else {
+            saveLaunchWechat(this, args)
+              .then(response => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "添加成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/put/accredit"
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err.response.data.message,
+                  type: "success"
+                });
+                this.setting.loading = false;
               });
-            })
-            .catch(err => {
-              this.setting.loading = false;
-              console.log(err);
-            });
+          }
         }
       });
     }

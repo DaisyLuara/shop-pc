@@ -27,7 +27,7 @@
               v-model="searchForm.dateTime"
               :default-value="searchForm.dateTime"
               :clearable="false"
-              :picker-options="pickerOptions2"
+              :picker-options="pickerOptions"
               type="daterange"
               align="right"
               unlink-panels
@@ -88,7 +88,7 @@ export default {
           new Date().getTime() - 3600 * 1000 * 24
         ]
       },
-      pickerOptions2: {
+      pickerOptions: {
         shortcuts: [
           {
             text: "昨天",
@@ -157,7 +157,7 @@ export default {
     };
   },
   created() {
-    // this.getPoint();
+    this.getPoint();
   },
   methods: {
     handleTab(tab, event) {
@@ -170,6 +170,7 @@ export default {
       }
     },
     getPoint() {
+      this.searchLoading = true;
       getPoint(this)
         .then(res => {
           this.pointList = res;

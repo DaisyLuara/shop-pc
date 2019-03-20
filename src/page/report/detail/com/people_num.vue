@@ -109,9 +109,9 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        :row-style="{background:'#24215b',color:'#fff'}"
         :cell-style="{background:'#24215b',color:'#fff'}"
         :header-cell-style="{background:'#24215b',color:'#fff'}"
+        :cell-class-name="tableColClassName"
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
@@ -1035,6 +1035,9 @@ export default {
     };
   },
   methods: {
+    tableColClassName({ row, column, rowIndex, columnIndex }) {
+      return "data-row";
+    },
     handleChange(val) {
       this.$nextTick(function() {
         this.$refs.crowdChart.resize();
