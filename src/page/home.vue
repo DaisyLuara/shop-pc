@@ -7,11 +7,11 @@
         </div>
       </div>
       <div class="user-avatar-wrap">
-        <div class="user-avatar">
-          <img :src="IMG_URL+'ad_shop/img/avatar_white.png'">
+        <div class="user-avatar" :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'">
+          <img :src="logo">
         </div>
         <div class="user-name">
-          <span>{{ user_name }}</span>
+          <span class="title">{{ user_name }}</span>
         </div>
       </div>
       <el-menu :default-active="'/' + currModule" router>
@@ -22,7 +22,7 @@
         </el-menu-item>
       </el-menu>
       <div class="logout-btn">
-        <img :src="logo" class="logout-icon" @click="logout">
+        <img :src="IMG_URL +'/ad_shop/img/logout_icon.png'" class="logout-icon" @click="logout">
       </div>
     </div>
     <div class="modules">
@@ -50,7 +50,8 @@ export default {
       IMG_URL: IMG_URL,
       visible: false,
       user_name: "",
-      logo: null
+      logo: null,
+      noLogo: true
     };
   },
   computed: {
@@ -114,9 +115,10 @@ export default {
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
     this.user_name = customer.company.name;
+    this.noLogo = customer.company.logo ? false : true;
     this.logo = customer.company.logo
       ? customer.company.logo
-      : this.IMG_URL + "ad_shop/img/logout_icon.png";
+      : this.IMG_URL + "ad_shop/img/avatar_white.png";
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {

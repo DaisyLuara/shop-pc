@@ -3,8 +3,8 @@ let router = {
   path: 'smart',
   name: '智造',
   meta: {
-    title: '智造'
-    // permission: 'shop_auth'
+    title: '智造',
+    permission: 'shop_project'
   },
   component: () =>
     import(/* webpackChunkName: "page/smart/smartView" */ 'page/smart/smartView'),
@@ -12,8 +12,8 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '标准节目'
-        // permission: 'shop_smart.datum'
+        title: '标准节目',
+        permission: 'shop_project.project'
       },
       component: () =>
         import(/* webpackChunkName: "page/smart/list/routerView" */ 'page/smart/list/routerView'),
@@ -21,8 +21,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '标准节目列表'
-            // permission: 'shop_smart.datum.read'
+            title: '标准节目列表',
+            permission: 'shop_project.project.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/smart/list/index" */ 'page/smart/list/index')

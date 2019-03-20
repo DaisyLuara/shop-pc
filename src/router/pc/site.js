@@ -4,7 +4,7 @@ let router = {
   name: '场地',
   meta: {
     title: '场地'
-    // permission: 'shop_site'
+    // permission: 'shop_market'
   },
   component: () =>
     import(/* webpackChunkName: "page/site/siteView" */ 'page/site/siteView'),
@@ -12,8 +12,8 @@ let router = {
     {
       path: 'point',
       meta: {
-        title: '点位管理'
-        // permission: 'shop_site.list'
+        title: '点位管理',
+        permission: 'shop_market.point'
       },
       component: () =>
         import(/* webpackChunkName: "page/site/point/routerView" */ 'page/site/point/routerView'),
@@ -21,8 +21,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '点位列表'
-            // permission: 'shop_site.list.read'
+            title: '点位列表',
+            permission: 'shop_market.point.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/site/point/index" */ 'page/site/point/index')

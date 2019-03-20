@@ -16,5 +16,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, auth, site, smart, put, prize, report]
+  children: [account, auth, site, smart, prize, put, report]
 }
