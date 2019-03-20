@@ -3,10 +3,10 @@
     <div class="mp-table-header">
       <div class="step">步骤</div>
       <div class="action">行动</div>
-      <div class="download-btn">
+      <a class="download-btn" href="http://face.exe666.com/sdk/sdk1.1.zip">
         <div class="download-desc">下载小程序SDK V1.1</div>
         <img class="download-icon" :src="IMG_URL + 'ad_shop/img/auth/mp_sdk.png'">
-      </div>
+      </a>
     </div>
     <div class="mp-table-content">
       <div class="mp-table-row">

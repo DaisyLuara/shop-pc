@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     handleEntClick() {
-      // window.open(this.authLink)
+      window.open(this.authLink)
     }
   }
 }
