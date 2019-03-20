@@ -39,15 +39,7 @@
         </div>
         <div class="actions-wrap">
           <span class="label">授权列表（ {{ pagination.total }} ）</span>
-<<<<<<< HEAD
-          <el-button
-            type="primary"
-            icon="el-icon-circle-plus-outline"
-            @click="naviToAdd"
-          >新增授权</el-button>
-=======
-          <el-button type="primary" icon="el-icon-circle-plus-outline">新增授权</el-button>
->>>>>>> develop
+          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="naviToAdd">新增授权</el-button>
         </div>
         <!-- 表格 -->
         <el-table
