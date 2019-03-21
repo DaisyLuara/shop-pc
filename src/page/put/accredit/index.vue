@@ -62,7 +62,7 @@
         </div>
         <div class="actions-wrap">
           <span class="label">授权投放列表（ {{ pagination.total }} ）</span>
-          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addAccredit">新增投放</el-button>
+          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addAccredit">新增授权投放</el-button>
         </div>
         <!-- 表格 -->
         <el-table

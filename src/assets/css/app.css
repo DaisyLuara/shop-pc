@@ -44,6 +44,7 @@ body {
   margin-bottom: 10px;
 }
 .first-sidebar .user-avatar-wrap .user-avatar {
+  padding: 10px;
   border-radius: 5px;
   display: flex;
   justify-content: center;
