@@ -5,7 +5,7 @@
       <el-form ref="projectLaunchForm" :model="projectLaunchForm">
         <el-form-item
           :rules="[{ required: true, message: '请输入节目名称', trigger: 'submit'}]"
-          label
+          label=" "
           prop="project_id"
         >
           <el-select
@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item
           :rules="[{ required: true, message: '请输入点位', trigger: 'submit'}]"
-          label
+          label=" "
           prop="point_id"
         >
           <el-select
@@ -46,7 +46,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label
+          label=" "
           prop="sdate"
           :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
         >
@@ -58,7 +58,7 @@
           />
         </el-form-item>
         <el-form-item
-          label
+          label=" "
           prop="edate"
           :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
         >
@@ -70,7 +70,7 @@
             value-format="yyyy-MM-dd"
           />
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="btn-wrap">
           <el-button class="el-button-success" @click="submit('projectLaunchForm')">完成</el-button>
           <el-button class="el-button-cancel" @click="back">返回</el-button>
         </el-form-item>
@@ -208,6 +208,9 @@ export default {
     .el-date-editor.el-input {
       width: 300px;
     }
+    .btn-wrap {
+      padding-left: 20px;
+    }
     .item-list {
       .program-title {
         color: #555;
@@ -215,6 +218,7 @@ export default {
       }
     }
     .pane-title {
+      padding-left: 20px;
       color: #6b3dc4;
       padding-bottom: 20px;
       font-size: 16px;

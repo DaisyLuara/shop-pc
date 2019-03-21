@@ -21,7 +21,7 @@
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">节目数量: ( {{ pagination.total }} )</span>
+          <span class="label">节目投放列表: ( {{ pagination.total }} )</span>
           <div>
             <el-button
               type="primary"
