@@ -2,19 +2,20 @@
   <div class="item-wrap-template">
     <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
       <div class="pane-title">新增节目投放</div>
-      <el-form ref="projectLaunchForm" :model="projectLaunchForm" label-width="150px">
+      <el-form ref="projectLaunchForm" :model="projectLaunchForm">
         <el-form-item
           :rules="[{ required: true, message: '请输入节目名称', trigger: 'submit'}]"
-          label="节目名称"
+          label
           prop="project_id"
         >
           <el-select
             v-model="projectLaunchForm.project_id"
             :loading="searchLoading"
             filterable
-            placeholder="请搜索"
+            placeholder="请选择节目"
             clearable
           >
+            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
             <el-option
               v-for="item in projectList"
               :key="item.id"
@@ -25,16 +26,17 @@
         </el-form-item>
         <el-form-item
           :rules="[{ required: true, message: '请输入点位', trigger: 'submit'}]"
-          label="点位"
+          label
           prop="point_id"
         >
           <el-select
             v-model="projectLaunchForm.point_id"
             :loading="searchLoading"
-            placeholder="请选择"
+            placeholder="请选择点位"
             filterable
             clearable
           >
+            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
             <el-option
               v-for="item in pointList"
               :key="item.id"
@@ -44,7 +46,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="开始时间"
+          label
           prop="sdate"
           :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
         >
@@ -56,7 +58,7 @@
           />
         </el-form-item>
         <el-form-item
-          label="结束时间"
+          label
           prop="edate"
           :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
         >
@@ -78,12 +80,7 @@
 </template>
 
 <script>
-import {
-  historyBack,
-  saveLaunchProject,
-  getProject,
-  getPoint
-} from "service";
+import { historyBack, saveLaunchProject, getProject, getPoint } from "service";
 import {
   Form,
   Select,
@@ -204,13 +201,12 @@ export default {
 .item-wrap-template {
   .pane {
     border-radius: 5px;
-    background-color: white;
     padding: 20px 40px 80px;
 
     .el-select,
     .item-input,
     .el-date-editor.el-input {
-      width: 380px;
+      width: 300px;
     }
     .item-list {
       .program-title {
@@ -221,7 +217,7 @@ export default {
     .pane-title {
       color: #6b3dc4;
       padding-bottom: 20px;
-      font-size: 18px;
+      font-size: 16px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;

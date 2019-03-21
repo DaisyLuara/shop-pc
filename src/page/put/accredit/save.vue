@@ -396,7 +396,7 @@ export default {
     border-radius: 5px;
     padding: 20px 40px 80px;
     .el-form-item {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     .el-select,
     .item-input,
