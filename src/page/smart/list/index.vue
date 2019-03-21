@@ -11,7 +11,7 @@
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="name">
               <el-input v-model="filters.name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name"></i>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
               </el-input>
             </el-form-item>
             <el-form-item label>
@@ -356,20 +356,6 @@ export default {
         }
         .el-select {
           width: 200px;
-        }
-        .el-icon-name {
-          &:before {
-            content: " ";
-            display: inline-block;
-            background: url("@{imgurl}name_icon.png") center center/100% auto
-              no-repeat;
-            width: 15px;
-            height: 15px;
-            position: absolute;
-            top: 50%;
-            left: 3%;
-            transform: translateY(-50%);
-          }
         }
         .warning {
           background: #ebf1fd;

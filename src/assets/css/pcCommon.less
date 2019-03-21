@@ -1,4 +1,5 @@
 // list layout
+@imgurl: 'https://cdn.exe666.com/ad_shop/img/';
 .page-list-template {
   background-color: white;
   border-radius: 5px;
@@ -231,4 +232,59 @@
 .el-select.chart-data-select .el-input__inner {
   background: #3b335b !important;
   border: 1px solid #3b335b !important;
+}
+
+.el-icon-same {
+  &:before {
+    content: ' ';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    left: 3%;
+    transform: translateY(-50%);
+  }
+}
+.el-icon-name {
+  &:before {
+    background: url('@{imgurl}name_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-icon-link {
+  &:before {
+    background: url('@{imgurl}link_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-icon-status {
+  &:before {
+    background: url('@{imgurl}status_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+
+.el-icon-project {
+  &:before {
+    background: url('@{imgurl}project_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+
+.el-icon-link {
+  &:before {
+    background: url('@{imgurl}link_icon.png') center center/100% auto no-repeat;
+  }
+}
+
+.el-icon-auth-type {
+  &:before {
+    background: url('@{imgurl}auth_type_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+
+.el-icon-type {
+  &:before {
+    background: url('@{imgurl}type_icon.png') center center/100% auto no-repeat;
+  }
 }

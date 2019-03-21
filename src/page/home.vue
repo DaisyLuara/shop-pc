@@ -79,6 +79,9 @@ export default {
               case "put":
                 m.src = "ad_shop/img/put_icon";
                 break;
+              case "device":
+                m.src = "ad_shop/img/device_icon";
+                break;
               case "prize":
                 m.src = "ad_shop/img/gift_icon";
                 break;
@@ -115,10 +118,15 @@ export default {
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
     this.user_name = customer.company.name;
-    this.noLogo = customer.company.logo ? false : true;
-    this.logo = customer.company.logo
-      ? customer.company.logo
-      : this.IMG_URL + "ad_shop/img/avatar_white.png";
+    if (customer.media) {
+      this.noLogo = customer.media.url ? false : true;
+      this.logo = customer.media.url
+        ? customer.media.url
+        : this.IMG_URL + "ad_shop/img/avatar_white.png";
+    } else {
+      this.noLogo = true;
+      this.logo = this.IMG_URL + "ad_shop/img/avatar_white.png";
+    }
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
