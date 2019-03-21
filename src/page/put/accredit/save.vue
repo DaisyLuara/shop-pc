@@ -1,15 +1,16 @@
 <template>
   <div class="item-wrap-template">
     <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
-      <div class="pane-title">{{ AccreditID ? '编辑授权投放' : '新增授权投放' }}</div>
-      <el-form ref="accreditForm" :model="accreditForm" label-width="150px">
+      <!-- <div class="pane-title">{{ AccreditID ? '编辑授权投放' : '新增授权投放' }}</div> -->
+      <el-form ref="accreditForm" :model="accreditForm">
         <div class="deploy-model">
           <h4 class="deploy-model-title">投放基础配置</h4>
           <el-form-item
             :rules="[{ required: true, message: '请选择点位', trigger: 'submit'}]"
-            label="点位"
+            label
             prop="oid"
           >
+            
             <el-select
               v-model="accreditForm.oid"
               :loading="searchLoading"
@@ -18,6 +19,7 @@
               filterable
               clearable
             >
+            <i slot="prefix" class="el-input__icon el-icon-name"></i>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -28,7 +30,7 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
-            label="节目"
+            label
             prop="piid"
           >
             <el-select
@@ -48,7 +50,7 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择类型', trigger: 'submit'}]"
-            label="类型"
+            label
             prop="type"
           >
             <el-select
@@ -68,7 +70,7 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择授权链接', trigger: 'submit'}]"
-            label="授权链接"
+            label
             prop="wiid"
           >
             <el-select
@@ -88,13 +90,16 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择状态', trigger: 'submit'}]"
-            label="状态"
+            label
             prop="visiable"
           >
-            <el-radio-group v-model="accreditForm.visiable">
-              <el-radio :label="1">运营中</el-radio>
-              <el-radio :label="0">下架</el-radio>
-            </el-radio-group>
+            <div class="status-device">
+              <div class="status-devic-item">状态</div>
+              <el-radio-group v-model="accreditForm.visiable">
+                <el-radio :label="1">运营中</el-radio>
+                <el-radio :label="0">下架</el-radio>
+              </el-radio-group>
+            </div>
           </el-form-item>
         </div>
         <div class="deploy-model">
@@ -105,7 +110,7 @@
               <el-radio :label="0">指定链接</el-radio>
             </el-radio-group>
           </el-form-item>-->
-          <el-form-item label="脱机链接" prop="reply_url">
+          <el-form-item label prop="reply_url">
             <el-input
               v-model="accreditForm.reply_url"
               :autosize="{ minRows: 2, maxRows: 10}"
@@ -373,30 +378,60 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@imgurl: "https://cdn.exe666.com/ad_shop/img/";
 .item-wrap-template {
   .deploy-model {
-    border-top: 1px solid #6b3dc4;
+    // border-top: 1px solid #6b3dc4;
     .deploy-model-title {
-      padding: 20px 0;
-      font-size: 14px;
-      font-weight: 600;
-      text-indent: 20px;
+      color: #6b3dc4;
+      padding: 15px 0;
+      font-size: 16px;
     }
   }
   .pane {
     border-radius: 5px;
-    background-color: white;
     padding: 20px 40px 80px;
-
+    .el-form-item {
+      margin-bottom: 10px;
+    }
     .el-select,
     .item-input,
     .el-date-editor.el-input {
-      width: 380px;
+      width: 300px;
     }
     .item-list {
       .program-title {
         color: #555;
         font-size: 14px;
+      }
+    }
+    .el-radio:last-child {
+      margin-left: 60px;
+    }
+    .el-radio-group {
+      padding-left: 15px;
+    }
+    .el-icon-name {
+      &:before {
+        content: " ";
+        display: inline-block;
+        background: url("@{imgurl}name_icon.png") center center/100% auto
+          no-repeat;
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 50%;
+        left: 3%;
+        transform: translateY(-50%);
+      }
+    }
+    .status-device {
+      background: #fff;
+      width: 300px;
+      .status-devic-item {
+        padding-left: 15px;
+        background: #6b3dc4;
+        color: #fff;
       }
     }
     .pane-title {

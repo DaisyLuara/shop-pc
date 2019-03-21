@@ -34,7 +34,7 @@
             >保存</el-button>
           </div>
           <div class="account-item">
-            <div class="account-item-title">认证等级:</div>
+            <div class="account-item-title">认证等级</div>
             <div class="account-item-content">
               <label class="icon-v1">
                 <img :src="IMG_URL+'ad_shop/img/account/v3.png'">
