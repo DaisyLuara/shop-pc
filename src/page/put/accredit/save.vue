@@ -10,7 +10,6 @@
             label
             prop="oid"
           >
-            
             <el-select
               v-model="accreditForm.oid"
               :loading="searchLoading"
@@ -19,7 +18,7 @@
               filterable
               clearable
             >
-            <i slot="prefix" class="el-input__icon el-icon-name"></i>
+              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -40,6 +39,8 @@
               filterable
               clearable
             >
+              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+
               <el-option
                 v-for="item in projectList"
                 :key="item.id"
@@ -60,6 +61,8 @@
               filterable
               clearable
             >
+              <i slot="prefix" class="el-input__icon el-icon-auth-type el-icon-same"></i>
+
               <el-option
                 v-for="item in typeList"
                 :key="item.id"
@@ -80,6 +83,7 @@
               filterable
               clearable
             >
+              <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"></i>
               <el-option
                 v-for="item in linkList"
                 :key="item.id"
@@ -411,20 +415,7 @@ export default {
     .el-radio-group {
       padding-left: 15px;
     }
-    .el-icon-name {
-      &:before {
-        content: " ";
-        display: inline-block;
-        background: url("@{imgurl}name_icon.png") center center/100% auto
-          no-repeat;
-        width: 15px;
-        height: 15px;
-        position: absolute;
-        top: 50%;
-        left: 3%;
-        transform: translateY(-50%);
-      }
-    }
+
     .status-device {
       background: #fff;
       width: 300px;

@@ -8,6 +8,7 @@ import smart from 'router/pc/smart'
 import put from 'router/pc/put'
 import prize from 'router/pc/prize'
 import report from 'router/pc/report'
+import device from 'router/pc/device'
 
 export default {
   path: '/',
@@ -16,5 +17,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, auth, site, smart, prize, put, report]
+  children: [account, auth, site, smart, prize, device, put, report]
 }

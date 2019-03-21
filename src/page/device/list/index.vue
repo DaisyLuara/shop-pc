@@ -9,22 +9,16 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="nick_name">
-              <el-input v-model="filters.nick_name" placeholder="请输入授权链接" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"></i>
+            <el-form-item label prop="project_name">
+              <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
               </el-input>
             </el-form-item>
-            <el-form-item label prop="service_type">
-              <el-select
-                icon="el-icon-search"
-                v-model="filters.service_type"
-                placeholder="请选择授权类型"
-                filterable
-                clearable
-              >
-                <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"></i>
+            <el-form-item label prop="machine_status">
+              <el-select v-model="filters.machine_status" placeholder="请选择状态" filterable clearable>
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"></i>
                 <el-option
-                  v-for="item in typeList"
+                  v-for="item in statusList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -38,8 +32,7 @@
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">授权列表（ {{ pagination.total }} ）</span>
-          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="naviToAdd">新增授权</el-button>
+          <span class="label">设备列表（ {{ pagination.total }} ）</span>
         </div>
         <!-- 表格 -->
         <el-table
@@ -53,87 +46,85 @@
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="ID:">
+                <el-form-item label="设备号:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="原始ID:">
-                  <span>{{ scope.row.appid }}</span>
+                <el-form-item label="节目:">
+                  <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
-                <el-form-item label="授权链接:">
-                  <span>{{ scope.row.nick_name }}</span>
+                <el-form-item label="点位:">
+                  <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
-                <el-form-item label="类型:">
-                  <span>{{ scope.row.service_type.display_name }}</span>
+                <el-form-item label="上次互动:">
+                  <span>{{ scope.row.faceDate }}</span>
                 </el-form-item>
-                <el-form-item label="状态:">
+                <el-form-item label="联网时间:">
+                  <span>{{ scope.row.networkDate }}</span>
+                </el-form-item>
+                <el-form-item label="登录时间:">
+                  <span>{{ scope.row.loginDate }}</span>
+                </el-form-item>
+                <el-form-item label="屏幕状态:">
                   <span
-                    :class="(scope.row.state !== 200) ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.state !== 200 ? scope.row.state : '正常' }}</span>
-                </el-form-item>
-                <el-form-item label="时间:">
-                  <span>{{ scope.row.updated_at }}</span>
-                </el-form-item>
-                <el-form-item label="开通权限:">
-                  <span v-html="perShow(scope.row.per)"/>
+                    :class="(scope.row.screenStatus === 0) ? 'sold-out-expand' : 'operating-expand'"
+                  >{{ scope.row.screenStatus ===0 ? '关闭': '开启' }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" min-width="80"/>
+          <el-table-column sortable :show-overflow-tooltip="true" prop="id" label="设备号" width="90"/>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="appid"
-            label="原始ID"
-            min-width="80"
-          />
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="nick_name"
-            label="授权链接"
-            min-width="80"
-          />
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="type"
-            label="类型"
+            prop="project"
+            label="节目"
             min-width="80"
           >
-            <template slot-scope="scope">{{ scope.row.service_type.display_name }}</template>
+            <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="state"
-            label="状态"
+            prop="point"
+            label="点位"
+            min-width="80"
+          >
+            <template slot-scope="scope">{{ scope.row.point.name }}</template>
+          </el-table-column>
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="faceDate"
+            label="上次互动"
+            min-width="80"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="networkDate"
+            label="联网时间"
+            min-width="90"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="loginDate"
+            label="登录时间"
+            min-width="90"
+          />
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="screenStatus"
+            label="屏幕状态"
             min-width="100"
           >
             <template slot-scope="scope">
               <span
-                :class="(scope.row.state !== 200) ? 'sold-out' : 'operating'"
-              >{{ scope.row.state !== 200 ? scope.row.state : '正常' }}</span>
+                :class="(scope.row.screenStatus === 0) ? 'sold-out' : 'operating'"
+              >{{ scope.row.screenStatus === 0 ? '关闭': '开启' }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="per"
-            label="开通权限"
-            min-width="100"
-          >
-            <template slot-scope="scope">
-              <span v-html="perShow(scope.row.per)"/>
-            </template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            :show-overflow-tooltip="true"
-            prop="updated_at"
-            label="时间"
-            min-width="80"
-          />
         </el-table>
         <div class="pagination-wrap">
           <el-pagination
@@ -150,7 +141,7 @@
 </template>
 
 <script>
-import { getAuthorizationList } from "service";
+import { getDeviceList } from "service";
 
 import {
   Button,
@@ -180,83 +171,19 @@ export default {
   data() {
     return {
       filters: {
-        nick_name: "",
-        service_type: ""
+        machine_status: "",
+        project_name: null
       },
-
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "昨天",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24);
-              end.setTime(end.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date().getTime() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date() - 3600 * 1000 * 24;
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
-      typeList: [
+      statusList: [
         {
-          id: 0,
-          name: "小程序"
+          id: "online",
+          name: "运营中"
         },
         {
-          id: 1,
-          name: "订阅号"
-        },
-        {
-          id: 2,
-          name: "服务号"
-        },
-        {
-          id: 100,
-          name: "手机号"
-        },
-        {
-          id: 101,
-          name: "普通"
-        },
-        {
-          id: 102,
-          name: "本地"
-        },
-        {
-          id: 200,
-          name: "天猫"
+          id: "tmp",
+          name: "待解决"
         }
       ],
-      authList: [],
-      statusList: [],
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
         loading: false,
@@ -271,64 +198,46 @@ export default {
     };
   },
   created() {
-    this.getAuthorizationList();
+    this.getDeviceList();
   },
   methods: {
-    perShow(data) {
-      if (data) {
-        let length = data.length;
-        let per = "";
-        for (let i = 0; i < length; i++) {
-          let name = data[i];
-          per += "<div><span>" + name + "</span></div>";
-        }
-        return per;
-      }
-    },
-    getAuthorizationList() {
+    getDeviceList() {
       this.setting.loading = true;
       let args = {
+        include: "point,project",
         page: this.pagination.currentPage,
-        nick_name: this.filters.nick_name,
-        service_type: this.filters.service_type
+        project_name: this.filters.project_name,
+        machine_status: this.filters.machine_status
       };
-      if (this.filters.service_type === "") {
-        delete args.service_type;
+      if (this.filters.project_name === "") {
+        delete args.project_name;
       }
-      if (this.filters.nick_name === "") {
-        delete args.nick_name;
+
+      if (!this.filters.machine_status) {
+        delete args.machine_status;
       }
-      getAuthorizationList(this, args)
+      getDeviceList(this, args)
         .then(res => {
           this.tableData = res.data;
           this.pagination.total = res.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(err => {
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
           this.setting.loading = false;
         });
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getAuthorizationList();
+      this.getDeviceList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getAuthorizationList();
+      this.getDeviceList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getAuthorizationList();
-    },
-    naviToAdd() {
-      this.$router.push({
-        path: "/auth/list/add"
-      });
+      this.getDeviceList();
     }
   }
 };
@@ -394,7 +303,6 @@ export default {
         padding: 3px 5px;
         border-radius: 5px;
       }
-
       .search-wrap {
         margin-top: 5px;
         display: flex;
@@ -409,7 +317,6 @@ export default {
         .el-select {
           width: 200px;
         }
-
         .warning {
           background: #ebf1fd;
           padding: 8px;
