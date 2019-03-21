@@ -7,7 +7,7 @@
           <h4 class="deploy-model-title">投放基础配置</h4>
           <el-form-item
             :rules="[{ required: true, message: '请选择点位', trigger: 'submit'}]"
-            label
+            label=" "
             prop="oid"
           >
             <el-select
@@ -29,7 +29,7 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
-            label
+            label=" "
             prop="piid"
           >
             <el-select
@@ -51,7 +51,7 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择类型', trigger: 'submit'}]"
-            label
+            label=" "
             prop="type"
           >
             <el-select
@@ -73,7 +73,7 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择授权链接', trigger: 'submit'}]"
-            label
+            label=" "
             prop="wiid"
           >
             <el-select
@@ -94,8 +94,9 @@
           </el-form-item>
           <el-form-item
             :rules="[{ required: true, message: '请选择状态', trigger: 'submit'}]"
-            label
+            label=" "
             prop="visiable"
+            style="padding-left:20px;"
           >
             <div class="status-device">
               <div class="status-devic-item">状态</div>
@@ -106,15 +107,15 @@
             </div>
           </el-form-item>
         </div>
-        <div class="deploy-model">
-          <h4 class="deploy-model-title">脱机配置</h4>
+        <div class="deploy-model" style="padding-left:20px">
+          <h4 class="deploy-model-title" style="padding-left:0">脱机配置</h4>
           <!-- <el-form-item label="脱机支持" prop="off_support">
             <el-radio-group v-model="accreditForm.off_support">
               <el-radio :label="1">微信场景码</el-radio>
               <el-radio :label="0">指定链接</el-radio>
             </el-radio-group>
           </el-form-item>-->
-          <el-form-item label prop="reply_url">
+          <el-form-item label=" " prop="reply_url">
             <el-input
               v-model="accreditForm.reply_url"
               :autosize="{ minRows: 2, maxRows: 10}"
@@ -124,7 +125,7 @@
             />
           </el-form-item>
         </div>
-        <el-form-item>
+        <el-form-item class="btn-wrap">
           <el-button class="el-button-success" @click="submit('accreditForm')">保存</el-button>
           <el-button class="el-button-cancel" @click="back">返回</el-button>
         </el-form-item>
@@ -385,10 +386,9 @@ export default {
 @imgurl: "https://cdn.exe666.com/ad_shop/img/";
 .item-wrap-template {
   .deploy-model {
-    // border-top: 1px solid #6b3dc4;
     .deploy-model-title {
       color: #6b3dc4;
-      padding: 15px 0;
+      padding: 15px 20px 15px 15px;
       font-size: 16px;
     }
   }
@@ -402,6 +402,9 @@ export default {
     .item-input,
     .el-date-editor.el-input {
       width: 300px;
+    }
+    .btn-wrap {
+      padding-left: 20px;
     }
     .item-list {
       .program-title {
