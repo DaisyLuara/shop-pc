@@ -4,7 +4,7 @@ let router = {
   name: '投放',
   meta: {
     title: '投放',
-    permission: 'shop_launch'
+    // permission: 'shop_launch'
   },
   component: () =>
     import(/* webpackChunkName: "page/put/putView" */ 'page/put/putView'),
@@ -13,7 +13,7 @@ let router = {
       path: 'list',
       meta: {
         title: '节目投放',
-        permission: 'shop_launch.project'
+        // permission: 'shop_launch.project'
       },
       component: () =>
         import(/* webpackChunkName: "page/put/list/routerView" */ 'page/put/list/routerView'),
@@ -22,7 +22,7 @@ let router = {
           path: '/',
           meta: {
             title: '节目投放列表',
-            permission: 'shop_launch.project.read'
+            // permission: 'shop_launch.project.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/list/index" */ 'page/put/list/index')
@@ -31,7 +31,7 @@ let router = {
           path: 'save',
           meta: {
             title: '节目投放新增',
-            permission: 'shop_launch.project.create'
+            // permission: 'shop_launch.project.create'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/list/save" */ 'page/put/list/save')

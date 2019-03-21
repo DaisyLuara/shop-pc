@@ -110,11 +110,11 @@
       </div>
       <!-- 节目名称修改 -->
       <el-dialog v-loading="loading" :visible.sync="editVisible" title="修改" :show-close="false">
-        <el-form ref="projectForm" :model="projectForm" label-width="150px">
+        <el-form ref="projectForm" :model="projectForm" label-position="top">
           <el-form-item
             v-if="modifyOptionFlag.project"
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
-            label="节目名称"
+            label="节目"
             prop="project_id"
           >
             <el-select
@@ -125,6 +125,7 @@
               placeholder="请选择节目"
               clearable
             >
+              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
               <el-option
                 v-for="item in projectList"
                 :key="item.id"
@@ -370,6 +371,7 @@ export default {
 .root {
   font-size: 14px;
   color: #5e6d82;
+
   .item-list-wrap {
     .el-select,
     .item-input,
@@ -377,8 +379,9 @@ export default {
       width: 200px;
     }
     .modify-width {
-      width: 380px;
+      width: 300px;
     }
+
     background: #fff;
     padding: 30px;
     .item-content-wrap {

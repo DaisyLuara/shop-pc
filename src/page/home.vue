@@ -118,10 +118,10 @@ export default {
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
     this.user_name = customer.company.name;
-    if (customer.media) {
-      this.noLogo = customer.media.url ? false : true;
-      this.logo = customer.media.url
-        ? customer.media.url
+    if (customer.company.logoMedia) {
+      this.noLogo = customer.company.logoMedia.url ? false : true;
+      this.logo = customer.company.logoMedia.url
+        ? customer.company.logoMedia.url
         : this.IMG_URL + "ad_shop/img/avatar_white.png";
     } else {
       this.noLogo = true;
