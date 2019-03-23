@@ -3,8 +3,8 @@ let router = {
   path: 'prize',
   name: '奖品管理',
   meta: {
-    title: '奖品管理'
-    // permission: 'shop_auth'
+    title: '奖品管理',
+    permission: 'shop_prize'
   },
   component: () =>
     import(/* webpackChunkName: "page/prize/prizeView" */ 'page/prize/prizeView'),
@@ -12,8 +12,8 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '奖品列表'
-        // permission: 'shop_auth.datum'
+        title: '奖品列表',
+        permission: 'shop_prize.coupon_batch'
       },
       component: () =>
         import(/* webpackChunkName: "page/prize/list/routerView" */ 'page/prize/list/routerView'),
@@ -21,8 +21,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '奖品列表详情'
-            // permission: 'shop_auth.datum.read'
+            title: '奖品列表详情',
+            permission: 'shop_prize.coupon_batch.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/list/index" */ 'page/prize/list/index')
@@ -30,7 +30,8 @@ let router = {
         {
           path: 'edit/:uid',
           meta: {
-            title: '修改奖品'
+            title: '修改奖品',
+            permission: 'shop_prize.coupon_batch.update'
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/list/save" */ 'page/prize/list/save')
@@ -40,8 +41,8 @@ let router = {
     {
       path: 'template',
       meta: {
-        title: '奖品模板'
-        // permission: 'shop_coupon.list'
+        title: '奖品模板',
+        permission: 'shop_prize.coupon_batch_policy'
       },
       component: () =>
         import(/* webpackChunkName: "page/prize/template/routerView" */ 'page/prize/template/routerView'),
@@ -49,8 +50,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '奖品模板详情'
-            // permission: 'shop_prize.list.read'
+            title: '奖品模板详情',
+            permission: 'shop_prize.coupon_batch_policy.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/template/index" */ 'page/prize/template/index')
@@ -60,8 +61,8 @@ let router = {
     {
       path: 'verifies',
       meta: {
-        title: '奖品核销'
-        // permission: 'shop_coupon.list'
+        title: '奖品核销',
+        permission: 'shop_prize.coupon'
       },
       component: () =>
         import(/* webpackChunkName: "page/prize/verification/routerView" */ 'page/prize/verification/routerView'),
@@ -69,8 +70,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '奖品核销详情'
-            // permission: 'shop_prize.list.read'
+            title: '奖品核销详情',
+            permission: 'shop_prize.coupon.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/verification/index" */ 'page/prize/verification/index')

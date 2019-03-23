@@ -79,8 +79,8 @@ let router = {
     {
       path: 'prize',
       meta: {
-        title: '奖品投放'
-        // permission: 'shop_launch.wechat'
+        title: '奖品投放',
+        permission: 'shop_launch.prize'
       },
       component: () =>
         import(/* webpackChunkName: "page/put/prize/routerView" */ 'page/put/prize/routerView'),
@@ -88,8 +88,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '奖品投放列表'
-            // permission: 'shop_launch.wechat.read'
+            title: '奖品投放列表',
+            permission: 'shop_launch.prize.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/prize/index" */ 'page/put/prize/index')
@@ -97,8 +97,8 @@ let router = {
         {
           path: 'save',
           meta: {
-            title: '奖品投放新增'
-            // permission: 'shop_launch.wechat.create'
+            title: '奖品投放新增',
+            permission: 'shop_launch.prize.create'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/prize/save" */ 'page/put/prize/save')
@@ -106,8 +106,8 @@ let router = {
         {
           path: 'edit/:uid',
           meta: {
-            title: '奖品投放编辑'
-            // permission: 'shop_launch.wechat.update'
+            title: '奖品投放编辑',
+            permission: 'shop_launch.prize.update'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/prize/save" */ 'page/put/prize/save')

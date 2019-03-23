@@ -180,7 +180,6 @@ const deletePrizePolicyEntry = (context, pid, id) => {
 export {
   savePrizePolicyEntry,
   modifyPrizePolicyEntry,
-  prizePolicyEntryDetails,
   deletePrizePolicyEntry,
   getPrizeVerifyList,
   verifyPrize,
