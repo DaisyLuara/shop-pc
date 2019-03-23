@@ -222,11 +222,11 @@ export default {
     this.name = this.$store.state.curUserInfo.company.name;
   },
   mounted() {
-    let now_num = document.querySelector(".num-now");
-    if ((this.gradeValue > 0) & (this.gradeValue < 300)) {
-      now_num.style.left = (this.gradeValue / this.gradeMax) * 100 + "%";
-      now_num.style.opacity = "1";
-    }
+    // let now_num = document.querySelector(".num-now");
+    // if ((this.gradeValue > 0) & (this.gradeValue < 300)) {
+    //   now_num.style.left = (this.gradeValue / this.gradeMax) * 100 + "%";
+    //   now_num.style.opacity = "1";
+    // }
   },
   methods: {
     saveCompanyName() {

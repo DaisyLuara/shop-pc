@@ -141,7 +141,7 @@
   </div>
 </template>
 <script>
-import { getLaunchProjectList, getPoint, getProject } from "service";
+import { getLaunchPirzeList, getPoint, getProject } from "service";
 import {
   Button,
   Input,
@@ -192,7 +192,9 @@ export default {
     };
   },
   created() {
-    this.getLaunchProjectList();
+    this.getLaunchPirzeList();
+    this.getProject();
+    this.getPoint();
   },
   methods: {
     getProject() {
@@ -238,9 +240,9 @@ export default {
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getLaunchProjectList();
+      this.getLaunchPirzeList();
     },
-    getLaunchProjectList() {
+    getLaunchPirzeList() {
       this.setting.loading = true;
       let searchArgs = {
         page: this.pagination.currentPage,
@@ -258,7 +260,7 @@ export default {
       if (this.filters.policy_name === "") {
         delete searchArgs.policy_name;
       }
-      getLaunchProjectList(this, searchArgs)
+      getLaunchPirzeList(this, searchArgs)
         .then(response => {
           this.tableData = response.data;
           this.pagination.total = response.meta.pagination.total;
@@ -274,11 +276,11 @@ export default {
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getLaunchProjectList();
+      this.getLaunchPirzeList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getLaunchProjectList();
+      this.getLaunchPirzeList();
     }
   }
 };
