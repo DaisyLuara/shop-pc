@@ -5,83 +5,67 @@
       :element-loading-text="setting.loadingText"
       class="item-list-wrap"
     >
-      <div style="margin: 0 10px 10px;font-size: 18px;">{{ customer_name }}</div>
       <div class="item-content-wrap">
-        <div class="verify-wrap">
-          <div class="verify-content">
-            <el-input
-              v-model="verify.order_total"
-              size="small"
-              placeholder="请输入订单金额"
-              class="border-none"
-            />
+        <el-form ref="verify" :model="verify" :inline="true">
+          <el-form-item label prop="code">
             <el-input
               v-model="verify.code"
-              size="small"
+              size="large"
+              placeholder="请输入订单金额"
+              clearable
+              class="verify-input"
+            >
+              <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"></i>
+            </el-input>
+          </el-form-item>
+          <el-form-item label prop="order_total">
+            <el-input
+              v-model="verify.order_total"
               placeholder="请输入优惠券码"
-              class="border-none border-left"
-            />
-          </div>
-          <el-button type="primary" @click="verifyCoupon">验证</el-button>
-          <el-button type="default" @click="resetverifyCoupon">重置</el-button>
-        </div>
-        <h2>核销订单列表</h2>
+              clearable
+              class="verify-input"
+            >
+              <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"></i>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="verifyPrize">核销</el-button>
+            <el-button type="default" @click="resetverifyPrize('verify')">重置</el-button>
+          </el-form-item>
+        </el-form>
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="dateTime">
-              <el-date-picker
-                v-model="filters.dateTime"
-                :clearable="false"
-                :picker-options="pickerOptions"
-                type="daterange"
-                align="right"
-                unlink-panels
-                start-placeholder="核销开始日期"
-                end-placeholder="核销结束日期"
-              />
+            <el-form-item label prop="customer_name">
+              <el-input
+                v-model="filters.customer_name"
+                size="medium"
+                placeholder="请输入核销人员"
+                clearable
+              >
+                <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item label prop="coupon_batch_name">
+              <el-input
+                v-model="filters.coupon_batch_name"
+                size="medium"
+                placeholder="请输入奖品名称"
+                clearable
+              >
+                <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"></i>
+              </el-input>
             </el-form-item>
             <el-form-item label prop="status">
               <el-select
                 v-model="filters.status"
                 placeholder="请选择优惠券状态"
                 clearable
+                size="medium"
                 class="coupon-form-select"
               >
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"></i>
                 <el-option
                   v-for="item in statusList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="shop_customer_id">
-              <el-select
-                v-model="filters.shop_customer_id"
-                placeholder="请搜索核销人员"
-                :loading="searchLoading"
-                filterable
-                clearable
-                class="coupon-form-select"
-              >
-                <el-option
-                  v-for="item in shopCustomerList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label prop="coupon_batch_id">
-              <el-select
-                v-model="filters.coupon_batch_id"
-                :loading="searchLoading"
-                placeholder="请选择优惠详情"
-                filterable
-                clearable
-              >
-                <el-option
-                  v-for="item in couponList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -93,9 +77,11 @@
                 v-model="filters.point_id"
                 :loading="searchLoading"
                 placeholder="请选择点位"
+                size="medium"
                 filterable
                 clearable
               >
+                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -104,59 +90,79 @@
                 />
               </el-select>
             </el-form-item>
-            <el-button type="warning" @click="search('filters')">搜索</el-button>
-            <el-button type="default" @click="resetSearch('filters')">重置</el-button>
+            <el-form-item label prop="dateTime">
+              <el-date-picker
+                v-model="filters.dateTime"
+                :clearable="false"
+                size="medium"
+                :picker-options="pickerOptions"
+                type="daterange"
+                align="right"
+                unlink-panels
+                start-placeholder="核销开始日期"
+                end-placeholder="核销结束日期"
+              />
+            </el-form-item>
+            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+            <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
           </el-form>
         </div>
-        <div class="actions-wrap">
-          <span class="label">合计核销优惠券: {{ pagination.total }}</span>
-          <div>
-            <el-button type="success" size="small" @click="downloadTable()">下载</el-button>
-          </div>
-        </div>
-        <el-table ref="multipleTable" :data="tableData" style="width: 100%" type="expand">
+        <el-table
+          ref="multipleTable"
+          :row-style="{height:'70px'}"
+          :data="tableData"
+          :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
+        >
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="优惠券码">
+                <el-form-item label="奖品码">
                   <span>{{ scope.row.code }}</span>
                 </el-form-item>
-                <el-form-item label="订单">
-                  <span>{{ scope.row.order_no }}</span>
-                </el-form-item>
-                <el-form-item label="订单金额">
-                  <span>{{ scope.row.order_total }}</span>
-                </el-form-item>
-                <el-form-item label="订单图片">
-                  <a :href="scope.row.media" target="_blank" style="color: blue">查看</a>
-                </el-form-item>
-                <el-form-item label="优惠券详情">
+                <el-form-item label="奖品名称">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
-                <el-form-item label="核销时间">
-                  <span>{{ scope.row.use_date }}</span>
-                </el-form-item>
-                <el-form-item label="有效期">
-                  <span>{{ scope.row.start_date ? (scope.row.start_date +' -- '+ scope.row.end_date) : '' }}</span>
+                <el-form-item label="状态">
+                  <span v-if="scope.row.status===0">未领取</span>
+                  <span v-if="scope.row.status===1">已使用</span>
+                  <span v-if="scope.row.status===2">停用</span>
+                  <span v-if="scope.row.status===3">未使用</span>
                 </el-form-item>
                 <el-form-item label="核销人">
                   <span>{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</span>
                 </el-form-item>
                 <el-form-item label="点位">
-                  <span>{{ scope.row.point !== undefined ? scope.row.point.market.area.name + '-' + scope.row.point.market.name + '-' + scope.row.point.name : '' }}</span>
+                  <span>{{ scope.row.point !== undefined ? scope.row.point.name : '' }}</span>
+                </el-form-item>
+                <el-form-item label="核销时间">
+                  <span>{{ scope.row.use_date }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" prop="code" label="优惠券码" min-width="80"/>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="order_total"
-            label="订单金额"
+            sortable
+            prop="code"
+            label="奖品码"
             min-width="80"
           />
-          <el-table-column :show-overflow-tooltip="true" prop="name" label="优惠券详情" min-width="100"></el-table-column>
-          <el-table-column :show-overflow-tooltip="true" prop="status" label="状态" min-width="80">
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="name"
+            label="奖品名称"
+            min-width="80"
+          />
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="status"
+            label="状态"
+            min-width="80"
+          >
             <template slot-scope="scope">
               <span v-if="scope.row.status===0">未领取</span>
               <span v-if="scope.row.status===1">已使用</span>
@@ -164,15 +170,27 @@
               <span v-if="scope.row.status===3">未使用</span>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" prop="name" label="核销人" min-width="100">
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="customer_name"
+            label="核销人"
+            min-width="100"
+          >
             <template
               slot-scope="scope"
             >{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" prop="point" label="点位" min-width="100">
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="point"
+            label="点位"
+            min-width="100"
+          >
             <template
               slot-scope="scope"
-            >{{ scope.row.point !== undefined ? scope.row.point.market.area.name + '-'+ scope.row.point.market.name + '-'+ scope.row.point.name : '' }}</template>
+            >{{ scope.row.point !== undefined ? scope.row.point.name : '' }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -180,11 +198,6 @@
             label="核销时间"
             min-width="80"
           ></el-table-column>
-          <el-table-column label="操作" width="80">
-            <template slot-scope="scope">
-              <i class="el-icon-edit-outline edit-icon" @click="editHandle(scope.row)"/>
-            </template>
-          </el-table-column>
         </el-table>
         <div class="pagination-wrap">
           <el-pagination
@@ -197,33 +210,15 @@
         </div>
       </div>
     </div>
-    <el-dialog title="核销修改" :visible.sync="dialogFormVisible">
-      <el-form :model="orderForm">
-        <el-form-item label="优惠券码" label-width="80">
-          <span>{{orderForm.code}}</span>
-        </el-form-item>
-        <el-form-item label="订单号" label-width="80">
-          <el-input v-model="orderForm.order_no" class="item-input"/>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="modifyCoupon">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import {
-  getCouponList,
-  verifyCoupon,
-  modifyCoupon,
-  getCouponBatches,
-  getCustomer,
+  getPrizeVerifyList,
+  verifyPrize,
   getPoint,
-  handleDateTimesTransform,
-  getExcelData
+  handleDateTimesTransform
 } from "service";
 
 import {
@@ -236,7 +231,6 @@ import {
   FormItem,
   MessageBox,
   DatePicker,
-  Dialog,
   Option,
   Select
 } from "element-ui";
@@ -251,23 +245,16 @@ export default {
     "el-form": Form,
     "el-form-item": FormItem,
     "el-date-picker": DatePicker,
-    "el-dialog": Dialog,
     "el-select": Select,
     "el-option": Option
   },
   data() {
     return {
       verify: {
-        // order_no: '',
         code: "",
         order_total: ""
       },
-      orderForm: {
-        code: "",
-        order_no: ""
-      },
       searchLoading: false,
-      dialogFormVisible: false,
       pickerOptions: {
         shortcuts: [
           {
@@ -313,10 +300,11 @@ export default {
       filters: {
         dateTime: [],
         status: "",
-        shop_customer_id: "",
-        coupon_batch_id: "",
+        customer_name: "",
+        coupon_batch_name: "",
         point_id: ""
       },
+      headerStyle: { background: "#6b3ec2", color: "#fff" },
       statusList: [
         {
           id: 0,
@@ -335,8 +323,6 @@ export default {
           name: "未使用"
         }
       ],
-      shopCustomerList: [],
-      couponList: [],
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -346,137 +332,74 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      customer_name: "",
       tableData: []
     };
   },
   created() {
-    this.getCouponList();
-    let coustomer_info = JSON.parse(localStorage.getItem("customer_info"));
-    this.customer_name = coustomer_info.company.name;
-    this.getCustomer();
+    this.getPrizeVerifyList();
     this.getPoint();
-    this.getCouponBatches();
   },
   methods: {
-    downloadTable() {
-      let args = this.setArgs();
-      delete args.include;
-      delete args.page;
-      args.type = "coupon";
-      return getExcelData(this, args)
-        .then(response => {
-          const a = document.createElement("a");
-          a.href = response;
-          a.download = "download";
-          a.click();
-          window.URL.revokeObjectURL(response);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     getPoint() {
+      this.searchLoading = true;
       getPoint(this)
         .then(res => {
           this.pointList = res;
           this.searchLoading = false;
         })
         .catch(err => {
-          console.log(err);
-          this.searchLoading = false;
-        });
-    },
-    getCouponBatches() {
-      this.searchLoading = true;
-      getCouponBatches(this)
-        .then(res => {
-          this.couponList = res;
-          this.searchLoading = false;
-        })
-        .catch(err => {
-          console.log(err);
-          this.searchLoading = false;
-        });
-    },
-    getCustomer() {
-      this.searchLoading = true;
-      getCustomer(this)
-        .then(res => {
-          this.shopCustomerList = res;
-          this.searchLoading = false;
-        })
-        .catch(err => {
-          console.log(err);
-          this.searchLoading = false;
-        });
-    },
-    resetverifyCoupon() {
-      // this.verify.order_no = ''
-      this.verify.code = "";
-      this.verify.order_total = "";
-    },
-    editHandle(data) {
-      this.orderForm.code = data.code;
-      this.dialogFormVisible = true;
-    },
-    modifyCoupon() {
-      this.setting.loading = true;
-      let args = {
-        code: this.orderForm.code,
-        order_no: this.orderForm.order_no
-      };
-      modifyCoupon(this, args)
-        .then(res => {
-          this.dialogFormVisible = false;
-          this.$message({
-            message: "修改成功",
-            type: "success"
-          });
-          this.getCouponList();
-        })
-        .catch(err => {
-          this.setting.loading = false;
-          this.dialogFormVisible = false;
           this.$message({
             message: err.response.data.message,
-            type: "error"
+            type: "warring"
           });
+          this.searchLoading = false;
         });
     },
-    verifyCoupon() {
-      this.setting.loading = true;
-      let args = {
-        // order_no: this.verify.order_no,
-        code: this.verify.code,
-        order_total: this.verify.order_total
-      };
-      if (this.verify.order_total === "") {
-        delete args.order_total;
-      }
-      verifyCoupon(this, args)
-        .then(res => {
-          this.$message({
-            message: "核销成功",
-            type: "success"
-          });
-          this.getCouponList();
+    verifyPrize() {
+      this.$confirm("确定要核销, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.setting.loading = true;
+          let args = {
+            code: this.verify.code,
+            order_total: this.verify.order_total
+          };
+          if (this.verify.order_total === "") {
+            delete args.order_total;
+          }
+          verifyPrize(this, args)
+            .then(res => {
+              this.$message({
+                message: "核销成功",
+                type: "success"
+              });
+              this.getPrizeVerifyList();
+            })
+            .catch(err => {
+              this.setting.loading = false;
+              this.$message({
+                message: err.response.data.message,
+                type: "error"
+              });
+            });
         })
-        .catch(err => {
-          this.setting.loading = false;
+        .catch(() => {
           this.$message({
-            message: err.response.data.message,
-            type: "error"
+            type: "info",
+            message: "已取消核销"
           });
         });
     },
     setArgs() {
       let args = {
-        include: "customer,point.market.area",
+        include: "customer,couponBatch,point",
         page: this.pagination.currentPage,
         status: this.filters.status,
-        coupon_batch_id: this.filters.coupon_batch_id,
-        shop_customer_id: this.filters.shop_customer_id,
+        coupon_batch_name: this.filters.coupon_batch_name,
+        customer_name: this.filters.customer_name,
         point_id: this.filters.point_id,
         start_date: handleDateTimesTransform(this.filters.dateTime[0]),
         end_date: handleDateTimesTransform(this.filters.dateTime[1])
@@ -486,21 +409,21 @@ export default {
       if (this.filters.status === "") {
         delete args.status;
       }
-      if (this.filters.shop_customer_id === "") {
-        delete args.shop_customer_id;
+      if (this.filters.customer_name === "") {
+        delete args.customer_name;
       }
-      if (this.filters.coupon_batch_id === "") {
-        delete args.coupon_batch_id;
+      if (this.filters.coupon_batch_name === "") {
+        delete args.coupon_batch_name;
       }
       if (this.filters.point_id === "") {
         delete args.point_id;
       }
       return args;
     },
-    getCouponList() {
+    getPrizeVerifyList() {
       this.setting.loading = true;
       let args = this.setArgs();
-      getCouponList(this, args)
+      getPrizeVerifyList(this, args)
         .then(res => {
           this.tableData = res.data;
           this.pagination.total = res.meta.pagination.total;
@@ -513,15 +436,15 @@ export default {
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getCouponList();
+      this.getPrizeVerifyList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getCouponList();
+      this.getPrizeVerifyList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getCouponList();
+      this.getPrizeVerifyList();
     }
   }
 };
@@ -532,7 +455,7 @@ export default {
   font-size: 14px;
   color: #5e6d82;
   .item-input {
-    width: 200px;
+    width: 250px;
   }
   .item-list-wrap {
     background: #fff;

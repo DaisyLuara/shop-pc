@@ -117,7 +117,7 @@ export default {
   created() {
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
-    this.user_name = customer.company.name;
+    this.user_name = customer.company.internal_name;
     if (customer.company.logoMedia) {
       this.noLogo = customer.company.logoMedia.url ? false : true;
       this.logo = customer.company.logoMedia.url

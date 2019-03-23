@@ -1,11 +1,11 @@
 <template>
   <div class="put-child-root">
-    <router-view />
+    <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: "ScheduleView"
+  name: "ListView"
 };
 </script>
 

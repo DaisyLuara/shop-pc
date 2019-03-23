@@ -12,7 +12,7 @@
             <el-form-item label prop="piid">
               <el-select
                 v-model="filters.piid"
-                :oading="searchLoading"
+                :loading="searchLoading"
                 placeholder="请选择节目"
                 filterable
                 clearable
@@ -95,7 +95,7 @@
                   <span>{{ scope.row.wechat.nick_name }}</span>
                 </el-form-item>
                 <el-form-item label="类型:">
-                  <span>{{ typeTransform(scope.row) }}</span>
+                  <span>{{ scope.row.type.display_name }}</span>
                 </el-form-item>
                 <el-form-item label="状态:">
                   <span
@@ -261,29 +261,6 @@ export default {
     this.getAuthorizer();
   },
   methods: {
-    typeTransform(data) {
-      let type = data.type;
-      switch (type) {
-        case "normal":
-          return "普通";
-          break;
-        case "mobile":
-          return "手机号";
-          break;
-        case "publick":
-          return "公众号";
-          break;
-        case "subk":
-          return "订阅号";
-          break;
-        case "apps":
-          return "小程序";
-          break;
-        case "tmall":
-          return "天猫";
-          break;
-      }
-    },
     modifyLaunchWechat(data) {
       let id = data.id;
       let args = {

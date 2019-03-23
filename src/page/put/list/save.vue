@@ -4,7 +4,7 @@
       <div class="pane-title">新增节目投放</div>
       <el-form ref="projectLaunchForm" :model="projectLaunchForm">
         <el-form-item
-          :rules="[{ required: true, message: '请输入节目名称', trigger: 'submit'}]"
+          :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
           label=" "
           prop="project_id"
         >
@@ -25,7 +25,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          :rules="[{ required: true, message: '请输入点位', trigger: 'submit'}]"
+          :rules="[{ required: true, message: '请选择点位', trigger: 'submit'}]"
           label=" "
           prop="point_id"
         >

@@ -1,10 +1,10 @@
 import auth from 'service/auth'
 let router = {
   path: 'account',
-  name: '账户',
+  name: '账户管理',
   meta: {
-    title: '账户',
-    permission: 'shop_account'
+    title: '账户管理',
+    // permission: 'shop_account'
   },
   component: () =>
     import(/* webpackChunkName: "page/account/accountView" */ 'page/account/accountView'),
@@ -13,7 +13,7 @@ let router = {
       path: 'datum',
       meta: {
         title: '我的资料',
-        permission: 'shop_account.datum'
+        // permission: 'shop_account.datum'
       },
       component: () =>
         import(/* webpackChunkName: "page/account/account/routerView" */ 'page/account/account/routerView'),
@@ -22,7 +22,7 @@ let router = {
           path: '/',
           meta: {
             title: '我的账号',
-            permission: 'shop_account.datum.read'
+            // permission: 'shop_account.datum.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/account/account/index" */ 'page/account/account/index')

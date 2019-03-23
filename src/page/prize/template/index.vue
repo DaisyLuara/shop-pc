@@ -8,38 +8,38 @@
     <div class="search-wrap">
       <el-form ref="searchForm" :model="searchForm" :inline="true">
         <el-form-item label prop="name">
-          <el-select v-model="searchForm.name" placeholder="请选择节目模板名称" filterable clearable>
-            <el-option
-              v-for="item in projectList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
+          <el-input v-model="searchForm.name" placeholder="请输入奖品模板名称" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+          </el-input>
         </el-form-item>
         <el-button class="el-button-success" @click="search">搜索</el-button>
         <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
       </el-form>
     </div>
     <div class="actions-wrap">
-      <span class="label">数量: {{ pagination.total }}</span>
+      <span class="label">奖品模板列表 ( {{ pagination.total }} )</span>
       <!-- 模板增加 -->
       <div>
-        <el-button size="small" type="success" @click="addTemplate('templateForm')">新增节目模板</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          icon="el-icon-circle-plus-outline"
+          @click="addPrizePolicy"
+        >新增奖品模板</el-button>
       </div>
     </div>
-    <!-- 模板排期列表 -->
+    <!-- 模板奖品列表 -->
     <el-collapse v-model="activeNames" accordion>
-      <el-collapse-item v-for="(item, index) in tableData" :name="index" :key="item.id">
+      <el-collapse-item
+        v-for="(item, index) in tableData"
+        :name="index"
+        :key="item.id"
+        class="collapse-item-wrap"
+      >
         <template slot="title">
-          {{ item.name }}
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            circle
-            size="mini"
-            @click="modifyTemplateName(item)"
-          />
+          <span>{{ item.name }}&nbsp;&nbsp;</span>
+          <!-- type="primary" -->
+          <el-button icon="el-icon-edit" circle size="mini" @click="modifyTemplateName(item)"/>
         </template>
         <div class="actions-wrap">
           <span class="label">数目: {{ item.schedules.data.length }}</span>
@@ -47,19 +47,36 @@
             <el-button size="small" @click="addSchedule(index)">增加</el-button>
           </div>
         </div>
-        <el-table :data="item.schedules.data" style="width: 100%">
-          <el-table-column prop label="节目名称" min-width="150">
+        <el-table :data="item.schedules.data" style="width: 100%" :header-cell-style="headerStyle">
+          <el-table-column prop="id" label="ID" width="100"/>
+          <el-table-column prop label="公司名称" min-width="150">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.project.name"
                 :loading="searchLoading"
-                :remote-method="getProject"
                 filterable
-                placeholder="请搜索"
-                remote
+                placeholder="请选择公司名称"
                 clearable
                 style="width: 180px;"
-                @change="projectChangeHandle(index, scope.$index, scope.row.project.name)"
+              >
+                <el-option
+                  v-for="item in companyList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column prop label="奖品名称" min-width="150">
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.project.name"
+                :loading="searchLoading"
+                filterable
+                placeholder="请选择奖品名称"
+                clearable
+                style="width: 180px;"
               >
                 <el-option
                   v-for="item in projectList"
@@ -70,51 +87,18 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="icon" label="节目图标" width="100">
+          <el-table-column prop="icon" label="概率" min-width="100">
             <template slot-scope="scope">
-              <img :src="scope.row.project.icon" style="width: 50%">
+              <el-input v-model="scope.row.rate">
+                <template slot="append">%</template>
+              </el-input>
             </template>
-          </el-table-column>
-          <el-table-column prop="stime" label="开始时间" min-width="120">
-            <template slot-scope="scope">
-              <el-time-select
-                v-model="scope.row.date_start"
-                :picker-options="{
-                  start: '10:00',
-                  step: '00:01',
-                  end: '22:00'
-                }"
-                placeholder="开始时间"
-                format="HH:mm"
-                style="width: 150px"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column prop="etime" label="结束时间" min-width="120">
-            <template slot-scope="scope">
-              <el-time-select
-                v-model="scope.row.date_end"
-                :picker-options="{
-                  start: '10:00',
-                  step: '00:01',
-                  end: '22:00',
-                  minTime: scope.row.date_start
-                }"
-                placeholder="结束时间"
-                format="HH:mm"
-                style="width: 150px"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" prop="time" label="时间" min-width="100">
-            <template slot-scope="scope">{{ scope.row.project.created_at }}</template>
           </el-table-column>
           <el-table-column label="操作" min-width="100">
             <template slot-scope="scope">
               <el-button
                 v-if="scope.row.project.icon"
                 size="mini"
-                type="warning"
                 @click="editSchedule(scope.row)"
               >编辑</el-button>
               <el-button
@@ -163,6 +147,14 @@
 </template>
 <script>
 import {
+  getCompanies,
+  getProject,
+  getPrizePolicyList,
+  savePrizePolicy,
+  modifyPrizePolicy,
+  prizePolicyDetails
+} from "service";
+import {
   Form,
   FormItem,
   Button,
@@ -174,7 +166,6 @@ import {
   Table,
   TableColumn,
   Dialog,
-  TimeSelect,
   MessageBox,
   Input
 } from "element-ui";
@@ -183,7 +174,6 @@ export default {
   components: {
     ElCollapse: Collapse,
     ElCollapseItem: CollapseItem,
-    ElTimeSelect: TimeSelect,
     ElDialog: Dialog,
     ElPagination: Pagination,
     ElInput: Input,
@@ -198,6 +188,8 @@ export default {
   data() {
     return {
       activeNames: 0,
+      companyList: [],
+      headerStyle: { color: "#444" },
       templateVisible: false,
       searchForm: {
         name: ""
@@ -214,12 +206,12 @@ export default {
       searchLoading: false,
       loading: false,
       title: "",
-      templateList: [],
       templateForm: {
         tpl_id: "",
         name: ""
       },
       projectList: [],
+      companyList: [],
       pagination: {
         total: 0,
         pageSize: 10,
@@ -341,8 +333,9 @@ export default {
     };
   },
   created() {
-    // this.getModuleList()
-    // this.getScheduleList()
+    this.getCompanies();
+    this.getProject();
+    // this.getPrizePolicyList()
   },
   methods: {
     resetSearch() {},
@@ -365,33 +358,25 @@ export default {
       let date_end = row.date_end;
       let date_start = row.date_start;
       let project_id = row.project.id;
-      if (date_end && date_start && project_id) {
-        let args = {
-          include: "project",
-          project_id: project_id,
-          date_end: date_end,
-          date_start: date_start
-        };
-        modifySchedule(this, id, args)
-          .then(response => {
-            this.setting.loading = false;
-            this.$message({
-              message: "修改成功",
-              type: "success"
-            });
-            this.getScheduleList();
-          })
-          .catch(err => {
-            console.log(err);
-            this.setting.loading = false;
+      let args = {
+        include: "project",
+        project_id: project_id,
+        date_end: date_end,
+        date_start: date_start
+      };
+      modifySchedule(this, id, args)
+        .then(response => {
+          this.setting.loading = false;
+          this.$message({
+            message: "修改成功",
+            type: "success"
           });
-      } else {
-        this.setting.loading = false;
-        this.$message({
-          message: "节目名称，开始时间，结束时间不能为空",
-          type: "warning"
+          this.getPrizePolicyList();
+        })
+        .catch(err => {
+          console.log(err);
+          this.setting.loading = false;
         });
-      }
     },
     saveSchedule(row) {
       this.setting.loading = true;
@@ -399,35 +384,27 @@ export default {
       let date_start = row.date_start;
       let tpl_id = row.tpl_id;
       let project_id = row.project.id;
-      if (date_end && date_start && project_id) {
-        let args = {
-          tpl_id: tpl_id,
-          project_id: project_id,
-          date_end: date_end,
-          date_start: date_start
-        };
-        saveSchedule(this, args)
-          .then(response => {
-            this.setting.loading = false;
-            this.$message({
-              message: "添加成功",
-              type: "success"
-            });
-            this.getScheduleList();
-          })
-          .catch(err => {
-            console.log(err);
-            this.setting.loading = false;
+      let args = {
+        tpl_id: tpl_id,
+        project_id: project_id,
+        date_end: date_end,
+        date_start: date_start
+      };
+      saveSchedule(this, args)
+        .then(response => {
+          this.setting.loading = false;
+          this.$message({
+            message: "添加成功",
+            type: "success"
           });
-      } else {
-        this.setting.loading = false;
-        this.$message({
-          message: "节目名称，开始时间，结束时间不能为空",
-          type: "warning"
+          this.getPrizePolicyList();
+        })
+        .catch(err => {
+          console.log(err);
+          this.setting.loading = false;
         });
-      }
     },
-    addTemplate() {
+    addPrizePolicy() {
       this.templateForm.name = "";
       this.templateForm.tpl_id = "";
       this.templateVisible = true;
@@ -436,21 +413,24 @@ export default {
     deleteAddSchedule(pIndex, index, r) {
       this.tableData[pIndex].schedules.data.splice(index, 1);
     },
-    getScheduleList() {
+    getPrizePolicyList() {
       this.setting.loading = true;
       let args = {
         page: this.pagination.currentPage,
-        include: "schedules.project",
+        include: "company,batches.company",
         name: this.searchForm.name
       };
-      return getScheduleList(this, args)
+      getPrizePolicyList(this, args)
         .then(response => {
           this.tableData = response.data;
           this.pagination.total = response.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
           this.setting.loading = false;
         });
     },
@@ -472,37 +452,34 @@ export default {
     dialogClose() {
       this.templateVisible = false;
     },
-    getProject(query) {
-      if (query !== "") {
-        this.searchLoading = true;
-        let args = {
-          name: query
-        };
-        return getSearchProjectList(this, args)
-          .then(response => {
-            this.projectList = response.data;
-            if (this.projectList.length == 0) {
-              this.projectList = [];
-            }
-            this.searchLoading = false;
-          })
-          .catch(err => {
-            console.log(err);
-            this.searchLoading = false;
-          });
-      } else {
-        this.projectList = [];
-      }
-    },
-    getModuleList() {
-      return getSearchModuleList(this)
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
         .then(response => {
-          let data = response.data;
-          this.templateList = data;
+          this.projectList = response;
+          this.searchLoading = false;
         })
-        .catch(error => {
-          console.log(error);
-          this.setting.loading = false;
+        .catch(err => {
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
+          this.searchLoading = false;
+        });
+    },
+    getCompanies() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(response => {
+          this.companyList = response;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
+          this.searchLoading = false;
         });
     },
     submit(formName) {
@@ -514,32 +491,38 @@ export default {
           };
           let id = this.templateForm.tpl_id;
           if (this.templateForm.tpl_id) {
-            modifyTemplate(this, id, args)
+            modifyPrizePolicy(this, id, args)
               .then(response => {
                 this.$message({
                   message: "修改成功",
                   type: "success"
                 });
                 this.templateVisible = false;
-                this.getScheduleList();
+                this.getPrizePolicyList();
               })
               .catch(err => {
                 this.templateVisible = false;
-                console.log(err);
+                this.$message({
+                  type: "warning",
+                  message: err.response.data.message
+                });
               });
           } else {
-            saveTemplate(this, args)
+            savePrizePolicy(this, args)
               .then(response => {
                 this.$message({
                   message: "添加成功",
                   type: "success"
                 });
                 this.templateVisible = false;
-                this.getScheduleList();
+                this.getPrizePolicyList();
               })
               .catch(err => {
                 this.templateVisible = false;
-                console.log(err);
+                this.$message({
+                  type: "warning",
+                  message: err.response.data.message
+                });
               });
           }
         }
@@ -547,11 +530,11 @@ export default {
     },
     search() {
       this.pagination.currentPage = 1;
-      this.getScheduleList();
+      this.getPrizePolicyList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getScheduleList();
+      this.getPrizePolicyList();
     }
   }
 };
@@ -606,7 +589,9 @@ export default {
     align-items: center;
     margin-bottom: 10px;
     .label {
+      color: #6b3dc4;
       font-size: 14px;
+      font-weight: 600;
     }
   }
   .pagination-wrap {

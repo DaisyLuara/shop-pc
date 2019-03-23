@@ -17,9 +17,9 @@
               </label>
               <div class="text">
                 {{ name }}
-                <a class="icon-v2" @click="editName = true, company_name = name">
+                <!-- <a class="icon-v2" @click="editName = true, company_name = name">
                   <img :src="IMG_URL+'ad_shop/img/account/v2.png'">
-                </a>
+                </a>-->
               </div>
             </div>
           </div>
@@ -33,7 +33,7 @@
               @click="saveCompanyName"
             >保存</el-button>
           </div>
-          <div class="account-item">
+          <!-- <div class="account-item">
             <div class="account-item-title">认证等级</div>
             <div class="account-item-content">
               <label class="icon-v1">
@@ -55,7 +55,7 @@
                 <span class="num-end">{{gradeMax}}</span>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <!-- 账号密码设置 -->
@@ -218,8 +218,8 @@ export default {
     };
   },
   created() {
-    this.name = this.$store.state.curUserInfo.company.name;
     this.setting.loading = false;
+    this.name = this.$store.state.curUserInfo.company.name;
   },
   mounted() {
     let now_num = document.querySelector(".num-now");
@@ -259,14 +259,14 @@ export default {
         });
     },
     submitForm(formName) {
-      this.$confirm("密码修改成功,将自动跳到登录页面, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$refs[formName].validate(valid => {
-            if (valid) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$confirm("密码修改成功,将自动跳到登录页面, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
               this.formShow = false;
               let args = {
                 new_password: this.passwordForm.newPass,
@@ -287,15 +287,15 @@ export default {
                   });
                   console.log(err);
                 });
-            }
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消修改密码"
-          });
-        });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "取消修改密码"
+              });
+            });
+        }
+      });
     },
     resetForm(formName) {
       this.formShow = false;
@@ -399,7 +399,7 @@ export default {
             background-color: #fff;
           }
           .text {
-            width: 250px;
+            width: 300px;
             position: relative;
             display: inline-block;
             height: 40px;
@@ -538,7 +538,7 @@ export default {
           margin-left: 15px;
         }
         .text {
-          width: 250px;
+          width: 300px;
           position: relative;
           display: inline-block;
           height: 40px;
