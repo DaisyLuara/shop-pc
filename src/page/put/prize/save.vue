@@ -62,7 +62,7 @@
               v-for="item in projectList"
               :key="item.id"
               :label="item.name"
-              :value="item.id"
+              :value="item.id + ',' + item.version_code"
             />
           </el-select>
         </el-form-item>
@@ -116,7 +116,13 @@ export default {
       },
       policyList: [],
       pointList: [],
-      projectList: [],
+      projectList: [
+        {
+          id: 1,
+          name: "dd",
+          version_code: "3432"
+        }
+      ],
       searchLoading: false,
       prizeLaunchForm: {
         project_id: null,
@@ -127,7 +133,7 @@ export default {
   },
   mounted() {},
   created() {
-    this.getProject();
+    // this.getProject();
     this.getPoint();
     this.getPirzeTemplate();
     this.pirzeLaunchId = this.$route.params.uid;
@@ -143,7 +149,8 @@ export default {
       };
       getLaunchPirzeDetail(this, this.pirzeLaunchId, args)
         .then(res => {
-          this.prizeLaunchForm.project_id = res.project.id;
+          this.prizeLaunchForm.project_id =
+            res.project.id + "," + res.project.version_code;
           this.prizeLaunchForm.oid = res.point.id;
           this.prizeLaunchForm.policy_id = res.policy.id;
           this.setting.loading = false;
@@ -208,7 +215,12 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.setting.loading = true;
-          let args = this.prizeLaunchForm;
+          let args = {
+            project_id: this.prizeLaunchForm.project_id.split(",")[0],
+            versionname: this.prizeLaunchForm.project_id.split(",")[1],
+            oid: this.prizeLaunchForm.oid,
+            policy_id: this.prizeLaunchForm.policy_id
+          };
           if (this.pirzeLaunchId) {
             modifyLaunchPirze(this, this.pirzeLaunchId, args)
               .then(response => {

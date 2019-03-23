@@ -126,18 +126,11 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [
-        {
-          id: 1,
-          name: "dd",
-          stock: 11,
-          updated_at: "2019-09-10"
-        }
-      ]
+      tableData: []
     };
   },
   created() {
-    // this.getCouponRulesList();
+    this.getCouponRulesList();
   },
   methods: {
     linkToEdit(currentCoupon) {

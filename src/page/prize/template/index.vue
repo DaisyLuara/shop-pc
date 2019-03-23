@@ -224,71 +224,12 @@ export default {
       searchForm: {
         name: ""
       },
-      tableData: [
-        {
-          id: 10,
-          name: "接口测试1111",
-          created_at: "2019-03-22  14:26:24",
-          updated_at: "2019-03-22  14:27:10",
-          batches: {
-            data: [
-              {
-                id: 82,
-                name: "一点点总店(商户通用)",
-                description: "",
-                image_url: "",
-                amount: 10,
-                count: 1000,
-                stock: 996,
-                people_max_get: 1,
-                pmg_status: 0,
-                day_max_get: 1,
-                dmg_status: 0,
-                is_fixed_date: 1,
-                delay_effective_day: 0,
-                effective_day: 0,
-                start_date: "2019-01-24  00:45:01",
-                end_date: "2019-04-07  00:45:08",
-                is_active: 1,
-                third_code: "",
-                pivot: {
-                  policy_id: 10,
-                  coupon_batch_id: 82,
-                  rate: 100,
-                  min_age: 0,
-                  max_age: 0,
-                  max_score: 0,
-                  min_score: 0,
-                  gender: 0,
-                  type: "rate",
-                  id: 34
-                },
-                wx_user_id: null,
-                type: 1,
-                redirect_url: "",
-                created_at: "2019-03-21  02:27:07",
-                updated_at: "2019-03-23  14:35:56",
-                company: {
-                  id: 6,
-                  name: "颛桥万达",
-                  internal_name: null,
-                  address: "颛桥万达",
-                  status: 1,
-                  description: null,
-                  logo: "",
-                  created_at: "2018-09-05  11:10:10",
-                  updated_at: "2018-09-05  11:10:10"
-                }
-              }
-            ]
-          }
-        }
-      ]
+      tableData: []
     };
   },
   created() {
     this.getCompanies();
-    // this.getPrizePolicyList()
+    this.getPrizePolicyList();
   },
   methods: {
     resetSearch() {},
