@@ -2,7 +2,7 @@
 export * from './search'
 
 // 优惠券
-// export * from './coupon'
+export * from './prize'
 
 // 工具
 export * from './utils'

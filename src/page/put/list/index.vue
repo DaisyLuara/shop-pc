@@ -8,15 +8,38 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="project_name">
-              <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+          <el-form
+            ref="filters"
+            :model="filters"
+            :inline="true"
+          >
+            <el-form-item
+              label
+              prop="project_name"
+            >
+              <el-input
+                v-model="filters.project_name"
+                placeholder="请填写节目名称"
+                clearable
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-project el-icon-same"
+                ></i>
               </el-input>
             </el-form-item>
-            <el-form-item label prop>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            <el-form-item
+              label
+              prop
+            >
+              <el-button
+                class="el-button-success"
+                @click="search('filters')"
+              >搜索</el-button>
+              <el-button
+                class="el-button-cancel"
+                @click="resetSearch('filters')"
+              >重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -41,7 +64,11 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-form-item label="节目名称:">
                   <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
@@ -49,7 +76,11 @@
                   <span>{{ scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目icon:">
-                  <img :src="scope.row.project.icon" alt="image" style="width: 40%;">
+                  <img
+                    :src="scope.row.project.icon"
+                    alt="image"
+                    style="width: 40%;"
+                  >
                 </el-form-item>
                 <el-form-item label="时间:">
                   <span>{{ scope.row.updated_at }}</span>
@@ -57,7 +88,12 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" width="80"/>
+          <el-table-column
+            sortable
+            prop="id"
+            label="ID"
+            width="80"
+          />
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
@@ -67,9 +103,18 @@
           >
             <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
-          <el-table-column sortable prop="icon" label="节目icon" min-width="100">
+          <el-table-column
+            sortable
+            prop="icon"
+            label="节目icon"
+            min-width="100"
+          >
             <template slot-scope="scope">
-              <img :src="scope.row.project.icon" alt class="icon-item">
+              <img
+                :src="scope.row.project.icon"
+                alt
+                class="icon-item"
+              >
             </template>
           </el-table-column>
           <el-table-column
@@ -79,9 +124,7 @@
             label="点位"
             min-width="100"
           >
-            <template
-              slot-scope="scope"
-            >{{ scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name }}</template>
+            <template slot-scope="scope">{{ scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -91,10 +134,19 @@
           >
             <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="250">
+          <el-table-column
+            label="操作"
+            width="250"
+          >
             <template slot-scope="scope">
-              <el-button size="small" @click="modifyEditName(scope.row)">更换节目</el-button>
-              <el-button size="small" @click="modifyEditTime(scope.row)">更改时间</el-button>
+              <el-button
+                size="small"
+                @click="modifyEditName(scope.row)"
+              >更换节目</el-button>
+              <el-button
+                size="small"
+                @click="modifyEditTime(scope.row)"
+              >更改时间</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -109,8 +161,17 @@
         </div>
       </div>
       <!-- 节目名称修改 -->
-      <el-dialog v-loading="loading" :visible.sync="editVisible" title="修改" :show-close="false">
-        <el-form ref="projectForm" :model="projectForm" label-position="top">
+      <el-dialog
+        v-loading="loading"
+        :visible.sync="editVisible"
+        title="修改"
+        :show-close="false"
+      >
+        <el-form
+          ref="projectForm"
+          :model="projectForm"
+          label-position="top"
+        >
           <el-form-item
             v-if="modifyOptionFlag.project"
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
@@ -125,7 +186,10 @@
               placeholder="请选择节目"
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+              <i
+                slot="prefix"
+                class="el-input__icon el-icon-project el-icon-same"
+              ></i>
               <el-option
                 v-for="item in projectList"
                 :key="item.id"
@@ -163,8 +227,14 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button class="el-button-success" @click="submitModify('projectForm')">完成</el-button>
-            <el-button class="el-button-cancel" @click="cancel">取消</el-button>
+            <el-button
+              class="el-button-success"
+              @click="submitModify('projectForm')"
+            >完成</el-button>
+            <el-button
+              class="el-button-cancel"
+              @click="cancel"
+            >取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
