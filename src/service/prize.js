@@ -183,7 +183,6 @@ export {
   deletePrizePolicyEntry,
   getPrizeVerifyList,
   verifyPrize,
-  modifyPrizeVerify,
   getCouponRulesList,
   getPrizePolicyList,
   savePrizePolicy,
