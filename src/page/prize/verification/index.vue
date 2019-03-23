@@ -15,7 +15,7 @@
               clearable
               class="verify-input"
             >
-              <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item label prop="order_total">
@@ -25,7 +25,7 @@
               clearable
               class="verify-input"
             >
-              <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item>
@@ -42,7 +42,7 @@
                 placeholder="请输入核销人员"
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label prop="coupon_batch_name">
@@ -52,7 +52,7 @@
                 placeholder="请输入奖品名称"
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label prop="status">
@@ -63,7 +63,7 @@
                 size="medium"
                 class="coupon-form-select"
               >
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -81,7 +81,7 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"

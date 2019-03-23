@@ -18,7 +18,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -39,7 +39,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
 
               <el-option
                 v-for="item in projectList"
@@ -61,7 +61,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-auth-type el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-auth-type el-icon-same"/>
 
               <el-option
                 v-for="item in typeList"
@@ -83,7 +83,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
               <el-option
                 v-for="item in linkList"
                 :key="item.id"
@@ -258,11 +258,6 @@ export default {
     },
     back() {
       historyBack();
-    },
-    modifyLaunchWechat() {
-      modifyLaunchWechat(this, args)
-        .then(res => {})
-        .catch(err => {});
     },
     getAuthorizer() {
       this.searchLoading = true;

@@ -17,7 +17,7 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-porject el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-porject el-icon-same"/>
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -34,7 +34,7 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -45,7 +45,7 @@
             </el-form-item>
             <el-form-item label prop="policy_name">
               <el-input v-model="filters.policy_name" placeholder="请填写奖品模版" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label prop>

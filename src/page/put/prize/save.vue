@@ -15,7 +15,7 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in policyList"
               :key="item.id"
@@ -36,7 +36,7 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in pointList"
               :key="item.id"
@@ -57,7 +57,7 @@
             placeholder="请选择节目"
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
             <el-option
               v-for="item in projectList"
               :key="item.id"

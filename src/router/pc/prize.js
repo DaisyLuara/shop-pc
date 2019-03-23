@@ -26,6 +26,14 @@ let router = {
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/list/index" */ 'page/prize/list/index')
+        },
+        {
+          path: 'edit/:uid',
+          meta: {
+            title: '修改奖品'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/prize/list/save" */ 'page/prize/list/save')
         }
       ]
     },

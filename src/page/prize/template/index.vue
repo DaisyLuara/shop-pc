@@ -8,8 +8,13 @@
     <div class="search-wrap">
       <el-form ref="searchForm" :model="searchForm" :inline="true">
         <el-form-item label prop="name">
-          <el-input v-model="searchForm.name" placeholder="请输入奖品模板名称" clearable>
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+          <el-input
+            v-model="searchForm.name"
+            placeholder="请输入奖品模板名称"
+            clearable
+            class="el-search-input"
+          >
+            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
           </el-input>
         </el-form-item>
         <el-button class="el-button-success" @click="search">搜索</el-button>
@@ -38,26 +43,25 @@
       >
         <template slot="title">
           <span>{{ item.name }}&nbsp;&nbsp;</span>
-          <!-- type="primary" -->
           <el-button icon="el-icon-edit" circle size="mini" @click="modifyTemplateName(item)"/>
         </template>
         <div class="actions-wrap">
-          <span class="label">数目: {{ item.schedules.data.length }}</span>
+          <span class="label">数目: {{ item.batches.data.length }}</span>
           <div>
             <el-button size="small" @click="addSchedule(index)">增加</el-button>
           </div>
         </div>
-        <el-table :data="item.schedules.data" style="width: 100%" :header-cell-style="headerStyle">
+        <el-table :data="item.batches.data" style="width: 100%" :header-cell-style="headerStyle">
           <el-table-column prop="id" label="ID" width="100"/>
           <el-table-column prop label="公司名称" min-width="150">
             <template slot-scope="scope">
               <el-select
-                v-model="scope.row.project.name"
+                v-model="scope.row.company.id"
                 :loading="searchLoading"
                 filterable
                 placeholder="请选择公司名称"
                 clearable
-                style="width: 180px;"
+                @change="companyChangeHandle(index,$index)"
               >
                 <el-option
                   v-for="item in companyList"
@@ -71,15 +75,14 @@
           <el-table-column prop label="奖品名称" min-width="150">
             <template slot-scope="scope">
               <el-select
-                v-model="scope.row.project.name"
+                v-model="scope.row.pivot.coupon_batch_id"
                 :loading="searchLoading"
                 filterable
                 placeholder="请选择奖品名称"
                 clearable
-                style="width: 180px;"
               >
                 <el-option
-                  v-for="item in projectList"
+                  v-for="item in batchesList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -89,30 +92,27 @@
           </el-table-column>
           <el-table-column prop="icon" label="概率" min-width="100">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.rate">
+              <el-input v-model="scope.row.pivot.rate" class="item-input">
                 <template slot="append">%</template>
               </el-input>
             </template>
           </el-table-column>
           <el-table-column label="操作" min-width="100">
             <template slot-scope="scope">
+              <el-button v-if="scope.row.id" size="mini" @click="editEntry(scope.row,item)">编辑</el-button>
+              <el-button v-if="scope.row.id" size="mini" @click="deleteEntry(scope.row,item)">删除</el-button>
               <el-button
-                v-if="scope.row.project.icon"
-                size="mini"
-                @click="editSchedule(scope.row)"
-              >编辑</el-button>
-              <el-button
-                v-if="!scope.row.project.icon"
+                v-if="!scope.row.id"
                 size="mini"
                 type="danger"
                 icon="el-icon-delete"
                 @click="deleteAddSchedule(index, scope.$index, scope.row)"
               />
               <el-button
-                v-if="!scope.row.project.icon"
+                v-if="!scope.row.id"
                 size="mini"
                 style="background-color: #8bc34a;border-color: #8bc34a; color: #fff;"
-                @click="saveSchedule(scope.row)"
+                @click="saveEntry(scope.row)"
               >保存</el-button>
             </template>
           </el-table-column>
@@ -132,11 +132,11 @@
     <el-dialog :title="title" :visible.sync="templateVisible" @close="dialogClose">
       <el-form v-loading="loading" ref="templateForm" :model="templateForm" label-width="150px">
         <el-form-item
-          :rules="[{ type: 'string', required: true, message: '请输入名称', trigger: 'submit' }]"
+          :rules="[{ type: 'string', required: true, message: '请输入模板名', trigger: 'submit' }]"
           label="模板名"
           prop="name"
         >
-          <el-input v-model="templateForm.name" placeholder="请输入名称" class="item-input"/>
+          <el-input v-model="templateForm.name" placeholder="请输入模板名" class="item-submit-input"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click="submit('templateForm')">完成</el-button>
@@ -147,11 +147,15 @@
 </template>
 <script>
 import {
+  deletePrizePolicyEntry,
+  savePrizePolicyEntry,
+  modifyPrizePolicyEntry,
+  prizePolicyEntryDetails,
   getCompanies,
-  getProject,
   getPrizePolicyList,
   savePrizePolicy,
   modifyPrizePolicy,
+  getCouponBatches,
   prizePolicyDetails
 } from "service";
 import {
@@ -207,10 +211,10 @@ export default {
       loading: false,
       title: "",
       templateForm: {
-        tpl_id: "",
+        pid: "",
         name: ""
       },
-      projectList: [],
+      batchesList: [],
       companyList: [],
       pagination: {
         total: 0,
@@ -222,108 +226,58 @@ export default {
       },
       tableData: [
         {
-          id: 51,
-          name: "闵行-汉翔书法",
-          schedules: {
+          id: 10,
+          name: "接口测试1111",
+          created_at: "2019-03-22  14:26:24",
+          updated_at: "2019-03-22  14:27:10",
+          batches: {
             data: [
               {
-                id: 177,
-                tpl_id: 51,
-                date_start: "13:00",
-                date_end: "16:00",
-                project: {
-                  alias: "hanXiangHw",
-                  created_at: "2019-03-05 18:30:53",
-                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
-                  id: 439,
-                  image: "http://image.exe666.com/1007/image/816_bg.png",
-                  info: "汉翔书法",
-                  link:
-                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
-                  name: "汉翔书法-颛桥万达",
-                  operation: "秦洁莲",
-                  policy_id: 69,
-                  tester: "方圆,杨昀",
-                  updated_at: "2019-03-05 18:30:53",
-                  version_code: "2019030116",
-                  versionname: "hanXiangHw"
-                }
-              },
-              {
-                id: 177,
-                tpl_id: 51,
-                date_start: "13:00",
-                date_end: "16:00",
-                project: {
-                  alias: "hanXiangHw",
-                  created_at: "2019-03-05 18:30:53",
-                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
-                  id: 439,
-                  image: "http://image.exe666.com/1007/image/816_bg.png",
-                  info: "汉翔书法",
-                  link:
-                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
-                  name: "汉翔书法-颛桥万达",
-                  operation: "秦洁莲",
-                  policy_id: 69,
-                  tester: "方圆,杨昀",
-                  updated_at: "2019-03-05 18:30:53",
-                  version_code: "2019030116",
-                  versionname: "hanXiangHw"
-                }
-              }
-            ]
-          }
-        },
-        {
-          id: 51,
-          name: "闵行-汉翔书法",
-          schedules: {
-            data: [
-              {
-                id: 177,
-                tpl_id: 51,
-                date_start: "13:00",
-                date_end: "16:00",
-                project: {
-                  alias: "hanXiangHw",
-                  created_at: "2019-03-05 18:30:53",
-                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
-                  id: 439,
-                  image: "http://image.exe666.com/1007/image/816_bg.png",
-                  info: "汉翔书法",
-                  link:
-                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
-                  name: "汉翔书法-颛桥万达",
-                  operation: "秦洁莲",
-                  policy_id: 69,
-                  tester: "方圆,杨昀",
-                  updated_at: "2019-03-05 18:30:53",
-                  version_code: "2019030116",
-                  versionname: "hanXiangHw"
-                }
-              },
-              {
-                id: 177,
-                tpl_id: 51,
-                date_start: "13:00",
-                date_end: "16:00",
-                project: {
-                  alias: "hanXiangHw",
-                  created_at: "2019-03-05 18:30:53",
-                  icon: "http://image.exe666.com/1007/image/561_icon.jpg",
-                  id: 439,
-                  image: "http://image.exe666.com/1007/image/816_bg.png",
-                  info: "汉翔书法",
-                  link:
-                    "http://cdn.exe666.com/1007/other/hanXiangHw_2019030116.apk",
-                  name: "汉翔书法-颛桥万达",
-                  operation: "秦洁莲",
-                  policy_id: 69,
-                  tester: "方圆,杨昀",
-                  updated_at: "2019-03-05 18:30:53",
-                  version_code: "2019030116",
-                  versionname: "hanXiangHw"
+                id: 82,
+                name: "一点点总店(商户通用)",
+                description: "",
+                image_url: "",
+                amount: 10,
+                count: 1000,
+                stock: 996,
+                people_max_get: 1,
+                pmg_status: 0,
+                day_max_get: 1,
+                dmg_status: 0,
+                is_fixed_date: 1,
+                delay_effective_day: 0,
+                effective_day: 0,
+                start_date: "2019-01-24  00:45:01",
+                end_date: "2019-04-07  00:45:08",
+                is_active: 1,
+                third_code: "",
+                pivot: {
+                  policy_id: 10,
+                  coupon_batch_id: 82,
+                  rate: 100,
+                  min_age: 0,
+                  max_age: 0,
+                  max_score: 0,
+                  min_score: 0,
+                  gender: 0,
+                  type: "rate",
+                  id: 34
+                },
+                wx_user_id: null,
+                type: 1,
+                redirect_url: "",
+                created_at: "2019-03-21  02:27:07",
+                updated_at: "2019-03-23  14:35:56",
+                company: {
+                  id: 6,
+                  name: "颛桥万达",
+                  internal_name: null,
+                  address: "颛桥万达",
+                  status: 1,
+                  description: null,
+                  logo: "",
+                  created_at: "2018-09-05  11:10:10",
+                  updated_at: "2018-09-05  11:10:10"
                 }
               }
             ]
@@ -334,7 +288,6 @@ export default {
   },
   created() {
     this.getCompanies();
-    this.getProject();
     // this.getPrizePolicyList()
   },
   methods: {
@@ -344,27 +297,59 @@ export default {
       this.title = "修改模板";
       let name = item.name;
       this.templateForm = {
-        tpl_id: item.id,
+        pid: item.id,
         name: name
       };
       this.templateVisible = true;
     },
-    projectChangeHandle(pIndex, index, val) {
-      this.tableData[pIndex].schedules.data[index].project.id = val;
+    companyChangeHandle(pIndex, index) {
+      let company_id = this.tableData[pIndex].batches.data[index].company_id.id;
+      this.getCouponBatches(company_id);
     },
-    editSchedule(row) {
+    deleteEntry(row, item) {
+      this.$confirm("此操作将删除该条目, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          let id = row.id;
+          let pid = item.id;
+          deletePrizePolicyEntry(this, pid, id)
+            .then(res => {
+              this.$message({
+                message: "删除成功",
+                type: "success"
+              });
+              this.getPrizePolicyList();
+            })
+            .catch(err => {
+              this.$message({
+                type: "warning",
+                message: err.response.data.message
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    editEntry(row, item) {
       this.setting.loading = true;
       let id = row.id;
-      let date_end = row.date_end;
-      let date_start = row.date_start;
-      let project_id = row.project.id;
+      let pid = item.id;
+      let company_id = row.company.id;
+      let coupon_batch_id = row.pivot.id;
+      let rate = row.pivot.rate;
       let args = {
-        include: "project",
-        project_id: project_id,
-        date_end: date_end,
-        date_start: date_start
+        rate: rate,
+        coupon_batch_id: coupon_batch_id,
+        company_id: company_id
       };
-      modifySchedule(this, id, args)
+      modifyPrizePolicyEntry(this, pid, id, args)
         .then(response => {
           this.setting.loading = false;
           this.$message({
@@ -374,23 +359,25 @@ export default {
           this.getPrizePolicyList();
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
           this.setting.loading = false;
         });
     },
-    saveSchedule(row) {
+    saveEntry(row) {
       this.setting.loading = true;
-      let date_end = row.date_end;
-      let date_start = row.date_start;
-      let tpl_id = row.tpl_id;
-      let project_id = row.project.id;
+      let pid = row.pid;
+      let company_id = row.company.id;
+      let coupon_batch_id = row.pivot.id;
+      let rate = row.pivot.rate;
       let args = {
-        tpl_id: tpl_id,
-        project_id: project_id,
-        date_end: date_end,
-        date_start: date_start
+        rate: rate,
+        coupon_batch_id: coupon_batch_id,
+        company_id: company_id
       };
-      saveSchedule(this, args)
+      savePrizePolicyEntry(this, pid, args)
         .then(response => {
           this.setting.loading = false;
           this.$message({
@@ -400,18 +387,21 @@ export default {
           this.getPrizePolicyList();
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            type: "warning",
+            message: err.response.data.message
+          });
           this.setting.loading = false;
         });
     },
     addPrizePolicy() {
       this.templateForm.name = "";
-      this.templateForm.tpl_id = "";
+      this.templateForm.pid = "";
       this.templateVisible = true;
       this.title = "增加模板";
     },
     deleteAddSchedule(pIndex, index, r) {
-      this.tableData[pIndex].schedules.data.splice(index, 1);
+      this.tableData[pIndex].batches.data.splice(index, 1);
     },
     getPrizePolicyList() {
       this.setting.loading = true;
@@ -435,28 +425,31 @@ export default {
         });
     },
     addSchedule(index) {
-      let tpl_id = this.tableData[index].id;
+      let pid = this.tableData[index].id;
       let td = {
-        date_start: "",
-        date_end: "",
-        project: {
-          id: "",
-          info: "",
-          icon: "",
-          created_at: ""
+        id: null,
+        company: {
+          id: ""
         },
-        tpl_id: tpl_id
+        pivot: {
+          id: "",
+          rate: 0
+        },
+        pid: pid
       };
-      this.tableData[index].schedules.data.push(td);
+      this.tableData[index].batches.data.push(td);
     },
     dialogClose() {
       this.templateVisible = false;
     },
-    getProject() {
+    getCouponBatches(company_id) {
       this.searchLoading = true;
-      getProject(this)
+      let args = {
+        company_id: company_id
+      };
+      getCouponBatches(this)
         .then(response => {
-          this.projectList = response;
+          this.batchesList = response;
           this.searchLoading = false;
         })
         .catch(err => {
@@ -469,7 +462,7 @@ export default {
     },
     getCompanies() {
       this.searchLoading = true;
-      getProject(this)
+      getCompanies(this)
         .then(response => {
           this.companyList = response;
           this.searchLoading = false;
@@ -486,11 +479,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let args = {
-            point_id: this.templateForm.point_id,
             name: this.templateForm.name
           };
-          let id = this.templateForm.tpl_id;
-          if (this.templateForm.tpl_id) {
+          let id = this.templateForm.pid;
+          if (this.templateForm.pid) {
             modifyPrizePolicy(this, id, args)
               .then(response => {
                 this.$message({
@@ -557,8 +549,8 @@ export default {
     .el-select {
       width: 180px;
     }
-    .item-input {
-      width: 180px;
+    .el-search-input {
+      width: 200px;
     }
     .warning {
       background: #ebf1fd;
@@ -572,12 +564,13 @@ export default {
       }
     }
   }
+  .item-submit-input {
+    width: 200px;
+  }
   .item-input {
-    width: 220px;
+    width: 120px;
   }
-  .item-select {
-    width: 220px;
-  }
+
   .el-button.is-circle {
     padding: 5px;
   }

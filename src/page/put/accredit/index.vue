@@ -17,7 +17,7 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -34,7 +34,7 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
                 <el-option
                   v-for="item in linkList"
                   :key="item.id"
@@ -45,7 +45,7 @@
             </el-form-item>
             <el-form-item label prop="visiable">
               <el-select v-model="filters.visiable" placeholder="请选择状态" filterable clearable>
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"

@@ -11,7 +11,7 @@
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="project_name">
               <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label prop>
