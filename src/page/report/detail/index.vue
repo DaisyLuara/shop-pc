@@ -13,7 +13,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"

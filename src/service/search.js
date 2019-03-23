@@ -1,9 +1,10 @@
 const PROJECT_API = '/api/projects/query'
 const POINT_API = '/api/points/query'
-const CUSTOMER_API = '/api/customers/query'
+const COMPANY_API = '/api/companies/query'
 const COUPON_BATCHES_API = '/api/coupon_batches/query'
 const TEMPLATES_API = '/api/projects/templates/query'
 const AUTHORIZER_API = '/api/wechat/authorizer/query'
+const PRIZE_POLICY_API = '/api/policy/query'
 
 const HOST = process.env.SERVER_URL
 
@@ -61,10 +62,10 @@ const getAuthorizer = (context, params) => {
   })
 }
 // 客户查询
-const getCustomer = (context, params) => {
+const getCompanies = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + CUSTOMER_API, { params: params })
+      .get(HOST + COMPANY_API, { params: params })
       .then(response => {
         resolve(response.data.data)
       })
@@ -86,11 +87,27 @@ const getCouponBatches = (context, params) => {
       })
   })
 }
+
+// 奖品投放模版查询
+const getPirzeTemplate = (context, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + PRIZE_POLICY_API, { params: params })
+      .then(response => {
+        resolve(response.data.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
 export {
   getPoint,
   getProject,
   getCouponBatches,
-  getCustomer,
+  getCompanies,
   getTemplate,
-  getAuthorizer
+  getAuthorizer,
+  getPirzeTemplate
 }

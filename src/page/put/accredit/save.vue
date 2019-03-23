@@ -18,7 +18,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -39,7 +39,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
 
               <el-option
                 v-for="item in projectList"
@@ -61,7 +61,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-auth-type el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-auth-type el-icon-same"/>
 
               <el-option
                 v-for="item in typeList"
@@ -83,7 +83,7 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"></i>
+              <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
               <el-option
                 v-for="item in linkList"
                 :key="item.id"
@@ -233,28 +233,6 @@ export default {
     }
   },
   methods: {
-    typeTransform(type) {
-      switch (type) {
-        case "normal":
-          return 101;
-          break;
-        case "mobile":
-          return 100;
-          break;
-        case "publick":
-          return 2;
-          break;
-        case "subk":
-          return 1;
-          break;
-        case "apps":
-          return 0;
-          break;
-        case "tmall":
-          return 200;
-          break;
-      }
-    },
     getLaunchWechatDetail() {
       this.setting.loading = true;
       let args = {
@@ -265,7 +243,7 @@ export default {
           this.setting.loading = false;
           this.accreditForm.oid = res.point.id;
           this.accreditForm.piid = res.project.id;
-          this.accreditForm.type = this.typeTransform(res.type);
+          this.accreditForm.type = res.type.id;
           this.accreditForm.wiid = res.wiid;
           this.accreditForm.reply_url = res.reply_url;
           this.accreditForm.visiable = res.visiable;
@@ -280,11 +258,6 @@ export default {
     },
     back() {
       historyBack();
-    },
-    modifyLaunchWechat() {
-      modifyLaunchWechat(this, args)
-        .then(res => {})
-        .catch(err => {});
     },
     getAuthorizer() {
       this.searchLoading = true;

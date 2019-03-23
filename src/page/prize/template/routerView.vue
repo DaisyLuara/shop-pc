@@ -1,11 +1,11 @@
 <template>
-  <div class="list-root">
+  <div class="template-root">
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: "ListView"
+  name: "TemplateView"
 };
 </script>
 

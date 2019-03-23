@@ -4,7 +4,7 @@
       <div class="pane-title">新增节目投放</div>
       <el-form ref="projectLaunchForm" :model="projectLaunchForm">
         <el-form-item
-          :rules="[{ required: true, message: '请输入节目名称', trigger: 'submit'}]"
+          :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
           label=" "
           prop="project_id"
         >
@@ -15,7 +15,7 @@
             placeholder="请选择节目"
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
             <el-option
               v-for="item in projectList"
               :key="item.id"
@@ -25,7 +25,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          :rules="[{ required: true, message: '请输入点位', trigger: 'submit'}]"
+          :rules="[{ required: true, message: '请选择点位', trigger: 'submit'}]"
           label=" "
           prop="point_id"
         >
@@ -36,7 +36,7 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in pointList"
               :key="item.id"
@@ -67,7 +67,6 @@
             :editable="false"
             type="date"
             placeholder="请选择结束时间"
-            value-format="yyyy-MM-dd"
           />
         </el-form-item>
         <el-form-item class="btn-wrap">

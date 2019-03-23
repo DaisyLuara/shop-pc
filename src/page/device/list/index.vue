@@ -11,12 +11,12 @@
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="project_name">
               <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label prop="machine_status">
               <el-select v-model="filters.machine_status" placeholder="请选择状态" filterable clearable>
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"

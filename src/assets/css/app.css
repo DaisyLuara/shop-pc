@@ -82,6 +82,7 @@ body {
   font-size: 14px;
   border-left: 5px solid transparent;
   margin: 3px 0;
+  padding-left: 11px !important;
 }
 .first-sidebar .el-menu .el-menu-item:hover {
   background: #36445a;
@@ -96,6 +97,7 @@ body {
   display: none;
 }
 .first-sidebar .el-menu .el-menu-item.is-active {
+  padding-left: 11px !important;
   background: #36445a;
   border-left: 5px solid #7e58cc;
   color: #fff;
@@ -137,7 +139,8 @@ body {
   font-weight: 600;
 }
 .second-sidebar .el-menu .el-menu-item:hover {
-  color: #ff;
+  color: #fff;
+  opacity: 0.5;
   cursor: pointer;
   background-color: #7e58cc;
 }

@@ -11,7 +11,7 @@
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="nick_name">
               <el-input v-model="filters.nick_name" placeholder="请输入授权链接" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label prop="service_type">
@@ -22,7 +22,7 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"/>
                 <el-option
                   v-for="item in typeList"
                   :key="item.id"

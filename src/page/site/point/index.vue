@@ -11,7 +11,7 @@
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="point_name">
               <el-input v-model="filters.point_name" placeholder="请填写点位名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label>

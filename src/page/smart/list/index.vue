@@ -11,7 +11,7 @@
           <el-form ref="filters" :model="filters" :inline="true">
             <el-form-item label prop="name">
               <el-input v-model="filters.name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"></i>
+                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label>
@@ -43,7 +43,7 @@
                 </el-form-item>
                 <el-form-item label="介绍视频:">
                   <a
-                    :href="scope.row.vedio_desc_url"
+                    :href="scope.row.video_desc_url"
                     target="_blank"
                     style="color:#6b3ec2;font-weight:600;"
                   >点击播放</a>
@@ -93,13 +93,13 @@
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="vedio_desc_url"
+            prop="video_desc_url"
             label="介绍视频"
             min-width="80"
           >
             <template slot-scope="scope">
               <a
-                :href="scope.row.vedio_desc_url"
+                :href="scope.row.video_desc_url"
                 target="_blank"
                 style="color:#6b3ec2;font-weight:600;"
               >点击播放</a>
@@ -108,7 +108,7 @@
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
-            prop="vedio_desc_url"
+            prop="video_desc_url"
             label="互动指数"
             min-width="100"
           >
