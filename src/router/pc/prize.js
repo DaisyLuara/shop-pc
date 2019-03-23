@@ -42,7 +42,7 @@ let router = {
       path: 'template',
       meta: {
         title: '奖品模板',
-        permission: 'shop_prize.coupon_batch_policy'
+        permission: 'shop_prize.coupon_batch_policy_item'
       },
       component: () =>
         import(/* webpackChunkName: "page/prize/template/routerView" */ 'page/prize/template/routerView'),
@@ -51,7 +51,7 @@ let router = {
           path: '/',
           meta: {
             title: '奖品模板详情',
-            permission: 'shop_prize.coupon_batch_policy.read'
+            permission: 'shop_prize.coupon_batch_policy_item.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/template/index" */ 'page/prize/template/index')
