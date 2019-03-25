@@ -24,6 +24,11 @@
             :src="IMG_URL + '/ad_shop/img/login/center.jpg'"
             class="center"
           >
+          <div class="welcome">
+            <span class="line1">Welcome</span>
+            <span class="line2">欢迎来到召唤宝</span>
+          </div>
+
         </div>
       </el-col>
       <el-col
