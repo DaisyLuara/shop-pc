@@ -31,16 +31,16 @@
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="ID">
+                <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="奖品名称">
+                <el-form-item label="奖品名称:">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
-                <el-form-item label="剩余库存">
+                <el-form-item label="剩余库存:">
                   <span>{{ scope.row.stock}}</span>
                 </el-form-item>
-                <el-form-item label="修改时间">
+                <el-form-item label="修改时间:">
                   <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
               </el-form>
