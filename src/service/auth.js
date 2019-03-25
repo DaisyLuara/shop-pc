@@ -194,8 +194,6 @@ function hasPermission(name, perms) {
       name.indexOf(perms[i]['name']) == 0 &&
       perms[i].children.length > 0
     ) {
-      console.log(name)
-      console.log(perms[i]['children'])
       return hasPermission(name, perms[i]['children'])
     }
   }

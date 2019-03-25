@@ -121,15 +121,18 @@
                 </el-form-item>
                 <el-form-item label="状态">
                   <span v-if="scope.row.status===0">未领取</span>
-                  <span v-if="scope.row.status===1">已使用</span>
+                  <span v-if="scope.row.status===1" class="operating-expand">已使用</span>
                   <span v-if="scope.row.status===2">停用</span>
-                  <span v-if="scope.row.status===3">未使用</span>
+                  <span v-if="scope.row.status===3" class="sold-out-expand">未使用</span>
                 </el-form-item>
                 <el-form-item label="核销人">
                   <span>{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</span>
                 </el-form-item>
                 <el-form-item label="点位">
                   <span>{{ scope.row.point !== undefined ? scope.row.point.name : '' }}</span>
+                </el-form-item>
+                <el-form-item label="有效期:">
+                  <span>{{ scope.row.start_date + '--' + scope.row.end_date }}</span>
                 </el-form-item>
                 <el-form-item label="核销时间">
                   <span>{{ scope.row.use_date }}</span>
@@ -160,9 +163,9 @@
           >
             <template slot-scope="scope">
               <span v-if="scope.row.status===0">未领取</span>
-              <span v-if="scope.row.status===1">已使用</span>
+              <span v-if="scope.row.status===1" class="operating">已使用</span>
               <span v-if="scope.row.status===2">停用</span>
-              <span v-if="scope.row.status===3">未使用</span>
+              <span v-if="scope.row.status===3" class="sold-out">未使用</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -186,6 +189,15 @@
             <template
               slot-scope="scope"
             >{{ scope.row.point !== undefined ? scope.row.point.name : '' }}</template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="date"
+            label="有效期"
+            min-width="100"
+          >
+            <template slot-scope="scope">{{ scope.row.start_date + '--' + scope.row.end_date }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -487,6 +499,34 @@ export default {
         width: 50%;
       }
 
+      .sold-out {
+        background: #ff7696;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .operating {
+        background: #05c99a;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .sold-out-expand {
+        background: #ff7696;
+        color: #fff;
+        font-weight: 600;
+        padding: 3px 5px;
+        border-radius: 5px;
+      }
+      .operating-expand {
+        background: #05c99a;
+        color: #fff;
+        font-weight: 600;
+        padding: 3px 5px;
+        border-radius: 5px;
+      }
       .search-wrap {
         margin-top: 10px;
         display: flex;
