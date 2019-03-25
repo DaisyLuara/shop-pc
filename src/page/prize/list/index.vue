@@ -41,7 +41,7 @@
                   <span>{{ scope.row.stock}}</span>
                 </el-form-item>
                 <el-form-item label="修改时间">
-                  <span>{{ scope.row.update_at }}</span>
+                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
