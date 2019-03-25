@@ -3,8 +3,8 @@ let router = {
   path: 'device',
   name: '设备管理',
   meta: {
-    title: '设备管理'
-    // permission: 'shop_device'
+    title: '设备管理',
+    permission: 'shop_device'
   },
   component: () =>
     import(/* webpackChunkName: "page/device/deviceView" */ 'page/device/deviceView'),
@@ -12,8 +12,8 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '设备列表'
-        // permission: 'shop_device.device'
+        title: '设备列表',
+        permission: 'shop_device.device'
       },
       component: () =>
         import(/* webpackChunkName: "page/device/list/routerView" */ 'page/device/list/routerView'),
@@ -21,8 +21,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '设备列表详情'
-            // permission: 'shop_device.device.read'
+            title: '设备列表详情',
+            permission: 'shop_device.device.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/device/list/index" */ 'page/device/list/index')

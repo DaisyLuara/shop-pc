@@ -61,7 +61,7 @@
                 filterable
                 placeholder="请选择公司名称"
                 clearable
-                @change="companyChangeHandle(index,$index)"
+                @change="companyChangeHandle(index,scope.$index)"
               >
                 <el-option
                   v-for="item in companyList"
