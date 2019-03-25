@@ -244,7 +244,7 @@ export default {
       this.templateVisible = true;
     },
     companyChangeHandle(pIndex, index) {
-      let company_id = this.tableData[pIndex].batches.data[index].company_id.id;
+      let company_id = this.tableData[pIndex].batches.data[index].company.id;
       this.getCouponBatches(company_id);
     },
     deleteEntry(row, item) {
