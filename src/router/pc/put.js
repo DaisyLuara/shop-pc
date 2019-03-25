@@ -3,8 +3,8 @@ let router = {
   path: 'put',
   name: '投放管理',
   meta: {
-    title: '投放管理'
-    // permission: 'shop_launch'
+    title: '投放管理',
+    permission: 'shop_launch'
   },
   component: () =>
     import(/* webpackChunkName: "page/put/putView" */ 'page/put/putView'),
@@ -12,8 +12,8 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '节目投放'
-        // permission: 'shop_launch.project'
+        title: '节目投放',
+        permission: 'shop_launch.project'
       },
       component: () =>
         import(/* webpackChunkName: "page/put/list/routerView" */ 'page/put/list/routerView'),
@@ -21,8 +21,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '节目投放列表'
-            // permission: 'shop_launch.project.read'
+            title: '节目投放列表',
+            permission: 'shop_launch.project.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/list/index" */ 'page/put/list/index')
@@ -30,8 +30,8 @@ let router = {
         {
           path: 'save',
           meta: {
-            title: '节目投放新增'
-            // permission: 'shop_launch.project.create'
+            title: '节目投放新增',
+            permission: 'shop_launch.project.create'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/list/save" */ 'page/put/list/save')
@@ -41,8 +41,8 @@ let router = {
     {
       path: 'accredit',
       meta: {
-        title: '授权投放'
-        // permission: 'shop_launch.wechat'
+        title: '授权投放',
+        permission: 'shop_launch.wechat'
       },
       component: () =>
         import(/* webpackChunkName: "page/put/accredit/routerView" */ 'page/put/accredit/routerView'),
@@ -50,8 +50,8 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '授权投放列表'
-            // permission: 'shop_launch.wechat.read'
+            title: '授权投放列表',
+            permission: 'shop_launch.wechat.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/accredit/index" */ 'page/put/accredit/index')
@@ -59,8 +59,8 @@ let router = {
         {
           path: 'save',
           meta: {
-            title: '授权投放新增'
-            // permission: 'shop_launch.wechat.create'
+            title: '授权投放新增',
+            permission: 'shop_launch.wechat.create'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/accredit/save" */ 'page/put/accredit/save')
@@ -68,8 +68,8 @@ let router = {
         {
           path: 'edit/:uid',
           meta: {
-            title: '授权投放编辑'
-            // permission: 'shop_launch.wechat.update'
+            title: '授权投放编辑',
+            permission: 'shop_launch.wechat.update'
           },
           component: () =>
             import(/* webpackChunkName: "page/put/accredit/save" */ 'page/put/accredit/save')

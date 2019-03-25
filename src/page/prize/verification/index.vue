@@ -7,25 +7,20 @@
     >
       <div class="item-content-wrap">
         <el-form ref="verify" :model="verify" :inline="true">
-          <el-form-item label prop="code">
+          <el-form-item label prop="order_total">
             <el-input
-              v-model="verify.code"
+              v-model="verify.order_total"
               size="large"
               placeholder="请输入订单金额"
               clearable
               class="verify-input"
             >
-              <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"/>
+              <i slot="prefix" class="el-input__icon el-icon-money el-icon-same"/>
             </el-input>
           </el-form-item>
-          <el-form-item label prop="order_total">
-            <el-input
-              v-model="verify.order_total"
-              placeholder="请输入优惠券码"
-              clearable
-              class="verify-input"
-            >
-              <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"/>
+          <el-form-item label prop="code">
+            <el-input v-model="verify.code" placeholder="请输入优惠券码" clearable class="verify-input">
+              <i slot="prefix" class="el-input__icon el-icon-code el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item>

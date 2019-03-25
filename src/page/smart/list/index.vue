@@ -43,10 +43,12 @@
                 </el-form-item>
                 <el-form-item label="介绍视频:">
                   <a
+                    v-if="scope.row.video_desc_url"
                     :href="scope.row.video_desc_url"
                     target="_blank"
                     style="color:#6b3ec2;font-weight:600;"
                   >点击播放</a>
+                  <span v-if="!scope.row.video_desc_url">无</span>
                 </el-form-item>
                 <el-form-item label="模版:">
                   <span>{{ scope.row.template.name }}</span>
@@ -99,10 +101,12 @@
           >
             <template slot-scope="scope">
               <a
+                v-if="scope.row.video_desc_url"
                 :href="scope.row.video_desc_url"
                 target="_blank"
                 style="color:#6b3ec2;font-weight:600;"
               >点击播放</a>
+              <span v-if="!scope.row.video_desc_url">无</span>
             </template>
           </el-table-column>
           <el-table-column

@@ -116,13 +116,7 @@ export default {
       },
       policyList: [],
       pointList: [],
-      projectList: [
-        {
-          id: 1,
-          name: "dd",
-          version_code: "3432"
-        }
-      ],
+      projectList: [],
       searchLoading: false,
       prizeLaunchForm: {
         project_id: null,
@@ -133,7 +127,7 @@ export default {
   },
   mounted() {},
   created() {
-    // this.getProject();
+    this.getProject();
     this.getPoint();
     this.getPirzeTemplate();
     this.pirzeLaunchId = this.$route.params.uid;
