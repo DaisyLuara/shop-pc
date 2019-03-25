@@ -388,7 +388,7 @@ export default {
       let args = {
         company_id: company_id
       };
-      getCouponBatches(this)
+      getCouponBatches(this,args)
         .then(response => {
           this.batchesList = response;
           this.searchLoading = false;
