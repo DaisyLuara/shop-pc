@@ -110,7 +110,13 @@
           >
             <template slot-scope="scope">{{ scope.row.point.name }}</template>
           </el-table-column>
-          <el-table-column sortable prop="icon" label="节目名称" min-width="100">
+          <el-table-column
+            sortable
+            :show-overflow-tooltip="true"
+            prop="icon"
+            label="节目名称"
+            min-width="100"
+          >
             <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
           <el-table-column
