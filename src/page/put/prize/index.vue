@@ -216,7 +216,7 @@ export default {
       this.searchLoading = true;
       getPoint(this)
         .then(res => {
-          this.ponitList = res;
+          this.pointList = res;
           this.searchLoading = false;
         })
         .catch(err => {

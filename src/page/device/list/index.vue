@@ -49,7 +49,7 @@
                 <el-form-item label="设备号:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="节目:">
+                <el-form-item label="节目名称:">
                   <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="点位:">
@@ -77,7 +77,7 @@
             sortable
             :show-overflow-tooltip="true"
             prop="project"
-            label="节目"
+            label="节目名称"
             min-width="80"
           >
             <template slot-scope="scope">{{ scope.row.project.name }}</template>

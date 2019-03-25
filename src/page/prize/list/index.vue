@@ -34,7 +34,7 @@
                 <el-form-item label="ID">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
-                <el-form-item label="优惠券名称">
+                <el-form-item label="奖品名称">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="剩余库存">
@@ -51,7 +51,7 @@
             :show-overflow-tooltip="true"
             sortable
             prop="name"
-            label="名称"
+            label="奖品名称"
             min-width="100"
           />
           <el-table-column

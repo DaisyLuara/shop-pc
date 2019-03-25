@@ -61,8 +61,8 @@
                 filterable
                 placeholder="请选择公司名称"
                 clearable
-                @change="companyChangeHandle(index,scope.$index)"
               >
+                <!-- @change="companyChangeHandle($event,index,scope.$index)" -->
                 <el-option
                   v-for="item in companyList"
                   :key="item.id"
@@ -82,7 +82,7 @@
                 clearable
               >
                 <el-option
-                  v-for="item in batchesList"
+                  v-for="item in ( batchesList ?  (batchesList)[scope.row.company.id]: [])"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -155,7 +155,7 @@ import {
   getPrizePolicyList,
   savePrizePolicy,
   modifyPrizePolicy,
-  getCouponBatches,
+  // getCouponBatches,
   prizePolicyDetails
 } from "service";
 import {
@@ -214,7 +214,7 @@ export default {
         pid: "",
         name: ""
       },
-      batchesList: [],
+      batchesList: {},
       companyList: [],
       pagination: {
         total: 0,
@@ -227,6 +227,7 @@ export default {
       tableData: []
     };
   },
+  computed: {},
   created() {
     this.getCompanies();
     this.getPrizePolicyList();
@@ -243,10 +244,9 @@ export default {
       };
       this.templateVisible = true;
     },
-    companyChangeHandle(pIndex, index) {
-      let company_id = this.tableData[pIndex].batches.data[index].company.id;
-      this.getCouponBatches(company_id);
-    },
+    // companyChangeHandle(event, pIndex, index) {
+    //   let company_id = this.tableData[pIndex].batches.data[index].company.id;
+    // },
     deleteEntry(row, item) {
       this.$confirm("此操作将删除该条目, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -282,13 +282,11 @@ export default {
       this.setting.loading = true;
       let id = row.id;
       let pid = item.id;
-      let company_id = row.company.id;
-      let coupon_batch_id = row.pivot.id;
+      let coupon_batch_id = row.pivot.coupon_batch_id;
       let rate = row.pivot.rate;
       let args = {
         rate: rate,
-        coupon_batch_id: coupon_batch_id,
-        company_id: company_id
+        coupon_batch_id: coupon_batch_id
       };
       modifyPrizePolicyEntry(this, pid, id, args)
         .then(response => {
@@ -310,13 +308,11 @@ export default {
     saveEntry(row) {
       this.setting.loading = true;
       let pid = row.pid;
-      let company_id = row.company.id;
-      let coupon_batch_id = row.pivot.id;
+      let coupon_batch_id = row.pivot.coupon_batch_id;
       let rate = row.pivot.rate;
       let args = {
         rate: rate,
-        coupon_batch_id: coupon_batch_id,
-        company_id: company_id
+        coupon_batch_id: coupon_batch_id
       };
       savePrizePolicyEntry(this, pid, args)
         .then(response => {
@@ -383,28 +379,35 @@ export default {
     dialogClose() {
       this.templateVisible = false;
     },
-    getCouponBatches(company_id) {
-      this.searchLoading = true;
-      let args = {
-        company_id: company_id
-      };
-      getCouponBatches(this,args)
-        .then(response => {
-          this.batchesList = response;
-          this.searchLoading = false;
-        })
-        .catch(err => {
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
-          this.searchLoading = false;
-        });
-    },
+    // getCouponBatches(company_id) {
+    //   this.searchLoading = true;
+    //   let args = {
+    //     company_id: company_id
+    //   };
+    //   getCouponBatches(this, args)
+    //     .then(response => {
+    //       this.batchesList = response;
+    //       this.searchLoading = false;
+    //     })
+    //     .catch(err => {
+    //       this.$message({
+    //         type: "warning",
+    //         message: err.response.data.message
+    //       });
+    //       this.searchLoading = false;
+    //     });
+    // },
     getCompanies() {
       this.searchLoading = true;
-      getCompanies(this)
+      let args = {
+        include: "couponBatches"
+      };
+      getCompanies(this, args)
         .then(response => {
+          for (let i of response) {
+            let id = i.id;
+            this.batchesList[i.id] = i.couponBatches.data;
+          }
           this.companyList = response;
           this.searchLoading = false;
         })

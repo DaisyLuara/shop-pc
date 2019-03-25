@@ -261,14 +261,12 @@ export default {
     },
     dialogClose() {
       if (!this.editVisible) {
-        this.editCondition.conditionList = [];
         this.$refs.multipleTable.resetFields();
       }
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.editCondition.conditionList = [];
       this.getLaunchProjectList();
     },
     modifyEditName(data) {
