@@ -113,28 +113,28 @@
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="奖品码">
+                <el-form-item label="奖品码:">
                   <span>{{ scope.row.code }}</span>
                 </el-form-item>
-                <el-form-item label="奖品名称">
+                <el-form-item label="奖品名称:">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
-                <el-form-item label="状态">
+                <el-form-item label="状态:">
                   <span v-if="scope.row.status===0">未领取</span>
                   <span v-if="scope.row.status===1" class="operating-expand">已使用</span>
                   <span v-if="scope.row.status===2">停用</span>
                   <span v-if="scope.row.status===3" class="sold-out-expand">未使用</span>
                 </el-form-item>
-                <el-form-item label="核销人">
+                <el-form-item label="核销人:">
                   <span>{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</span>
                 </el-form-item>
-                <el-form-item label="点位">
+                <el-form-item label="点位:">
                   <span>{{ scope.row.point !== undefined ? scope.row.point.name : '' }}</span>
                 </el-form-item>
                 <el-form-item label="有效期:">
                   <span>{{ scope.row.start_date + '--' + scope.row.end_date }}</span>
                 </el-form-item>
-                <el-form-item label="核销时间">
+                <el-form-item label="核销时间:">
                   <span>{{ scope.row.use_date }}</span>
                 </el-form-item>
               </el-form>
