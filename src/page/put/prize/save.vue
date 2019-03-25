@@ -62,7 +62,7 @@
               v-for="item in projectList"
               :key="item.id"
               :label="item.name"
-              :value="item.id + ',' + item.version_code"
+              :value="item.id + ',' + item.versionname"
             />
           </el-select>
         </el-form-item>
@@ -144,7 +144,7 @@ export default {
       getLaunchPirzeDetail(this, this.pirzeLaunchId, args)
         .then(res => {
           this.prizeLaunchForm.project_id =
-            res.project.id + "," + res.project.version_code;
+            res.project.id + "," + res.project.versionname;
           this.prizeLaunchForm.oid = res.point.id;
           this.prizeLaunchForm.policy_id = res.policy.id;
           this.setting.loading = false;
