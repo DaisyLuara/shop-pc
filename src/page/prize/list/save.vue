@@ -14,11 +14,11 @@
             </el-input>
           </el-form-item>
           <el-form-item
-            :rules="[{ required: true, message: '请填写库存总数', trigger: 'submit'}]"
-            label="库存总数"
-            prop="count"
+            :rules="[{ required: true, message: '请填写剩余库存', trigger: 'submit'}]"
+            label="剩余库存"
+            prop="stock"
           >
-            <el-input v-model="prizeForm.count" placeholder="请填写库存总数" clearable>
+            <el-input v-model="prizeForm.stock" placeholder="请填写剩余库存" clearable>
               <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"/>
             </el-input>
           </el-form-item>
@@ -118,7 +118,7 @@ export default {
       searchLoading: false,
       prizeForm: {
         name: null,
-        count: null,
+        stock: null,
         is_active: 1,
         description: "",
         start_date: null,
@@ -141,7 +141,7 @@ export default {
         .then(res => {
           this.setting.loading = false;
           this.prizeForm.name = res.name;
-          this.prizeForm.count = res.count;
+          this.prizeForm.stock = res.stock;
           this.prizeForm.description = res.description;
           this.prizeForm.start_date = res.start_date;
           this.prizeForm.end_date = res.end_date;
