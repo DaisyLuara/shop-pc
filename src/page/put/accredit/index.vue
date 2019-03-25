@@ -89,7 +89,7 @@
                   <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目:">
-                  <span>{{ scope.row.name }}</span>
+                  <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="授权链接:">
                   <span>{{ scope.row.wechat.nick_name }}</span>
@@ -142,7 +142,9 @@
             prop="name"
             label="节目"
             min-width="80"
-          />
+          >
+            <template slot-scope="scope">{{ scope.row.project.name }}</template>
+          </el-table-column>
           <el-table-column
             sortable
             :show-overflow-tooltip="true"
