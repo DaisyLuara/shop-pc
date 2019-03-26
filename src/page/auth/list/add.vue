@@ -30,34 +30,31 @@
 </template>
 
 <script>
-import {
-  Tabs,
-  TabPane
-} from 'element-ui';
-import AuthTable from './TableComponents/AuthTable'
-import MpTable from './TableComponents/MpTable'
-import './addEl.less';
+import { Tabs, TabPane } from "element-ui";
+import AuthTable from "./TableComponents/AuthTable";
+import MpTable from "./TableComponents/MpTable";
+import "./addEl.less";
 
 export default {
   name: "AuthListAdd",
   components: {
-    'el-tabs': Tabs,
-    'el-tab-pane': TabPane,
+    "el-tabs": Tabs,
+    "el-tab-pane": TabPane,
     AuthTable,
     MpTable
   },
-  data () {
+  data() {
     return {
       IMG_URL: process.env.IMG_URL,
-      authLink: 'http://exelook.com/client/wxsdk/wxthird/?api=json&uid=1138'
-    }
+      authLink: "http://xingstation.cn/client/wxsdk/wxthird/?api=json&uid=1138"
+    };
   },
   methods: {
     handleEntClick() {
-      window.open(this.authLink)
+      window.open(this.authLink);
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -66,13 +63,13 @@ export default {
   height: 60px;
   display: flex;
   align-items: center;
-  color: #FFF;
+  color: #fff;
   cursor: pointer;
   margin-bottom: 120px;
   .entrance-icon {
     width: 60px;
     height: 60px;
-    background: #956FD4;
+    background: #956fd4;
     padding: 13px;
     img {
       display: block;
@@ -84,7 +81,7 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
-    background: #B19BDE;
+    background: #b19bde;
     .entrance-title {
       font-size: 23px;
       font-weight: bold;
@@ -93,12 +90,12 @@ export default {
       text-align: center;
       position: relative;
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
-        border-right: 1px solid #FFF;
+        border-right: 1px solid #fff;
         transform-origin: 100% 0;
         transform: scaleX(0.5);
       }
@@ -122,7 +119,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    color: #956FD4;
+    color: #956fd4;
     font-size: 18px;
     line-height: 44px;
   }
