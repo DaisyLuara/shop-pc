@@ -1,9 +1,13 @@
 <template>
   <div>
     <!-- 授权页入口 -->
-    <div @click="handleEntClick" class="auth-entrance">
+    <div 
+      class="auth-entrance" 
+      @click="handleEntClick">
       <div class="entrance-icon">
-        <img class="icon" :src="IMG_URL + 'ad_shop/img/auth/entrance_icon.png'">
+        <img 
+          :src="IMG_URL + 'ad_shop/img/auth/entrance_icon.png'" 
+          class="icon">
       </div>
       <div class="entrance-info">
         <div class="entrance-title">授权入口</div>

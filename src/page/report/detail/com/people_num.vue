@@ -20,15 +20,33 @@
         >
           <a :class="'btn color-'+ key">
             <i class="title">{{ item.display_name }}</i>
-            <span v-if="item.index === 'looknum'" class="count">{{ circleLooknum }}</span>
-            <span v-if="item.index === 'playernum7'" class="count">{{ circlePlayernum7 }}</span>
-            <span v-if="item.index === 'playernum'" class="count">{{ circlePlayernum }}</span>
-            <span v-if="item.index === 'omo_outnum'" class="count">{{ circleOmoOutnum }}</span>
-            <span v-if="item.index === 'lovenum'" class="count">{{ circleLovenum }}</span>
-            <span v-if="item.index === 'cpf'" class="count">{{ computedCPF }}</span>
-            <span v-if="item.index === 'cpr'" class="count">{{ computedCPR }}</span>
-            <span v-if="item.index === 'cpa'" class="count">{{ computedCPA }}</span>
-            <span v-if="item.index === 'cpl'" class="count">{{ computedCPL }}</span>
+            <span 
+              v-if="item.index === 'looknum'" 
+              class="count">{{ circleLooknum }}</span>
+            <span 
+              v-if="item.index === 'playernum7'" 
+              class="count">{{ circlePlayernum7 }}</span>
+            <span 
+              v-if="item.index === 'playernum'" 
+              class="count">{{ circlePlayernum }}</span>
+            <span 
+              v-if="item.index === 'omo_outnum'" 
+              class="count">{{ circleOmoOutnum }}</span>
+            <span 
+              v-if="item.index === 'lovenum'" 
+              class="count">{{ circleLovenum }}</span>
+            <span 
+              v-if="item.index === 'cpf'" 
+              class="count">{{ computedCPF }}</span>
+            <span 
+              v-if="item.index === 'cpr'" 
+              class="count">{{ computedCPR }}</span>
+            <span 
+              v-if="item.index === 'cpa'" 
+              class="count">{{ computedCPA }}</span>
+            <span 
+              v-if="item.index === 'cpl'" 
+              class="count">{{ computedCPL }}</span>
             <i :class="'arrow-icon color-' + key"/>
             <i
               v-if="item.index === 'looknum'"
@@ -38,7 +56,9 @@
               v-if="item.index === 'playernum7'"
               class="right-arrow-icon"
             >{{ playernumDivideLookNum }}</i>
-            <i v-if="item.index === 'playernum'" class="right-arrow-icon">{{ lovenumDivideLookNum }}</i>
+            <i 
+              v-if="item.index === 'playernum'" 
+              class="right-arrow-icon">{{ lovenumDivideLookNum }}</i>
             <i
               v-if="item.index === 'omo_outnum'"
               class="right-arrow-icon"
@@ -47,7 +67,10 @@
         </li>
       </ul>
       <div class="chart-wrapper">
-        <chart ref="mainChart" :options="mainChart" auto-resize/>
+        <chart 
+          ref="mainChart" 
+          :options="mainChart" 
+          auto-resize/>
       </div>
     </div>
 
@@ -58,10 +81,15 @@
       class="age-sex-wrapper"
     >
       <div class="sex-part">
-        <chart ref="pieChart" :options="pieChart" @click="onClick"/>
+        <chart 
+          ref="pieChart" 
+          :options="pieChart" 
+          @click="onClick"/>
       </div>
       <div class="age-part">
-        <chart ref="ageChart" :options="ageChart"/>
+        <chart 
+          ref="ageChart" 
+          :options="ageChart"/>
       </div>
     </div>
 
@@ -72,7 +100,9 @@
       class="time-crowd-wrapper"
     >
       <div class="crowd-part">
-        <chart ref="crowdChart" :options="timeAndCrowdChart"/>
+        <chart 
+          ref="crowdChart" 
+          :options="timeAndCrowdChart"/>
       </div>
     </div>
 
@@ -83,7 +113,10 @@
         :element-loading-text="setting.loadingText"
         class="project-part"
       >
-        <chart ref="projectChar" :options="projectOptions" @click="clickProject"/>
+        <chart 
+          ref="projectChar" 
+          :options="projectOptions" 
+          @click="clickProject"/>
       </div>
       <div
         v-loading="userFlag"
@@ -91,7 +124,9 @@
         :element-loading-text="setting.loadingText"
         class="project-age-part"
       >
-        <chart ref="projectAgeChart" :options="projectAgeChart"/>
+        <chart 
+          ref="projectAgeChart" 
+          :options="projectAgeChart"/>
       </div>
     </div>
 
@@ -108,14 +143,17 @@
       </div>
       <el-table
         :data="tableData"
-        style="width: 100%"
         :cell-style="{background:'#24215b',color:'#fff'}"
         :header-cell-style="{background:'#24215b',color:'#fff'}"
         :cell-class-name="tableColClassName"
+        style="width: 100%"
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="demo-table-expand">
+            <el-form 
+              label-position="left" 
+              inline 
+              class="demo-table-expand">
               <el-form-item label="ID">
                 <span>{{ scope.row.id }}</span>
               </el-form-item>
@@ -146,22 +184,50 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="ID" prop="id" width="100"/>
-        <el-table-column :show-overflow-tooltip="true" label="点位" prop="point" min-width="130">
+        <el-table-column 
+          label="ID" 
+          prop="id" 
+          width="100"/>
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="点位" 
+          prop="point" 
+          min-width="130">
           <template
             slot-scope="props"
           >{{ props.row.area_name }} {{ props.row.market_name }} {{ props.row.point_name }}</template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="节目" prop="projects" min-width="130"/>
-        <el-table-column label="围观" prop="looknum" min-width="90"/>
-        <el-table-column :show-overflow-tooltip="true" label="活跃" min-width="90">
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="节目" 
+          prop="projects" 
+          min-width="130"/>
+        <el-table-column 
+          label="围观" 
+          prop="looknum" 
+          min-width="90"/>
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="活跃" 
+          min-width="90">
           <template slot-scope="scope">暂无</template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="拉新" prop="lovenum" min-width="90"/>
-        <el-table-column :show-overflow-tooltip="true" label="平均有效时长" min-width="90">
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="拉新" 
+          prop="lovenum" 
+          min-width="90"/>
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="平均有效时长" 
+          min-width="90">
           <template slot-scope="scope">暂无</template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="输出" prop="scannum" min-width="120">
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="输出" 
+          prop="scannum" 
+          min-width="120">
           <template slot-scope="props">*
             <div>
               <div>CPF: {{ ((props.row.playernum7 / props.row.looknum) * 100).toFixed(2) }}%</div>
@@ -170,7 +236,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="时间" min-width="120" prop="created_at">
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="时间" 
+          min-width="120" 
+          prop="created_at">
           <template slot-scope="props">
             <span>{{ props.row.min_date }} - {{ props.row.max_date }}</span>
           </template>
@@ -178,19 +248,27 @@
       </el-table>
       <div class="pagination-wrap">
         <el-pagination
-          background
           :total="pagination.total"
           :page-size="pagination.pageSize"
           :current-page="pagination.currentPage"
+          background
           layout="prev, pager, next, jumper, total"
           @current-change="changePage"
         />
       </div>
     </div>
 
-    <div v-loading="dialogLoading" v-show="shouldDialogShow" class="chart-dialog">
-      <div class="dialog-close" @click="handleDialogClose">关闭</div>
-      <chart ref="pieChart2" :options="sexAndAgeChart" auto-resize/>
+    <div 
+      v-loading="dialogLoading" 
+      v-show="shouldDialogShow" 
+      class="chart-dialog">
+      <div 
+        class="dialog-close" 
+        @click="handleDialogClose">关闭</div>
+      <chart 
+        ref="pieChart2" 
+        :options="sexAndAgeChart" 
+        auto-resize/>
     </div>
   </div>
 </template>

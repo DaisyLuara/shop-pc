@@ -1,19 +1,31 @@
 <template>
   <div class="point-data-wrapper">
-    <el-tabs v-model="activeName" type="card" class="report-data-card" @tab-click="handleTab">
+    <el-tabs 
+      v-model="activeName" 
+      type="card" 
+      class="report-data-card" 
+      @tab-click="handleTab">
       <!-- 搜索 -->
       <div class="search-wrap">
-        <el-form :inline="true" ref="searchForm" :model="searchForm" class="search-form">
-          <el-form-item label prop="point_id">
+        <el-form 
+          ref="searchForm" 
+          :inline="true" 
+          :model="searchForm" 
+          class="search-form">
+          <el-form-item 
+            label 
+            prop="point_id">
             <el-select
-              class="chart-data-select"
               v-model="searchForm.point_id"
               :loading="searchLoading"
+              class="chart-data-select"
               placeholder="请选择点位"
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -22,13 +34,15 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label prop="date">
+          <el-form-item 
+            label 
+            prop="date">
             <el-date-picker
-              class="chart-data-date"
               v-model="searchForm.dateTime"
               :default-value="searchForm.dateTime"
               :clearable="false"
               :picker-options="pickerOptions"
+              class="chart-data-date"
               type="daterange"
               align="right"
               unlink-panels
@@ -37,16 +51,32 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="searchHandle" class="el-button-data">搜索</el-button>
-            <el-button size="small" @click="resetSearch" class="el-button-data-cancel">重置</el-button>
+            <el-button 
+              type="primary" 
+              size="small" 
+              class="el-button-data" 
+              @click="searchHandle">搜索</el-button>
+            <el-button 
+              size="small" 
+              class="el-button-data-cancel" 
+              @click="resetSearch">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <el-tab-pane label="按人次计" name="first" class="test">
-        <PersonTimes ref="personTimes" :searchForm="searchForm"/>
+      <el-tab-pane 
+        label="按人次计" 
+        name="first" 
+        class="test">
+        <PersonTimes 
+          ref="personTimes" 
+          :search-form="searchForm"/>
       </el-tab-pane>
-      <el-tab-pane label="按人数计" name="second">
-        <PeopleNum ref="peopleCount" :searchForm="searchForm"/>
+      <el-tab-pane 
+        label="按人数计" 
+        name="second">
+        <PeopleNum 
+          ref="peopleCount" 
+          :search-form="searchForm"/>
       </el-tab-pane>
     </el-tabs>
   </div>

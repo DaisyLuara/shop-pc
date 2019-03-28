@@ -7,22 +7,37 @@
         </div>
       </div>
       <div class="user-avatar-wrap">
-        <div class="user-avatar" :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'">
+        <div 
+          :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" 
+          class="user-avatar">
           <img :src="logo">
         </div>
         <div class="user-name">
           <span class="title">{{ user_name }}</span>
         </div>
       </div>
-      <el-menu :default-active="'/' + currModule" router>
-        <el-menu-item v-for="m in modules" :key="m.path" :index="'/' + m.path" class="menu-item">
-          <img :src="IMG_URL+ m.src +'.png'" class="icon-default">
-          <img :src="IMG_URL+ m.src +'_white.png'" class="white-icon">
+      <el-menu 
+        :default-active="'/' + currModule" 
+        router>
+        <el-menu-item 
+          v-for="m in modules" 
+          :key="m.path" 
+          :index="'/' + m.path" 
+          class="menu-item">
+          <img 
+            :src="IMG_URL+ m.src +'.png'" 
+            class="icon-default">
+          <img 
+            :src="IMG_URL+ m.src +'_white.png'" 
+            class="white-icon">
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
       <div class="logout-btn">
-        <img :src="IMG_URL +'/ad_shop/img/logout_icon.png'" class="logout-icon" @click="logout">
+        <img 
+          :src="IMG_URL +'/ad_shop/img/logout_icon.png'" 
+          class="logout-icon" 
+          @click="logout">
       </div>
     </div>
     <div class="modules">

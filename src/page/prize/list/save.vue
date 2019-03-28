@@ -1,7 +1,13 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
-      <el-form ref="prizeForm" :model="prizeForm" label-position="top">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
+      <el-form 
+        ref="prizeForm" 
+        :model="prizeForm" 
+        label-position="top">
         <div class="prize">
           <h4 class="prize-title">编辑奖品</h4>
           <el-form-item
@@ -9,8 +15,13 @@
             label="奖品名称"
             prop="name"
           >
-            <el-input v-model="prizeForm.name" placeholder="请填写奖品名称" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <el-input 
+              v-model="prizeForm.name" 
+              placeholder="请填写奖品名称" 
+              clearable>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item
@@ -18,14 +29,19 @@
             label="剩余库存"
             prop="stock"
           >
-            <el-input v-model="prizeForm.stock" placeholder="请填写剩余库存" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"/>
+            <el-input 
+              v-model="prizeForm.stock" 
+              placeholder="请填写剩余库存" 
+              clearable>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-type el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item
+            :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
             label="开始时间"
             prop="start_date"
-            :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
           >
             <el-date-picker
               v-model="prizeForm.start_date"
@@ -35,9 +51,9 @@
             />
           </el-form-item>
           <el-form-item
+            :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
             label="结束时间"
             prop="end_date"
-            :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
           >
             <el-date-picker
               v-model="prizeForm.end_date"
@@ -46,7 +62,9 @@
               placeholder="请选择结束时间"
             />
           </el-form-item>
-          <el-form-item label=" " prop="is_active">
+          <el-form-item 
+            label=" " 
+            prop="is_active">
             <div class="status">
               <div class="status-item">状态</div>
               <el-radio-group v-model="prizeForm.is_active">
@@ -55,7 +73,9 @@
               </el-radio-group>
             </div>
           </el-form-item>
-          <el-form-item label="使用说明" prop="description">
+          <el-form-item 
+            label="使用说明" 
+            prop="description">
             <el-input
               v-model="prizeForm.description"
               :autosize="{ minRows: 2, maxRows: 10}"
@@ -66,8 +86,12 @@
           </el-form-item>
         </div>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('prizeForm')">保存</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('prizeForm')">保存</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>

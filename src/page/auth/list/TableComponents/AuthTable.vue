@@ -1,11 +1,11 @@
 <template>
   <div class="auth-table">
     <el-table
-      border
       :header-cell-style="headerStyle"
       :data="authTableData.slice(0, 3)"
       :row-style="authRowStyle"
       :span-method="authSpanmethod"
+      border
     >
       <el-table-column
         label="账号性质"
@@ -28,14 +28,15 @@
         width="140px"
         align="center"
         class-name="hide-right-border"
-      >
-      </el-table-column>
+      />
       <el-table-column
         label="权限功能"
         width="279px"
       >
         <template slot-scope="scope">
-          <div v-for="(item, index) in scope.row.ability" :key="index">
+          <div 
+            v-for="(item, index) in scope.row.ability" 
+            :key="index">
             {{ item }}
           </div>
         </template>
@@ -53,10 +54,10 @@
       </el-table-column>
     </el-table>
     <el-table
-      border
       :show-header="false"
       :data="[authTableData[3]]"
       :row-style="authRowStyle"
+      border
     >
       <el-table-column
         label="账号性质"
@@ -79,14 +80,15 @@
         width="140px"
         align="center"
         class-name="hide-right-border"
-      >
-      </el-table-column>
+      />
       <el-table-column
         label="权限功能"
         width="279px"
       >
         <template slot-scope="scope">
-          <div v-for="(item, index) in scope.row.ability" :key="index">
+          <div 
+            v-for="(item, index) in scope.row.ability" 
+            :key="index">
             {{ item }}
           </div>
         </template>

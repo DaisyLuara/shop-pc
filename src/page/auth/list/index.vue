@@ -8,21 +8,35 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="nick_name">
-              <el-input v-model="filters.nick_name" placeholder="请输入授权链接" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="nick_name">
+              <el-input 
+                v-model="filters.nick_name" 
+                placeholder="请输入授权链接" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-link el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item label prop="service_type">
+            <el-form-item 
+              label 
+              prop="service_type">
               <el-select
-                icon="el-icon-search"
                 v-model="filters.service_type"
+                icon="el-icon-search"
                 placeholder="请选择授权类型"
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"/>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-type el-icon-same"/>
                 <el-option
                   v-for="item in typeList"
                   :key="item.id"
@@ -32,27 +46,37 @@
               </el-select>
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="actions-wrap">
           <span class="label">授权列表（ {{ pagination.total }} ）</span>
-          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="naviToAdd">新增授权</el-button>
+          <el-button 
+            type="primary" 
+            icon="el-icon-circle-plus-outline" 
+            @click="naviToAdd">新增授权</el-button>
         </div>
         <!-- 表格 -->
         <el-table
           ref="multipleTable"
           :data="tableData"
-          style="width: 100%"
           :row-style="{height:'70px'}"
-          type="expand"
           :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -79,24 +103,28 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" min-width="80"/>
+          <el-table-column 
+            sortable 
+            prop="id" 
+            label="ID" 
+            min-width="80"/>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="appid"
             label="原始ID"
             min-width="80"
           />
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="nick_name"
             label="授权链接"
             min-width="80"
           />
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="type"
             label="类型"
             min-width="80"
@@ -104,8 +132,8 @@
             <template slot-scope="scope">{{ scope.row.service_type.display_name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="state"
             label="状态"
             min-width="100"
@@ -117,8 +145,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="per"
             label="开通权限"
             min-width="100"
@@ -128,8 +156,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="updated_at"
             label="时间"
             min-width="80"

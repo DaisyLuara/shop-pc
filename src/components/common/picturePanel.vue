@@ -1,6 +1,9 @@
 <template>
   <div class="picture-panel">
-    <el-dialog :visible.sync="panelVisible" :before-close="cancel" @open="handleOpen()">
+    <el-dialog 
+      :visible.sync="panelVisible" 
+      :before-close="cancel" 
+      @open="handleOpen()">
       <div slot="title">
         <span class="picture-panel__title">图片管理</span>
         <input
@@ -12,17 +15,23 @@
         >
       </div>
       <div>
-        <div v-loading="loading" class="picture-panel__body">
+        <div 
+          v-loading="loading" 
+          class="picture-panel__body">
           <li
             v-for="obj in dataImg"
             :key="obj.id"
             class="picture-panel__img-item"
             @click="selectImg(obj)"
           >
-            <img :src="obj.url" class="picture-panel__img">
+            <img 
+              :src="obj.url" 
+              class="picture-panel__img">
             <div class="picture-panel__img-size">{{ obj.width }} * {{ obj.height }}</div>
             <div class="picture-panel__img-name">{{ obj.name }}</div>
-            <div v-for="selectedObj in selectedImgs" :key="selectedObj.id">
+            <div 
+              v-for="selectedObj in selectedImgs" 
+              :key="selectedObj.id">
               <div v-if="obj.id == selectedObj.id">
                 <div class="picture-panel__arrow-wrap"/>
                 <i class="picture-panel__arrow"/>
@@ -45,7 +54,9 @@
             list-type="picture"
             class="picture-panel__upload"
           >
-            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button 
+              size="small" 
+              type="primary">点击上传</el-button>
           </el-upload>
           <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
           <div class="picture-panel__page">
@@ -60,10 +71,14 @@
         </div>
       </div>
       <div slot="footer">
-        <div name="footer" class="footer">
+        <div 
+          name="footer" 
+          class="footer">
           <div class="picture-panel__choose-num">已选择{{ selectedImgs.length }}张图片</div>
           <el-button @click="cancel()">取 消</el-button>
-          <el-button type="primary" @click="confirm()">确 定</el-button>
+          <el-button 
+            type="primary" 
+            @click="confirm()">确 定</el-button>
         </div>
       </div>
     </el-dialog>

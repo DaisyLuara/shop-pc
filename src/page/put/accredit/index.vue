@@ -8,8 +8,13 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="piid">
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="piid">
               <el-select
                 v-model="filters.piid"
                 :loading="searchLoading"
@@ -17,7 +22,9 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-name el-icon-same"/>
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -26,7 +33,9 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="wiid">
+            <el-form-item 
+              label 
+              prop="wiid">
               <el-select
                 v-model="filters.wiid"
                 :loading="searchLoading"
@@ -34,7 +43,9 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-link el-icon-same"/>
                 <el-option
                   v-for="item in linkList"
                   :key="item.id"
@@ -43,9 +54,17 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="visiable">
-              <el-select v-model="filters.visiable" placeholder="请选择状态" filterable clearable>
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
+            <el-form-item 
+              label 
+              prop="visiable">
+              <el-select 
+                v-model="filters.visiable" 
+                placeholder="请选择状态" 
+                filterable 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -55,27 +74,37 @@
               </el-select>
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="actions-wrap">
           <span class="label">授权投放列表（ {{ pagination.total }} ）</span>
-          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addAccredit">新增授权投放</el-button>
+          <el-button 
+            type="primary" 
+            icon="el-icon-circle-plus-outline" 
+            @click="addAccredit">新增授权投放</el-button>
         </div>
         <!-- 表格 -->
         <el-table
           ref="multipleTable"
           :data="tableData"
-          style="width: 100%"
           :row-style="{height:'70px'}"
-          type="expand"
           :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -108,10 +137,15 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable :show-overflow-tooltip="true" prop="id" label="ID" width="70"/>
+          <el-table-column 
+            :show-overflow-tooltip="true" 
+            sortable 
+            prop="id" 
+            label="ID" 
+            width="70"/>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="area"
             label="区域"
             min-width="80"
@@ -119,8 +153,8 @@
             <template slot-scope="scope">{{ scope.row.point.market.area.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="site_name"
             label="场地"
             min-width="80"
@@ -128,8 +162,8 @@
             <template slot-scope="scope">{{ scope.row.point.market.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="point"
             label="点位"
             min-width="80"
@@ -137,8 +171,8 @@
             <template slot-scope="scope">{{ scope.row.point.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="name"
             label="节目"
             min-width="80"
@@ -146,8 +180,8 @@
             <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="link"
             label="授权链接"
             min-width="90"
@@ -155,8 +189,8 @@
             <template slot-scope="scope">{{ scope.row.wechat.nick_name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="status"
             label="状态"
             min-width="100"
@@ -167,9 +201,13 @@
               >{{ scope.row.visiable === 0 ? '下架': '运营中' }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="150">
+          <el-table-column 
+            label="操作" 
+            width="150">
             <template slot-scope="scope">
-              <el-button size="small" @click="editAccredit(scope.row)">编辑</el-button>
+              <el-button 
+                size="small" 
+                @click="editAccredit(scope.row)">编辑</el-button>
               <el-button
                 v-if="scope.row.visiable !== 0"
                 size="small"

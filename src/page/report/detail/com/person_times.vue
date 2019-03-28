@@ -13,9 +13,11 @@
       class="content-wrapper"
     >
       <ul class="btns-wrapper">
-        <li v-for="(item, key) in peopleCount" :key="item.number.index">
+        <li 
+          v-for="(item, key) in peopleCount" 
+          :key="item.number.index">
           <div class="person-btn-wrap">
-            <div :class="'person-btn-top-'+ key"></div>
+            <div :class="'person-btn-top-'+ key"/>
             <div
               :class="{'person-btn-left':key === 0,'person-btn-bg': active === key}"
               class="person-btn"
@@ -28,7 +30,10 @@
         </li>
       </ul>
       <ul class="btns-rate-wrapper">
-        <li v-for="(item, key) in peopleCount" v-if="key !== 0" :key="item.number.index">
+        <li 
+          v-for="(item, key) in peopleCount" 
+          v-if="key !== 0" 
+          :key="item.number.index">
           <div class="person-rate-btn-wrap">
             <div class="person-btn">
               <div class="person-rate-item">
@@ -36,15 +41,20 @@
                 <div class="person-btn-title">{{ key === 0 ? '' : '转化率' }}</div>
                 <div class="person-btn-count">{{ key === 0 ? '' : item.rate.value }}</div>
               </div>
-              <div v-if="key !==0 " :class="'person-rate-color-' + key">
-                <div class="person-rate-content"></div>
+              <div 
+                v-if="key !==0 " 
+                :class="'person-rate-color-' + key">
+                <div class="person-rate-content"/>
               </div>
             </div>
           </div>
         </li>
       </ul>
       <div class="chart-person-times-wrapper">
-        <chart ref="mainPersonTimesChart" :options="mainPersonTimesChart" auto-resize/>
+        <chart 
+          ref="mainPersonTimesChart" 
+          :options="mainPersonTimesChart" 
+          auto-resize/>
       </div>
     </div>
     <!-- 其他图表 -->
@@ -56,10 +66,15 @@
       class="age-person-sex-wrapper"
     >
       <div class="sex-person-part">
-        <chart ref="pieSexChart" :options="pieSexChart" @click="onClick"/>
+        <chart 
+          ref="pieSexChart" 
+          :options="pieSexChart" 
+          @click="onClick"/>
       </div>
       <div class="age-person-part">
-        <chart ref="agePersonChart" :options="agePersonChart"/>
+        <chart 
+          ref="agePersonChart" 
+          :options="agePersonChart"/>
       </div>
     </div>
     <!-- 时间段与人群特征 -->
@@ -70,7 +85,9 @@
       class="time-crowd-person-wrapper"
     >
       <div class="crowd-person-part">
-        <chart ref="crowdPersonChart" :options="timeAndCrowdPersonChart"/>
+        <chart 
+          ref="crowdPersonChart" 
+          :options="timeAndCrowdPersonChart"/>
       </div>
     </div>
     <!-- 节目日化人气 -->
@@ -81,7 +98,10 @@
         :element-loading-text="setting.loadingText"
         class="project-person-part"
       >
-        <chart ref="projectPersonChar" :options="projectPersonOptions" @click="clickProject"/>
+        <chart 
+          ref="projectPersonChar" 
+          :options="projectPersonOptions" 
+          @click="clickProject"/>
       </div>
       <div
         v-loading="userFlag"
@@ -90,7 +110,9 @@
         class="project-age-person-part"
       >
         <div style="font-size: 16px;color:#fff;">{{ projectAgeTitle }}</div>
-        <chart ref="PersonprojectAgeChart" :options="PersonprojectAgeChart"/>
+        <chart 
+          ref="PersonprojectAgeChart" 
+          :options="PersonprojectAgeChart"/>
       </div>
     </div>
     <!-- 报表部分 -->
@@ -114,7 +136,10 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="demo-table-expand">
+            <el-form 
+              label-position="left" 
+              inline 
+              class="demo-table-expand">
               <el-form-item label="ID">
                 <span>{{ scope.row.id }}</span>
               </el-form-item>
@@ -165,10 +190,14 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column sortable label="ID" prop="id" width="100"/>
+        <el-table-column 
+          sortable 
+          label="ID" 
+          prop="id" 
+          width="100"/>
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="点位"
           prop="point"
           min-width="130"
@@ -178,37 +207,41 @@
           >{{ props.row.area_name }} {{ props.row.market_name }} {{ props.row.point_name }}</template>
         </el-table-column>
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="节目"
           prop="projects"
           min-width="130"
         />
-        <el-table-column sortable label="围观" prop="looktimes" min-width="90"/>
+        <el-table-column 
+          sortable 
+          label="围观" 
+          prop="looktimes" 
+          min-width="90"/>
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="7″fCPE"
           prop="playtimes7"
           min-width="90"
         />
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="15″fCPE"
           prop="playtimes15"
           min-width="90"
         />
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="21″fCPE"
           prop="playtimes21"
           min-width="90"
         />
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="输出"
           prop="scannum"
           min-width="120"
@@ -226,8 +259,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          sortable
           :show-overflow-tooltip="true"
+          sortable
           label="时间"
           min-width="120"
           prop="created_at"
@@ -239,20 +272,28 @@
       </el-table>
       <div class="pagination-wrap">
         <el-pagination
-          class="data-pagination"
           :background="true"
           :total="pagination.total"
           :page-size="pagination.pageSize"
           :current-page="pagination.currentPage"
+          class="data-pagination"
           layout="prev, pager, next, jumper, total"
           @current-change="changePage"
         />
       </div>
     </div>
     <!-- 弹窗for 性别细节 -->
-    <div v-loading="dialogLoading" v-show="shouldDialogShow" class="chart-dialog">
-      <div class="dialog-close" @click="handleDialogClose">关闭</div>
-      <chart ref="pieSexChart2" :options="sexAndAgeChart" auto-resize/>
+    <div 
+      v-loading="dialogLoading" 
+      v-show="shouldDialogShow" 
+      class="chart-dialog">
+      <div 
+        class="dialog-close" 
+        @click="handleDialogClose">关闭</div>
+      <chart 
+        ref="pieSexChart2" 
+        :options="sexAndAgeChart" 
+        auto-resize/>
     </div>
   </div>
 </template>
