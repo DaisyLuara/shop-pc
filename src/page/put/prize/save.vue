@@ -1,8 +1,13 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
       <div class="pane-title">{{ pirzeLaunchId ? '修改奖品投放': '新增奖品投放' }}</div>
-      <el-form ref="prizeLaunchForm" :model="prizeLaunchForm">
+      <el-form 
+        ref="prizeLaunchForm" 
+        :model="prizeLaunchForm">
         <el-form-item
           :rules="[{ required: true, message: '请选择模版', trigger: 'submit'}]"
           label=" "
@@ -15,7 +20,9 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in policyList"
               :key="item.id"
@@ -36,7 +43,9 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in pointList"
               :key="item.id"
@@ -57,7 +66,9 @@
             placeholder="请选择节目"
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-project el-icon-same"/>
             <el-option
               v-for="item in projectList"
               :key="item.id"
@@ -68,8 +79,12 @@
         </el-form-item>
 
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('prizeLaunchForm')">完成</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('prizeLaunchForm')">完成</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>

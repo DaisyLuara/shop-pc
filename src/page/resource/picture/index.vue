@@ -13,7 +13,10 @@
       <div class="grouping-image-wrap">
         <div class="image-warp">
           <div class="image-title-group">
-            <el-checkbox v-model="checkbox.allChecked" size="small" @change="allCheckedHandle">全选</el-checkbox>
+            <el-checkbox 
+              v-model="checkbox.allChecked" 
+              size="small" 
+              @change="allCheckedHandle">全选</el-checkbox>
             <el-popover
               ref="delete-image"
               v-model="mediaImage.mediaDelete"
@@ -24,14 +27,19 @@
               <p>确定删除该图片?</p>
               <p class="hint">若删除，不会对目前已使用该图片的相关业务造成影响。</p>
               <div class="btn-wrap">
-                <el-button type="primary" size="small" @click="imageDeleteHandle">确定</el-button>
+                <el-button 
+                  type="primary" 
+                  size="small" 
+                  @click="imageDeleteHandle">确定</el-button>
                 <el-button
                   size="small"
                   @click="mediaImage.mediaDelete = false,setModelFlag(mediaImage.mediaList)"
                 >取消</el-button>
               </div>
             </el-popover>
-            <a v-popover:delete-image :class="{ haveChooseImage : !mediaImage.disabledFlag }">删除</a>
+            <a 
+              v-popover:delete-image 
+              :class="{ haveChooseImage : !mediaImage.disabledFlag }">删除</a>
           </div>
           <!-- 图片列表 -->
           <ul class="image-list">
@@ -39,7 +47,9 @@
               v-show="mediaImage.mediaList.length == 0"
               class="hint-message"
             >暂无数据，可点击左下角“上传图片”按钮添加</div>
-            <li v-for="(imageItem, index) in mediaImage.mediaList" :key="imageItem.id">
+            <li 
+              v-for="(imageItem, index) in mediaImage.mediaList" 
+              :key="imageItem.id">
               <img
                 :src="imageItem.url"
                 class="image-file"
@@ -119,7 +129,9 @@
               list-type="picture"
               class="upload"
             >
-              <el-button size="small" type="success">上传图片</el-button>
+              <el-button 
+                size="small" 
+                type="success">上传图片</el-button>
             </el-upload>
             <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
             <div class="pagination">
@@ -136,12 +148,16 @@
       </div>
     </div>
     <!-- 图片弹窗 -->
-    <div v-show="mediaImage.imageVisible" class="widget-image">
+    <div 
+      v-show="mediaImage.imageVisible" 
+      class="widget-image">
       <div class="shade-image"/>
       <div class="widget-content">
         <img :src="mediaImage.mediaImageUrl">
       </div>
-      <div class="widget-close" @click="handleImageClose">
+      <div 
+        class="widget-close" 
+        @click="handleImageClose">
         <i class="widget-icon">X</i>
       </div>
     </div>

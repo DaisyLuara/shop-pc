@@ -1,8 +1,13 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
       <div class="pane-title">新增节目投放</div>
-      <el-form ref="projectLaunchForm" :model="projectLaunchForm">
+      <el-form 
+        ref="projectLaunchForm" 
+        :model="projectLaunchForm">
         <el-form-item
           :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
           label=" "
@@ -15,7 +20,9 @@
             placeholder="请选择节目"
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-project el-icon-same"/>
             <el-option
               v-for="item in projectList"
               :key="item.id"
@@ -36,7 +43,9 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in pointList"
               :key="item.id"
@@ -46,9 +55,9 @@
           </el-select>
         </el-form-item>
         <el-form-item
+          :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
           label=" "
           prop="sdate"
-          :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
         >
           <el-date-picker
             v-model="projectLaunchForm.sdate"
@@ -58,9 +67,9 @@
           />
         </el-form-item>
         <el-form-item
+          :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
           label=" "
           prop="edate"
-          :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
         >
           <el-date-picker
             v-model="projectLaunchForm.edate"
@@ -70,8 +79,12 @@
           />
         </el-form-item>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('projectLaunchForm')">完成</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('projectLaunchForm')">完成</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>

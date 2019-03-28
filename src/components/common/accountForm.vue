@@ -57,8 +57,8 @@
             >
               <el-input
                 v-model="accountForm.account"
-                auto-complete="off"
                 :maxlength="11"
+                auto-complete="off"
                 type="text"
                 placeholder="请输入用户名"
               />

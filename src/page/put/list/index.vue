@@ -8,15 +8,31 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="project_name">
-              <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="project_name">
+              <el-input 
+                v-model="filters.project_name" 
+                placeholder="请填写节目名称" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-project el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item label prop>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            <el-form-item 
+              label 
+              prop>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -34,14 +50,17 @@
         <el-table
           ref="multipleTable"
           :data="tableData"
-          style="width: 100%"
-          type="expand"
           :row-style="{height:'70px'}"
           :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="节目名称:">
                   <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
@@ -49,7 +68,10 @@
                   <span>{{ scope.row.point.market.area.name + scope.row.point.market.name + scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目icon:">
-                  <img :src="scope.row.project.icon" alt="image" style="width: 40%;">
+                  <img 
+                    :src="scope.row.project.icon" 
+                    alt="image" 
+                    style="width: 40%;">
                 </el-form-item>
                 <el-form-item label="时间:">
                   <span>{{ scope.row.updated_at }}</span>
@@ -57,24 +79,35 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" width="80"/>
+          <el-table-column 
+            sortable 
+            prop="id" 
+            label="ID" 
+            width="80"/>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="name"
             label="节目名称"
             min-width="100"
           >
             <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
-          <el-table-column sortable prop="icon" label="节目icon" min-width="100">
+          <el-table-column 
+            sortable 
+            prop="icon" 
+            label="节目icon" 
+            min-width="100">
             <template slot-scope="scope">
-              <img :src="scope.row.project.icon" alt class="icon-item">
+              <img 
+                :src="scope.row.project.icon" 
+                alt 
+                class="icon-item">
             </template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="point"
             label="点位"
             min-width="100"
@@ -91,10 +124,16 @@
           >
             <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="250">
+          <el-table-column 
+            label="操作" 
+            width="250">
             <template slot-scope="scope">
-              <el-button size="small" @click="modifyEditName(scope.row)">更换节目</el-button>
-              <el-button size="small" @click="modifyEditTime(scope.row)">更改时间</el-button>
+              <el-button 
+                size="small" 
+                @click="modifyEditName(scope.row)">更换节目</el-button>
+              <el-button 
+                size="small" 
+                @click="modifyEditTime(scope.row)">更改时间</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -109,8 +148,15 @@
         </div>
       </div>
       <!-- 节目名称修改 -->
-      <el-dialog v-loading="loading" :visible.sync="editVisible" title="修改" :show-close="false">
-        <el-form ref="projectForm" :model="projectForm" label-position="top">
+      <el-dialog 
+        v-loading="loading" 
+        :visible.sync="editVisible" 
+        :show-close="false" 
+        title="修改">
+        <el-form 
+          ref="projectForm" 
+          :model="projectForm" 
+          label-position="top">
           <el-form-item
             v-if="modifyOptionFlag.project"
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
@@ -118,14 +164,16 @@
             prop="project_id"
           >
             <el-select
-              class="modify-width"
               v-loading="searchLoading"
               v-model="projectForm.project_id"
+              class="modify-width"
               filterable
               placeholder="请选择节目"
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"></i>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-project el-icon-same"/>
               <el-option
                 v-for="item in projectList"
                 :key="item.id"
@@ -136,35 +184,39 @@
           </el-form-item>
           <el-form-item
             v-if="modifyOptionFlag.time"
+            :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
             label="开始时间"
             prop="sdate"
-            :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
           >
             <el-date-picker
-              class="modify-width"
               v-model="projectForm.sdate"
               :editable="false"
+              class="modify-width"
               type="date"
               placeholder="选择开始时间"
             />
           </el-form-item>
           <el-form-item
             v-if="modifyOptionFlag.time"
+            :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
             label="结束时间"
             prop="edate"
-            :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
           >
             <el-date-picker
-              class="modify-width"
               v-model="projectForm.edate"
               :editable="false"
+              class="modify-width"
               type="date"
               placeholder="选择结束时间"
             />
           </el-form-item>
           <el-form-item>
-            <el-button class="el-button-success" @click="submitModify('projectForm')">完成</el-button>
-            <el-button class="el-button-cancel" @click="cancel">取消</el-button>
+            <el-button 
+              class="el-button-success" 
+              @click="submitModify('projectForm')">完成</el-button>
+            <el-button 
+              class="el-button-cancel" 
+              @click="cancel">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>

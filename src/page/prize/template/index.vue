@@ -6,19 +6,30 @@
   >
     <!-- 搜索 -->
     <div class="search-wrap">
-      <el-form ref="searchForm" :model="searchForm" :inline="true">
-        <el-form-item label prop="name">
+      <el-form 
+        ref="searchForm" 
+        :model="searchForm" 
+        :inline="true">
+        <el-form-item 
+          label 
+          prop="name">
           <el-input
             v-model="searchForm.name"
             placeholder="请输入奖品模板名称"
             clearable
             class="el-search-input"
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
           </el-input>
         </el-form-item>
-        <el-button class="el-button-success" @click="search">搜索</el-button>
-        <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+        <el-button 
+          class="el-button-success" 
+          @click="search">搜索</el-button>
+        <el-button 
+          class="el-button-cancel" 
+          @click="resetSearch('filters')">重置</el-button>
       </el-form>
     </div>
     <div class="actions-wrap">
@@ -34,7 +45,9 @@
       </div>
     </div>
     <!-- 模板奖品列表 -->
-    <el-collapse v-model="activeNames" accordion>
+    <el-collapse 
+      v-model="activeNames" 
+      accordion>
       <el-collapse-item
         v-for="(item, index) in tableData"
         :name="index"
@@ -43,17 +56,32 @@
       >
         <template slot="title">
           <span>{{ item.name }}&nbsp;&nbsp;</span>
-          <el-button icon="el-icon-edit" circle size="mini" @click="modifyTemplateName(item)"/>
+          <el-button 
+            icon="el-icon-edit" 
+            circle 
+            size="mini" 
+            @click="modifyTemplateName(item)"/>
         </template>
         <div class="actions-wrap">
           <span class="label">数目: {{ item.batches.data.length }}</span>
           <div>
-            <el-button size="small" @click="addSchedule(index)">增加</el-button>
+            <el-button 
+              size="small" 
+              @click="addSchedule(index)">增加</el-button>
           </div>
         </div>
-        <el-table :data="item.batches.data" style="width: 100%" :header-cell-style="headerStyle">
-          <el-table-column prop="id" label="ID" width="100"/>
-          <el-table-column prop label="公司名称" min-width="150">
+        <el-table 
+          :data="item.batches.data" 
+          :header-cell-style="headerStyle" 
+          style="width: 100%">
+          <el-table-column 
+            prop="id" 
+            label="ID" 
+            width="100"/>
+          <el-table-column 
+            prop 
+            label="公司名称" 
+            min-width="150">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.company.id"
@@ -72,7 +100,10 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop label="奖品名称" min-width="150">
+          <el-table-column 
+            prop 
+            label="奖品名称" 
+            min-width="150">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.pivot.coupon_batch_id"
@@ -82,7 +113,7 @@
                 clearable
               >
                 <el-option
-                  v-for="item in ( batchesList ?  (batchesList)[scope.row.company.id]: [])"
+                  v-for="item in ( batchesList ? (batchesList)[scope.row.company.id]: [])"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -90,17 +121,30 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="icon" label="概率" min-width="100">
+          <el-table-column 
+            prop="icon" 
+            label="概率" 
+            min-width="100">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.pivot.rate" class="item-input">
+              <el-input 
+                v-model="scope.row.pivot.rate" 
+                class="item-input">
                 <template slot="append">%</template>
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="操作" min-width="100">
+          <el-table-column 
+            label="操作" 
+            min-width="100">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.id" size="mini" @click="editEntry(scope.row,item)">编辑</el-button>
-              <el-button v-if="scope.row.id" size="mini" @click="deleteEntry(scope.row,item)">删除</el-button>
+              <el-button 
+                v-if="scope.row.id" 
+                size="mini" 
+                @click="editEntry(scope.row,item)">编辑</el-button>
+              <el-button 
+                v-if="scope.row.id" 
+                size="mini" 
+                @click="deleteEntry(scope.row,item)">删除</el-button>
               <el-button
                 v-if="!scope.row.id"
                 size="mini"
@@ -129,17 +173,30 @@
       />
     </div>
     <!-- 新增，修改 -->
-    <el-dialog :title="title" :visible.sync="templateVisible" @close="dialogClose">
-      <el-form v-loading="loading" ref="templateForm" :model="templateForm" label-width="150px">
+    <el-dialog 
+      :title="title" 
+      :visible.sync="templateVisible" 
+      @close="dialogClose">
+      <el-form 
+        v-loading="loading" 
+        ref="templateForm" 
+        :model="templateForm" 
+        label-width="150px">
         <el-form-item
           :rules="[{ type: 'string', required: true, message: '请输入模板名', trigger: 'submit' }]"
           label="模板名"
           prop="name"
         >
-          <el-input v-model="templateForm.name" placeholder="请输入模板名" class="item-submit-input"/>
+          <el-input 
+            v-model="templateForm.name" 
+            placeholder="请输入模板名" 
+            class="item-submit-input"/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="submit('templateForm')">完成</el-button>
+          <el-button 
+            type="primary" 
+            size="small" 
+            @click="submit('templateForm')">完成</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -195,17 +252,9 @@ export default {
       companyList: [],
       headerStyle: { color: "#444" },
       templateVisible: false,
-      searchForm: {
-        name: ""
-      },
       setting: {
         loading: false,
         loadingText: "拼命加载中"
-      },
-      pagination: {
-        total: 0,
-        pageSize: 10,
-        currentPage: 1
       },
       searchLoading: false,
       loading: false,
@@ -215,7 +264,6 @@ export default {
         name: ""
       },
       batchesList: {},
-      companyList: [],
       pagination: {
         total: 0,
         pageSize: 10,

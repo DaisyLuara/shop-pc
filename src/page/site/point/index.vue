@@ -8,15 +8,29 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="point_name">
-              <el-input v-model="filters.point_name" placeholder="请填写点位名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="point_name">
+              <el-input 
+                v-model="filters.point_name" 
+                placeholder="请填写点位名称" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -27,14 +41,17 @@
         <el-table
           ref="multipleTable"
           :data="tableData"
-          style="width: 100%"
           :row-style="{height:'70px'}"
-          type="expand"
           :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -55,17 +72,21 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" width="80"/>
+          <el-table-column 
+            sortable 
+            prop="id" 
+            label="ID" 
+            width="80"/>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="name"
             label="点位名称"
             min-width="100"
           />
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="area"
             label="区域"
             min-width="100"
@@ -73,8 +94,8 @@
             <template slot-scope="scope">{{ scope.row.area.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="site_name"
             label="场地名称"
             min-width="100"
@@ -82,8 +103,8 @@
             <template slot-scope="scope">{{ scope.row.market.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="status"
             label="运营状态"
             min-width="100"

@@ -8,15 +8,33 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="project_name">
-              <el-input v-model="filters.project_name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="project_name">
+              <el-input 
+                v-model="filters.project_name" 
+                placeholder="请填写节目名称" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item label prop="machine_status">
-              <el-select v-model="filters.machine_status" placeholder="请选择状态" filterable clearable>
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
+            <el-form-item 
+              label 
+              prop="machine_status">
+              <el-select 
+                v-model="filters.machine_status" 
+                placeholder="请选择状态" 
+                filterable 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -26,8 +44,12 @@
               </el-select>
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -38,14 +60,17 @@
         <el-table
           ref="multipleTable"
           :data="tableData"
-          style="width: 100%"
           :row-style="{height:'70px'}"
-          type="expand"
           :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="设备号:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -72,10 +97,15 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable :show-overflow-tooltip="true" prop="id" label="设备号" width="90"/>
+          <el-table-column 
+            :show-overflow-tooltip="true" 
+            sortable 
+            prop="id" 
+            label="设备号" 
+            width="90"/>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="project"
             label="节目名称"
             min-width="80"
@@ -83,8 +113,8 @@
             <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="point"
             label="点位"
             min-width="80"
@@ -92,29 +122,29 @@
             <template slot-scope="scope">{{ scope.row.point.name }}</template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="faceDate"
             label="上次互动"
             min-width="80"
           />
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="networkDate"
             label="联网时间"
             min-width="90"
           />
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="loginDate"
             label="登录时间"
             min-width="90"
           />
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="screenStatus"
             label="屏幕状态"
             min-width="100"

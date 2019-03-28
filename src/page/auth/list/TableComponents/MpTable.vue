@@ -3,24 +3,34 @@
     <div class="mp-table-header">
       <div class="step">步骤</div>
       <div class="action">行动</div>
-      <a class="download-btn" href="http://face.exe666.com/sdk/sdk1.1.zip">
+      <a 
+        class="download-btn" 
+        href="http://face.exe666.com/sdk/sdk1.1.zip">
         <div class="download-desc">下载小程序SDK V1.1</div>
-        <img class="download-icon" :src="IMG_URL + 'ad_shop/img/auth/mp_sdk.png'">
+        <img 
+          :src="IMG_URL + 'ad_shop/img/auth/mp_sdk.png'" 
+          class="download-icon">
       </a>
     </div>
     <div class="mp-table-content">
       <div class="mp-table-row">
         <div class="step bold">第1步</div>
         <div class="action">
-          <a href="https://mp.weixin.qq.com/" target="_blank">进入微信公众平台https://mp.weixin.qq.com/</a>
+          <a 
+            href="https://mp.weixin.qq.com/" 
+            target="_blank">进入微信公众平台https://mp.weixin.qq.com/</a>
         </div>
       </div>
       <div class="mp-table-row">
         <div class="step bold">第2步</div>
         <div class="action">
           <div>登陆小程序账号，点击<span class="purple">"设置"</span></div>
-          <a href="http://image.exe666.com/1007/image/499_new_apps1.jpg" target="_blank">
-            <img src="http://image.exe666.com/1007/image/499_new_apps1.jpg" style="width: 160px">
+          <a 
+            href="http://image.exe666.com/1007/image/499_new_apps1.jpg" 
+            target="_blank">
+            <img 
+              src="http://image.exe666.com/1007/image/499_new_apps1.jpg" 
+              style="width: 160px">
           </a>
         </div>
       </div>
@@ -28,8 +38,12 @@
         <div class="step bold">第3步</div>
         <div class="action">
           <div>点击<span class="purple">"开发设置"</span></div>
-          <a href="http://image.exe666.com/1007/image/946_new_apps2.jpg" target="_blank">
-            <img src="http://image.exe666.com/1007/image/946_new_apps2.jpg" style="width: 200px">
+          <a 
+            href="http://image.exe666.com/1007/image/946_new_apps2.jpg" 
+            target="_blank">
+            <img 
+              src="http://image.exe666.com/1007/image/946_new_apps2.jpg" 
+              style="width: 200px">
           </a>
         </div>
       </div>
@@ -43,8 +57,12 @@
         <div class="step bold">第5步</div>
         <div class="action">
           <div>通过管理员身份验证之后，填入request合法域名：<span class="purple">https://exelook.com</span></div>
-          <a href="http://image.exe666.com/1007/image/122_new_apps4.jpg" target="_blank">
-            <img src="http://image.exe666.com/1007/image/122_new_apps4.jpg" style="width: 380px">
+          <a 
+            href="http://image.exe666.com/1007/image/122_new_apps4.jpg" 
+            target="_blank">
+            <img 
+              src="http://image.exe666.com/1007/image/122_new_apps4.jpg" 
+              style="width: 380px">
           </a>
         </div>
       </div>
@@ -53,8 +71,8 @@
       <div class="mp-table-row">
         <div class="step bold">业务代码</div>
         <div class="action">
-          <div>在小程序启动页面代码中的<span class="purple">'onLoad'</span>生命周期中，<br/>调用 <span class="purple">getXingPhoto(preview)</span>方法，<br/>调用微信登陆获取code，然后使用code换取openid，<br/>最后将sence和openid去换取照片信息。</div>
-          <div class="tips">preview: 是否直接展示照片, true 即直接展示；<br/>如不展示，可在request success回调中获得图片url。 </div>
+          <div>在小程序启动页面代码中的<span class="purple">'onLoad'</span>生命周期中，<br>调用 <span class="purple">getXingPhoto(preview)</span>方法，<br>调用微信登陆获取code，然后使用code换取openid，<br>最后将sence和openid去换取照片信息。</div>
+          <div class="tips">preview: 是否直接展示照片, true 即直接展示；<br>如不展示，可在request success回调中获得图片url。 </div>
         </div>
       </div>
     </div>

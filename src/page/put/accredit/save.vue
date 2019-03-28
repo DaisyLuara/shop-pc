@@ -1,8 +1,13 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
       <!-- <div class="pane-title">{{ AccreditID ? '编辑授权投放' : '新增授权投放' }}</div> -->
-      <el-form ref="accreditForm" :model="accreditForm">
+      <el-form 
+        ref="accreditForm" 
+        :model="accreditForm">
         <div class="deploy-model">
           <h4 class="deploy-model-title">投放基础配置</h4>
           <el-form-item
@@ -18,7 +23,9 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -39,7 +46,9 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-project el-icon-same"/>
 
               <el-option
                 v-for="item in projectList"
@@ -61,7 +70,9 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-auth-type el-icon-same"/>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-auth-type el-icon-same"/>
 
               <el-option
                 v-for="item in typeList"
@@ -83,7 +94,9 @@
               filterable
               clearable
             >
-              <i slot="prefix" class="el-input__icon el-icon-link el-icon-same"/>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-link el-icon-same"/>
               <el-option
                 v-for="item in linkList"
                 :key="item.id"
@@ -107,15 +120,21 @@
             </div>
           </el-form-item>
         </div>
-        <div class="deploy-model" style="padding-left:20px">
-          <h4 class="deploy-model-title" style="padding-left:0">脱机配置</h4>
+        <div 
+          class="deploy-model" 
+          style="padding-left:20px">
+          <h4 
+            class="deploy-model-title" 
+            style="padding-left:0">脱机配置</h4>
           <!-- <el-form-item label="脱机支持" prop="off_support">
             <el-radio-group v-model="accreditForm.off_support">
               <el-radio :label="1">微信场景码</el-radio>
               <el-radio :label="0">指定链接</el-radio>
             </el-radio-group>
           </el-form-item>-->
-          <el-form-item label=" " prop="reply_url">
+          <el-form-item 
+            label=" " 
+            prop="reply_url">
             <el-input
               v-model="accreditForm.reply_url"
               :autosize="{ minRows: 2, maxRows: 10}"
@@ -126,8 +145,12 @@
           </el-form-item>
         </div>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('accreditForm')">保存</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('accreditForm')">保存</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>

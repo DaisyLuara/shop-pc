@@ -8,15 +8,29 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="name">
-              <el-input v-model="filters.name" placeholder="请填写节目名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="name">
+              <el-input 
+                v-model="filters.name" 
+                placeholder="请填写节目名称" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -27,14 +41,17 @@
         <el-table
           ref="multipleTable"
           :data="tableData"
-          style="width: 100%"
           :row-style="{height:'70px'}"
-          type="expand"
           :header-cell-style="headerStyle"
+          style="width: 100%"
+          type="expand"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -74,27 +91,41 @@
                   </div>
                 </el-form-item>
                 <el-form-item label="节目封面:">
-                  <img :src="scope.row.image" alt="image" style="width: 20%;">
+                  <img 
+                    :src="scope.row.image" 
+                    alt="image" 
+                    style="width: 20%;">
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="id" label="ID" min-width="80"/>
+          <el-table-column 
+            sortable 
+            prop="id" 
+            label="ID" 
+            min-width="80"/>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="name"
             label="节目名称"
             min-width="80"
           />
-          <el-table-column sortable prop="image" label="节目封面" width="100">
+          <el-table-column 
+            sortable 
+            prop="image" 
+            label="节目封面" 
+            width="100">
             <template slot-scope="scope">
-              <img :src="scope.row.image" alt="image" style="width: 80%;">
+              <img 
+                :src="scope.row.image" 
+                alt="image" 
+                style="width: 80%;">
             </template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="video_desc_url"
             label="介绍视频"
             min-width="80"
@@ -110,8 +141,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="video_desc_url"
             label="互动指数"
             min-width="100"
@@ -132,8 +163,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            sortable
             :show-overflow-tooltip="true"
+            sortable
             prop="updated_at"
             label="更新时间"
             min-width="80"
