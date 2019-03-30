@@ -66,7 +66,7 @@ export default {
   methods: {
     openWXOfficial() {
       let uid = JSON.parse(localStorage.getItem('customer_info')).ar_id
-      let href = 'http://exelook.com/client/wxsdk/wxthird/?api=json&uid=' + uid
+      let href = 'http://xingstation.cn/client/wxsdk/wxthird/?api=json&uid=' + uid
       window.open(href, '_blank')
     }
   }

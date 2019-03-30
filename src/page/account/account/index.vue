@@ -367,7 +367,7 @@ export default {
       company_name: '',
       name: '',
       editName: false,
-      avatar: 'http://image.exe666.com/1007/image/1529384439.png'
+      avatar: 'http://image.xingstation.cn/1007/image/1529384439.png'
     }
   },
   created() {
