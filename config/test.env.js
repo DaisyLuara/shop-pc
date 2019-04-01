@@ -6,5 +6,5 @@ module.exports = merge(devEnv, {
   NODE_ENV: '"testing"',
   SERVER_URL: '"http://mapi.xingstation.net"',
   HTTPS_SERVER_URL: '"https://mapi.xingstation.net"',
-  IMG_URL: '"https://cdn.exe666.com/"'
+  IMG_URL: '"http://cdn.xingstation.cn/"'
 })

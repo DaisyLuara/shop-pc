@@ -5,5 +5,5 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   SERVER_URL: '"http://mapi.jingfree.top"',
   HTTPS_SERVER_URL: '"http://mapi.jingfree.top"',
-  IMG_URL: '"https://cdn.exe666.com/"'
+  IMG_URL: '"http://cdn.xingstation.cn/"'
 })
