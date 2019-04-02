@@ -5,7 +5,7 @@
       <div class="action">行动</div>
       <a 
         class="download-btn" 
-        href="http://face.exe666.com/sdk/sdk1.1.zip">
+        href="http://face.xingstation.cn/sdk/sdk1.1.zip">
         <div class="download-desc">下载小程序SDK V1.1</div>
         <img 
           :src="IMG_URL + 'ad_shop/img/auth/mp_sdk.png'" 
@@ -26,10 +26,10 @@
         <div class="action">
           <div>登陆小程序账号，点击<span class="purple">"设置"</span></div>
           <a 
-            href="http://image.exe666.com/1007/image/499_new_apps1.jpg" 
+            href="http://image.xingstation.cn/1007/image/499_new_apps1.jpg" 
             target="_blank">
             <img 
-              src="http://image.exe666.com/1007/image/499_new_apps1.jpg" 
+              src="http://image.xingstation.cn/1007/image/499_new_apps1.jpg" 
               style="width: 160px">
           </a>
         </div>
@@ -39,10 +39,10 @@
         <div class="action">
           <div>点击<span class="purple">"开发设置"</span></div>
           <a 
-            href="http://image.exe666.com/1007/image/946_new_apps2.jpg" 
+            href="http://image.xingstation.cn/1007/image/946_new_apps2.jpg" 
             target="_blank">
             <img 
-              src="http://image.exe666.com/1007/image/946_new_apps2.jpg" 
+              src="http://image.xingstation.cn/1007/image/946_new_apps2.jpg" 
               style="width: 200px">
           </a>
         </div>
@@ -58,10 +58,10 @@
         <div class="action">
           <div>通过管理员身份验证之后，填入request合法域名：<span class="purple">https://exelook.com</span></div>
           <a 
-            href="http://image.exe666.com/1007/image/122_new_apps4.jpg" 
+            href="http://image.xingstation.cn/1007/image/122_new_apps4.jpg" 
             target="_blank">
             <img 
-              src="http://image.exe666.com/1007/image/122_new_apps4.jpg" 
+              src="http://image.xingstation.cn/1007/image/122_new_apps4.jpg" 
               style="width: 380px">
           </a>
         </div>

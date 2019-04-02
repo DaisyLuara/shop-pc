@@ -215,7 +215,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@imgurl: "https://cdn.exe666.com/ad_shop/img/";
+@imgurl: "https://cdn.xingstation.cn/ad_shop/img/";
 .item-wrap-template {
   .prize {
     .prize-title {
