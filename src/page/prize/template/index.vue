@@ -29,7 +29,7 @@
           @click="search">搜索</el-button>
         <el-button 
           class="el-button-cancel" 
-          @click="resetSearch('filters')">重置</el-button>
+          @click="resetSearch('searchForm')">重置</el-button>
       </el-form>
     </div>
     <div class="actions-wrap">
@@ -281,7 +281,11 @@ export default {
     this.getPrizePolicyList();
   },
   methods: {
-    resetSearch() {},
+    resetSearch(formName) {
+      this.$refs[formName].resetFields();
+      this.pagination.currentPage = 1;
+      this.getPrizePolicyList();
+    },
     modifyTemplateName(item) {
       this.loading = false;
       this.title = "修改模板";
@@ -292,9 +296,6 @@ export default {
       };
       this.templateVisible = true;
     },
-    // companyChangeHandle(event, pIndex, index) {
-    //   let company_id = this.tableData[pIndex].batches.data[index].company.id;
-    // },
     deleteEntry(row, item) {
       this.$confirm("此操作将删除该条目, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -427,24 +428,6 @@ export default {
     dialogClose() {
       this.templateVisible = false;
     },
-    // getCouponBatches(company_id) {
-    //   this.searchLoading = true;
-    //   let args = {
-    //     company_id: company_id
-    //   };
-    //   getCouponBatches(this, args)
-    //     .then(response => {
-    //       this.batchesList = response;
-    //       this.searchLoading = false;
-    //     })
-    //     .catch(err => {
-    //       this.$message({
-    //         type: "warning",
-    //         message: err.response.data.message
-    //       });
-    //       this.searchLoading = false;
-    //     });
-    // },
     getCompanies() {
       this.searchLoading = true;
       let args = {
