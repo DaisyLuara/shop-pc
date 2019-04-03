@@ -26,9 +26,9 @@
             </el-form-item>
             <el-form-item 
               label 
-              prop="machine_status">
+              prop="screen_status">
               <el-select 
-                v-model="filters.machine_status" 
+                v-model="filters.screen_status" 
                 placeholder="请选择屏幕状态" 
                 filterable 
                 clearable>
@@ -201,17 +201,17 @@ export default {
   data() {
     return {
       filters: {
-        machine_status: "",
+        screen_status: null,
         project_name: null
       },
       statusList: [
         {
-          id: "online",
-          name: "运营中"
+          id: 0,
+          name: "关闭"
         },
         {
-          id: "tmp",
-          name: "待解决"
+          id: 1,
+          name: "开启"
         }
       ],
       headerStyle: { background: "#6b3ec2", color: "#fff" },
@@ -237,14 +237,14 @@ export default {
         include: "point,project",
         page: this.pagination.currentPage,
         project_name: this.filters.project_name,
-        machine_status: this.filters.machine_status
+        screen_status: this.filters.screen_status
       };
       if (this.filters.project_name === "") {
         delete args.project_name;
       }
 
-      if (!this.filters.machine_status) {
-        delete args.machine_status;
+      if (this.filters.screen_status==='') {
+        delete args.screen_status;
       }
       getDeviceList(this, args)
         .then(res => {
