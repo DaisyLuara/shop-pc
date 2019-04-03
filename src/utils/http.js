@@ -68,7 +68,7 @@ function VueAxios(Vue) {
             path: '/login'
           })
           //   Message.error('请求出错：代码' + error.response.status)
-          Message.error('请求出错：' + error.response.data.message)
+          // Message.error('请求出错：' + error.response.data.message)
         } else {
           if (error.response.status == 429) {
             Message.error('请求出错:' + error.response.data.message)

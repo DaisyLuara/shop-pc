@@ -29,7 +29,7 @@
               prop="machine_status">
               <el-select 
                 v-model="filters.machine_status" 
-                placeholder="请选择状态" 
+                placeholder="请选择屏幕状态" 
                 filterable 
                 clearable>
                 <i 
