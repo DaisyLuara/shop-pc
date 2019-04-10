@@ -115,8 +115,8 @@ export default {
       searchForm: {
         point_id: "",
         dateTime: [
-          new Date('2019-02-08').getTime() - 3600 * 1000 * 24 * 7,
-          new Date('2019-02-08').getTime() - 3600 * 1000 * 24
+          new Date().getTime() - 3600 * 1000 * 24 * 7,
+          new Date().getTime() - 3600 * 1000 * 24
         ]
       },
       pickerOptions: {
