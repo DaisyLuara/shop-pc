@@ -6,7 +6,7 @@
       [
         {
           "libraryName": "element-ui",
-          "styleLibraryName": "theme-chalk"
+          "styleLibraryName": "~theme"
         }
       ]
     ],
@@ -14,3 +14,4 @@
     "transform-runtime"
   ]
 }
+// "styleLibraryName": "theme-chalk"

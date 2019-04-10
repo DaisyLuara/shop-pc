@@ -1,17 +1,31 @@
 <template>
   <div class="point-data-wrapper">
-    <el-tabs v-model="activeName" type="card" class="report-data-card" @tab-click="handleTab">
+    <el-tabs 
+      v-model="activeName" 
+      type="card" 
+      class="report-data-card" 
+      @tab-click="handleTab">
       <!-- 搜索 -->
       <div class="search-wrap">
-        <el-form :inline="true" ref="searchForm" :model="searchForm" class="search-form">
-          <el-form-item label prop="point_id">
+        <el-form 
+          ref="searchForm" 
+          :inline="true" 
+          :model="searchForm" 
+          class="search-form">
+          <el-form-item 
+            label 
+            prop="point_id">
             <el-select
               v-model="searchForm.point_id"
               :loading="searchLoading"
+              class="chart-data-select"
               placeholder="请选择点位"
               filterable
               clearable
             >
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
               <el-option
                 v-for="item in pointList"
                 :key="item.id"
@@ -20,12 +34,15 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label prop="date">
+          <el-form-item 
+            label 
+            prop="date">
             <el-date-picker
               v-model="searchForm.dateTime"
               :default-value="searchForm.dateTime"
               :clearable="false"
-              :picker-options="pickerOptions2"
+              :picker-options="pickerOptions"
+              class="chart-data-date"
               type="daterange"
               align="right"
               unlink-panels
@@ -34,16 +51,32 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="searchHandle">搜索</el-button>
-            <el-button size="small" @click="resetSearch">重置</el-button>
+            <el-button 
+              type="primary" 
+              size="small" 
+              class="el-button-data" 
+              @click="searchHandle">搜索</el-button>
+            <el-button 
+              size="small" 
+              class="el-button-data-cancel" 
+              @click="resetSearch">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <el-tab-pane label="按人次计" name="first">
-        <PersonTimes ref="personTimes" :searchForm="searchForm"/>
+      <el-tab-pane 
+        label="按人次计" 
+        name="first" 
+        class="test">
+        <PersonTimes 
+          ref="personTimes" 
+          :search-form="searchForm"/>
       </el-tab-pane>
-      <el-tab-pane label="按人数计" name="second">
-        <PeopleNum ref="peopleCount" :searchForm="searchForm"/>
+      <el-tab-pane 
+        label="按人数计" 
+        name="second">
+        <PeopleNum 
+          ref="peopleCount" 
+          :search-form="searchForm"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -82,11 +115,11 @@ export default {
       searchForm: {
         point_id: "",
         dateTime: [
-          new Date().getTime() - 3600 * 1000 * 24 * 7,
-          new Date().getTime() - 3600 * 1000 * 24
+          new Date('2019-02-08').getTime() - 3600 * 1000 * 24 * 7,
+          new Date('2019-02-08').getTime() - 3600 * 1000 * 24
         ]
       },
-      pickerOptions2: {
+      pickerOptions: {
         shortcuts: [
           {
             text: "昨天",
@@ -168,6 +201,7 @@ export default {
       }
     },
     getPoint() {
+      this.searchLoading = true;
       getPoint(this)
         .then(res => {
           this.pointList = res;
@@ -205,10 +239,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .point-data-wrapper {
-  background: #fff;
   .search-wrap {
     padding: 30px;
-    background: #fff;
+    background: #1f1848;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -218,6 +251,7 @@ export default {
     .search-form {
       width: 865px;
     }
+
     .more-pic {
       position: absolute;
       top: 10px;

@@ -1,9 +1,9 @@
 import auth from 'service/auth'
 let router = {
   path: 'account',
-  name: '账户',
+  name: '账户管理',
   meta: {
-    title: '账户',
+    title: '账户管理',
     permission: 'shop_account'
   },
   component: () =>

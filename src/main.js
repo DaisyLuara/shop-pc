@@ -18,7 +18,7 @@ import {
   BreadcrumbItem,
   MessageBox
 } from 'element-ui'
-
+// import '../theme/index.css'
 Vue.use(utils)
 Vue.use(VueAxios)
 Vue.use(VueCookie)
@@ -31,7 +31,6 @@ Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$loading = Loading.service
 Vue.component('second-sidebar', secondSidebar)
 Vue.component('headModule', headModule)
-
 
 /*重新生成一个vue实例Et--为了同级组件之间的传值*/
 window.Et = new Vue()

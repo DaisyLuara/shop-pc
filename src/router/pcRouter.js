@@ -1,10 +1,12 @@
 import pcHome from 'page/home'
 import account from 'router/pc/account'
-import ad from 'router/pc/ad'
-import resource from 'router/pc/resource'
-import point from 'router/pc/point'
+import auth from 'router/pc/auth'
+import site from 'router/pc/site'
+import smart from 'router/pc/smart'
+import put from 'router/pc/put'
+import prize from 'router/pc/prize'
 import report from 'router/pc/report'
-import coupon from 'router/pc/coupon'
+import device from 'router/pc/device'
 
 export default {
   path: '/',
@@ -13,5 +15,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, ad, resource, point, report, coupon]
+  children: [account, device, auth, site, smart, prize, put, report]
 }

@@ -1,46 +1,24 @@
 <template>
-  <div 
-    class="report-root">
-    <second-sidebar 
-      module="report"/>
-    <div class="topbar">
-      {{ this.$route.meta.title }}
-      <headModule/>
-    </div>
+  <div class="report-root">
+    <!-- <second-sidebar module="report"/> -->
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: 'ReportView',
+  name: "ReportView",
   data() {
-    return {}
+    return {};
   },
   methods: {}
-}
+};
 </script>
 
 <style lang="less" scoped>
 .report-root {
+  margin-left: -100px;
   height: 100%;
-  background-color: #eff2f7;
-  .topbar {
-    position: absolute;
-    top: 0;
-    left: 200px;
-    right: 0;
-    height: 75px;
-    line-height: 75px;
-    border-bottom: 1px solid #d3dce6;
-    background-color: #fff;
-    z-index: 98;
-    font-size: 16px;
-    color: #5e6d82;
-    padding-left: 35px;
-    .avatar {
-      height: 50%;
-      border-radius: 50%;
-    }
-  }
+  padding: 76px 50px 0;
+  background-color: #1f1848;
 }
 </style>

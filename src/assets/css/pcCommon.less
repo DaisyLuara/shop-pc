@@ -1,4 +1,5 @@
 // list layout
+@imgurl: 'http://cdn.xingstation.cn/ad_shop/img/';
 .page-list-template {
   background-color: white;
   border-radius: 5px;
@@ -108,12 +109,18 @@
 .el-table .col-td {
   border-bottom: 1px solid #e8e8e8;
 }
-.el-table .col-td:hover {
-  background-color: #fbfdf7 !important;
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  // background-color: #3b335b !important;
+  background-color: #f5f3fd !important;
+}
+// .el-table > .data-row:hover {
+.el-table--enable-row-hover .el-table__body tr:hover > .data-row {
+  background-color: #3b335b !important;
   cursor: pointer;
 }
-.el-badge__content {
-  border: none !important;
+.data-row:hover {
+  background-color: #3b335b !important;
 }
 .el-badge__content.is-fixed {
   position: absolute;
@@ -180,4 +187,173 @@
 }
 .echart-data .el-collapse-item__arrow {
   font-weight: 800 !important;
+}
+
+.el-button-success {
+  padding: 10px 35px;
+  color: #6b3dc4;
+  border-color: #6b3dc4;
+  background-color: #f2eefa;
+}
+.el-button-data {
+  padding: 10px 35px;
+}
+.el-button-data-cancel {
+  padding: 10px 35px;
+  background: #3b335b;
+  border: 1px solid #3b335b;
+  color: #fff;
+  &:hover {
+    background: #3b335b;
+    border: 1px solid #3b335b;
+    color: #fff;
+  }
+}
+.el-button-cancel {
+  padding: 10px 35px;
+}
+
+.el-tabs--card.report-data-card > .el-tabs__header {
+  margin: 0 !important;
+}
+.el-tabs--card.report-data-card > .el-tabs__header .el-tabs__item {
+  color: #fff !important;
+}
+.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+  color: #7e58cc !important;
+}
+.el-date-editor.chart-data-date .el-range-input {
+  background: #3b335b !important;
+  color: #fff !important;
+}
+.el-range-editor.chart-data-date.el-input__inner {
+  background: #3b335b !important;
+  border: 1px solid #3b335b !important;
+}
+.el-select.chart-data-select .el-input__inner {
+  background: #3b335b !important;
+  border: 1px solid #3b335b !important;
+}
+
+.el-icon-same {
+  &:before {
+    content: ' ';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    left: 3%;
+    transform: translateY(-50%);
+  }
+}
+.el-icon-name {
+  &:before {
+    background: url('@{imgurl}name_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-icon-link {
+  &:before {
+    background: url('@{imgurl}link_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-icon-status {
+  &:before {
+    background: url('@{imgurl}status_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+
+.el-icon-project {
+  &:before {
+    background: url('@{imgurl}project_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+
+.el-icon-auth-type {
+  &:before {
+    background: url('@{imgurl}auth_type_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+
+.el-icon-type {
+  &:before {
+    background: url('@{imgurl}type_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-icon-user {
+  &:before {
+    background: url('@{imgurl}user_search_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+.el-icon-gift {
+  &:before {
+    background: url('@{imgurl}gift_search_icon.png') center center/100% auto
+      no-repeat;
+  }
+}
+.el-icon-code {
+  &:before {
+    background: url('@{imgurl}code_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-icon-money {
+  &:before {
+    background: url('@{imgurl}money_icon.png') center center/100% auto no-repeat;
+  }
+}
+.el-dialog__title {
+  color: #6b3dc4 !important;
+  font-size: 16px !important;
+}
+
+.verify-input .el-input__inner {
+  border: 1px solid #b9a2e2 !important;
+  border-radius: 4px !important;
+}
+
+.verify-input .el-input__inner:focus {
+  outline: none !important;
+  border-color: #7e58cc !important;
+}
+
+.verify-input ::placeholder {
+  color: #b29bdf;
+  opacity: 1; /* Firefox */
+}
+
+.collapse-item-wrap .el-collapse-item__header {
+  background-color: #6b3dc4 !important;
+  color: #fff !important;
+  padding-left: 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.collapse-item-wrap .el-collapse-item__arrow {
+  background: #ff7696;
+  width: 48px;
+  height: 47px;
+  line-height: 47px;
+  text-align: center;
+  color: #fff;
+  font-size: 28px;
+  margin-right: 0 !important;
+}
+
+.collapse-item-wrap .el-collapse-item__arrow.is-active {
+  transform: rotate(90deg);
+  background: #ff7696;
+  width: 48px;
+  height: 48px;
+  line-height: 47px;
+  text-align: center;
+  color: #fff;
+  font-size: 28px;
+  margin-right: 0 !important;
+}
+.collapse-item-wrap .el-collapse-item__content {
+  padding-bottom: 0 !important;
 }

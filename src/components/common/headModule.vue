@@ -1,13 +1,22 @@
 <template>
   <div>
-    <el-dropdown :hide-on-click="true" class="avatar-wrap">
+    <el-dropdown 
+      :hide-on-click="true" 
+      class="avatar-wrap">
       <div class="avatar-block">
         <span>{{ name }}</span>
-        <img src="~assets/images/user-default-icon.png" alt class="avatar">
+        <img 
+          src="~assets/images/user-default-icon.png" 
+          alt 
+          class="avatar">
       </div>
-      <el-dropdown-menu placement="bottom" slot="dropdown">
+      <el-dropdown-menu 
+        slot="dropdown" 
+        placement="bottom">
         <el-dropdown-item>
-          <span @click="logout" class="item-info">退出</span>
+          <span 
+            class="item-info" 
+            @click="logout">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

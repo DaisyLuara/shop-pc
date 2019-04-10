@@ -1,127 +1,160 @@
 <template>
-  <div 
-    class="main">
-    <div 
-      class="first-sidebar">
-      <div 
-        class="logo-wrap">
+  <div class="main">
+    <div class="first-sidebar">
+      <div class="logo-wrap">
+        <div class="logo">
+          <img :src="IMG_URL+'ad_shop/img/logo.png'">
+        </div>
+      </div>
+      <div class="user-avatar-wrap">
         <div 
-          class="logo">
-          <img 
-            :src="IMG_URL+'ad_shop/img/logo-icon.png'">
+          :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" 
+          class="user-avatar">
+          <img :src="logo">
+        </div>
+        <div class="user-name">
+          <span class="title">{{ user_name }}</span>
         </div>
       </div>
       <el-menu 
         :default-active="'/' + currModule" 
-        router >
+        router>
         <el-menu-item 
-          v-for="m in modules"
+          v-for="m in modules" 
           :key="m.path" 
           :index="'/' + m.path" 
-          class="menu-item" >
+          class="menu-item">
           <img 
-            :src="m.src" 
-            class="first-sidebar-icon">
+            :src="IMG_URL+ m.src +'.png'" 
+            class="icon-default">
+          <img 
+            :src="IMG_URL+ m.src +'_white.png'" 
+            class="white-icon">
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
+      <div class="logout-btn">
+        <img 
+          :src="IMG_URL +'/ad_shop/img/logout_icon.png'" 
+          class="logout-icon" 
+          @click="logout">
+      </div>
     </div>
-    <div 
-      class="modules">
+    <div class="modules">
       <router-view/>
     </div>
   </div>
 </template>
 
 <script>
-const IMG_URL = process.env.IMG_URL
-import { Menu, MenuItem, Popover, Button, Badge, Icon } from 'element-ui'
-import auth from 'service/auth'
+const IMG_URL = process.env.IMG_URL;
+import { Menu, MenuItem, Popover, Button, Badge, Icon } from "element-ui";
+import auth from "service/auth";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    'el-menu': Menu,
-    'el-menu-item': MenuItem,
-    'el-popover': Popover,
-    'el-button': Button,
-    'el-badge': Badge
+    "el-menu": Menu,
+    "el-menu-item": MenuItem,
+    "el-popover": Popover,
+    "el-button": Button,
+    "el-badge": Badge
   },
   data() {
     return {
       IMG_URL: IMG_URL,
-      visible: false
-    }
+      visible: false,
+      user_name: "",
+      logo: null,
+      noLogo: true
+    };
   },
   computed: {
     modules() {
-      let items = []
+      let items = [];
       for (let route of this.$router.options.routes) {
-        if (route.path == '/') {
-          for (let m of route['children']) {
+        if (route.path == "/") {
+          for (let m of route["children"]) {
             if (!auth.checkPathPermission(m) || !m.meta || !m.meta.title) {
-              continue
+              continue;
             }
             switch (m.path) {
-              case 'ad':
-                m.src = this.IMG_URL + 'ad_shop/img/ad-icon.png'
-                break
-              case 'point':
-                m.src = this.IMG_URL + 'ad_shop/img/point-icon.png'
-                break
-              case 'account':
-                m.src = this.IMG_URL + 'ad_shop/img/account-icon.png'
-                break
-              case 'resource':
-                m.src = this.IMG_URL + 'ad_shop/img/material.png'
-                break
-              case 'report':
-                m.src = this.IMG_URL + 'ad_shop/img/report-icon.png'
-                break
-              case 'coupon':
-                m.src = this.IMG_URL + 'ad_shop/img/verify-icon.png'
-                break
+              case "site":
+                m.src = "ad_shop/img/site_icon";
+                break;
+              case "account":
+                m.src = "ad_shop/img/user_icon";
+                break;
+              case "auth":
+                m.src = "ad_shop/img/auth_icon";
+                break;
+              case "smart":
+                m.src = "ad_shop/img/smart_icon";
+                break;
+              case "put":
+                m.src = "ad_shop/img/put_icon";
+                break;
+              case "device":
+                m.src = "ad_shop/img/device_icon";
+                break;
+              case "prize":
+                m.src = "ad_shop/img/gift_icon";
+                break;
+              case "report":
+                m.src = "ad_shop/img/chart_icon";
+                break;
               default:
-                m.src = ''
-                break
+                m.src = "";
+                break;
             }
-            items.push(m)
+            items.push(m);
           }
         }
       }
-      return items
+      return items;
     },
     currModule() {
-      let path = this.$store.getters.currRoute.path
+      let path = this.$store.getters.currRoute.path;
       for (let m of this.modules) {
-        if (path.indexOf('/' + m.path) == 0) {
-          return m.path
+        if (path.indexOf("/" + m.path) == 0) {
+          return m.path;
         }
       }
-      return ''
+      return "";
     },
     name() {
       return this.$store.state.curUserInfo.name
         ? this.$store.state.curUserInfo.name
-        : ''
+        : "";
     }
   },
+  mounted() {},
   created() {
-    let customer = JSON.parse(localStorage.getItem('customer_info'))
-    customer.roles = customer.display_name
-    this.$store.commit('setCurUserInfo', customer)
+    let customer = JSON.parse(localStorage.getItem("customer_info"));
+    customer.roles = customer.display_name;
+    this.user_name = customer.company.internal_name;
+    if (customer.company.logoMedia) {
+      this.noLogo = customer.company.logoMedia.url ? false : true;
+      this.logo = customer.company.logoMedia.url
+        ? customer.company.logoMedia.url
+        : this.IMG_URL + "ad_shop/img/avatar_white.png";
+    } else {
+      this.noLogo = true;
+      this.logo = this.IMG_URL + "ad_shop/img/avatar_white.png";
+    }
+    this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
     logout() {
-      this.visible = false
-      auth.logout(this)
+      this.visible = false;
+      auth.logout(this);
     }
   }
-}
+};
 </script>
 
 <style lang="less">
-@import '../assets/css/pcCommon.less';
+@import "../assets/css/pcCommon.less";
 .menu-item {
   display: flex;
   flex-direction: row;
@@ -134,11 +167,6 @@ export default {
   top: 10px;
   right: 45px;
 }
-.logo-wrap {
-  .logo {
-    margin-top: 15px;
-  }
-}
 .modules-top {
   padding-top: 0;
 }
@@ -149,18 +177,31 @@ export default {
   text-align: center;
 }
 .logout-btn {
-  display: block;
+  position: absolute;
+  bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   width: 100%;
-  height: 35px;
-  line-height: 35px;
   cursor: pointer;
-  font-size: 14px;
+  flex-direction: row;
+  cursor: pointer;
+  .logout-icon {
+    width: 15%;
+    height: 15%;
+  }
 }
 
-.first-sidebar-icon {
-  padding-right: 8px;
-  margin-left: -3px;
+.icon-default {
+  padding-right: 15px;
+  margin-left: 8px;
   height: 16px;
+}
+.white-icon {
+  padding-right: 15px;
+  margin-left: 8px;
+  height: 16px;
+  display: none;
 }
 .sidebar-user {
   position: absolute;
