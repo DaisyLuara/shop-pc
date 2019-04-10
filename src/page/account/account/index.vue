@@ -10,7 +10,7 @@
       <div class="account-details">
         <div class="account-content">
           <div 
-            v-show="!editName" 
+            v-show="!editName"
             class="account-item">
             <div class="account-item-title">公司名称</div>
             <div class="account-item-content">
@@ -26,7 +26,7 @@
             </div>
           </div>
           <div 
-            v-show="editName" 
+            v-show="editName"
             class="account-item">
             <div class="account-item-title">公司名称：</div>
             <el-input 
@@ -71,17 +71,17 @@
           <div class="grade-wrap">
             <svg class="svg-gradient">
               <defs>
-                <linearGradient 
-                  id="grad1" 
-                  x1="0%" 
-                  y1="0%" 
-                  x2="100%" 
+                <linearGradient
+                  id="grad1"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
                   y2="0%">
-                  <stop 
-                    offset="0%" 
+                  <stop
+                    offset="0%"
                     style="stop-color:rgb(3,184,203);stop-opacity:1"/>
-                  <stop 
-                    offset="100%" 
+                  <stop
+                    offset="100%"
                     style="stop-color:rgb(190,255,63);stop-opacity:1"/>
                 </linearGradient>
               </defs>
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div 
-          v-show="!formShow" 
+          v-show="!formShow"
           class="account-password-warp">
           <div class="account-item-content">
             <label class="icon-v1">
@@ -109,8 +109,8 @@
             </label>
             <div class="text">
               修改密码
-              <a 
-                class="icon-v2" 
+              <a
+                class="icon-v2"
                 @click="modifyPassword">
                 <img :src="IMG_URL+'ad_shop/img/account/v2.png'">
               </a>
@@ -128,7 +128,7 @@
           label-width="80px"
         >
           <el-form-item 
-            label="新密码" 
+            label="新密码"
             prop="newPass">
             <el-input
               v-model="passwordForm.newPass"
@@ -138,7 +138,7 @@
             />
           </el-form-item>
           <el-form-item 
-            label="确认密码" 
+            label="确认密码"
             prop="checkPass">
             <el-input
               v-model="passwordForm.checkPass"
@@ -154,7 +154,7 @@
               @click="submitForm('passwordForm')"
             >提交</el-button>
             <el-button 
-              class="el-button-cancel" 
+              class="el-button-cancel"
               @click="resetForm('passwordForm')">取消</el-button>
           </el-form-item>
         </el-form>
@@ -615,5 +615,4 @@ export default {
   }
 }
 </style>
-
 
