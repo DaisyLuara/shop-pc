@@ -27,3 +27,6 @@ export * from './launch'
 
 // 设备
 export * from './device'
+
+//引导
+export * from './guide'
