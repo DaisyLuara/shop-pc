@@ -8,33 +8,40 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form 
-            ref="filters" 
-            :model="filters" 
-            :inline="true">
-            <el-form-item 
-              label 
-              prop="project_name">
-              <el-input 
-                v-model="filters.project_name" 
-                placeholder="请填写节目名称" 
-                clearable>
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-name el-icon-same"/>
+          <el-form
+            ref="filters"
+            :model="filters"
+            :inline="true"
+          >
+            <el-form-item
+              label
+              prop="point_name"
+            >
+              <el-input
+                v-model="filters.point_name"
+                placeholder="请填写点位名称"
+                clearable
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-name el-icon-same"
+                />
               </el-input>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="screen_status">
-              <el-select 
-                v-model="filters.screen_status" 
-                placeholder="请选择屏幕状态" 
-                filterable 
-                clearable>
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-status el-icon-same"/>
+            <el-form-item
+              label
+              prop="screen_status"
+            >
+              <el-select
+                v-model="filters.screen_status"
+                placeholder="请选择屏幕状态"
+                filterable
+                clearable
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -44,12 +51,14 @@
               </el-select>
             </el-form-item>
             <el-form-item label>
-              <el-button 
-                class="el-button-success" 
-                @click="search('filters')">搜索</el-button>
-              <el-button 
-                class="el-button-cancel" 
-                @click="resetSearch('filters')">重置</el-button>
+              <el-button
+                class="el-button-success"
+                @click="search('filters')"
+              >搜索</el-button>
+              <el-button
+                class="el-button-cancel"
+                @click="resetSearch('filters')"
+              >重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -67,10 +76,11 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form 
-                label-position="left" 
-                inline 
-                class="demo-table-expand">
+              <el-form
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-form-item label="设备号:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -90,19 +100,18 @@
                   <span>{{ scope.row.loginDate }}</span>
                 </el-form-item>
                 <el-form-item label="屏幕状态:">
-                  <span
-                    :class="(scope.row.screenStatus === 0) ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.screenStatus ===0 ? '关闭': '开启' }}</span>
+                  <span :class="(scope.row.screenStatus === 0) ? 'sold-out-expand' : 'operating-expand'">{{ scope.row.screenStatus ===0 ? '关闭': '开启' }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column 
-            :show-overflow-tooltip="true" 
-            sortable 
-            prop="id" 
-            label="设备号" 
-            width="90"/>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="id"
+            label="设备号"
+            width="90"
+          />
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -150,9 +159,7 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span
-                :class="(scope.row.screenStatus === 0) ? 'sold-out' : 'operating'"
-              >{{ scope.row.screenStatus === 0 ? '关闭': '开启' }}</span>
+              <span :class="(scope.row.screenStatus === 0) ? 'sold-out' : 'operating'">{{ scope.row.screenStatus === 0 ? '关闭': '开启' }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -202,7 +209,7 @@ export default {
     return {
       filters: {
         screen_status: null,
-        project_name: null
+        point_name: null
       },
       statusList: [
         {
@@ -236,14 +243,14 @@ export default {
       let args = {
         include: "point,project",
         page: this.pagination.currentPage,
-        project_name: this.filters.project_name,
+        point_name: this.filters.point_name,
         screen_status: this.filters.screen_status
       };
-      if (this.filters.project_name === "") {
-        delete args.project_name;
+      if (this.filters.point_name === "") {
+        delete args.point_name;
       }
 
-      if (this.filters.screen_status==='') {
+      if (this.filters.screen_status === '') {
         delete args.screen_status;
       }
       getDeviceList(this, args)
