@@ -5,7 +5,6 @@ const COUPON_BATCHES_API = '/api/coupon_batches/query'
 const TEMPLATES_API = '/api/projects/templates/query'
 const AUTHORIZER_API = '/api/wechat/authorizer/query'
 const PRIZE_POLICY_API = '/api/policy/query'
-
 const HOST = process.env.SERVER_URL
 
 // 已授权节目
