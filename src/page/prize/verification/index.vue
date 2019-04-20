@@ -280,7 +280,8 @@ import {
   getPrizeVerifyList,
   verifyPrize,
   getPoint,
-  handleDateTimesTransform
+  handleDateTimesTransform,
+  handleDateTransform
 } from "service";
 
 import {
@@ -464,7 +465,7 @@ export default {
         customer_name: this.filters.customer_name,
         point_id: this.filters.point_id,
         start_date: handleDateTimesTransform(this.filters.dateTime[0]),
-        end_date: handleDateTimesTransform(this.filters.dateTime[1])
+        end_date: handleDateTransform(this.filters.dateTime[1])
       };
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date;
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date;

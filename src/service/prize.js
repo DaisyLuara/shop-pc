@@ -127,6 +127,34 @@ const prizePolicyDetails = (context, id, params) => {
   })
 }
 
+// 奖品模板条目列表
+const getPrizePolicyEntryList = (context,pid, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + PRIZE_POLICIES_ENTRY_API+'/'+pid+'/batch_policies', { params: params })
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
+// 奖品模板条目详情
+const prizePolicyEntryDetails = (context,pid, id, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + PRIZE_POLICIES_ENTRY_API  + '/' + pid + '/batch_policies/' +id, { params: params })
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
 // 奖品模板条目新增
 const savePrizePolicyEntry = (context, pid, params) => {
   return new Promise(function(resolve, reject) {
@@ -161,7 +189,7 @@ const modifyPrizePolicyEntry = (context, pid, id, params) => {
   })
 }
 
-// 奖品模板条目修改
+// 奖品模板条目删除
 const deletePrizePolicyEntry = (context, pid, id) => {
   return new Promise(function(resolve, reject) {
     context.$http
@@ -189,5 +217,7 @@ export {
   modifyPrizePolicy,
   prizePolicyDetails,
   modifyPrize,
-  prizeDetails
+  prizeDetails,
+  prizePolicyEntryDetails,
+  getPrizePolicyEntryList
 }
