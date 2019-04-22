@@ -6,13 +6,8 @@
       class="item-list-wrap"
     >
       <div class="item-content-wrap">
-        <el-form 
-          ref="verify" 
-          :model="verify" 
-          :inline="true">
-          <el-form-item 
-            label 
-            prop="order_total">
+        <el-form ref="verify" :model="verify" :inline="true">
+          <el-form-item label prop="order_total">
             <el-input
               v-model="verify.order_total"
               size="large"
@@ -20,69 +15,42 @@
               clearable
               class="verify-input"
             >
-              <i 
-                slot="prefix" 
-                class="el-input__icon el-icon-money el-icon-same"/>
+              <i slot="prefix" class="el-input__icon el-icon-money el-icon-same"/>
             </el-input>
           </el-form-item>
-          <el-form-item 
-            label 
-            prop="code">
-            <el-input 
-              v-model="verify.code" 
-              placeholder="请输入优惠券码" 
-              clearable 
-              class="verify-input">
-              <i 
-                slot="prefix" 
-                class="el-input__icon el-icon-code el-icon-same"/>
+          <el-form-item label prop="code">
+            <el-input v-model="verify.code" placeholder="请输入优惠券码" clearable class="verify-input">
+              <i slot="prefix" class="el-input__icon el-icon-code el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button 
-              type="primary" 
-              @click="verifyPrize">核销</el-button>
-            <el-button 
-              type="default" 
-              @click="resetverifyPrize('verify')">重置</el-button>
+            <el-button type="primary" @click="verifyPrize">核销</el-button>
+            <el-button type="default" @click="resetverifyPrize('verify')">重置</el-button>
           </el-form-item>
         </el-form>
         <div class="search-wrap">
-          <el-form 
-            ref="filters" 
-            :model="filters" 
-            :inline="true">
-            <el-form-item 
-              label 
-              prop="customer_name">
+          <el-form ref="filters" :model="filters" :inline="true">
+            <el-form-item label prop="customer_name">
               <el-input
                 v-model="filters.customer_name"
                 size="medium"
                 placeholder="请输入核销人员"
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-user el-icon-same"/>
+                <i slot="prefix" class="el-input__icon el-icon-user el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="coupon_batch_name">
+            <el-form-item label prop="coupon_batch_name">
               <el-input
                 v-model="filters.coupon_batch_name"
                 size="medium"
                 placeholder="请输入奖品名称"
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-gift el-icon-same"/>
+                <i slot="prefix" class="el-input__icon el-icon-gift el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="status">
+            <el-form-item label prop="status">
               <el-select
                 v-model="filters.status"
                 placeholder="请选择优惠券状态"
@@ -90,9 +58,7 @@
                 size="medium"
                 class="coupon-form-select"
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-status el-icon-same"/>
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in statusList"
                   :key="item.id"
@@ -101,9 +67,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="point_id">
+            <el-form-item label prop="point_id">
               <el-select
                 v-model="filters.point_id"
                 :loading="searchLoading"
@@ -112,9 +76,7 @@
                 filterable
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-project el-icon-same"/>
+                <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -123,27 +85,21 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="dateTime">
+            <el-form-item label prop="dateTime">
               <el-date-picker
                 v-model="filters.dateTime"
                 :clearable="false"
                 :picker-options="pickerOptions"
                 size="medium"
-                type="daterange"
+                type="datetimerange"
                 align="right"
                 unlink-panels
                 start-placeholder="核销开始日期"
                 end-placeholder="核销结束日期"
               />
             </el-form-item>
-            <el-button 
-              class="el-button-success" 
-              @click="search('filters')">搜索</el-button>
-            <el-button 
-              class="el-button-cancel" 
-              @click="resetSearch('filters')">重置</el-button>
+            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+            <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
           </el-form>
         </div>
         <el-table
@@ -156,10 +112,7 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form 
-                label-position="left" 
-                inline 
-                class="demo-table-expand">
+              <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="奖品码:">
                   <span>{{ scope.row.code }}</span>
                 </el-form-item>
@@ -168,13 +121,9 @@
                 </el-form-item>
                 <el-form-item label="状态:">
                   <span v-if="scope.row.status===0">未领取</span>
-                  <span 
-                    v-if="scope.row.status===1" 
-                    class="operating-expand">已使用</span>
+                  <span v-if="scope.row.status===1" class="operating-expand">已使用</span>
                   <span v-if="scope.row.status===2">停用</span>
-                  <span 
-                    v-if="scope.row.status===3" 
-                    class="sold-out-expand">未使用</span>
+                  <span v-if="scope.row.status===3" class="sold-out-expand">未使用</span>
                 </el-form-item>
                 <el-form-item label="核销人:">
                   <span>{{ scope.row.customer !== undefined ? scope.row.customer.name : '' }}</span>
@@ -214,13 +163,9 @@
           >
             <template slot-scope="scope">
               <span v-if="scope.row.status===0">未领取</span>
-              <span 
-                v-if="scope.row.status===1" 
-                class="operating">已使用</span>
+              <span v-if="scope.row.status===1" class="operating">已使用</span>
               <span v-if="scope.row.status===2">停用</span>
-              <span 
-                v-if="scope.row.status===3" 
-                class="sold-out">未使用</span>
+              <span v-if="scope.row.status===3" class="sold-out">未使用</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -282,6 +227,7 @@ import {
   getPoint,
   handleDateTimesTransform
 } from "service";
+import moment from "moment";
 
 import {
   Button,
@@ -463,8 +409,10 @@ export default {
         coupon_batch_name: this.filters.coupon_batch_name,
         customer_name: this.filters.customer_name,
         point_id: this.filters.point_id,
-        start_date: handleDateTimesTransform(this.filters.dateTime[0]),
-        end_date: handleDateTimesTransform(this.filters.dateTime[1])
+        start_date: moment(this.filters.dateTime[0]).format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        end_date: moment(this.filters.dateTime[1]).format("YYYY-MM-DD HH:mm:ss")
       };
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date;
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date;
