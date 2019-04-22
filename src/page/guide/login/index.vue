@@ -133,7 +133,7 @@ export default {
         company: null,
         job: null,
       },
-      vertify_key: '111',
+      vertify_key: null,
       nosend: true,
       rules: {
         mobile: [
@@ -158,6 +158,9 @@ export default {
     };
   },
   mounted() {
+    if (this.$route.query.mobile) {
+      this.ruleForm.mobile = this.$route.query.mobile
+    }
   },
   methods: {
     checkPhone() {
