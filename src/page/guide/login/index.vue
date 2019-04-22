@@ -158,7 +158,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route.mobile)
     if (this.$route.query.mobile) {
       this.ruleForm.mobile = this.$route.query.mobile
     }
