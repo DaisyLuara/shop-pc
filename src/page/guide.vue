@@ -76,12 +76,6 @@ export default {
 
     };
   },
-  computed: {
-
-  },
-  mounted() { },
-  created() {
-  },
   methods: {
     handleTab(item) {
       this.$router.push({
@@ -89,7 +83,6 @@ export default {
       })
     }
   }
-
 };
 </script>
 

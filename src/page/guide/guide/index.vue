@@ -15,7 +15,7 @@
             v-model="mobile"
             maxlength="11"
             placeholder="输入手机号码"
-            @input="checkPhone"
+            @change="checkPhone"
             class="mobile"
           >
           <button
@@ -109,7 +109,7 @@
             v-model="mobile"
             maxlength="11"
             placeholder="输入手机号码"
-            @input="checkPhone"
+            @change="checkPhone"
             class="mobile"
           >
           <button

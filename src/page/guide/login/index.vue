@@ -51,6 +51,7 @@
         >
           <el-input
             v-model="ruleForm.pwd"
+            auto-complete="off"
             type="password"
           ></el-input>
         </el-form-item>
@@ -60,6 +61,7 @@
         >
           <el-input
             v-model="ruleForm.pwd_confirm"
+            auto-complete="off"
             type="password"
           ></el-input>
         </el-form-item>
@@ -71,25 +73,37 @@
               { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
             ]"
         >
-          <el-input v-model="ruleForm.email"></el-input>
+          <el-input
+            v-model="ruleForm.email"
+            auto-complete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="姓名"
           prop="name"
         >
-          <el-input v-model="ruleForm.name"></el-input>
+          <el-input
+            v-model="ruleForm.name"
+            auto-complete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="公司"
           prop="company"
         >
-          <el-input v-model="ruleForm.company"></el-input>
+          <el-input
+            v-model="ruleForm.company"
+            auto-complete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="职位"
           prop="job"
         >
-          <el-input v-model="ruleForm.job"></el-input>
+          <el-input
+            v-model="ruleForm.job"
+            auto-complete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -134,7 +148,7 @@ export default {
         job: null,
       },
       vertify_key: null,
-      nosend: true,
+      nosend: false,
       rules: {
         mobile: [
           { required: true, message: '请输入手机号码', trigger: 'blur' }
@@ -157,6 +171,9 @@ export default {
       }
     };
   },
+  created() {
+    window.scroll(0, 0)
+  },
   mounted() {
     if (this.$route.query.mobile) {
       this.ruleForm.mobile = this.$route.query.mobile
@@ -174,11 +191,6 @@ export default {
     },
     getVertifyBtn() {
       let args = {}
-      let res = validate.account(this.ruleForm.mobile)
-      if (!res.validate) {
-        this.$message.error(res.errorText)
-        return
-      }
       args.phone = this.ruleForm.mobile
       guide.getVertify(this, args).then(res => {
         this.nosend = true
