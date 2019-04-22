@@ -18,7 +18,7 @@
         </ul>
       </div>
     </div>
-    <div class="modules">
+    <div class="modules-guide">
       <router-view />
     </div>
     <div class="footer">
@@ -84,8 +84,6 @@ export default {
   },
   methods: {
     handleTab(item) {
-      // console.log(item)
-      // item.class += ' tab-active'
       this.$router.push({
         path: item.path
       })
@@ -104,7 +102,7 @@ a {
 button {
   cursor: pointer;
 }
-.modules {
+.modules-guide {
   padding: 0px;
   margin: 0px;
   position: relative;
@@ -155,12 +153,6 @@ button {
       width: 100%;
       height: 100%;
       padding: 2px 15px;
-      &:link {
-        // color: #6a3fbb;
-      }
-      &:visited {
-        // color: #6a3fbb;
-      }
       &:active {
         color: #6a3fbb;
       }
