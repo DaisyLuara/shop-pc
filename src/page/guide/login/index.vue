@@ -38,6 +38,7 @@
             maxlength="4"
             auto-complete="off"
             class="input-vertify"
+            @change="consoleLog"
           ></el-input>
           <el-button
             :disabled="nosend"
@@ -180,6 +181,9 @@ export default {
     }
   },
   methods: {
+    consoleLog() {
+      console.log(this.ruleForm.vertify)
+    },
     checkPhone() {
       let res = validate.account(this.ruleForm.mobile)
       if (res.validate) {
@@ -194,6 +198,7 @@ export default {
       args.phone = this.ruleForm.mobile
       guide.getVertify(this, args).then(res => {
         this.nosend = true
+        this.vertify_key = res.key
         let timer = setTimeout(() => {
           this.nosend = false
           clearTimeout(timer)
