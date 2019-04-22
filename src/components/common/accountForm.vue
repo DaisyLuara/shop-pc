@@ -3,6 +3,7 @@
     <img
       :src="IMG_URL + '/ad_shop/img/login/logo.png'"
       class="top-logo"
+      @click="backGuide"
     >
     <img
       :src="IMG_URL + '/ad_shop/img/login/circle1.png'"
@@ -220,6 +221,11 @@ export default {
     onSubmit(type) {
       this[type]()
     },
+    backGuide() {
+      this.$router.push({
+        path: '/guide/index'
+      })
+    },
     login() {
       // todo 验证码一并发送给后台
       if (!this.setting.submiting) {
@@ -289,6 +295,9 @@ export default {
       }
     }
   }
+}
+.top-logo {
+  cursor: pointer;
 }
 </style>
 

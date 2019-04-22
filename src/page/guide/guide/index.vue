@@ -57,11 +57,11 @@
           class="swiper1"
         >
           <swiper-slide
-            v-for="item in partnerList"
+            v-for="item in partnerList.detail"
             :key="item.id"
             class="slide-item"
           >
-            <img :src="item.detail">
+            <img :src="item">
           </swiper-slide>
           <div
             class="swiper-button-next"
@@ -79,11 +79,11 @@
         class="swiper2"
       >
         <swiper-slide
-          v-for="item in partnerList"
+          v-for="item in partnerList.logo"
           :key="item.id"
           class="slide-item"
         >
-          <img :src="item.logo">
+          <img :src="item">
         </swiper-slide>
       </swiper>
     </div>
@@ -190,67 +190,47 @@ export default {
       },
       swiperOption2: {
         spaceBetween: 20,
-        centeredSlides: true,
+        // centeredSlides: true,
         slidesPerView: 'auto',
         touchRatio: 0.2,
         slideToClickedSlide: true
       },
-      partnerList: [
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/001.jpg'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/002.jpg'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/003.jpg'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/004.jpg'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/005.jpg'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/006.jpg'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/007.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/008.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/009.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/010.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/011.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/012.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/013.jpg'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logo/014.jpg'
-        },
-      ]
+      partnerList: {
+        logo: [
+          IMG_URL + 'ad_guide/logo/001.jpg',
+          IMG_URL + 'ad_guide/logo/002.jpg',
+          IMG_URL + 'ad_guide/logo/003.jpg',
+          IMG_URL + 'ad_guide/logo/004.jpg',
+          IMG_URL + 'ad_guide/logo/005.jpg',
+          IMG_URL + 'ad_guide/logo/006.jpg',
+          IMG_URL + 'ad_guide/logo/007.jpg',
+          IMG_URL + 'ad_guide/logo/008.jpg',
+          IMG_URL + 'ad_guide/logo/009.jpg',
+          IMG_URL + 'ad_guide/logo/010.jpg',
+          IMG_URL + 'ad_guide/logo/011.jpg',
+          IMG_URL + 'ad_guide/logo/012.jpg',
+          IMG_URL + 'ad_guide/logo/014.jpg'
+        ],
+        detail: [
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest2.png',
+          IMG_URL + 'ad_guide/ptest3.png',
+          IMG_URL + 'ad_guide/ptest4.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png'
+        ]
+      }
     };
   },
   mounted() {
-    this.$refs.mySwiper1.swiper.controller.control = this.$refs.mySwiper2.swiper
-    this.$refs.mySwiper2.swiper.controller.control = this.$refs.mySwiper1.swiper
+    // this.$refs.mySwiper1.swiper.controller.control = this.$refs.mySwiper2.swiper
+    // this.$refs.mySwiper2.swiper.controller.control = this.$refs.mySwiper1.swiper
   },
   methods: {
     checkPhone() {
@@ -283,7 +263,6 @@ export default {
         this.$router.push({
           path: '/login',
         })
-
       }).catch(err => {
         this.$message.error(err.response.data.message)
 
