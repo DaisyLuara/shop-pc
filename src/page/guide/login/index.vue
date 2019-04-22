@@ -194,6 +194,7 @@ export default {
       args.phone = this.ruleForm.mobile
       guide.getVertify(this, args).then(res => {
         this.nosend = true
+        this.vertify_key = res.key
         let timer = setTimeout(() => {
           this.nosend = false
           clearTimeout(timer)

@@ -2,7 +2,7 @@
   <div class="guide-index">
     <div class="head">
       <img
-        :src="IMG_URL + 'ad_guide/indexbg.jpg'"
+        :src="IMG_URL + 'ad_guide/index_v3.jpg'"
         class="bg"
       >
       <div class="main-head">
@@ -57,11 +57,11 @@
           class="swiper1"
         >
           <swiper-slide
-            v-for="item in partnerList"
+            v-for="item in partnerList.detail"
             :key="item.id"
             class="slide-item"
           >
-            <img :src="item.detail">
+            <img :src="item">
           </swiper-slide>
           <div
             class="swiper-button-next"
@@ -79,11 +79,11 @@
         class="swiper2"
       >
         <swiper-slide
-          v-for="item in partnerList"
+          v-for="item in partnerList.logo"
           :key="item.id"
           class="slide-item"
         >
-          <img :src="item.logo">
+          <img :src="item">
         </swiper-slide>
       </swiper>
     </div>
@@ -124,6 +124,7 @@
 <script>
 const IMG_URL = process.env.IMG_URL;
 import validate from '@/utils/validate.js'
+import guide from 'service/guide'
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/dist/css/swiper.css";
 import { Row, Col, Message } from "element-ui";
@@ -182,85 +183,54 @@ export default {
       ],
       swiperOption1: {
         slideToClickedSlide: true,
-        // centeredSlides: true,
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
         }
       },
       swiperOption2: {
-        spaceBetween: 10,
-        centeredSlides: true,
+        spaceBetween: 20,
+        // centeredSlides: true,
         slidesPerView: 'auto',
         touchRatio: 0.2,
         slideToClickedSlide: true
       },
-      partnerList: [
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-        {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        }, {
-          detail: IMG_URL + 'ad_guide/partner_test.png',
-          logo: IMG_URL + 'ad_guide/logintest.png'
-        },
-      ]
-
+      partnerList: {
+        logo: [
+          IMG_URL + 'ad_guide/logo/001.jpg',
+          IMG_URL + 'ad_guide/logo/002.jpg',
+          IMG_URL + 'ad_guide/logo/003.jpg',
+          IMG_URL + 'ad_guide/logo/004.jpg',
+          IMG_URL + 'ad_guide/logo/005.jpg',
+          IMG_URL + 'ad_guide/logo/006.jpg',
+          IMG_URL + 'ad_guide/logo/007.jpg',
+          IMG_URL + 'ad_guide/logo/008.jpg',
+          IMG_URL + 'ad_guide/logo/009.jpg',
+          IMG_URL + 'ad_guide/logo/010.jpg',
+          IMG_URL + 'ad_guide/logo/011.jpg',
+          IMG_URL + 'ad_guide/logo/012.jpg',
+          IMG_URL + 'ad_guide/logo/014.jpg'
+        ],
+        detail: [
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest2.png',
+          IMG_URL + 'ad_guide/ptest3.png',
+          IMG_URL + 'ad_guide/ptest4.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png',
+          IMG_URL + 'ad_guide/ptest1.png'
+        ]
+      }
     };
   },
   mounted() {
-    this.$refs.mySwiper1.swiper.controller.control = this.$refs.mySwiper2.swiper
-    this.$refs.mySwiper2.swiper.controller.control = this.$refs.mySwiper1.swiper
+    // this.$refs.mySwiper1.swiper.controller.control = this.$refs.mySwiper2.swiper
+    // this.$refs.mySwiper2.swiper.controller.control = this.$refs.mySwiper1.swiper
   },
   methods: {
     checkPhone() {
@@ -280,10 +250,24 @@ export default {
         this.$message.error(res.errorText)
         return
       }
-      this.$router.push({
-        path: '/guide/login',
-        query: { mobile: this.mobile }
+      let args = {
+        mobile: this.mobile
+      }
+      guide.getMobile(this, args).then(res => {
+        if (res.need_register) {
+          this.$router.push({
+            path: '/guide/login',
+            query: { mobile: this.mobile }
+          })
+        }
+        this.$router.push({
+          path: '/login',
+        })
+      }).catch(err => {
+        this.$message.error(err.response.data.message)
+
       })
+
     }
   }
 
@@ -406,7 +390,6 @@ p {
     position: relative;
     margin-bottom: 20px;
     padding-top: 40px;
-
     .advantage {
       text-align: center;
       width: 150px;
@@ -439,39 +422,54 @@ p {
     }
   }
   .partners {
+    width: 100%;
     position: relative;
     text-align: center;
     .group1 {
       position: relative;
-      width: 1000px;
-      text-align: center;
+      width: 100%;
       background-color: #f4f5f7;
+      text-align: center;
       padding-top: 40px;
       margin: 0 auto;
+      padding-bottom: 20px;
     }
     .swiper1 {
-      width: 900px;
-      padding: 10px 50px;
+      width: 1000px;
+      padding: 30px 0px;
       .slide-item {
         width: 100%;
         text-align: center;
-        padding: 30px 50px;
+        padding: 0px 50px;
+        img {
+          margin: 0 auto;
+          max-width: 100%;
+        }
       }
       .swiper-button-prev {
         background-image: url("@{img}prev.png");
+        width: 26px;
+        height: 81px;
+        background-size: 100% auto;
       }
       .swiper-button-next {
         background-image: url("@{img}next.png");
+        width: 26px;
+        height: 81px;
+        background-size: 100% auto;
       }
     }
     .swiper2 {
       width: 100%;
-      margin-top: 40px;
-      margin-bottom: 40px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      margin-top: 30px;
+      margin-bottom: 30px;
       .slide-item {
         width: 120px !important;
         text-align: center;
-        border: solid 1px red;
+        border: solid 1px #fbfbfb;
+        box-shadow: 0px 0px 5px #aaa;
         img {
           width: 100%;
         }
