@@ -24,32 +24,6 @@
       <el-container>
         <el-aside width="300px">星视度里程碑</el-aside>
         <el-main>
-          <!-- <div style="height: 300px;">
-            <el-steps
-              direction="vertical"
-              :active="1"
-            >
-              <el-step
-                icon="el-icon-circle2"
-                class="step1"
-                title="2019年"
-                description="召唤宝商户平台上线 "
-              ></el-step>
-              <el-step
-                icon="el-icon-circle1"
-                class="step2"
-                title="2018年"
-                description="成为阿里新零售·2018天猫双十一·智能体验首席供应商 "
-              >
-              </el-step>
-              <el-step
-                icon="el-icon-circle2"
-                class="step3"
-                title="2009年"
-                description="Actiview星视度科技有限公司创立"
-              ></el-step>
-            </el-steps>
-          </div> -->
           <el-timeline
             style="min-height:360px;"
             class="steps"
@@ -114,6 +88,10 @@ export default {
         class: 'big'
       }]
     };
+  },
+
+  created() {
+    window.scroll(0, 0)
   },
   mounted() {
   }
