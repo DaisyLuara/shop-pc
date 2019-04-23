@@ -2,7 +2,7 @@
   <div class="guide-index">
     <div class="head">
       <img
-        :src="IMG_URL + 'ad_guide/index_v3.jpg'"
+        :src="IMG_URL + 'ad_guide/index_back.jpg?000'"
         class="bg"
       >
       <div class="main-head">
@@ -190,9 +190,11 @@ export default {
       },
       swiperOption2: {
         spaceBetween: 20,
-        // centeredSlides: true,
+        centeredSlides: true,
+        freeMode: true,
         slidesPerView: 'auto',
-        touchRatio: 0.2,
+        autoplay: true,
+        loop: true,
         slideToClickedSlide: true
       },
       partnerList: {
@@ -259,15 +261,15 @@ export default {
             path: '/guide/login',
             query: { mobile: this.mobile }
           })
+          return
         }
+        this.$message('你已注册过');
         this.$router.push({
           path: '/login',
         })
       }).catch(err => {
         this.$message.error(err.response.data.message)
-
       })
-
     }
   }
 

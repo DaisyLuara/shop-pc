@@ -49,11 +49,23 @@
           label="密码"
           prop="pwd"
         >
-          <el-input
-            v-model="ruleForm.pwd"
-            auto-complete="off"
-            type="password"
-          ></el-input>
+
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="密码(password) 最少 8 个字符"
+            placement="right-start"
+            :disabled="hiddentip"
+          >
+            <el-input
+              v-model="ruleForm.pwd"
+              minlength="8"
+              show-message="true"
+              auto-complete="off"
+              type="password"
+            ></el-input>
+          </el-tooltip>
+
         </el-form-item>
         <el-form-item
           label="确认密码"
@@ -61,6 +73,7 @@
         >
           <el-input
             v-model="ruleForm.pwd_confirm"
+            minlength="8"
             auto-complete="off"
             type="password"
           ></el-input>
@@ -122,7 +135,8 @@ import {
   FormItem,
   Input,
   Button,
-  Message
+  Message,
+  Tooltip
 } from "element-ui";
 import validate from '@/utils/validate.js'
 import guide from 'service/guide'
@@ -132,9 +146,29 @@ export default {
     "el-form": Form,
     "el-form-item": FormItem,
     "el-button": Button,
-    "el-input": Input
+    "el-input": Input,
+    "el-tooltip": Tooltip
   },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '' || (value.length < 8)) {
+        callback(new Error('请输入密码,最少 8 个字符'));
+      } else {
+        if (this.ruleForm.pwd_confirm !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '' || (value.length < 8)) {
+        callback(new Error('请再次输入密码,最少 8 个字符'));
+      } else if (value !== this.ruleForm.pwd) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
     return {
       IMG_URL: IMG_URL,
       ruleForm: {
@@ -147,6 +181,7 @@ export default {
         company: null,
         job: null,
       },
+      hiddentip: false,
       vertify_key: null,
       nosend: false,
       rules: {
@@ -156,11 +191,17 @@ export default {
         vertify: [
           { required: true, message: '请输入验证码', trigger: 'blur' }
         ],
+        // pwd: [
+        //   { required: true, message: '请输入密码,最少 8 个字符', trigger: 'blur', validator: validatePass },
+        // ],
+        // pwd_confirm: [
+        //   { required: true, message: '请确认密码', trigger: 'blur', validator: validatePass2 },
+        // ],
         pwd: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: validatePass },
         ],
         pwd_confirm: [
-          { required: true, message: '请确认密码', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: validatePass2 },
         ],
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -180,10 +221,22 @@ export default {
     }
   },
   methods: {
+    isRightRule(name) {
+      if (name === 'pwd') {
+        this.hiddentip = this.ruleForm.pwd.length < 8 ? false : true
+      }
+    },
     checkPhone() {
       let res = validate.account(this.ruleForm.mobile)
       if (res.validate) {
         this.nosend = false
+        guide.getMobile(this, { mobile: this.ruleForm.mobile }).then(res => {
+          if (!res.need_register) {
+            this.$message('你已注册过,请前往登录页登录');
+          }
+        }).catch(err => {
+          this.$message.error(err.response.data.message)
+        })
       } else {
         this.$message.error(res.errorText)
         this.nosend = true
@@ -209,13 +262,12 @@ export default {
         this.$message.error('请获取验证码')
         return
       }
-
-      if (!this.ruleForm.pwd) {
-        this.$message.error('请输入密码')
+      if (this.ruleForm.pwd === '' || (this.ruleForm.pwd.length < 8)) {
+        this.$message.error('请输入密码,最少 8 个字符')
         return
       }
-      if (!this.ruleForm.pwd_confirm) {
-        this.$message.error('请确认密码')
+      if (this.ruleForm.pwd_confirm === '' || this.ruleForm.pwd_confirm.length < 8) {
+        this.$message.error('请确认密码,最少 8 个字符')
         return
       }
       if (this.ruleForm.pwd !== this.ruleForm.pwd_confirm) {
