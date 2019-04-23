@@ -134,8 +134,8 @@
                 type="daterange"
                 align="right"
                 unlink-panels
-                start-placeholder="核销开始日期"
-                end-placeholder="核销结束日期"
+                start-placeholder="发放开始日期"
+                end-placeholder="发放结束日期"
               />
             </el-form-item>
             <el-button 
@@ -187,6 +187,9 @@
                 </el-form-item>
                 <el-form-item label="核销时间:">
                   <span>{{ scope.row.use_date }}</span>
+                </el-form-item>
+                <el-form-item label="发放时间:">
+                  <span>{{ scope.row.created_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
