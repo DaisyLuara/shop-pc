@@ -2,85 +2,107 @@
   <div class="main">
     <div class="header">
       <div class="left-logo">
-        <img
-          :src="IMG_URL+ '/ad_guide/logo.png'"
-          class="logo-icon"
-        />
+        <img :src="IMG_URL+ '/ad_guide/logo.png'" class="logo-icon">
         <span class="logo-name">召唤宝智能商户平台</span>
       </div>
       <div class="right-tabs">
         <ul class="tabs-ul">
-          <li
-            v-for="item in tabs"
-            :key="item.id"
-            @click="handleTab(item)"
-          ><a :class="item.class">{{item.name}}</a></li>
+          <li v-for="item in tabs" :key="item.id" @click="handleTab(item)">
+            <a :class="item.class">{{item.name}}</a>
+          </li>
+          <li v-if="loginStatus">
+            <div class="user-info" @click="enterPage">
+              <span>颛桥万达</span>
+              <img src="http://qiniucdn.xingstation.com/images_1553071832_sUyZznEMUU.png">
+            </div>
+          </li>
         </ul>
       </div>
     </div>
     <div class="modules-guide">
-      <router-view />
+      <router-view/>
     </div>
     <div class="footer">
       <div class="mycompany">
-        <img
-          :src="IMG_URL+ '/ad_guide/actiview.png'"
-          class="company-icon"
-        />
+        <img :src="IMG_URL+ '/ad_guide/actiview.png'" class="company-icon">
         <span>上海星视度科技有限公司</span>
       </div>
-      <div class="myrecord">沪ICP备 17045724号-2 <i class="el-icon-police"></i> 沪公网安备 31011502008032号</div>
+      <div class="myrecord">
+        沪ICP备 17045724号-2
+        <i class="el-icon-police"></i> 沪公网安备 31011502008032号
+      </div>
     </div>
   </div>
 </template>
 <script>
 const IMG_URL = process.env.IMG_URL;
 import { Tabs, TabPane, Icon } from "element-ui";
+import auth from "service/auth";
+
 export default {
   name: "Guide",
   components: {
-    'el-tabs': Tabs,
-    'el-tab-pane': TabPane,
-    'el-icon': Icon
+    "el-tabs": Tabs,
+    "el-tab-pane": TabPane,
+    "el-icon": Icon
   },
   data() {
     return {
       IMG_URL: IMG_URL,
-      activeName: '',
+      activeName: "",
+      loginStatus:false,
       tabs: [
         {
-          name: '首页',
-          key: 'index',
-          path: '/guide/index',
-          class: 'tab-item'
+          name: "首页",
+          key: "index",
+          path: "/guide/index",
+          class: "tab-item"
         },
         {
-          name: '关于',
-          key: 'about',
-          path: '/guide/about',
-          class: 'tab-item'
+          name: "关于",
+          key: "about",
+          path: "/guide/about",
+          class: "tab-item"
         },
         {
-          name: '登录',
-          key: 'login',
-          path: '/login',
-          class: 'tab-item'
+          name: "产品",
+          key: "product",
+          path: "/guide/product",
+          class: "tab-item"
         },
         {
-          name: '免费体验',
-          key: 'sampleLogin',
-          path: '/guide/login',
-          class: 'tab-item item-lighter'
+          name: "登录",
+          key: "login",
+          path: "/login",
+          class: "tab-item"
         },
+        {
+          name: "免费体验",
+          key: "sampleLogin",
+          path: "/guide/login",
+          class: "tab-item item-lighter"
+        }
       ]
-
     };
   },
+  mounted() {
+    if (auth.checkLogin()) {
+      this.loginStatus = true
+      this.tabs = this.tabs.filter(obj=>(obj.key!=='sampleLogin'&&obj.key!=='login'))
+    }else{
+      this.loginStatus = false
+    }
+  },
   methods: {
+    enterPage(){
+      this.$router.push({
+        path: '/'
+      });
+    },
     handleTab(item) {
       this.$router.push({
         path: item.path
-      })
+      });
     }
   }
 };
@@ -138,6 +160,17 @@ button {
       li {
         display: inline-block;
         margin-right: 40px;
+      }
+      .user-info{
+        cursor: pointer;
+        span{
+          color:#444;
+          font-size: 14px;
+        }
+        img{
+          width: 7%;
+          border-radius: 50%;
+        }
       }
     }
     .tab-item {

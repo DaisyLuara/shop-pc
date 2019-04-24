@@ -1,15 +1,13 @@
 <template>
-  <div class="guide-root">
-    <router-view />
+  <div class="shop-root">
+    <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: "GuideView",
+  name: "ShopView",
   data() {
     return {};
-  },
-  mounted() {
   },
   methods: {}
 };

@@ -52,6 +52,7 @@ router.beforeEach((to, from, next) => {
     '/guide',
     '/guide/index',
     '/guide/about',
+    '/guide/product',
     '/guide/login'
   ]
   if (!auth.checkLogin()) {
@@ -72,10 +73,10 @@ router.beforeEach((to, from, next) => {
   // // 登录黑名单（登录状态下，不可再访问的路由）
   let unlessLogout = [
     '/login',
-    '/guide',
-    '/guide/index',
-    '/guide/about',
-    '/guide/login'
+    // '/guide',
+    // '/guide/index',
+    // '/guide/about',
+    // '/guide/login'
   ]
   let loginBlackList = unlessLogout.filter(unlessPath => {
     if (to.path == unlessPath) {
