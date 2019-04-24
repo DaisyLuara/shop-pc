@@ -30,6 +30,7 @@ body {
   height: 55px;
 }
 .first-sidebar .logo-wrap .logo {
+  cursor: pointer;
   height: 55px;
   padding: 15px 25px;
   background: #6b3ec2;

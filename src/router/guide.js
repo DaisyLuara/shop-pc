@@ -39,6 +39,26 @@ let router = {
       ]
     },
     {
+      path: 'product',
+      meta: {
+        title: '产品',
+        permission: ''
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/guide/guide/routerView" */ 'page/guide/guide/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '产品',
+            permission: ''
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/guide/product/index" */ 'page/guide/product/index')
+        }
+      ]
+    },
+    {
       path: 'about',
       meta: {
         title: '关于我们',

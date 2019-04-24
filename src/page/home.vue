@@ -3,7 +3,7 @@
     <div class="first-sidebar">
       <div class="logo-wrap">
         <div class="logo">
-          <img :src="IMG_URL+'ad_shop/img/logo.png'">
+          <img :src="IMG_URL+'ad_shop/img/logo.png'" @click="toGuide">
         </div>
       </div>
       <div class="user-avatar-wrap">
@@ -145,6 +145,12 @@ export default {
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
+    toGuide(){
+      console.log(2)
+      this.$router.push({
+        path:'/guide'
+      })
+    },
     logout() {
       this.visible = false;
       auth.logout(this);
