@@ -354,6 +354,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (auth.checkLogin()) {
+            this.$router.push({
+              path: "/account/shop/try"
+            });
             console.log("登录之后去适用页");
           } else {
             this.$router.push({

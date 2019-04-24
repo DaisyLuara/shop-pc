@@ -1,44 +1,42 @@
 <template>
   <div class="main">
-    <div class="first-sidebar">
+    <div class="menu-bar">
       <div class="logo-wrap">
         <div class="logo">
           <img :src="IMG_URL+'ad_shop/img/logo.png'" @click="toGuide">
         </div>
       </div>
-      <div class="user-avatar-wrap">
-        <div 
-          :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" 
-          class="user-avatar">
-          <img :src="logo">
+      <div class="menu-wrap">
+        <div class="menu-wrap_shop">
+          <img :src="IMG_URL+'ad_shop/img/shop_icon.png'">
+          购物车
         </div>
-        <div class="user-name">
-          <span class="title">{{ user_name }}</span>
-        </div>
+        <el-dropdown :hide-on-click="true" @command="handleCommand">
+          <div class="user-avatar-wrap">
+            <div :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" class="user-avatar">
+              <img :src="logo">
+              <i class="el-icon-arrow-down" style="color:#fff;font-size: 16px;"/>
+            </div>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="set">
+              <span class="item-info">账号设置</span>
+            </el-dropdown-item>
+            <el-dropdown-item divided command="logout">
+              <span class="item-info">退出</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
-      <el-menu 
-        :default-active="'/' + currModule" 
-        router>
-        <el-menu-item 
-          v-for="m in modules" 
-          :key="m.path" 
-          :index="'/' + m.path" 
-          class="menu-item">
-          <img 
-            :src="IMG_URL+ m.src +'.png'" 
-            class="icon-default">
-          <img 
-            :src="IMG_URL+ m.src +'_white.png'" 
-            class="white-icon">
+    </div>
+    <div class="first-sidebar">
+      <el-menu :default-active="'/' + currModule" router>
+        <el-menu-item v-for="m in modules" :key="m.path" :index="'/' + m.path" class="menu-item">
+          <img :src="IMG_URL+ m.src +'.png'" class="icon-default">
+          <img :src="IMG_URL+ m.src +'_white.png'" class="white-icon">
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
-      <div class="logout-btn">
-        <img 
-          :src="IMG_URL +'/ad_shop/img/logout_icon.png'" 
-          class="logout-icon" 
-          @click="logout">
-      </div>
     </div>
     <div class="modules">
       <router-view/>
@@ -48,7 +46,17 @@
 
 <script>
 const IMG_URL = process.env.IMG_URL;
-import { Menu, MenuItem, Popover, Button, Badge, Icon } from "element-ui";
+import {
+  Menu,
+  MenuItem,
+  Popover,
+  Button,
+  Badge,
+  Icon,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu
+} from "element-ui";
 import auth from "service/auth";
 
 export default {
@@ -58,7 +66,10 @@ export default {
     "el-menu-item": MenuItem,
     "el-popover": Popover,
     "el-button": Button,
-    "el-badge": Badge
+    "el-badge": Badge,
+    "el-dropdown": Dropdown,
+    "el-dropdown-item": DropdownItem,
+    "el-dropdown-menu": DropdownMenu
   },
   data() {
     return {
@@ -145,11 +156,22 @@ export default {
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
-    toGuide(){
-      console.log(2)
+    handleCommand(command) {
+      switch (command) {
+        case "set":
+          this.$router.push({
+            path: "/account/datum"
+          });
+          break;
+        case "logout":
+          this.logout();
+          break;
+      }
+    },
+    toGuide() {
       this.$router.push({
-        path:'/guide'
-      })
+        path: "/guide"
+      });
     },
     logout() {
       this.visible = false;
@@ -161,6 +183,78 @@ export default {
 
 <style lang="less">
 @import "../assets/css/pcCommon.less";
+.menu-bar {
+  display: flex;
+  flex-direction: row;
+  background: #7e58cc;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 300;
+  .logo-wrap {
+    position: relative;
+    display: flex;
+    margin-left: 20px;
+    width: 20%;
+    height: 60px;
+    .logo {
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .menu-wrap {
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    justify-content: flex-end;
+    margin-right: 30px;
+    align-items: center;
+    .user-avatar-wrap {
+      margin-left: 20px;
+      cursor: pointer;
+      width: 60px;
+      .user-avatar {
+        border-radius: 5px;
+        img {
+          width: 60%;
+          border-radius: 50%;
+        }
+      }
+      .user-avatar-no-logo {
+        background: #627fa3;
+      }
+      .user-avatar-logo {
+        background: none;
+      }
+      .user-name {
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 15px;
+        .title {
+          word-break: break-word;
+        }
+      }
+    }
+    .menu-wrap_shop{
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      img{
+        width: 30%;
+      }
+    }
+  }
+}
 .menu-item {
   display: flex;
   flex-direction: row;
@@ -181,21 +275,6 @@ export default {
   padding: 0;
   min-width: 80px;
   text-align: center;
-}
-.logout-btn {
-  position: absolute;
-  bottom: 15px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-  cursor: pointer;
-  flex-direction: row;
-  cursor: pointer;
-  .logout-icon {
-    width: 15%;
-    height: 15%;
-  }
 }
 
 .icon-default {
