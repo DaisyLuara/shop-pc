@@ -48,6 +48,26 @@ let router = {
             import(/* webpackChunkName: "page/account/shop/index" */ 'page/account/shop/index')
         }
       ]
+    },
+    {
+      path: 'cart',
+      meta: {
+        title: '购物',
+        permission: ''
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/account/cart/routerView" */ 'page/account/cart/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '购物车',
+            permission: ''
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/account/cart/index" */ 'page/account/cart/index')
+        }
+      ]
     }
     // {
     //   path: 'deal',
