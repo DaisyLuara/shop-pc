@@ -198,9 +198,8 @@ export default {
         this.$refs.accountForm.validate(valid => {
           if (valid) {
             let type = this.$route.query.type;
-            console.log(type);
             if (type) {
-              this.setting.redirect_url = "/account/shop/try";
+              this.setting.redirect_url = "/shop/try";
             }
             // console.log(new MD5().update(this.accountForm.password).digest('hex'))
             let loginParams = {

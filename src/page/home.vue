@@ -8,6 +8,11 @@
       </div>
       <div class="menu-wrap">
         <div class="menu-wrap_shop">
+          <span style="font-weight:600;">积分:</span>
+          <span>{{ group_name }}</span>
+          <span>{{ p_credits }}</span>
+        </div>
+        <div class="menu-wrap_shop">
           <img :src="IMG_URL+'ad_shop/img/shop_icon.png'">
           购物车
         </div>
@@ -19,7 +24,7 @@
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="set">
+            <el-dropdown-item command="account_set">
               <span class="item-info">账号设置</span>
             </el-dropdown-item>
             <el-dropdown-item divided command="logout">
@@ -32,8 +37,8 @@
     <div class="first-sidebar">
       <el-menu :default-active="'/' + currModule" router>
         <el-menu-item v-for="m in modules" :key="m.path" :index="'/' + m.path" class="menu-item">
-          <img :src="IMG_URL+ m.src +'.png'" class="icon-default">
-          <img :src="IMG_URL+ m.src +'_white.png'" class="white-icon">
+          <img :src="IMG_URL+ m.src +'.png?v=1'" class="icon-default">
+          <img :src="IMG_URL+ m.src +'_white.png?v=1'" class="white-icon">
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
@@ -59,6 +64,8 @@ import {
 } from "element-ui";
 import auth from "service/auth";
 
+import { getCreditTotal } from "service";
+
 export default {
   name: "Home",
   components: {
@@ -77,7 +84,9 @@ export default {
       visible: false,
       user_name: "",
       logo: null,
-      noLogo: true
+      noLogo: true,
+      group_name: "",
+      p_credits: 0
     };
   },
   computed: {
@@ -114,6 +123,9 @@ export default {
               case "report":
                 m.src = "ad_shop/img/chart_icon";
                 break;
+              case "shop":
+                m.src = "ad_shop/img/try_icon";
+                break;
               default:
                 m.src = "";
                 break;
@@ -139,8 +151,12 @@ export default {
         : "";
     }
   },
-  mounted() {},
+  mounted() {
+    this.getCreditTotal();
+  },
   created() {
+    this.group_name = JSON.parse(localStorage.getItem("credit")).group_name;
+    this.p_credits = JSON.parse(localStorage.getItem("credit")).p_credits;
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
     this.user_name = customer.company.internal_name;
@@ -156,9 +172,26 @@ export default {
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
+    getCreditTotal() {
+      let args = {
+        include: "user_group"
+      };
+      getCreditTotal(this, args)
+        .then(res => {
+          let { group_name, p_credits } = res;
+          localStorage.setItem(
+            "credit",
+            JSON.stringify({
+              group_name: group_name,
+              p_credits: p_credits
+            })
+          );
+        })
+        .catch(err => {});
+    },
     handleCommand(command) {
       switch (command) {
-        case "set":
+        case "account_set":
           this.$router.push({
             path: "/account/datum"
           });
@@ -221,7 +254,6 @@ export default {
     margin-right: 30px;
     align-items: center;
     .user-avatar-wrap {
-      margin-left: 20px;
       cursor: pointer;
       width: 60px;
       .user-avatar {
@@ -249,6 +281,7 @@ export default {
     }
     .menu-wrap_shop {
       color: #fff;
+      margin-right: 20px;
       cursor: pointer;
       font-size: 14px;
       img {

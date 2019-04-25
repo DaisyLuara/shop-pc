@@ -43,7 +43,7 @@ sudo chown -R larryz:larryz  /data/code/xingstation-shop/xingstation-shop-pc/dis
         }
      stage('delete') {
           steps {
-       sh '''cd /var/lib/jenkins/workspace/xingstation-shop-pc/dist
+       sh '''cd /var/lib/jenkins/workspace//var/lib/jenkins/workspace/xingstation-shop-pc_develop/dist
             rm -fr *.tar.gz
            ssh -p 22 larryz@120.27.138.242 " cd /home/larryz/dev-shop-pc && rm -fr *.tar.gz"'''
       }
