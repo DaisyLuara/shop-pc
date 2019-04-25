@@ -200,7 +200,8 @@ export default {
     width: 140px;
     height: 60px;
     justify-content: center;
-    align-items:center;
+    align-items: center;
+    cursor: pointer;
     .logo {
       width: 60px;
       display: flex;
