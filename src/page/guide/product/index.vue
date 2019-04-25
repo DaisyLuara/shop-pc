@@ -68,7 +68,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即使用</el-button>
+                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -124,7 +124,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即使用</el-button>
+                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -180,7 +180,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即使用</el-button>
+                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -235,7 +235,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即使用</el-button>
+                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -295,7 +295,7 @@
                   size="small"
                   style="width:73%"
                   @click="submit('addressForm')"
-                >立即使用</el-button>
+                >立即试用</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -355,9 +355,8 @@ export default {
         if (valid) {
           if (auth.checkLogin()) {
             this.$router.push({
-              path: "/account/shop/try"
+              path: "/shop/try"
             });
-            console.log("登录之后去适用页");
           } else {
             this.$router.push({
               path: "/login",

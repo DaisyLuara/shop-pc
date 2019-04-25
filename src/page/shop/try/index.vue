@@ -98,9 +98,31 @@
         <div class="operate-order_btn-prev" @click="prev" v-if="active!==0">上一步</div>
         <div class="operate-order_btn-next" @click="next" v-if="active!==1">确认订单</div>
         <div class="operate-order_btn-add-shop" v-if="active===1">加入购物车</div>
-        <div class="operate-order_btn-confirm" v-if="active===1">确认购买</div>
+        <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmShop">确认购买</div>
       </div>
     </div>
+    <!-- 付款 -->
+    <el-dialog
+      title="购买道具"
+      :visible.sync="dialogShop"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-form :model="payForm">
+        <el-form-item label="支付方式:" label-width="80px">
+          <el-radio v-model="payForm.way" :label="1">积分</el-radio>
+        </el-form-item>
+        <el-form-item label="支付金额:" label-width="80px">
+          <span
+            style="color:#db1010;font-size:16px;font-weight: 600;margin-right:10px;"
+          >{{ payForm.money }}</span>
+          <span style="color:#7e58cb;">积分</span>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogShop = false" size="small">立即购买</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -114,7 +136,9 @@ import {
   Option,
   TableColumn,
   Table,
-  Radio
+  Radio,
+  Dialog,
+  Button
 } from "element-ui";
 export default {
   components: {
@@ -126,11 +150,19 @@ export default {
     "el-option": Option,
     "el-table": Table,
     "el-table-column": TableColumn,
+    "el-radio": Radio,
+    "el-dialog": Dialog,
+    "el-button": Button,
     "el-radio": Radio
   },
   data() {
     return {
+      dialogShop: false,
       headerStyle: { background: "#6b3ec2", color: "#fff" },
+      payForm: {
+        way: 1,
+        money: 0
+      },
       shopTryForm: {
         area_id: null,
         market_id: null,
@@ -215,6 +247,9 @@ export default {
     };
   },
   methods: {
+    confirmShop(){
+      this.dialogShop = true
+    },
     prev() {
       if (this.active === 0) {
         return;
@@ -331,7 +366,7 @@ export default {
         .shop-try_confirm-info-show {
           display: flex;
           flex-direction: row;
-          .shop-try_confirm-info-show-item{
+          .shop-try_confirm-info-show-item {
             width: 50%;
           }
         }
