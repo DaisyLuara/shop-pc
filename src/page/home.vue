@@ -197,9 +197,11 @@ export default {
   .logo-wrap {
     position: relative;
     display: flex;
-    margin-left: 20px;
-    width: 20%;
+    width: 140px;
     height: 60px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
     .logo {
       width: 60px;
       display: flex;
@@ -214,7 +216,7 @@ export default {
     color: #fff;
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 90%;
     justify-content: flex-end;
     margin-right: 30px;
     align-items: center;
@@ -245,11 +247,11 @@ export default {
         }
       }
     }
-    .menu-wrap_shop{
+    .menu-wrap_shop {
       color: #fff;
       cursor: pointer;
       font-size: 14px;
-      img{
+      img {
         width: 30%;
       }
     }
