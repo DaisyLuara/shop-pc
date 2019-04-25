@@ -32,4 +32,7 @@ export * from './device'
 export * from './guide'
 
 //购物
-export * from './shop'
+export * from './product'
+
+//开放的省市区联动
+export * from './address'

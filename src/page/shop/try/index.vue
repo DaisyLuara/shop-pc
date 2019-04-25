@@ -53,11 +53,7 @@
               :row-style="{height:'70px'}"
               :header-cell-style="headerStyle"
             >
-              <el-table-column prop="id" label="ID" min-width="100">
-                <template slot-scope="scope">
-                  <el-radio v-model="skinId" :label="scope.row.id"/>
-                </template>
-              </el-table-column>
+              <el-table-column type="selection" width="45"/>
               <el-table-column prop="name" label="皮肤名称" min-width="150"></el-table-column>
               <el-table-column prop="icon" label="图标" width="150">
                 <template slot-scope="scope">
@@ -138,7 +134,8 @@ import {
   Table,
   Radio,
   Dialog,
-  Button
+  Button,
+  Checkbox
 } from "element-ui";
 export default {
   components: {
@@ -150,10 +147,10 @@ export default {
     "el-option": Option,
     "el-table": Table,
     "el-table-column": TableColumn,
-    "el-radio": Radio,
     "el-dialog": Dialog,
     "el-button": Button,
-    "el-radio": Radio
+    "el-radio": Radio,
+    "el-checkbox": Checkbox
   },
   data() {
     return {
@@ -247,8 +244,8 @@ export default {
     };
   },
   methods: {
-    confirmShop(){
-      this.dialogShop = true
+    confirmShop() {
+      this.dialogShop = true;
     },
     prev() {
       if (this.active === 0) {
