@@ -278,7 +278,7 @@ export default {
       this.shopTryForm.point_id = JSON.parse(product).point_id;
       this.showAddress();
     } else {
-      this.push({
+      this.$router.push({
         path: "/guide/product"
       });
     }
