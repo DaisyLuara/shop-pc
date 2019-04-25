@@ -64,6 +64,7 @@ export default {
     localStorage.removeItem('jwt_ttl')
     localStorage.removeItem('permissions')
     localStorage.removeItem('jwt_begin_time')
+    // localStorage.removeItem('credit')
   },
 
   refreshUserInfo(context) {
@@ -71,7 +72,6 @@ export default {
       context.$http
         .get(HOST + CUSTOMER_API)
         .then(response => {
-          console.log(response)
           let result = response.data
           let user = {}
           user.name = result.name
