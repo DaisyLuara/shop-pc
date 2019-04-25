@@ -30,3 +30,6 @@ export * from './device'
 
 //引导
 export * from './guide'
+
+//购物
+export * from './shop'
