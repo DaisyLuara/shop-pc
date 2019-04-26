@@ -29,7 +29,7 @@ const getShoppingCartList = (context, params) => {
   })
 }
 //删除购物车里的商品
-const deletecartProduct = (context, id) => {
+const deleteCartProduct = (context, id) => {
   return new Promise((resolve, reject) => {
     context.$http
       .delete(DELETE_CART_PRODUCT + id)
@@ -41,4 +41,4 @@ const deletecartProduct = (context, id) => {
       })
   })
 }
-export { addToCart, getShoppingCartList, deletecartProduct }
+export { addToCart, getShoppingCartList, deleteCartProduct }

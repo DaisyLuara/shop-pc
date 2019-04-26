@@ -47,7 +47,7 @@
               size="mini"
               type="danger"
               class="product-delete s12"
-              @click="handleDelete(scope)"
+              @click="handleDelete(scope.row)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -85,7 +85,7 @@ import {
 } from "element-ui";
 import {
   getShoppingCartList,
-  deletecartProduct
+  deleteCartProduct
 } from "service";
 export default {
   components: {
@@ -119,8 +119,9 @@ export default {
         this.totalPrices += item.price
       })
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    handleDelete(data) {
+      let id = data.product_sku_id
+      this.deleteProduct(id)
     },
     getCartList() {
       let args = {
@@ -132,12 +133,13 @@ export default {
         console.log(err)
       })
     },
-    deleteCartProduct(id) {
+    deleteProduct(id) {
       deleteCartProduct(this, id).then(res => {
         this.$message({
           message: '删除成功',
           type: 'success'
         });
+        this.getCartList()
       }).catch(err => {
         this.$message({
           message: '删除失败',
@@ -148,11 +150,9 @@ export default {
     submit() {
 
     }
-
   }
 };
 </script>
-
 <style lang="less" scoped>
 .s12 {
   font-size: 12px;

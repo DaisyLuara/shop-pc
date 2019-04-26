@@ -88,6 +88,7 @@
               style="width: 100%"
               :row-style="{height:'70px'}"
               :header-cell-style="headerStyle"
+              @selection-change="handleSelectProject"
             >
               <el-table-column
                 type="selection"
@@ -149,7 +150,7 @@
     </div>
 
     <div class="operate-order">
-      <div class="operate-order_item">合计:100</div>
+      <div class="operate-order_item">合计:<span>100</span>积分</div>
       <div class="operate-orede_btn">
         <div
           class="operate-order_btn-prev"
@@ -160,17 +161,17 @@
           class="operate-order_btn-next"
           @click="next"
           v-if="active!==1"
-        >确认订单</div>
+        ></div>
         <div
           class="operate-order_btn-add-shop"
           v-if="active===1"
           @click="addToCart"
-        >加入购物车</div>
+        ></div>
         <div
           class="operate-order_btn-confirm"
           v-if="active===1"
           @click="confirmShop"
-        >确认购买</div>
+        ></div>
       </div>
     </div>
     <!-- 付款 -->
@@ -179,6 +180,7 @@
       :visible.sync="dialogShop"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      class="pay-dialog"
     >
       <el-form :model="payForm">
         <el-form-item
@@ -413,20 +415,34 @@ export default {
     porectHandle(val) {
       this.projectKey = val;
     },
-    addToCart() {
+    handleSelectProject(val) {
+      console.log(val)
+    },
+    addToCart(data) {
+      console.log(data)
       let args = {
         sku_id: '4,5,7,12'
       }
       addToCart(this, args).then(res => {
-        this.getCartList()
+        this.$message({
+          message: '加入成功',
+          type: 'success'
+        })
+        this.$router.push({
+          path: '/account/cart'
+        })
       }).catch(err => {
-        console.log(err)
+        this.$message({
+          message: '加入失败',
+          type: 'error'
+        });
       })
     },
   }
 };
 </script>
 <style lang="less" scoped>
+@img: "https://cdn.xingstation.cn/ad_guide/";
 .shop-try {
   .shop-try_steps {
     margin-bottom: 20px;
@@ -447,9 +463,23 @@ export default {
         justify-content: center;
         align-items: flex-start;
         width: 10%;
+        color: #333;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .el-form {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
       }
       .el-form-item {
+        flex: 1;
+        text-align: center;
         margin-bottom: 0;
+        color: #666;
+        font-size: 18px;
       }
     }
     .shop-try_content-project,
@@ -463,9 +493,12 @@ export default {
       .shop-try_confirm-project-title {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: baseline;
         align-items: flex-start;
         width: 10%;
+        color: #333;
+        font-weight: 600;
+        font-size: 18px;
       }
       .shop-try_content-project-name-content {
         width: 90%;
@@ -517,15 +550,19 @@ export default {
       .shop-try_confirm-project-content {
         width: 90%;
         .shop-try_confirm-project-content-title {
-          margin-bottom: 15px;
-          font-weight: 700;
-          font-size: 16px;
+          margin-bottom: 20px;
+          font-weight: 600;
+          font-size: 18px;
+          color: #333;
         }
         .shop-try_confirm-info-show {
           display: flex;
           flex-direction: row;
           .shop-try_confirm-info-show-item {
             width: 50%;
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
           }
         }
       }
@@ -533,17 +570,23 @@ export default {
   }
 
   .operate-order {
-    justify-content: space-around;
+    justify-content: flex-end;
     align-items: center;
-    background: #000;
     display: flex;
     flex-direction: row;
-    background: #fff;
+    // background: #fff;
     padding: 15px 0;
     .operate-order_item {
-      color: #7e58cb;
+      color: #333;
       font-size: 18px;
       font-weight: 700;
+      margin-right: 150px;
+      span {
+        color: #f25357;
+        margin-right: 10px;
+        margin-left: 5px;
+        font-size: 26px;
+      }
     }
     .operate-orede_btn {
       display: flex;
@@ -551,24 +594,95 @@ export default {
       .operate-order_btn-prev,
       .operate-order_btn-next,
       .operate-order_btn-add-shop {
-        color: #7e58cb;
+        // color: #7e58cb;
         margin-right: 10px;
         padding: 10px 20px;
         border-radius: 5px;
         font-weight: 700;
-        border: 1px solid #7e58cb;
+        // border: 1px solid #7e58cb;
+        width: 150px;
+        height: 40px;
         font-size: 16px;
+      }
+      .operate-order_btn-next {
+        background-image: url("@{img}confirm_order.png");
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .operate-order_btn-add-shop {
+        width: 150px;
+        height: 40px;
+        background-image: url("@{img}btn_goto_cart.png");
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
       }
       .operate-order_btn-confirm {
-        color: #fff;
+        width: 150px;
+        height: 40px;
+        // color: #fff;
         margin-right: 10px;
         padding: 10px 20px;
         border-radius: 5px;
         font-weight: 700;
-        border: 1px solid #7e58cb;
+        // border: 1px solid #7e58cb;
         font-size: 16px;
-        background: #7e58cb;
+        // background: #7e58cb;
+        background-image: url("@{img}confirm_order.png");
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
       }
+    }
+  }
+}
+</style>
+<style lang="less">
+@img: "https://cdn.xingstation.cn/ad_guide/";
+.shop-try_content-project-name-content {
+  .cell {
+    // text-align: center;
+    .el-checkbox__inner {
+      border-radius: 50%;
+    }
+  }
+}
+.pay-dialog {
+  .el-dialog {
+    width: 40%;
+  }
+  .el-dialog__header {
+    background: #7e58cb;
+    padding: 10px 20px;
+    position: relative;
+    .el-dialog__title {
+      color: #fff !important;
+      font-size: 16px;
+    }
+    .el-dialog__headerbtn {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .el-icon-close {
+      color: #fff;
+      border: solid 1px #fff;
+      border-radius: 50%;
+      padding: 2px;
+    }
+  }
+  .dialog-footer {
+    text-align: center;
+    margin-top: -50px;
+    margin-bottom: 50px;
+    .el-button {
+      background-image: url("@{img}solution_btn_bg.png");
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: none;
+      background-color: transparent;
+      padding: 10px 40px;
     }
   }
 }
