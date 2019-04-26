@@ -12,7 +12,7 @@
           <span>{{ group_name }}</span>
           <span>{{ p_credits }}</span>
         </div>
-        <div class="menu-wrap_shop">
+        <div class="menu-wrap_shop" @click="gotoCarts">
           <img :src="IMG_URL+'ad_shop/img/shop_icon.png'">
           购物车
         </div>
@@ -172,6 +172,11 @@ export default {
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
+    gotoCarts(){
+      this.$router.push({
+        path:'/account/cart'
+      })
+    },
     getCreditTotal() {
       let args = {
         include: "user_group"

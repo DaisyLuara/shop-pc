@@ -11,27 +11,25 @@
       >
         <el-table-column
           type="selection"
-          label="全选"
           width="55"
         >
-        全选
         </el-table-column>
         <el-table-column
           label="配置信息"
-          width="120"
+          width="320"
         >
           <template slot-scope="scope">{{ scope.row.information }}</template>
         </el-table-column>
         <el-table-column
           prop="price"
           label="单价积分"
-          width="120"
+          width="220"
         >
         </el-table-column>
         <el-table-column
-          prop="price"
-          label="单价积分"
-          width="120"
+          prop="number"
+          label="数量"
+          width="220"
         >
         </el-table-column>
         <el-table-column label="操作">
@@ -45,6 +43,11 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="biling-bar">
+      <ul>
+        <li>已选商品<span>{{totalNumber}}</span>件</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -55,16 +58,12 @@ import {
 
 import {
   Table,
-  // Row,
-  // Col,
   TableColumn,
   Button
 } from "element-ui";
 
 export default {
   components: {
-    // "el-row": Row,
-    // "el-col": Col,
     "el-table": Table,
     "el-table-column": TableColumn,
     "el-button": Button
@@ -72,51 +71,28 @@ export default {
   data() {
     return {
       tableData: [{
-        information: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
+        information: '节目名称',
+        price: 20,
+        number: 1
       }, {
-        information: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        information: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        information: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        information: '2016-05-08',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        information: '2016-05-06',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        information: '2016-05-07',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
+        information: '节目名称',
+        price: 20,
+        number: 1
       }],
       multipleSelection: []
     };
   },
+  computed: {
+    totalNumber() {
+      return this.multipleSelection.length
+    }
+  },
   created() {
   },
   methods: {
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log(this.multipleSelection)
     },
     handleEdit(index, row) {
       console.log(index, row);
@@ -131,11 +107,17 @@ export default {
 
 <style lang="less" scoped>
 .root {
+  margin-top: -40px;
+  margin-left: -20px;
+  background-color: #fff;
+  padding: 40px;
   .title {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 600;
-    margin: 40px 0px;
     color: #7e58cb;
+  }
+  .cart-list {
+    margin-top: 40px;
   }
 }
 </style>

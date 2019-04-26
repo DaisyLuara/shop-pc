@@ -30,26 +30,6 @@ let router = {
       ]
     },
     {
-      path: 'shop',
-      meta: {
-        title: '购物',
-        permission: ''
-      },
-      component: () =>
-        import(/* webpackChunkName: "page/account/shop/routerView" */ 'page/account/shop/routerView'),
-      children: [
-        {
-          path: 'try',
-          meta: {
-            title: '试用',
-            permission: ''
-          },
-          component: () =>
-            import(/* webpackChunkName: "page/account/shop/index" */ 'page/account/shop/index')
-        }
-      ]
-    },
-    {
       path: 'cart',
       meta: {
         title: '购物',
