@@ -1,16 +1,26 @@
 <template>
   <div class="shop-try">
     <div class="shop-try_steps">
-      <el-steps :active="active" finish-status="success" align-center>
+      <el-steps
+        :active="active"
+        finish-status="success"
+        align-center
+      >
         <el-step title="基础配置"></el-step>
         <el-step title="确认订单"></el-step>
       </el-steps>
     </div>
     <!-- 基础配置 -->
-    <div class="shop-try_content" v-if="active===0">
+    <div
+      class="shop-try_content"
+      v-if="active===0"
+    >
       <div class="shop-try_content-address">
         <h4 class="shop-try_content-address-title">位置</h4>
-        <el-form :inline="true" :model="shopTryForm">
+        <el-form
+          :inline="true"
+          :model="shopTryForm"
+        >
           <el-form-item label="区域">
             <el-select
               v-model="shopTryForm.area_id"
@@ -42,7 +52,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="点位">
-            <el-select v-model="shopTryForm.point_id" placeholder="请选择点位" size="small">
+            <el-select
+              v-model="shopTryForm.point_id"
+              placeholder="请选择点位"
+              size="small"
+            >
               <el-option
                 v-for="point in pointList"
                 :label="point.name"
@@ -75,24 +89,48 @@
               :row-style="{height:'70px'}"
               :header-cell-style="headerStyle"
             >
-              <el-table-column type="selection" width="45"/>
-              <el-table-column prop="name" label="皮肤名称" min-width="150"></el-table-column>
-              <el-table-column prop="icon" label="图标" width="150">
+              <el-table-column
+                type="selection"
+                width="45"
+              />
+              <el-table-column
+                prop="name"
+                label="皮肤名称"
+                min-width="150"
+              ></el-table-column>
+              <el-table-column
+                prop="icon"
+                label="图标"
+                width="150"
+              >
                 <template slot-scope="scope">
-                  <img :src="scope.row.icon" style="width: 50%;">
+                  <img
+                    :src="scope.row.icon"
+                    style="width: 50%;"
+                  >
                 </template>
               </el-table-column>
-              <el-table-column prop="price" label="价格(积分)" min-width="100"/>
+              <el-table-column
+                prop="price"
+                label="价格(积分)"
+                min-width="100"
+              />
             </el-table>
           </div>
         </div>
       </div>
     </div>
     <!-- 确认订单 -->
-    <div class="shop-try_confirm" v-if="active===1">
+    <div
+      class="shop-try_confirm"
+      v-if="active===1"
+    >
       <div class="shop-try_confirm-address">
         <h4 class="shop-try_confirm-address-title">所选位置</h4>
-        <el-form :inline="true" :model="shopTryForm">
+        <el-form
+          :inline="true"
+          :model="shopTryForm"
+        >
           <el-form-item label="区域：">上海</el-form-item>
           <el-form-item label="场地：">上海湾</el-form-item>
           <el-form-item label="点位：">1F-扶梯口</el-form-item>
@@ -113,10 +151,26 @@
     <div class="operate-order">
       <div class="operate-order_item">合计:100</div>
       <div class="operate-orede_btn">
-        <div class="operate-order_btn-prev" @click="prev" v-if="active!==0">上一步</div>
-        <div class="operate-order_btn-next" @click="next" v-if="active!==1">确认订单</div>
-        <div class="operate-order_btn-add-shop" v-if="active===1">加入购物车</div>
-        <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmShop">确认购买</div>
+        <div
+          class="operate-order_btn-prev"
+          @click="prev"
+          v-if="active!==0"
+        >上一步</div>
+        <div
+          class="operate-order_btn-next"
+          @click="next"
+          v-if="active!==1"
+        >确认订单</div>
+        <div
+          class="operate-order_btn-add-shop"
+          v-if="active===1"
+          @click="addToCart"
+        >加入购物车</div>
+        <div
+          class="operate-order_btn-confirm"
+          v-if="active===1"
+          @click="confirmShop"
+        >确认购买</div>
       </div>
     </div>
     <!-- 付款 -->
@@ -127,18 +181,32 @@
       :close-on-press-escape="false"
     >
       <el-form :model="payForm">
-        <el-form-item label="支付方式:" label-width="80px">
-          <el-radio v-model="payForm.way" :label="1">积分</el-radio>
+        <el-form-item
+          label="支付方式:"
+          label-width="80px"
+        >
+          <el-radio
+            v-model="payForm.way"
+            :label="1"
+          >积分</el-radio>
         </el-form-item>
-        <el-form-item label="支付金额:" label-width="80px">
-          <span
-            style="color:#db1010;font-size:16px;font-weight: 600;margin-right:10px;"
-          >{{ payForm.money }}</span>
+        <el-form-item
+          label="支付金额:"
+          label-width="80px"
+        >
+          <span style="color:#db1010;font-size:16px;font-weight: 600;margin-right:10px;">{{ payForm.money }}</span>
           <span style="color:#7e58cb;">积分</span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogShop = false" size="small">立即购买</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogShop = false"
+          size="small"
+        >立即购买</el-button>
       </div>
     </el-dialog>
   </div>
@@ -159,7 +227,7 @@ import {
   Button,
   Checkbox
 } from "element-ui";
-import { getOpenAears, getOpenMarkets, getOpenPoints } from "service";
+import { getOpenAears, getOpenMarkets, getOpenPoints, addToCart } from "service";
 export default {
   components: {
     "el-steps": Steps,
@@ -344,7 +412,17 @@ export default {
     },
     porectHandle(val) {
       this.projectKey = val;
-    }
+    },
+    addToCart() {
+      let args = {
+        sku_id: '4,5,7,12'
+      }
+      addToCart(this, args).then(res => {
+        this.getCartList()
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   }
 };
 </script>

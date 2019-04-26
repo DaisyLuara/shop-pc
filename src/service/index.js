@@ -36,3 +36,6 @@ export * from './product'
 
 //开放的省市区联动
 export * from './address'
+
+//购物车
+export * from './cart'
