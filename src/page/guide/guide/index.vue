@@ -214,25 +214,15 @@ export default {
           IMG_URL + 'ad_guide/logo/014.jpg'
         ],
         detail: [
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest2.png',
-          IMG_URL + 'ad_guide/ptest3.png',
-          IMG_URL + 'ad_guide/ptest4.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png',
-          IMG_URL + 'ad_guide/ptest1.png'
+          IMG_URL + 'ad_guide/photo1.png',
+          IMG_URL + 'ad_guide/photo2.png',
+          IMG_URL + 'ad_guide/photo3.png',
+          IMG_URL + 'ad_guide/photo4.png'
         ]
       }
     };
   },
   mounted() {
-    // this.$refs.mySwiper1.swiper.controller.control = this.$refs.mySwiper2.swiper
-    // this.$refs.mySwiper2.swiper.controller.control = this.$refs.mySwiper1.swiper
   },
   methods: {
     checkPhone() {
