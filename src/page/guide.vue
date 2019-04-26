@@ -2,16 +2,26 @@
   <div class="main">
     <div class="header">
       <div class="left-logo">
-        <img :src="IMG_URL+ '/ad_guide/logo.png'" class="logo-icon">
+        <img
+          :src="IMG_URL+ '/ad_guide/logo.png'"
+          class="logo-icon"
+        >
         <span class="logo-name">召唤宝智能商户平台</span>
       </div>
       <div class="right-tabs">
         <ul class="tabs-ul">
-          <li v-for="item in tabs" :key="item.id" @click="handleTab(item)">
+          <li
+            v-for="item in tabs"
+            :key="item.id"
+            @click="handleTab(item)"
+          >
             <a :class="item.class">{{item.name}}</a>
           </li>
           <li v-if="loginStatus">
-            <div class="user-info" @click="enterPage">
+            <div
+              class="user-info"
+              @click="enterPage"
+            >
               <span>颛桥万达</span>
               <img src="http://qiniucdn.xingstation.com/images_1553071832_sUyZznEMUU.png">
             </div>
@@ -20,11 +30,14 @@
       </div>
     </div>
     <div class="modules-guide">
-      <router-view/>
+      <router-view />
     </div>
     <div class="footer">
       <div class="mycompany">
-        <img :src="IMG_URL+ '/ad_guide/actiview.png'" class="company-icon">
+        <img
+          :src="IMG_URL+ '/ad_guide/actiview.png'"
+          class="company-icon"
+        >
         <span>上海星视度科技有限公司</span>
       </div>
       <div class="myrecord">
@@ -50,7 +63,7 @@ export default {
     return {
       IMG_URL: IMG_URL,
       activeName: "",
-      loginStatus:false,
+      loginStatus: false,
       tabs: [
         {
           name: "首页",
@@ -88,13 +101,13 @@ export default {
   mounted() {
     if (auth.checkLogin()) {
       this.loginStatus = true
-      this.tabs = this.tabs.filter(obj=>(obj.key!=='sampleLogin'&&obj.key!=='login'))
-    }else{
+      this.tabs = this.tabs.filter(obj => (obj.key !== 'sampleLogin' && obj.key !== 'login'))
+    } else {
       this.loginStatus = false
     }
   },
   methods: {
-    enterPage(){
+    enterPage() {
       this.$router.push({
         path: '/'
       });
@@ -148,11 +161,14 @@ button {
     }
   }
   .right-tabs {
-    height: 100%;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translateY(-50%);
     margin-right: 80px;
+    overflow: hidden;
     .tabs-ul {
       display: inline-block;
-      height: 100%;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -160,15 +176,19 @@ button {
       li {
         display: inline-block;
         margin-right: 40px;
+        padding: 0;
       }
-      .user-info{
+      .user-info {
+        display: inline;
+        padding: 0;
+        margin: 0;
         cursor: pointer;
-        span{
-          color:#444;
+        span {
+          color: #444;
           font-size: 14px;
         }
-        img{
-          width: 7%;
+        img {
+          width: 36px;
           border-radius: 50%;
         }
       }

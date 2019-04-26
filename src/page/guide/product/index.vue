@@ -3,7 +3,7 @@
     <div class="product-warp_head">
       <div class="product-warp_head-title">
         <h3 class="product-warp_head-title-item">全套解决方案</h3>
-        <div class="product-warp_head-title-item-info">xxxxxxxxx</div>
+        <div class="product-warp_head-title-item-info">*****</div>
       </div>
       <img :src="img_url+'ad_guide/indextit.jpg'">
     </div>
@@ -43,7 +43,7 @@
             <el-form
               :model="addressFormArr[index].addressForm"
               :ref="'addressForm_'+index"
-              label-width="50px"
+              label-width="100px"
             >
               <el-form-item
                 label="区域"
@@ -225,7 +225,7 @@ export default {
           this.tabKey = this.menu[0].id;
           this.getProductGroups();
         })
-        .catch(err => {});
+        .catch(err => { });
     },
     tabHandle(val) {
       this.tabKey = val;
@@ -248,7 +248,7 @@ export default {
           market_id: market_id,
           area_id: area_id
         };
-        localStorage.setItem("product",JSON.stringify(product));
+        localStorage.setItem("product", JSON.stringify(product));
       }
       if (auth.checkLogin()) {
         this.$router.push({
@@ -267,6 +267,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@img: "https://cdn.xingstation.cn/ad_guide/";
 .product-wrap {
   .product-warp_head {
     img {
@@ -277,16 +278,20 @@ export default {
       display: flex;
       flex-direction: column;
       position: absolute;
-      top: 10%;
-      left: 5%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       .product-warp_head-title-item {
         color: #fff;
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 600;
+        text-align: center;
       }
       .product-warp_head-title-item-info {
         color: #fff;
         font-size: 18px;
+        text-align: center;
+        margin-top: 10px;
       }
     }
   }
@@ -300,20 +305,23 @@ export default {
       margin-top: 60px;
       .product-wrap_content-tabs-item {
         padding: 15px 30px;
-        margin-right: 20px;
+        margin-right: 40px;
         cursor: pointer;
-        color: #444;
-        font-size: 16px;
-        border: 1px solid #ccc;
+        color: #7e58cc;
+        font-weight: 500;
+        font-size: 18px;
+        background-image: url("@{img}solution_btn_border.png");
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
         &:hover {
-          background: #7e58cc;
           opacity: 0.8;
           color: #fff;
-          border: 1px solid #7e58cc;
+          background-image: url("@{img}solution_btn_bg.png");
         }
       }
       .is-active {
-        background: #7e58cc;
+        background-image: url("@{img}solution_btn_bg.png");
         color: #fff;
       }
     }
@@ -332,12 +340,12 @@ export default {
         border: 1px solid #ccc;
         .product-wrap_project-name-img {
           padding: 20px;
-          width: 20%;
+          width: 40%;
           background: #f9f9fa;
           border-right: 1px solid #ccc;
           .product-wrap_project-name {
             color: #444;
-            font-size: 20px;
+            font-size: 26px;
             font-weight: 700;
             margin-bottom: 15px;
           }
@@ -352,10 +360,13 @@ export default {
           border-right: 1px solid #ccc;
           width: 50%;
           color: #444;
+          .product-wrap_project-desc {
+            margin-bottom: 30px;
+          }
           h4 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
           }
           p {
             font-size: 14px;
@@ -364,11 +375,33 @@ export default {
         }
         .product-wrap-project-address {
           padding: 20px;
-          width: 30%;
+          width: 40%;
           background: #f9f9fa;
+          font-size: 18px;
+          .el-form-item__label {
+            font-weight: 600;
+          }
         }
       }
     }
   }
+}
+</style>
+<style lang="less">
+@img: "https://cdn.xingstation.cn/ad_guide/";
+.product-wrap-project-address {
+  .el-form-item__label {
+    color: #333;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: left;
+  }
+  // .el-input__inner {
+  //   background-image: url("@{img}select_border.png");
+  //   background-size: 100% auto;
+  //   background-position: center;
+  //   background-repeat: no-repeat;
+  //   border: none;
+  // }
 }
 </style>

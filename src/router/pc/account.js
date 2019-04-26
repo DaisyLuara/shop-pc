@@ -29,6 +29,47 @@ let router = {
         }
       ]
     },
+    {
+      path: 'cart',
+      meta: {
+        title: '购物',
+        permission: ''
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/account/cart/routerView" */ 'page/account/cart/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '购物车',
+            permission: ''
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/account/cart/index" */ 'page/account/cart/index')
+        }
+      ]
+    }
+    // {
+    //   path: 'deal',
+    //   name: '交易明细',
+    //   redirect: 'deal',
+    //   meta: {
+    //     title: '交易明细'
+    //   },
+    //   component: () =>
+    //     import(/* webpackChunkName: "page/account/deal/routerView" */ 'page/account/deal/routerView'),
+    //   children: [
+    //     {
+    //       path: '/',
+    //       name: '交易明细列表',
+    //       meta: {
+    //         title: '交易明细列表'
+    //       },
+    //       component: () =>
+    //         import(/* webpackChunkName: "page/account/deal/index" */ 'page/account/deal/index')
+    //     }
+    //   ]
+    // }
   ]
 }
 
