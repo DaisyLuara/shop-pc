@@ -18,33 +18,50 @@
         >{{ item.name }}</div>
       </div>
       <div class="product-wrap_content-detail">
-        <div class="product-wrap_content-detail-item">
+        <div
+          class="product-wrap_content-detail-item"
+          v-for="(item,index) in productData"
+          :key="item.id"
+        >
           <div class="product-wrap_project-name-img">
-            <h3 class="product-wrap_project-name">超级英雄</h3>
+            <h3 class="product-wrap_project-name">{{item.name}}</h3>
             <div class="product-wrap_project-img">
-              <img src="http://image.xingstation.cn/1007/image/1547450898.jpg">
+              <img :src="item.project ? item.project.image:''">
             </div>
           </div>
           <div class="product-wrap_project-info">
             <div class="product-wrap_project-desc">
-              <h4>节目：超级英雄</h4>
-              <p>超级英雄节目超级英雄节目超级英雄节目超级英雄节目,超级英雄节目超级英雄节目超级英雄节目超级英雄节,目超级英雄节目超级英雄节目超级英雄节目超级英雄</p>
+              <h4>节目: {{ item.project?item.project.title:'' }}</h4>
+              <p>{{ item.project?item.project.description:'' }}</p>
             </div>
             <div class="product-wrap_skin-desc">
-              <h4>皮肤：暖阳色</h4>
-              <p>皮肤：暖阳色,皮肤：暖阳色,皮肤：暖阳色</p>
+              <h4>皮肤: {{ item.skin?item.skin.title:'' }}</h4>
+              <p>{{ item.skin?item.skin.description:'' }}</p>
             </div>
           </div>
           <div class="product-wrap-project-address">
-            <el-form :model="addressForm" ref="addressForm" label-width="50px">
+            <el-form
+              :model="addressFormArr[index].addressForm"
+              :ref="'addressForm_'+index"
+              label-width="50px"
+            >
               <el-form-item
                 label="区域"
                 prop="area_id"
                 :rules="[{ required: true, message: '区域不能为空'}]"
               >
-                <el-select v-model="addressForm.area_id" placeholder="请选择区域" size="small">
-                  <el-option label="区域一" value="1"></el-option>
-                  <el-option label="区域二" value="2"></el-option>
+                <el-select
+                  v-model="addressFormArr[index].addressForm.area_id"
+                  placeholder="请选择区域"
+                  size="small"
+                  @change="areaHandle($event,index)"
+                >
+                  <el-option
+                    :label="area.name"
+                    :value="area.id"
+                    :key="area.id"
+                    v-for="area in areaList"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item
@@ -52,9 +69,18 @@
                 prop="market_id"
                 :rules="[{ required: true, message: '场地不能为空'}]"
               >
-                <el-select v-model="addressForm.market_id" placeholder="请选择场地" size="small">
-                  <el-option label="场地一" value="1"></el-option>
-                  <el-option label="场地二" value="2"></el-option>
+                <el-select
+                  v-model="addressFormArr[index].addressForm.market_id"
+                  placeholder="请选择场地"
+                  size="small"
+                  @change="marketHandle($event,index)"
+                >
+                  <el-option
+                    v-for="market in marketObject[index]"
+                    :label="market.name"
+                    :value="market.id"
+                    :key="market.id"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item
@@ -62,231 +88,17 @@
                 prop="point_id"
                 :rules="[{ required: true, message: '点位不能为空'}]"
               >
-                <el-select v-model="addressForm.point_id" placeholder="请选择点位" size="small">
-                  <el-option label="点位一" value="1"></el-option>
-                  <el-option label="点位二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
-
-        <div class="product-wrap_content-detail-item">
-          <div class="product-wrap_project-name-img">
-            <h3 class="product-wrap_project-name">超级英雄</h3>
-            <div class="product-wrap_project-img">
-              <img src="http://image.xingstation.cn/1007/image/1547450898.jpg">
-            </div>
-          </div>
-          <div class="product-wrap_project-info">
-            <div class="product-wrap_project-desc">
-              <h4>节目：超级英雄</h4>
-              <p>超级英雄节目超级英雄节目超级英雄节目超级英雄节目,超级英雄节目超级英雄节目超级英雄节目超级英雄节,目超级英雄节目超级英雄节目超级英雄节目超级英雄</p>
-            </div>
-            <div class="product-wrap_skin-desc">
-              <h4>皮肤：暖阳色</h4>
-              <p>皮肤：暖阳色,皮肤：暖阳色,皮肤：暖阳色</p>
-            </div>
-          </div>
-          <div class="product-wrap-project-address">
-            <el-form :model="addressForm" ref="addressForm" label-width="50px">
-              <el-form-item
-                label="区域"
-                prop="area_id"
-                :rules="[{ required: true, message: '区域不能为空'}]"
-              >
-                <el-select v-model="addressForm.area_id" placeholder="请选择区域" size="small">
-                  <el-option label="区域一" value="1"></el-option>
-                  <el-option label="区域二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="场地"
-                prop="market_id"
-                :rules="[{ required: true, message: '场地不能为空'}]"
-              >
-                <el-select v-model="addressForm.market_id" placeholder="请选择场地" size="small">
-                  <el-option label="场地一" value="1"></el-option>
-                  <el-option label="场地二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="点位"
-                prop="point_id"
-                :rules="[{ required: true, message: '点位不能为空'}]"
-              >
-                <el-select v-model="addressForm.point_id" placeholder="请选择点位" size="small">
-                  <el-option label="点位一" value="1"></el-option>
-                  <el-option label="点位二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
-
-        <div class="product-wrap_content-detail-item">
-          <div class="product-wrap_project-name-img">
-            <h3 class="product-wrap_project-name">超级英雄</h3>
-            <div class="product-wrap_project-img">
-              <img src="http://image.xingstation.cn/1007/image/1547450898.jpg">
-            </div>
-          </div>
-          <div class="product-wrap_project-info">
-            <div class="product-wrap_project-desc">
-              <h4>节目：超级英雄</h4>
-              <p>超级英雄节目超级英雄节目超级英雄节目超级英雄节目,超级英雄节目超级英雄节目超级英雄节目超级英雄节,目超级英雄节目超级英雄节目超级英雄节目超级英雄</p>
-            </div>
-            <div class="product-wrap_skin-desc">
-              <h4>皮肤：暖阳色</h4>
-              <p>皮肤：暖阳色,皮肤：暖阳色,皮肤：暖阳色</p>
-            </div>
-          </div>
-          <div class="product-wrap-project-address">
-            <el-form :model="addressForm" ref="addressForm" label-width="50px">
-              <el-form-item
-                label="区域"
-                prop="area_id"
-                :rules="[{ required: true, message: '区域不能为空'}]"
-              >
-                <el-select v-model="addressForm.area_id" placeholder="请选择区域" size="small">
-                  <el-option label="区域一" value="1"></el-option>
-                  <el-option label="区域二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="场地"
-                prop="market_id"
-                :rules="[{ required: true, message: '场地不能为空'}]"
-              >
-                <el-select v-model="addressForm.market_id" placeholder="请选择场地" size="small">
-                  <el-option label="场地一" value="1"></el-option>
-                  <el-option label="场地二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="点位"
-                prop="point_id"
-                :rules="[{ required: true, message: '点位不能为空'}]"
-              >
-                <el-select v-model="addressForm.point_id" placeholder="请选择点位" size="small">
-                  <el-option label="点位一" value="1"></el-option>
-                  <el-option label="点位二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
-        <div class="product-wrap_content-detail-item">
-          <div class="product-wrap_project-name-img">
-            <h3 class="product-wrap_project-name">超级英雄</h3>
-            <div class="product-wrap_project-img">
-              <img src="http://image.xingstation.cn/1007/image/1547450898.jpg">
-            </div>
-          </div>
-          <div class="product-wrap_project-info">
-            <div class="product-wrap_project-desc">
-              <h4>节目：超级英雄</h4>
-              <p>超级英雄节目超级英雄节目超级英雄节目超级英雄节目,超级英雄节目超级英雄节目超级英雄节目超级英雄节,目超级英雄节目超级英雄节目超级英雄节目超级英雄</p>
-            </div>
-            <div class="product-wrap_skin-desc">
-              <h4>皮肤：暖阳色</h4>
-              <p>皮肤：暖阳色,皮肤：暖阳色,皮肤：暖阳色</p>
-            </div>
-          </div>
-          <div class="product-wrap-project-address">
-            <el-form :model="addressForm" ref="addressForm" label-width="50px">
-              <el-form-item
-                label="区域"
-                prop="area_id"
-                :rules="[{ required: true, message: '区域不能为空'}]"
-              >
-                <el-select v-model="addressForm.area_id" placeholder="请选择区域" size="small">
-                  <el-option label="区域一" value="1"></el-option>
-                  <el-option label="区域二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="场地"
-                prop="market_id"
-                :rules="[{ required: true, message: '场地不能为空'}]"
-              >
-                <el-select v-model="addressForm.market_id" placeholder="请选择场地" size="small">
-                  <el-option label="场地一" value="1"></el-option>
-                  <el-option label="场地二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="点位"
-                prop="point_id"
-                :rules="[{ required: true, message: '点位不能为空'}]"
-              >
-                <el-select v-model="addressForm.point_id" placeholder="请选择点位" size="small">
-                  <el-option label="点位一" value="1"></el-option>
-                  <el-option label="点位二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="small" style="width:73%">立即试用</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
-        <div class="product-wrap_content-detail-item">
-          <div class="product-wrap_project-name-img">
-            <h3 class="product-wrap_project-name">超级英雄</h3>
-            <div class="product-wrap_project-img">
-              <img src="http://image.xingstation.cn/1007/image/1547450898.jpg">
-            </div>
-          </div>
-          <div class="product-wrap_project-info">
-            <div class="product-wrap_project-desc">
-              <h4>节目：超级英雄</h4>
-              <p>超级英雄节目超级英雄节目超级英雄节目超级英雄节目,超级英雄节目超级英雄节目超级英雄节目超级英雄节,目超级英雄节目超级英雄节目超级英雄节目超级英雄</p>
-            </div>
-            <div class="product-wrap_skin-desc">
-              <h4>皮肤：暖阳色</h4>
-              <p>皮肤：暖阳色,皮肤：暖阳色,皮肤：暖阳色</p>
-            </div>
-          </div>
-          <div class="product-wrap-project-address">
-            <el-form :model="addressForm" ref="addressForm" label-width="50px">
-              <el-form-item
-                label="区域"
-                prop="area_id"
-                :rules="[{ required: true, message: '区域不能为空'}]"
-              >
-                <el-select v-model="addressForm.area_id" placeholder="请选择区域" size="small">
-                  <el-option label="区域一" value="1"></el-option>
-                  <el-option label="区域二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="场地"
-                prop="market_id"
-                :rules="[{ required: true, message: '场地不能为空'}]"
-              >
-                <el-select v-model="addressForm.market_id" placeholder="请选择场地" size="small">
-                  <el-option label="场地一" value="1"></el-option>
-                  <el-option label="场地二" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                label="点位"
-                prop="point_id"
-                :rules="[{ required: true, message: '点位不能为空'}]"
-              >
-                <el-select v-model="addressForm.point_id" placeholder="请选择点位" size="small">
-                  <el-option label="点位一" value="1"></el-option>
-                  <el-option label="点位二" value="2"></el-option>
+                <el-select
+                  v-model="addressFormArr[index].addressForm.point_id"
+                  placeholder="请选择点位"
+                  size="small"
+                >
+                  <el-option
+                    v-for="point in pointObject[index]"
+                    :label="point.name"
+                    :value="point.id"
+                    :key="point.id"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -294,7 +106,7 @@
                   type="primary"
                   size="small"
                   style="width:73%"
-                  @click="submit('addressForm')"
+                  @click="submit(index,item.package_id)"
                 >立即试用</el-button>
               </el-form-item>
             </el-form>
@@ -306,8 +118,15 @@
 </template>
 <script>
 const CDN = process.env.IMG_URL;
-import { Form, Option, FormItem, Select, Button } from "element-ui";
+import { Form, Option, FormItem, Select, Button, Message } from "element-ui";
 import auth from "service/auth";
+import {
+  getProductPackages,
+  getProductGroups,
+  getOpenAears,
+  getOpenMarkets,
+  getOpenPoints
+} from "service";
 
 export default {
   components: {
@@ -319,54 +138,130 @@ export default {
   },
   data() {
     return {
-      addressForm: {
-        area_id: null,
-        point_id: null,
-        market_id: null
-      },
+      addressFormArr: [],
       img_url: CDN,
       tabKey: 1,
-      menu: [
-        {
-          id: 1,
-          name: "解决方案A"
-        },
-        {
-          id: 2,
-          name: "解决方案B"
-        },
-        {
-          id: 3,
-          name: "解决方案C"
-        },
-        {
-          id: 4,
-          name: "解决方案D"
-        }
-      ]
+      menu: [],
+      areaList: [],
+      marketObject: [],
+      pointObject: [],
+      productData: []
     };
   },
+  created() {
+    this.getProductPackages();
+    this.getOpenAears();
+  },
   methods: {
-    tabHandle(val) {
-      this.tabKey = val;
+    marketHandle(val, index) {
+      this.getOpenPoints(val, index);
     },
-    submit(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          if (auth.checkLogin()) {
-            this.$router.push({
-              path: "/shop/try"
-            });
-          } else {
-            this.$router.push({
-              path: "/login",
-              query: {
-                type: "product"
+    areaHandle(val, index) {
+      this.getOpenMarkets(val, index);
+    },
+    getOpenMarkets(areaid, index) {
+      let args = {
+        areaid: areaid
+      };
+      getOpenMarkets(this, args)
+        .then(res => {
+          this.marketObject.splice(index, 1, res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getOpenAears() {
+      getOpenAears(this)
+        .then(res => {
+          this.areaList = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getOpenPoints(marketid, index) {
+      let args = {
+        marketid: marketid
+      };
+      getOpenPoints(this, args)
+        .then(res => {
+          this.pointObject.splice(index, 1, res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getProductGroups() {
+      let args = {
+        package_id: this.tabKey,
+        include: "skus"
+      };
+      getProductGroups(this, args)
+        .then(res => {
+          let { data } = res;
+          let length = data.length;
+          this.productData = data;
+          data.map((r, index) => {
+            this.marketObject.push([]);
+            this.pointObject.push([]);
+            this.addressFormArr.push({
+              addressForm: {
+                area_id: null,
+                market_id: null,
+                point_id: null
               }
             });
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getProductPackages() {
+      getProductPackages(this)
+        .then(res => {
+          this.menu = res.data;
+          this.tabKey = this.menu[0].id;
+          this.getProductGroups();
+        })
+        .catch(err => {});
+    },
+    tabHandle(val) {
+      this.tabKey = val;
+      this.getProductGroups();
+    },
+    submit(index, package_id) {
+      let { point_id, area_id, market_id } = this.addressFormArr[
+        index
+      ].addressForm;
+      if (!point_id || !market_id || !area_id) {
+        this.$message({
+          message: "地址信息请填写完整",
+          type: "warning"
+        });
+        return;
+      } else {
+        let product = {
+          package_id: package_id,
+          point_id: point_id,
+          market_id: market_id,
+          area_id: area_id
+        };
+        localStorage.setItem("product",JSON.stringify(product));
+      }
+      if (auth.checkLogin()) {
+        this.$router.push({
+          path: "/shop/try"
+        });
+      } else {
+        this.$router.push({
+          path: "/login",
+          query: {
+            type: "product"
           }
-        }
-      });
+        });
+      }
     }
   }
 };

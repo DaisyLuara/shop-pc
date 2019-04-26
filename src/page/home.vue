@@ -155,8 +155,6 @@ export default {
     this.getCreditTotal();
   },
   created() {
-    this.group_name = JSON.parse(localStorage.getItem("credit")).group_name;
-    this.p_credits = JSON.parse(localStorage.getItem("credit")).p_credits;
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
     this.user_name = customer.company.internal_name;
@@ -184,13 +182,15 @@ export default {
       getCreditTotal(this, args)
         .then(res => {
           let { group_name, p_credits } = res;
-          localStorage.setItem(
-            "credit",
-            JSON.stringify({
-              group_name: group_name,
-              p_credits: p_credits
-            })
-          );
+          this.group_name = group_name
+          this.p_credits = p_credits
+          //  localStorage.setItem(
+          //   "credit",
+          //   JSON.stringify({
+          //     group_name: group_name,
+          //     p_credits: p_credits
+          //   })
+          // );
         })
         .catch(err => {});
     },

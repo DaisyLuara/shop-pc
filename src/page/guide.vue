@@ -78,7 +78,7 @@ export default {
           class: "tab-item"
         },
         {
-          name: "产品",
+          name: "解决方案",
           key: "product",
           path: "/guide/product",
           class: "tab-item"

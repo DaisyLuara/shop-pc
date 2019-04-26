@@ -12,21 +12,43 @@
         <h4 class="shop-try_content-address-title">位置</h4>
         <el-form :inline="true" :model="shopTryForm">
           <el-form-item label="区域">
-            <el-select v-model="shopTryForm.area_id" placeholder="请选择区域">
-              <el-option label="区域一" value="1"></el-option>
-              <el-option label="区域二" value="2"></el-option>
+            <el-select
+              v-model="shopTryForm.area_id"
+              placeholder="请选择区域"
+              size="small"
+              @change="areaHandle($event)"
+            >
+              <el-option
+                v-for="area in areaList"
+                :label="area.name"
+                :value="area.id"
+                :key="area.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="场地">
-            <el-select v-model="shopTryForm.market_id" placeholder="请选择场地">
-              <el-option label="区域一" value="1"></el-option>
-              <el-option label="区域二" value="2"></el-option>
+            <el-select
+              v-model="shopTryForm.market_id"
+              placeholder="请选择场地"
+              size="small"
+              @change="marketHandle($event)"
+            >
+              <el-option
+                v-for="market in marketList"
+                :label="market.name"
+                :value="market.id"
+                :key="market.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="点位">
-            <el-select v-model="shopTryForm.point_id" placeholder="请选择点位">
-              <el-option label="区域一" value="1"></el-option>
-              <el-option label="区域二" value="2"></el-option>
+            <el-select v-model="shopTryForm.point_id" placeholder="请选择点位" size="small">
+              <el-option
+                v-for="point in pointList"
+                :label="point.name"
+                :value="point.id"
+                :key="point.id"
+              />
             </el-select>
           </el-form-item>
         </el-form>
@@ -53,11 +75,7 @@
               :row-style="{height:'70px'}"
               :header-cell-style="headerStyle"
             >
-              <el-table-column prop="id" label="ID" min-width="100">
-                <template slot-scope="scope">
-                  <el-radio v-model="skinId" :label="scope.row.id"/>
-                </template>
-              </el-table-column>
+              <el-table-column type="selection" width="45"/>
               <el-table-column prop="name" label="皮肤名称" min-width="150"></el-table-column>
               <el-table-column prop="icon" label="图标" width="150">
                 <template slot-scope="scope">
@@ -138,8 +156,10 @@ import {
   Table,
   Radio,
   Dialog,
-  Button
+  Button,
+  Checkbox
 } from "element-ui";
+import { getOpenAears, getOpenMarkets, getOpenPoints } from "service";
 export default {
   components: {
     "el-steps": Steps,
@@ -150,10 +170,10 @@ export default {
     "el-option": Option,
     "el-table": Table,
     "el-table-column": TableColumn,
-    "el-radio": Radio,
     "el-dialog": Dialog,
     "el-button": Button,
-    "el-radio": Radio
+    "el-radio": Radio,
+    "el-checkbox": Checkbox
   },
   data() {
     return {
@@ -243,12 +263,72 @@ export default {
           icon: "http://image.xingstation.cn/1007/image/1547450898.jpg",
           price: 30
         }
-      ]
+      ],
+      marketList: [],
+      pointList: [],
+      areaList: []
     };
   },
+  created() {
+    this.getOpenAears();
+    let product = localStorage.getItem("product");
+    if (product) {
+      this.shopTryForm.area_id = JSON.parse(product).area_id;
+      this.shopTryForm.market_id = JSON.parse(product).market_id;
+      this.shopTryForm.point_id = JSON.parse(product).point_id;
+      this.showAddress();
+    } else {
+      this.$router.push({
+        path: "/guide/product"
+      });
+    }
+  },
   methods: {
-    confirmShop(){
-      this.dialogShop = true
+    showAddress() {
+      this.areaHandle(this.shopTryForm.area_id);
+      this.marketHandle(this.shopTryForm.market_id);
+    },
+    marketHandle(val, index) {
+      this.getOpenPoints(val, index);
+    },
+    areaHandle(val, index) {
+      this.getOpenMarkets(val, index);
+    },
+    getOpenMarkets(areaid, index) {
+      let args = {
+        areaid: areaid
+      };
+      getOpenMarkets(this, args)
+        .then(res => {
+          this.marketList = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getOpenAears() {
+      getOpenAears(this)
+        .then(res => {
+          this.areaList = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getOpenPoints(marketid, index) {
+      let args = {
+        marketid: marketid
+      };
+      getOpenPoints(this, args)
+        .then(res => {
+          this.pointList = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    confirmShop() {
+      this.dialogShop = true;
     },
     prev() {
       if (this.active === 0) {
