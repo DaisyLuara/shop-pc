@@ -16,24 +16,24 @@
             <div class="s12 c9">{{scope.row.productSku.title}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="类型" min-width="150">
+        <el-table-column label="类型" min-width="100">
           <template slot-scope="scope">
             <div
               class="s12 c9"
             >{{scope.row.productSku.type === 'point' ? '点位' : scope.row.productSku.type === 'skin' ? '皮肤' :'节目'}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="单价(积分)" min-width="150">
+        <el-table-column label="单价(积分)" min-width="100">
           <template slot-scope="scope">
             <span class="s16 c3">{{scope.row.productSku.credit_price}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="数量" min-width="150">
+        <el-table-column label="数量" min-width="80">
           <template slot-scope="scope">
             <span class="s12 c9">{{scope.row.amount}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" min-width="150">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -236,6 +236,7 @@ export default {
       submitOrder(this, args)
         .then(res => {
           this.payForm.money = res.total_credit_amount;
+          this.getCartList();
           this.dialogShop = true;
         })
         .catch(err => {
