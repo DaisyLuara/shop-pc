@@ -236,6 +236,7 @@ export default {
       submitOrder(this, args)
         .then(res => {
           this.payForm.money = res.total_credit_amount;
+          this.getCartList();
           this.dialogShop = true;
         })
         .catch(err => {
