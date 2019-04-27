@@ -24,31 +24,34 @@
           :key="item.id"
         >
           <div class="product-wrap_project-name-img">
-            <h3 class="product-wrap_project-name">{{item.name}}</h3>
             <div class="product-wrap_project-img">
               <img :src="item.project ? item.project.image:''">
             </div>
+            <h3 class="product-wrap_project-name">{{item.name}}</h3>
+            <p>{{ item.project?item.project.description:'' }}</p>
           </div>
           <div class="product-wrap_project-info">
-            <div class="product-wrap_project-desc">
-              <h4>节目: {{ item.project?item.project.title:'' }}</h4>
-              <p>{{ item.project?item.project.description:'' }}</p>
-            </div>
-            <div class="product-wrap_skin-desc">
-              <h4>皮肤: {{ item.skin?item.skin.title:'' }}</h4>
+            <div class="product-wrap_desc">
+              <h4>扩展皮肤: {{ item.skin?item.skin.title:'' }}</h4>
               <p>{{ item.skin?item.skin.description:'' }}</p>
+            </div>
+            <div class="product-wrap_desc">
+              <h4>运行设备: {{ item.project?item.project.device:'' }}</h4>
+            </div>
+            <div class="product-wrap_desc">
+              <h4>互动技术: {{ item.project?item.project.interactive_tech:'' }}</h4>
+            </div>
+            <div class="product-wrap_desc">
+              <h4>玩法类型: {{ item.project?item.project.play:'' }}</h4>
             </div>
           </div>
           <div class="product-wrap-project-address">
-            <el-form
-              :model="addressFormArr[index].addressForm"
-              :ref="'addressForm_'+index"
-              label-width="100px"
-            >
+            <el-form :model="addressFormArr[index].addressForm" :ref="'addressForm_'+index">
               <el-form-item
                 label="区域"
                 prop="area_id"
                 :rules="[{ required: true, message: '区域不能为空'}]"
+                label-width="100px"
               >
                 <el-select
                   v-model="addressFormArr[index].addressForm.area_id"
@@ -68,6 +71,7 @@
                 label="场地"
                 prop="market_id"
                 :rules="[{ required: true, message: '场地不能为空'}]"
+                label-width="100px"
               >
                 <el-select
                   v-model="addressFormArr[index].addressForm.market_id"
@@ -87,6 +91,7 @@
                 label="点位"
                 prop="point_id"
                 :rules="[{ required: true, message: '点位不能为空'}]"
+                label-width="100px"
               >
                 <el-select
                   v-model="addressFormArr[index].addressForm.point_id"
@@ -101,11 +106,13 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item>
+              <el-form-item label-width="0">
                 <el-button
                   type="primary"
                   size="small"
-                  style="width:73%"
+                  style="width:90%;border: none;
+      border-radius: 20px;
+      background: linear-gradient(to right, #007ccd, #00d1cf, #00f5d1);"
                   @click="submit(index,item.package_id)"
                 >立即试用</el-button>
               </el-form-item>
@@ -225,7 +232,7 @@ export default {
           this.tabKey = this.menu[0].id;
           this.getProductGroups();
         })
-        .catch(err => { });
+        .catch(err => {});
     },
     tabHandle(val) {
       this.tabKey = val;
@@ -344,14 +351,15 @@ export default {
           background: #f9f9fa;
           border-right: 1px solid #ccc;
           .product-wrap_project-name {
+            margin-top: 15px;
             color: #444;
             font-size: 26px;
             font-weight: 700;
-            margin-bottom: 15px;
           }
           .product-wrap_project-img {
             img {
               width: 45%;
+              // width: 100%;
             }
           }
         }
@@ -360,7 +368,7 @@ export default {
           border-right: 1px solid #ccc;
           width: 50%;
           color: #444;
-          .product-wrap_project-desc {
+          .product-wrap_desc {
             margin-bottom: 30px;
           }
           h4 {
