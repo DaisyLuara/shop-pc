@@ -287,7 +287,12 @@ export default {
           let { total_credit_amount } = res;
           this.total_credit_amount = total_credit_amount;
         })
-        .catch(err => {});
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
+        });
     },
     getProjectSkins() {
       getProjectSkins(this, this.project_piid)
@@ -317,6 +322,10 @@ export default {
         })
         .catch(err => {
           this.setting.loading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
         });
     },
     showAddress() {
@@ -335,7 +344,6 @@ export default {
     pointHandle(val) {
       this.getPointSku(val);
     },
-    confirmOrder() {},
     getOpenMarkets(areaid) {
       let args = {
         areaid: areaid
@@ -345,7 +353,10 @@ export default {
           this.marketList = res.data;
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
         });
     },
     getOpenAears() {
@@ -354,7 +365,10 @@ export default {
           this.areaList = res.data;
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
         });
     },
     getOpenPoints(marketid) {
@@ -366,7 +380,10 @@ export default {
           this.pointList = res.data;
         })
         .catch(err => {
-          console.log(err);
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
         });
     },
     getPointSku(val) {
@@ -375,7 +392,12 @@ export default {
           this.point_sku_id = res.id;
           this.getCartTotals();
         })
-        .catch(err => {});
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
+        });
     },
     confirmOrder() {
       if (this.active === 1) {
@@ -419,7 +441,12 @@ export default {
           this.dialogShop = true;
           // localStorage.removeItem("product");
         })
-        .catch(err => {});
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
+        });
     },
     prev() {
       if (this.active === 0) {

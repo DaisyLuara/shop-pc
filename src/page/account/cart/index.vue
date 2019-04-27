@@ -130,7 +130,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       totalPrices: 0,
-      itemsArgs:[]
+      itemsArgs: []
     };
   },
   computed: {
@@ -165,7 +165,12 @@ export default {
           let { total_credit_amount } = res;
           this.totalPrices = total_credit_amount;
         })
-        .catch(err => {});
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
+        });
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -188,6 +193,10 @@ export default {
         })
         .catch(err => {
           this.setting.loading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
         });
     },
     deleteProduct(id) {
@@ -229,7 +238,12 @@ export default {
           this.payForm.money = res.total_credit_amount;
           this.dialogShop = true;
         })
-        .catch(err => {});
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
+        });
     }
   }
 };
