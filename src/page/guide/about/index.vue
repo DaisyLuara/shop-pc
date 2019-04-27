@@ -81,7 +81,7 @@ export default {
       },
       {
         content: 'Actiview星视度科技有限公司创立',
-        timestamp: '2009年',
+        timestamp: '2017年',
         size: 'large',
         icon: 'el-icon-bigger',
         color: '#fff',
