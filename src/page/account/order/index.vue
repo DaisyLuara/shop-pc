@@ -8,13 +8,25 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="no">
-              <el-input v-model="filters.no" placeholder="填写订单编号" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="no">
+              <el-input 
+                v-model="filters.no" 
+                placeholder="填写订单编号" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item label prop="created_at">
+            <el-form-item 
+              label 
+              prop="created_at">
               <el-date-picker
                 v-model="filters.created_at"
                 :editable="false"
@@ -23,8 +35,12 @@
               />
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -76,12 +92,16 @@
               <span v-html="scope.row.status_name"/>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="180">
+          <el-table-column 
+            label="操作" 
+            width="180">
             <template slot-scope="scope">
-              <el-button size="small" @click="linkToEdit(scope.row)">详情</el-button>
+              <el-button 
+                size="small" 
+                @click="linkToEdit(scope.row)">详情</el-button>
               <el-button
-                size="small"
                 v-show="paymentShow(scope.row.status_name)"
+                size="small"
                 @click="payment(scope.row.total_credit_amount,scope.row.id)"
               >支付</el-button>
             </template>
@@ -107,18 +127,29 @@
       class="pay-dialog"
     >
       <el-form :model="payForm">
-        <el-form-item label="支付方式:" label-width="80px">
-          <el-radio v-model="payForm.way" :label="1">积分</el-radio>
+        <el-form-item 
+          label="支付方式:" 
+          label-width="80px">
+          <el-radio 
+            v-model="payForm.way" 
+            :label="1">积分</el-radio>
         </el-form-item>
-        <el-form-item label="支付金额:" label-width="80px">
+        <el-form-item 
+          label="支付金额:" 
+          label-width="80px">
           <span
             style="color:#db1010;font-size:16px;font-weight: 600;margin-right:10px;"
           >{{ payForm.money }}</span>
           <span style="color:#7e58cb;">积分</span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="buyNow">立即购买</el-button>
+      <div 
+        slot="footer" 
+        class="dialog-footer">
+        <el-button 
+          type="primary" 
+          size="small" 
+          @click="buyNow">立即购买</el-button>
       </div>
     </el-dialog>
   </div>
