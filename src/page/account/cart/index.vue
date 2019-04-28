@@ -1,5 +1,8 @@
 <template>
-  <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="root">
+  <div 
+    v-loading="setting.loading" 
+    :element-loading-text="setting.loadingText" 
+    class="root">
     <h3 class="title">我的购物车</h3>
     <div class="cart-list">
       <el-table
@@ -10,30 +13,43 @@
         class="cart-table"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column label="全选" type="selection" width="55"/>
-        <el-table-column label="配置信息" min-width="150">
+        <el-table-column 
+          label="全选" 
+          type="selection" 
+          width="55"/>
+        <el-table-column 
+          label="配置信息" 
+          min-width="150">
           <template slot-scope="scope">
             <div class="s12 c9">{{ scope.row.productSku.title }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="类型" min-width="100">
+        <el-table-column 
+          label="类型" 
+          min-width="100">
           <template slot-scope="scope">
             <div
               class="s12 c9"
             >{{ scope.row.productSku.type === 'point' ? '点位' : scope.row.productSku.type === 'skin' ? '皮肤' :'节目' }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="单价(积分)" min-width="100">
+        <el-table-column 
+          label="单价(积分)" 
+          min-width="100">
           <template slot-scope="scope">
             <span class="s16 c3">{{ scope.row.productSku.credit_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="数量" min-width="80">
+        <el-table-column 
+          label="数量" 
+          min-width="80">
           <template slot-scope="scope">
             <span class="s12 c9">{{ scope.row.amount }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="150">
+        <el-table-column 
+          label="操作" 
+          min-width="150">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -73,18 +89,29 @@
       class="pay-dialog"
     >
       <el-form :model="payForm">
-        <el-form-item label="支付方式:" label-width="80px">
-          <el-radio v-model="payForm.way" :label="1">积分</el-radio>
+        <el-form-item 
+          label="支付方式:" 
+          label-width="80px">
+          <el-radio 
+            v-model="payForm.way" 
+            :label="1">积分</el-radio>
         </el-form-item>
-        <el-form-item label="支付金额:" label-width="80px">
+        <el-form-item 
+          label="支付金额:" 
+          label-width="80px">
           <span
             style="color:#db1010;font-size:16px;font-weight: 600;margin-right:10px;"
           >{{ payForm.money }}</span>
           <span style="color:#7e58cb;">积分</span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="buyNow">立即购买</el-button>
+      <div 
+        slot="footer" 
+        class="dialog-footer">
+        <el-button 
+          type="primary" 
+          size="small" 
+          @click="buyNow">立即购买</el-button>
       </div>
     </el-dialog>
   </div>
