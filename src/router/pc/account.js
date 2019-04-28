@@ -1,9 +1,9 @@
 import auth from 'service/auth'
 let router = {
   path: 'account',
-  name: '账户管理',
+  name: '我的主页',
   meta: {
-    title: '账户管理',
+    title: '我的主页',
     permission: 'shop_account'
   },
   component: () =>
@@ -12,7 +12,7 @@ let router = {
     {
       path: 'datum',
       meta: {
-        title: '我的主页',
+        title: '我的账号',
         permission: 'shop_account.datum'
       },
       component: () =>
