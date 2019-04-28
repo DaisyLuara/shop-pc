@@ -198,21 +198,11 @@ export default {
       })
     },
     getCreditTotal() {
-      let args = {
-        include: "user_group"
-      };
-      getCreditTotal(this, args)
+      getCreditTotal(this)
         .then(res => {
           let { group_name, p_credits } = res;
           this.group_name = group_name
           this.p_credits = p_credits
-          //  localStorage.setItem(
-          //   "credit",
-          //   JSON.stringify({
-          //     group_name: group_name,
-          //     p_credits: p_credits
-          //   })
-          // );
         })
         .catch(err => {});
     },

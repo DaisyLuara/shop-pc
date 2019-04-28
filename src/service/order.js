@@ -2,6 +2,7 @@ const HOST = process.env.SERVER_URL
 
 const ORDER_API = '/api/order'
 const ORDERS_API = '/api/orders'
+const PAYMENT_API = '/api/payment'
 
 const submitOrder = (context, params) => {
   return new Promise(function(resolve, reject) {
@@ -41,4 +42,17 @@ const getOrderDetailList = (context, id, params) => {
       })
   })
 }
-export { submitOrder, getOrderList, getOrderDetailList }
+
+const paymentCredit = (context, id, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + PAYMENT_API + '/' + id + '/credit', { params: params })
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+export { submitOrder, getOrderList, getOrderDetailList, paymentCredit }
