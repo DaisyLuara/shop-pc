@@ -1,17 +1,27 @@
 <template>
-  <div class="shop-try" v-loading="setting.loading" :element-loading-text="setting.loadingText">
+  <div 
+    v-loading="setting.loading" 
+    :element-loading-text="setting.loadingText" 
+    class="shop-try">
     <div class="shop-try_steps">
-      <el-steps :active="active" finish-status="success" align-center>
-        <el-step title="基础配置"></el-step>
-        <el-step title="确认订单"></el-step>
+      <el-steps 
+        :active="active" 
+        finish-status="success" 
+        align-center>
+        <el-step title="基础配置"/>
+        <el-step title="确认订单"/>
       </el-steps>
     </div>
     <!-- 基础配置 -->
-    <div class="shop-try_content" v-if="active===0">
+    <div 
+      v-if="active===0" 
+      class="shop-try_content">
       <div class="shop-try_content-address">
         <h4 class="shop-try_content-address-title">位置</h4>
         <!-- 地址 -->
-        <el-form :inline="true" :model="shopTryForm">
+        <el-form 
+          :inline="true" 
+          :model="shopTryForm">
           <el-form-item label="区域">
             <el-select
               v-model="shopTryForm.area_id"
@@ -67,39 +77,54 @@
             <div class="shop-try_project-title">节目名称：</div>
             <div class="shop-try_project-tabs">
               <span
-                class="shop-try_project-name"
                 v-for="item in projectList"
                 :key="item.id"
                 :class="[projectKey === item.id ? 'is-active':'']"
+                class="shop-try_project-name"
                 @click="porectHandle(item.id,item.piid,item.title)"
-              >{{item.title}}</span>
+              >{{ item.title }}</span>
             </div>
           </div>
           <div class="shop-try_content-skin">
             <el-table
-              highlight-current-row
               ref="skinsTable"
               :data="tableData"
-              style="width: 100%"
               :row-style="{height:'70px'}"
               :header-cell-style="headerStyle"
+              highlight-current-row
+              style="width: 100%"
               @selection-change="handleSelectProject"
             >
-              <el-table-column type="selection" width="45"/>
-              <el-table-column prop="title" label="皮肤名称" min-width="100"></el-table-column>
-              <el-table-column prop="image" label="图标" width="150">
+              <el-table-column 
+                type="selection" 
+                width="45"/>
+              <el-table-column 
+                prop="title" 
+                label="皮肤名称" 
+                min-width="100"/>
+              <el-table-column 
+                prop="image" 
+                label="图标" 
+                width="150">
                 <template slot-scope="scope">
-                  <img :src="scope.row.image" style="width: 50%;">
+                  <img 
+                    :src="scope.row.image" 
+                    style="width: 50%;">
                 </template>
               </el-table-column>
-              <el-table-column prop="credit_price" label="价格(积分)" min-width="100"/>
+              <el-table-column 
+                prop="credit_price" 
+                label="价格(积分)" 
+                min-width="100"/>
             </el-table>
           </div>
         </div>
       </div>
     </div>
     <!-- 确认订单 -->
-    <div class="shop-try_confirm" v-if="active===1">
+    <div 
+      v-if="active===1" 
+      class="shop-try_confirm">
       <div class="shop-try_confirm-address">
         <h4 class="shop-try_confirm-address-title">所选位置</h4>
         <el-form :inline="true">
@@ -123,38 +148,59 @@
     <div class="operate-order">
       <div class="operate-order_item">
         合计:
-        <span>{{total_credit_amount}}</span>积分
+        <span>{{ total_credit_amount }}</span>积分
       </div>
       <div class="operate-orede_btn">
-        <div class="operate-order_btn-prev" @click="prev" v-if="active!==0">上一步</div>
-        <div class="operate-order_btn-next" @click="confirmOrder" v-if="active!==1"/>
-        <!-- <div class="operate-order_btn-add-shop" v-if="active===1" @click="addToCart"></div> -->
-        <div class="operate-order_btn-add-shop" v-if="active===1" @click="addToCart">加入购物车</div>
-        <!-- <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmBuyShop"></div> -->
-        <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmBuyShop">确认购买</div>
+        <div 
+          v-if="active!==0" 
+          class="operate-order_btn-prev" 
+          @click="prev">上一步</div>
+        <div 
+          v-if="active!==1" 
+          class="operate-order_btn-next" 
+          @click="confirmOrder"/>
+        <div 
+          v-if="active===1" 
+          class="operate-order_btn-add-shop" 
+          @click="addToCart">加入购物车</div>
+        <div 
+          v-if="active===1" 
+          class="operate-order_btn-confirm" 
+          @click="confirmBuyShop">确认购买</div>
       </div>
     </div>
     <!-- 付款 -->
     <el-dialog
-      title="购买道具"
       :visible.sync="dialogShop"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      title="购买道具"
       class="pay-dialog"
     >
       <el-form :model="payForm">
-        <el-form-item label="支付方式:" label-width="80px">
-          <el-radio v-model="payForm.way" :label="1">积分</el-radio>
+        <el-form-item 
+          label="支付方式:" 
+          label-width="80px">
+          <el-radio 
+            v-model="payForm.way" 
+            :label="1">积分</el-radio>
         </el-form-item>
-        <el-form-item label="支付金额:" label-width="80px">
+        <el-form-item 
+          label="支付金额:" 
+          label-width="80px">
           <span
             style="color:#db1010;font-size:16px;font-weight: 600;margin-right:10px;"
           >{{ payForm.money }}</span>
           <span style="color:#7e58cb;">积分</span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogShop = false" size="small">立即购买</el-button>
+      <div 
+        slot="footer" 
+        class="dialog-footer">
+        <el-button 
+          type="primary" 
+          size="small" 
+          @click="dialogShop = false">立即购买</el-button>
       </div>
     </el-dialog>
   </div>

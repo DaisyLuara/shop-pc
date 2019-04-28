@@ -15,19 +15,40 @@
         >新增条目</el-button>
       </div>
     </div>
-    <el-table :data="tableData" :header-cell-style="headerStyle" style="width: 100%">
-      <el-table-column prop="id" label="ID" min-width="100"/>
-      <el-table-column prop="company" label="公司名称" min-width="100">
-        <template slot-scope="scope">{{scope.row.company.name}}</template>
+    <el-table 
+      :data="tableData" 
+      :header-cell-style="headerStyle" 
+      style="width: 100%">
+      <el-table-column 
+        prop="id" 
+        label="ID" 
+        min-width="100"/>
+      <el-table-column 
+        prop="company" 
+        label="公司名称" 
+        min-width="100">
+        <template slot-scope="scope">{{ scope.row.company.name }}</template>
       </el-table-column>
-      <el-table-column prop="name" label="奖品名称" min-width="100"/>
-      <el-table-column prop="icon" label="概率" min-width="100">
-        <template slot-scope="scope">{{scope.row.pivot.rate}}</template>
+      <el-table-column 
+        prop="name" 
+        label="奖品名称" 
+        min-width="100"/>
+      <el-table-column 
+        prop="icon" 
+        label="概率" 
+        min-width="100">
+        <template slot-scope="scope">{{ scope.row.pivot.rate }}</template>
       </el-table-column>
-      <el-table-column label="操作" min-width="100">
+      <el-table-column 
+        label="操作" 
+        min-width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click="editPolicy(scope.row)">编辑</el-button>
-          <el-button size="mini" @click="deleteEntry(scope.row)">删除</el-button>
+          <el-button 
+            size="mini" 
+            @click="editPolicy(scope.row)">编辑</el-button>
+          <el-button 
+            size="mini" 
+            @click="deleteEntry(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

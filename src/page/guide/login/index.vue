@@ -12,9 +12,9 @@
     </div>
     <div class="main-login">
       <el-form
+        ref="ruleForm"
         :model="ruleForm"
         :rules="rules"
-        ref="ruleForm"
         label-width="100px"
         class="demo-ruleForm"
       >
@@ -27,7 +27,7 @@
             maxlength="11"
             auto-complete="off"
             @change="checkPhone"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item
           label="验证码"
@@ -38,7 +38,7 @@
             maxlength="4"
             auto-complete="off"
             class="input-vertify"
-          ></el-input>
+          />
           <el-button
             :disabled="nosend"
             class="vertify-btn"
@@ -51,11 +51,11 @@
         >
 
           <el-tooltip
+            :disabled="hiddentip"
             class="item"
             effect="dark"
             content="密码(password) 最少 8 个字符"
             placement="right-start"
-            :disabled="hiddentip"
           >
             <el-input
               v-model="ruleForm.pwd"
@@ -63,7 +63,7 @@
               show-message="true"
               auto-complete="off"
               type="password"
-            ></el-input>
+            />
           </el-tooltip>
 
         </el-form-item>
@@ -76,20 +76,20 @@
             minlength="8"
             auto-complete="off"
             type="password"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item
+          :rules="[
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ]"
           label="邮箱"
           prop="email"
-          :rules="[
-              { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-              { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-            ]"
         >
           <el-input
             v-model="ruleForm.email"
             auto-complete="off"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item
           label="姓名"
@@ -98,7 +98,7 @@
           <el-input
             v-model="ruleForm.name"
             auto-complete="off"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item
           label="公司"
@@ -107,7 +107,7 @@
           <el-input
             v-model="ruleForm.company"
             auto-complete="off"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item
           label="职位"
@@ -116,7 +116,7 @@
           <el-input
             v-model="ruleForm.job"
             auto-complete="off"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item>
           <el-button

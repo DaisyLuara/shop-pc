@@ -21,7 +21,9 @@
           label="公众号授权" 
           name="official">
           <div class="official">
-            <div class="official-account" @click="openWXOfficial">
+            <div 
+              class="official-account" 
+              @click="openWXOfficial">
               授权
             </div>
           </div>

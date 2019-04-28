@@ -1,19 +1,36 @@
 <template>
   <div class="account-form">
-    <img :src="IMG_URL + '/ad_shop/img/login/logo.png'" class="top-logo" @click="backGuide">
-    <img :src="IMG_URL + '/ad_shop/img/login/circle1.png'" class="circle1">
-    <img :src="IMG_URL + '/ad_shop/img/login/circle2.png'" class="circle2">
+    <img 
+      :src="IMG_URL + '/ad_shop/img/login/logo.png'" 
+      class="top-logo" 
+      @click="backGuide">
+    <img 
+      :src="IMG_URL + '/ad_shop/img/login/circle1.png'" 
+      class="circle1">
+    <img 
+      :src="IMG_URL + '/ad_shop/img/login/circle2.png'" 
+      class="circle2">
     <div class="account-form__container">
-      <el-col :xs="15" :sm="15" :md="15" :lg="15">
+      <el-col 
+        :xs="15" 
+        :sm="15" 
+        :md="15" 
+        :lg="15">
         <div class="account-form_left">
-          <img :src="IMG_URL + '/ad_shop/img/login/center.jpg'" class="center">
+          <img 
+            :src="IMG_URL + '/ad_shop/img/login/center.jpg'" 
+            class="center">
           <div class="welcome">
             <span class="line1">Welcome</span>
             <span class="line2">欢迎来到召唤宝</span>
           </div>
         </div>
       </el-col>
-      <el-col :xs="8" :sm="8" :md="8" :lg="8">
+      <el-col 
+        :xs="8" 
+        :sm="8" 
+        :md="8" 
+        :lg="8">
         <div class="account-form_right">
           <el-form
             ref="accountForm"
@@ -28,7 +45,9 @@
                 <img :src="IMG_URL + '/ad_shop/img/login/top.png'">
               </div>
             </el-form-item>
-            <el-form-item prop="account" class="account-form-item mobile">
+            <el-form-item 
+              prop="account" 
+              class="account-form-item mobile">
               <el-input
                 v-model="accountForm.account"
                 :maxlength="11"
@@ -37,7 +56,9 @@
                 placeholder="请输入用户名"
               />
             </el-form-item>
-            <el-form-item prop="password" class="account-form-item password">
+            <el-form-item 
+              prop="password" 
+              class="account-form-item password">
               <el-input
                 v-model="accountForm.password"
                 :type="setting.showPassword ? 'text' : 'password'"
@@ -62,7 +83,10 @@
               </div>
             </el-form-item>
             <el-form-item class="account-form-submit">
-              <el-button :loading="setting.submiting" class="btn-login" @click="onSubmit(type)">登入</el-button>
+              <el-button 
+                :loading="setting.submiting" 
+                class="btn-login" 
+                @click="onSubmit(type)">登入</el-button>
             </el-form-item>
           </el-form>
         </div>
