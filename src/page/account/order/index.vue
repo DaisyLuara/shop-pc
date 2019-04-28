@@ -14,89 +14,80 @@
             :inline="true">
             <el-form-item 
               label 
-              prop="name">
+              prop="no">
               <el-input 
-                v-model="filters.name" 
-                placeholder="请输入奖品名称" 
+                v-model="filters.no" 
+                placeholder="填写订单编号" 
                 clearable>
                 <i 
                   slot="prefix" 
-                  class="el-input__icon el-icon-project el-icon-same"/>
+                  class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item 
+              label 
+              prop="created_at">
+              <el-date-picker
+                v-model="filters.created_at"
+                :editable="false"
+                type="date"
+                placeholder="请选择购买时间"
+              />
+            </el-form-item>
+            <el-form-item label>
               <el-button 
                 class="el-button-success" 
-                @click="search()">搜索</el-button>
+                @click="search('filters')">搜索</el-button>
               <el-button 
                 class="el-button-cancel" 
                 @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
-        <!-- 列表 -->
+        <div class="actions-wrap">
+          <span class="label">我的订单 （ {{ pagination.total }} ）</span>
+        </div>
+        <!-- 表格 -->
         <el-table
+          ref="multipleTable"
           :data="tableData"
           :row-style="{height:'70px'}"
           :header-cell-style="headerStyle"
+          stripe
           style="width: 100%"
-          type="expand"
         >
-          <el-table-column type="expand">
-            <template slot-scope="scope">
-              <el-form 
-                label-position="left" 
-                inline 
-                class="demo-table-expand">
-                <el-form-item label="ID:">
-                  <span>{{ scope.row.id }}</span>
-                </el-form-item>
-                <el-form-item label="奖品名称:">
-                  <span>{{ scope.row.name }}</span>
-                </el-form-item>
-                <el-form-item label="剩余库存:">
-                  <span>{{ scope.row.stock }}</span>
-                </el-form-item>
-                <el-form-item label="修改时间:">
-                  <span>{{ scope.row.updated_at }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column>
           <el-table-column 
             :show-overflow-tooltip="true" 
             sortable 
-            prop="id" 
-            label="ID" 
-            width="100"/>
+            prop="no" 
+            label="订单号" 
+            min-width="90"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="name"
-            label="奖品名称"
-            min-width="100"
-          />
+            prop="created_at"
+            label="购买时间"
+            min-width="80"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="stock"
-            label="剩余库存"
+            prop="status_name"
+            label="状态"
             min-width="100"
-          />
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="updated_at"
-            label="修改时间"
-            min-width="100"
-          />
-          <el-table-column 
-            label="操作" 
-            width="100">
+          >
             <template slot-scope="scope">
-              <el-button 
-                size="small" 
-                @click="linkToEdit(scope.row)">编辑</el-button>
+              <span v-html="scope.row.status_name"/>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            width="100"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                @click="linkToEdit(scope.row)"
+              >详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -113,17 +104,22 @@
     </div>
   </div>
 </template>
+
 <script>
-import { getCouponRulesList } from "service";
+import { getOrderList } from "service";
+import moment from 'moment'
 import {
   Button,
-  Input,
   Table,
   TableColumn,
   Pagination,
   Form,
   FormItem,
-  MessageBox
+  MessageBox,
+  Select,
+  Option,
+  Input,
+  DatePicker
 } from "element-ui";
 
 export default {
@@ -131,18 +127,19 @@ export default {
     "el-table": Table,
     "el-table-column": TableColumn,
     "el-button": Button,
-    "el-input": Input,
     "el-pagination": Pagination,
     "el-form": Form,
-    "el-form-item": FormItem
+    "el-form-item": FormItem,
+    "el-input": Input,
+    "el-date-picker": DatePicker
   },
   data() {
     return {
-      headerStyle: { background: "#6b3ec2", color: "#fff" },
-      loading: true,
       filters: {
-        name: ""
+        no: null,
+        created_at: null
       },
+      headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -156,56 +153,57 @@ export default {
     };
   },
   created() {
-    this.getCouponRulesList();
+    this.getOrderList();
   },
   methods: {
-    linkToEdit(currentCoupon) {
+    linkToEdit(data){
       this.$router.push({
-        path: "/prize/list/edit/" + currentCoupon.id
-      });
+        path:'/account/order/detail/'+data.id
+      })
     },
-    getCouponRulesList() {
+    getOrderList() {
       this.setting.loading = true;
       let args = {
-        include: "company,customer",
         page: this.pagination.currentPage,
-        name: this.filters.name
+        no: this.filters.no,
+        created_at: moment(this.filters.created_at).format('YYYY-MM-DD')
       };
-      if (this.filters.name === "") {
-        delete args.name;
+      if (!this.filters.no) {
+        delete args.no;
       }
-      getCouponRulesList(this, args)
-        .then(response => {
-          this.tableData = response.data;
-          this.pagination.total = response.meta.pagination.total;
+
+      if (!this.filters.created_at) {
+        delete args.created_at;
+      }
+      getOrderList(this, args)
+        .then(res => {
+          this.tableData = res.data;
+          this.pagination.total = res.meta.pagination.total;
           this.setting.loading = false;
         })
-        .catch(error => {
+        .catch(err => {
           this.setting.loading = false;
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
         });
-    },
-    changePage(currentPage) {
-      this.pagination.currentPage = currentPage;
-      this.getCouponRulesList();
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getCouponRulesList();
+      this.getOrderList();
     },
-    search() {
+    search(formName) {
       this.pagination.currentPage = 1;
-      this.getCouponRulesList();
+      this.getOrderList();
+    },
+    changePage(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.getOrderList();
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@imgurl: "https://cdn.xingstation.cn/ad_shop/img/";
 .root {
   font-size: 14px;
   color: #5e6d82;
@@ -215,6 +213,10 @@ export default {
     padding: 30px;
 
     .item-content-wrap {
+      .icon-item {
+        padding: 10px;
+        width: 60%;
+      }
       .demo-table-expand {
         font-size: 0;
       }
@@ -227,9 +229,38 @@ export default {
         margin-bottom: 0;
         width: 50%;
       }
-      .icon-item {
+      .point-btn {
+        background: #05c99a;
+        color: #fff;
+        border-color: #05c99a;
+      }
+      .sold-out {
+        background: #ff7696;
+        color: #fff;
+        font-weight: 600;
         padding: 10px;
-        width: 50%;
+        border-radius: 10px;
+      }
+      .operating {
+        background: #05c99a;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .sold-out-expand {
+        background: #ff7696;
+        color: #fff;
+        font-weight: 600;
+        padding: 3px 5px;
+        border-radius: 5px;
+      }
+      .operating-expand {
+        background: #05c99a;
+        color: #fff;
+        font-weight: 600;
+        padding: 3px 5px;
+        border-radius: 5px;
       }
       .search-wrap {
         margin-top: 5px;
@@ -245,9 +276,6 @@ export default {
         .el-select {
           width: 200px;
         }
-        .item-input {
-          width: 230px;
-        }
         .warning {
           background: #ebf1fd;
           padding: 8px;
@@ -260,17 +288,17 @@ export default {
           }
         }
       }
-      .total-wrap {
-        margin-top: 5px;
+      .actions-wrap {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         font-size: 16px;
         align-items: center;
-        margin-bottom: 10px;
+        margin: 20px 0;
         .label {
-          font-size: 14px;
-          margin: 5px 0;
+          color: #6b3dc4;
+          font-size: 16px;
+          font-weight: 600;
         }
       }
       .pagination-wrap {

@@ -190,8 +190,7 @@ export default {
       this.templateVisible = true;
     },
     addPrizePolicy() {
-      this.templateForm.name = "";
-      this.templateForm.pid = "";
+      this.templateForm.name = this.templateForm.pid ="";
       this.templateVisible = true;
       this.title = "增加模板";
     },
