@@ -11,12 +11,12 @@
         <p class="text2">一站式召唤屏数字化服务集成平台</p>
         <div class="input-mobile">
           <input
-            type="text"
             v-model="mobile"
+            type="text"
             maxlength="11"
             placeholder="输入手机号码"
-            @change="checkPhone"
             class="mobile"
+            @change="checkPhone"
           >
           <button
             class="sample"
@@ -31,8 +31,8 @@
       <h4>营销运营从未如此轻松有效</h4>
       <el-row :gutter="20">
         <el-col
-          :span="6"
           v-for="item in iconList"
+          :span="6"
           :key="item.id"
         >
           <div class="advantage">
@@ -40,8 +40,8 @@
               :src="item.src"
               class="ad-icon"
             >
-            <p class="p1">{{item.text1}}</p>
-            <p class="p2">{{item.text2}}</p>
+            <p class="p1">{{ item.text1 }}</p>
+            <p class="p2">{{ item.text2 }}</p>
           </div>
         </el-col>
       </el-row>
@@ -64,13 +64,13 @@
             <img :src="item">
           </swiper-slide>
           <div
-            class="swiper-button-next"
             slot="button-next"
-          ></div>
+            class="swiper-button-next"
+          />
           <div
-            class="swiper-button-prev"
             slot="button-prev"
-          ></div>
+            class="swiper-button-prev"
+          />
         </swiper>
       </div>
       <swiper
@@ -105,12 +105,12 @@
         </div>
         <div class="login-form">
           <input
-            type="text"
             v-model="mobile"
+            type="text"
             maxlength="11"
             placeholder="输入手机号码"
-            @change="checkPhone"
             class="mobile"
+            @change="checkPhone"
           >
           <button
             class="submit"

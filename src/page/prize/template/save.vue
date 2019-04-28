@@ -3,7 +3,10 @@
     <div class="account-wrap">
       <div class="item-info">
         <div class="prize-title">{{ policyId ? '子条目修改' : '子条目新增' }}</div>
-        <el-form ref="policyForm" :model="policyForm" label-width="180px">
+        <el-form 
+          ref="policyForm" 
+          :model="policyForm" 
+          label-width="180px">
           <el-form-item
             :rules="[{ required: true, message: '请选择公司名称', trigger: 'submit'}]"
             label="公司名称"
@@ -50,10 +53,15 @@
             label="概率"
             prop="rate"
           >
-            <el-input v-model="policyForm.rate" placeholder="请填写概率" clearable/>
+            <el-input 
+              v-model="policyForm.rate" 
+              placeholder="请填写概率" 
+              clearable/>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit('policyForm')">保存</el-button>
+            <el-button 
+              type="primary" 
+              @click="submit('policyForm')">保存</el-button>
             <el-button @click="back">返回</el-button>
           </el-form-item>
         </el-form>

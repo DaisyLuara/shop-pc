@@ -10,24 +10,24 @@
     <div class="product-wrap_content">
       <div class="product-wrap_content-tabs">
         <div
-          class="product-wrap_content-tabs-item"
           v-for="item in menu"
           :class="[tabKey === item.id ? 'is-active':'']"
           :key="item.id"
+          class="product-wrap_content-tabs-item"
           @click="tabHandle(item.id)"
         >{{ item.name }}</div>
       </div>
       <div class="product-wrap_content-detail">
         <div
-          class="product-wrap_content-detail-item"
           v-for="(item,index) in productData"
           :key="item.id"
+          class="product-wrap_content-detail-item"
         >
           <div class="product-wrap_project-name-img">
             <div class="product-wrap_project-img">
               <img :src="item.project ? item.project.image:''">
             </div>
-            <h3 class="product-wrap_project-name">{{item.name}}</h3>
+            <h3 class="product-wrap_project-name">{{ item.name }}</h3>
             <p>{{ item.project?item.project.description:'' }}</p>
           </div>
           <div class="product-wrap_project-info">
@@ -46,11 +46,13 @@
             </div>
           </div>
           <div class="product-wrap-project-address">
-            <el-form :model="addressFormArr[index].addressForm" :ref="'addressForm_'+index">
+            <el-form 
+              :model="addressFormArr[index].addressForm" 
+              :ref="'addressForm_'+index">
               <el-form-item
+                :rules="[{ required: true, message: '区域不能为空'}]"
                 label="区域"
                 prop="area_id"
-                :rules="[{ required: true, message: '区域不能为空'}]"
                 label-width="100px"
               >
                 <el-select
@@ -60,17 +62,17 @@
                   @change="areaHandle($event,index)"
                 >
                   <el-option
+                    v-for="area in areaList"
                     :label="area.name"
                     :value="area.id"
                     :key="area.id"
-                    v-for="area in areaList"
                   />
                 </el-select>
               </el-form-item>
               <el-form-item
+                :rules="[{ required: true, message: '场地不能为空'}]"
                 label="场地"
                 prop="market_id"
-                :rules="[{ required: true, message: '场地不能为空'}]"
                 label-width="100px"
               >
                 <el-select
@@ -88,9 +90,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item
+                :rules="[{ required: true, message: '点位不能为空'}]"
                 label="点位"
                 prop="point_id"
-                :rules="[{ required: true, message: '点位不能为空'}]"
                 label-width="100px"
               >
                 <el-select

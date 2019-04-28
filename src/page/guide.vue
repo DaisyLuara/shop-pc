@@ -15,7 +15,7 @@
             :key="item.id"
             @click="handleTab(item)"
           >
-            <a :class="item.class">{{item.name}}</a>
+            <a :class="item.class">{{ item.name }}</a>
           </li>
           <li v-if="loginStatus">
             <div
@@ -42,7 +42,7 @@
       </div>
       <div class="myrecord">
         沪ICP备 17045724号-2
-        <i class="el-icon-police"></i> 沪公网安备 31011502008032号
+        <i class="el-icon-police"/> 沪公网安备 31011502008032号
       </div>
     </div>
   </div>

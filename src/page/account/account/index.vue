@@ -9,7 +9,9 @@
       <!-- 商户信息 -->
       <div class="account-details">
         <div class="account-content">
-          <div v-show="!editName" class="account-item">
+          <div 
+            v-show="!editName" 
+            class="account-item">
             <div class="account-item-title">公司名称</div>
             <div class="account-item-content">
               <label class="icon-v1">
@@ -18,9 +20,13 @@
               <div class="text">{{ name }}</div>
             </div>
           </div>
-          <div v-show="editName" class="account-item">
+          <div 
+            v-show="editName" 
+            class="account-item">
             <div class="account-item-title">公司名称：</div>
-            <el-input v-model="company_name" class="item-input"/>
+            <el-input 
+              v-model="company_name" 
+              class="item-input"/>
             <el-button
               type="primary"
               size="mini"
@@ -60,9 +66,18 @@
           <div class="grade-wrap">
             <svg class="svg-gradient">
               <defs>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:rgb(3,184,203);stop-opacity:1"></stop>
-                  <stop offset="100%" style="stop-color:rgb(190,255,63);stop-opacity:1"></stop>
+                <linearGradient 
+                  id="grad1" 
+                  x1="0%" 
+                  y1="0%" 
+                  x2="100%" 
+                  y2="0%">
+                  <stop 
+                    offset="0%" 
+                    style="stop-color:rgb(3,184,203);stop-opacity:1"/>
+                  <stop 
+                    offset="100%" 
+                    style="stop-color:rgb(190,255,63);stop-opacity:1"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -86,17 +101,21 @@
             <label class="icon-v1">
               <img :src="IMG_URL+'ad_shop/img/account/v1.png'">
             </label>
-            <div class="text">{{internal_name}}</div>
+            <div class="text">{{ internal_name }}</div>
           </div>
         </div>
-        <div v-show="!formShow" class="account-password-warp">
+        <div 
+          v-show="!formShow" 
+          class="account-password-warp">
           <div class="account-item-content">
             <label class="icon-v1">
               <img :src="IMG_URL+'ad_shop/img/account/v4.png'">
             </label>
             <div class="text">
               修改密码
-              <a class="icon-v2" @click="modifyPassword">
+              <a 
+                class="icon-v2" 
+                @click="modifyPassword">
                 <img :src="IMG_URL+'ad_shop/img/account/v2.png'">
               </a>
             </div>
@@ -112,7 +131,9 @@
           label-position="right"
           label-width="80px"
         >
-          <el-form-item label="新密码" prop="newPass">
+          <el-form-item 
+            label="新密码" 
+            prop="newPass">
             <el-input
               v-model="passwordForm.newPass"
               type="password"
@@ -120,7 +141,9 @@
               class="item-input"
             />
           </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
+          <el-form-item 
+            label="确认密码" 
+            prop="checkPass">
             <el-input
               v-model="passwordForm.checkPass"
               type="password"
@@ -134,7 +157,9 @@
               class="el-button-success"
               @click="submitForm('passwordForm')"
             >提交</el-button>
-            <el-button class="el-button-cancel" @click="resetForm('passwordForm')">取消</el-button>
+            <el-button 
+              class="el-button-cancel" 
+              @click="resetForm('passwordForm')">取消</el-button>
           </el-form-item>
         </el-form>
       </div>

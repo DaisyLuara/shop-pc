@@ -39,8 +39,8 @@
               :hide-timestamp="true"
               :class="activity.class"
             >
-              <p class="text1">{{activity.timestamp}}</p>
-              <p class="text2">{{activity.content}}</p>
+              <p class="text1">{{ activity.timestamp }}</p>
+              <p class="text2">{{ activity.content }}</p>
             </el-timeline-item>
           </el-timeline>
         </el-main>

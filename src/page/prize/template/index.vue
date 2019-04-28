@@ -6,19 +6,30 @@
   >
     <!-- 搜索 -->
     <div class="search-wrap">
-      <el-form ref="searchForm" :model="searchForm" :inline="true">
-        <el-form-item label prop="name">
+      <el-form 
+        ref="searchForm" 
+        :model="searchForm" 
+        :inline="true">
+        <el-form-item 
+          label 
+          prop="name">
           <el-input
             v-model="searchForm.name"
             placeholder="请输入奖品模板名称"
             clearable
             class="el-search-input"
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
           </el-input>
         </el-form-item>
-        <el-button class="el-button-success" @click="search">搜索</el-button>
-        <el-button class="el-button-cancel" @click="resetSearch('searchForm')">重置</el-button>
+        <el-button 
+          class="el-button-success" 
+          @click="search">搜索</el-button>
+        <el-button 
+          class="el-button-cancel" 
+          @click="resetSearch('searchForm')">重置</el-button>
       </el-form>
     </div>
     <div class="actions-wrap">
@@ -34,13 +45,28 @@
       </div>
     </div>
 
-    <el-table :data="tableData" :header-cell-style="headerStyle" style="width: 100%">
-      <el-table-column prop="id" label="ID" min-width="100"/>
-      <el-table-column prop="name" label="模版名称" min-width="100"/>
-      <el-table-column label="操作" min-width="100">
+    <el-table 
+      :data="tableData" 
+      :header-cell-style="headerStyle" 
+      style="width: 100%">
+      <el-table-column 
+        prop="id" 
+        label="ID" 
+        min-width="100"/>
+      <el-table-column 
+        prop="name" 
+        label="模版名称" 
+        min-width="100"/>
+      <el-table-column 
+        label="操作" 
+        min-width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click="editPrizePolicy(scope.row)">编辑</el-button>
-          <el-button size="mini" @click="childPrizePolicy(scope.row)">子条目</el-button>
+          <el-button 
+            size="mini" 
+            @click="editPrizePolicy(scope.row)">编辑</el-button>
+          <el-button 
+            size="mini" 
+            @click="childPrizePolicy(scope.row)">子条目</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,17 +80,30 @@
       />
     </div>
     <!-- 新增，修改 -->
-    <el-dialog :title="title" :visible.sync="templateVisible" @close="dialogClose">
-      <el-form v-loading="loading" ref="templateForm" :model="templateForm" label-width="150px">
+    <el-dialog 
+      :title="title" 
+      :visible.sync="templateVisible" 
+      @close="dialogClose">
+      <el-form 
+        v-loading="loading" 
+        ref="templateForm" 
+        :model="templateForm" 
+        label-width="150px">
         <el-form-item
           :rules="[{ type: 'string', required: true, message: '请输入模板名', trigger: 'submit' }]"
           label="模板名"
           prop="name"
         >
-          <el-input v-model="templateForm.name" placeholder="请输入模板名" class="item-submit-input"/>
+          <el-input 
+            v-model="templateForm.name" 
+            placeholder="请输入模板名" 
+            class="item-submit-input"/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="submit('templateForm')">完成</el-button>
+          <el-button 
+            type="primary" 
+            size="small" 
+            @click="submit('templateForm')">完成</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
