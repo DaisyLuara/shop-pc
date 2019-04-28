@@ -3,7 +3,7 @@
     <div class="product-warp_head">
       <div class="product-warp_head-title">
         <h3 class="product-warp_head-title-item">全套解决方案</h3>
-        <div class="product-warp_head-title-item-info">*****</div>
+        <div class="product-warp_head-title-item-info">提供一站式“互联网+”转型服务，为客户提供全方位的解决方案</div>
       </div>
       <img :src="img_url+'ad_guide/indextit.jpg'">
     </div>
@@ -106,13 +106,13 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label-width="0">
+              <el-form-item label-width="100px">
                 <el-button
                   type="primary"
                   size="small"
-                  style="width:90%;border: none;
-      border-radius: 20px;
-      background: linear-gradient(to right, #007ccd, #00d1cf, #00f5d1);"
+                  style="border: none;width:250px;
+                  border-radius: 20px;
+                  background: linear-gradient(to right, #007ccd, #00d1cf, #00f5d1);"
                   @click="submit(index,item.package_id)"
                 >立即试用</el-button>
               </el-form-item>
@@ -312,7 +312,7 @@ export default {
       margin-top: 60px;
       .product-wrap_content-tabs-item {
         padding: 15px 30px;
-        margin-right: 40px;
+        margin-right: 50px;
         cursor: pointer;
         color: #7e58cc;
         font-weight: 500;
@@ -337,19 +337,14 @@ export default {
       flex-direction: column;
       margin-top: 20px;
       .product-wrap_content-detail-item {
-        margin-right: auto;
-        margin-left: auto;
         margin-bottom: 20px;
-        min-width: 1200px;
-        max-width: 1200px;
+        padding: 30px;
         display: flex;
         flex-direction: row;
-        border: 1px solid #ccc;
+        background: #f9f9f9;
         .product-wrap_project-name-img {
           padding: 20px;
           width: 40%;
-          background: #f9f9fa;
-          border-right: 1px solid #ccc;
           .product-wrap_project-name {
             margin-top: 15px;
             color: #444;
@@ -358,14 +353,12 @@ export default {
           }
           .product-wrap_project-img {
             img {
-              width: 45%;
-              // width: 100%;
+              width: 30%;
             }
           }
         }
         .product-wrap_project-info {
           padding: 20px;
-          border-right: 1px solid #ccc;
           width: 50%;
           color: #444;
           .product-wrap_desc {
@@ -384,8 +377,10 @@ export default {
         .product-wrap-project-address {
           padding: 20px;
           width: 40%;
-          background: #f9f9fa;
           font-size: 18px;
+          .el-select{
+            width: 250px;
+          }
           .el-form-item__label {
             font-weight: 600;
           }
@@ -404,12 +399,5 @@ export default {
     font-size: 18px;
     text-align: left;
   }
-  // .el-input__inner {
-  //   background-image: url("@{img}select_border.png");
-  //   background-size: 100% auto;
-  //   background-position: center;
-  //   background-repeat: no-repeat;
-  //   border: none;
-  // }
 }
 </style>

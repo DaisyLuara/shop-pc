@@ -154,6 +154,7 @@ export default {
         });
       }
       this.itemsArgs = items;
+      return this.itemsArgs;
     },
     getCartTotals() {
       this.getOrderArgs();
@@ -175,7 +176,9 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.totalPrices = val.length;
-      this.getCartTotals();
+      if(val.length !==0){
+        this.getCartTotals();
+      }
     },
     handleDelete(data) {
       let id = data.product_sku_id;
@@ -229,10 +232,10 @@ export default {
         });
     },
     submit() {
-      this.getOrderArgs();
       let args = {
-        items: this.itemsArgs
+        items: this.getOrderArgs()
       };
+      console.log(this.itemsArgs);
       submitOrder(this, args)
         .then(res => {
           this.payForm.money = res.total_credit_amount;
@@ -340,14 +343,14 @@ export default {
 }
 </style>
 <style lang="less">
-.cart-list {
-  .cart-table {
-    .cell {
-      text-align: center;
-      .el-checkbox__inner {
-        border-radius: 50%;
-      }
-    }
-  }
-}
+// .cart-list {
+//   .cart-table {
+//     .cell {
+//       text-align: center;
+//       .el-checkbox__inner {
+//         border-radius: 50%;
+//       }
+//     }
+//   }
+// }
 </style>
