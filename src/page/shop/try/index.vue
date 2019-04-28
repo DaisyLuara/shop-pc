@@ -219,7 +219,7 @@ export default {
         market_id: null,
         point_id: null
       },
-      orderId:null,
+      orderId: null,
       active: 0,
       selectedSkins: [],
       finallyActive: 1,
@@ -263,7 +263,7 @@ export default {
         let { package_id, area_id, market_id, point_id } = JSON.parse(product);
         this.package_id = package_id;
         this.shopTryForm.area_id = area_id;
-
+        
         await this.areaHandle(area_id);
 
         this.shopTryForm.market_id = market_id;
@@ -279,17 +279,21 @@ export default {
         console.log(e);
       }
     },
-
-    payment(){
-      paymentCredit(this,this.orderId).then(res=>{
-        localStorage.removeItem("product");
-        this.dialogShop = false
-      }).catch(err=>{
-        this.$message({
-          message: err.response.data.message,
-          type: "error"
+    payment() {
+      paymentCredit(this, this.orderId)
+        .then(res => {
+          localStorage.removeItem("product");
+          this.$router.push({
+            path: "/account/order"
+          });
+          this.dialogShop = false;
+        })
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "error"
+          });
         });
-      })
     },
     getCartTotals() {
       this.getOrderArgs();
@@ -452,11 +456,10 @@ export default {
       };
       submitOrder(this, args)
         .then(res => {
-          let {id,total_credit_amount} = res
+          let { id, total_credit_amount } = res;
           this.payForm.money = total_credit_amount;
           this.dialogShop = true;
-          this.orderId  = id
-          
+          this.orderId = id;
         })
         .catch(err => {
           this.$message({

@@ -149,6 +149,9 @@ export default {
       paymentCredit(this, this.orderId)
         .then(res => {
           this.dialogShop = false;
+          this.$router.push({
+            path:'/account/order'
+          })
         })
         .catch(err => {
           this.$message({
