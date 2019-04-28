@@ -27,13 +27,11 @@
             <div class="product-wrap_project-img">
               <img :src="item.project ? item.project.image:''">
             </div>
-            <h3 class="product-wrap_project-name">{{ item.name }}</h3>
-            <p>{{ item.project?item.project.description:'' }}</p>
+            <h3 class="product-wrap_project-name">{{ item.project?item.project.title:'' }}</h3>
           </div>
           <div class="product-wrap_project-info">
             <div class="product-wrap_desc">
               <h4>扩展皮肤: {{ item.skin?item.skin.title:'' }}</h4>
-              <p>{{ item.skin?item.skin.description:'' }}</p>
             </div>
             <div class="product-wrap_desc">
               <h4>运行设备: {{ item.project?item.project.device:'' }}</h4>
@@ -364,7 +362,7 @@ export default {
           width: 50%;
           color: #444;
           .product-wrap_desc {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
           }
           h4 {
             font-size: 18px;
@@ -380,7 +378,7 @@ export default {
           padding: 20px;
           width: 40%;
           font-size: 18px;
-          .el-select{
+          .el-select {
             width: 250px;
           }
           .el-form-item__label {
