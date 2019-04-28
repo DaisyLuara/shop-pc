@@ -9,7 +9,7 @@
       <div class="menu-wrap">
         <div class="menu-wrap_shop">
           <span style="font-weight:600;">积分:</span>
-          <img :src="group_icon" style="width: 12%;"/>
+          <img :src="group_icon" style="width: 12%;">
           <span>{{ group_name }}</span>
           <span>{{ p_credits }}</span>
         </div>
@@ -88,7 +88,7 @@ export default {
       noLogo: true,
       group_name: "",
       p_credits: 0,
-      group_icon:''
+      group_icon: ""
     };
   },
   computed: {
@@ -180,10 +180,10 @@ export default {
     getCreditTotal() {
       getCreditTotal(this)
         .then(res => {
-          let { group_name, p_credits,group_icon } = res;
+          let { group_name, p_credits, group_icon } = res;
           this.group_name = group_name;
           this.p_credits = p_credits;
-          this.group_icon = group_icon
+          this.group_icon = group_icon;
         })
         .catch(err => {});
     },
