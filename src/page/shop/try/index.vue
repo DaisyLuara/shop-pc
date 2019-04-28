@@ -86,7 +86,7 @@
               @selection-change="handleSelectProject"
             >
               <el-table-column type="selection" width="45"/>
-              <el-table-column prop="title" label="皮肤名称" min-width="150"></el-table-column>
+              <el-table-column prop="title" label="皮肤名称" min-width="100"></el-table-column>
               <el-table-column prop="image" label="图标" width="150">
                 <template slot-scope="scope">
                   <img :src="scope.row.image" style="width: 50%;">
@@ -128,8 +128,10 @@
       <div class="operate-orede_btn">
         <div class="operate-order_btn-prev" @click="prev" v-if="active!==0">上一步</div>
         <div class="operate-order_btn-next" @click="confirmOrder" v-if="active!==1"/>
-        <div class="operate-order_btn-add-shop" v-if="active===1" @click="addToCart"></div>
-        <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmBuyShop"></div>
+        <!-- <div class="operate-order_btn-add-shop" v-if="active===1" @click="addToCart"></div> -->
+        <div class="operate-order_btn-add-shop" v-if="active===1" @click="addToCart">加入购物车</div>
+        <!-- <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmBuyShop"></div> -->
+        <div class="operate-order_btn-confirm" v-if="active===1" @click="confirmBuyShop">确认购买</div>
       </div>
     </div>
     <!-- 付款 -->
@@ -494,7 +496,9 @@ export default {
       this.selectedSkins.map(r => {
         this.skins.push(r.id);
       });
-      this.getCartTotals();
+      if(val.length!==0){
+        this.getCartTotals();
+      }
     },
     addToCart(data) {
       this.getOrderArgs();
@@ -675,15 +679,21 @@ export default {
       .operate-order_btn-prev,
       .operate-order_btn-next,
       .operate-order_btn-add-shop {
-        // color: #7e58cb;
         margin-right: 10px;
-        padding: 10px 20px;
+        padding: 0 20px;
         border-radius: 5px;
         font-weight: 700;
-        // border: 1px solid #7e58cb;
         width: 150px;
-        height: 40px;
-        font-size: 16px;
+        height: 35px;
+        font-size: 14px;
+      }
+      .operate-order_btn-prev,.operate-order_btn-add-shop{
+        border: 1px solid #00d1cf;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #00d1cf;
       }
       .operate-order_btn-next {
         background-image: url("@{img}confirm_order.png");
@@ -693,27 +703,25 @@ export default {
       }
       .operate-order_btn-add-shop {
         width: 150px;
-        height: 40px;
-        background-image: url("@{img}btn_goto_cart.png");
-        background-size: 100% auto;
-        background-position: center;
-        background-repeat: no-repeat;
+        height: 35px;
+        // background-image: url("@{img}btn_goto_cart.png");
+        // background-size: 100% auto;
+        // background-position: center;
+        // background-repeat: no-repeat;
       }
       .operate-order_btn-confirm {
         width: 150px;
-        height: 40px;
-        // color: #fff;
-        margin-right: 10px;
-        padding: 10px 20px;
+        height: 35px;
+        padding: 0px 20px;
         border-radius: 5px;
         font-weight: 700;
-        // border: 1px solid #7e58cb;
-        font-size: 16px;
-        // background: #7e58cb;
-        background-image: url("@{img}confirm_order.png");
-        background-size: 100% auto;
-        background-position: center;
-        background-repeat: no-repeat;
+        font-size: 14px;
+        background: linear-gradient(to right, #007ccd, #00d1cf, #00f5d1);
+        color: #fff;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
@@ -721,14 +729,6 @@ export default {
 </style>
 <style lang="less">
 @img: "https://cdn.xingstation.cn/ad_guide/";
-.shop-try_content-project-name-content {
-  .cell {
-    // text-align: center;
-    .el-checkbox__inner {
-      border-radius: 50%;
-    }
-  }
-}
 .pay-dialog {
   .el-dialog {
     width: 40%;
