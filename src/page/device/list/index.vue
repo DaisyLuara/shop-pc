@@ -240,17 +240,18 @@ export default {
   methods: {
     getDeviceList() {
       this.setting.loading = true;
+      let {point_name,screen_status} = this.filters
       let args = {
         include: "point,project",
         page: this.pagination.currentPage,
-        point_name: this.filters.point_name,
-        screen_status: this.filters.screen_status
+        point_name: point_name,
+        screen_status: screen_status
       };
-      if (this.filters.point_name === "") {
+      if (point_name === "") {
         delete args.point_name;
       }
 
-      if (this.filters.screen_status === '') {
+      if (screen_status === '') {
         delete args.screen_status;
       }
       getDeviceList(this, args)

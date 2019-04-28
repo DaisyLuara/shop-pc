@@ -117,7 +117,7 @@ import {
   RadioGroup,
   Radio
 } from "element-ui";
-import  moment  from "moment";
+import moment from "moment";
 
 export default {
   components: {
@@ -164,12 +164,20 @@ export default {
       prizeDetails(this, this.PrizeID, args)
         .then(res => {
           this.setting.loading = false;
-          this.prizeForm.name = res.name;
-          this.prizeForm.stock = res.stock;
-          this.prizeForm.description = res.description;
-          this.prizeForm.start_date = res.start_date;
-          this.prizeForm.end_date = res.end_date;
-          this.prizeForm.is_active = res.is_active;
+          let {
+            name,
+            stock,
+            description,
+            start_date,
+            end_date,
+            is_active
+          } = res;
+          this.prizeForm.name = name;
+          this.prizeForm.stock = stock;
+          this.prizeForm.description = description;
+          this.prizeForm.start_date = start_date;
+          this.prizeForm.end_date = end_date;
+          this.prizeForm.is_active = is_active;
         })
         .catch(err => {
           this.setting.loading = false;

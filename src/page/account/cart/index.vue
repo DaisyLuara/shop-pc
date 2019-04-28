@@ -262,7 +262,6 @@ export default {
       let args = {
         items: this.getOrderArgs()
       };
-      console.log(this.itemsArgs);
       submitOrder(this, args)
         .then(res => {
           this.payForm.money = res.total_credit_amount;

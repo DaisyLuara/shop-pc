@@ -222,7 +222,6 @@ export default {
       };
       getPrizePolicyEntryList(this, this.pid, args)
         .then(response => {
-          console.log(response);
           this.tableData = response.data;
           this.pagination.total = response.meta.pagination.total;
           this.setting.loading = false;

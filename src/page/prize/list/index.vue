@@ -8,35 +8,29 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form
-            ref="filters"
-            :model="filters"
-            :inline="true"
-          >
-            <el-form-item
-              label
-              prop="name"
-            >
-              <el-input
-                v-model="filters.name"
-                placeholder="请输入奖品名称"
-                clearable
-              >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-project el-icon-same"
-                />
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="name">
+              <el-input 
+                v-model="filters.name" 
+                placeholder="请输入奖品名称" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-project el-icon-same"/>
               </el-input>
             </el-form-item>
             <el-form-item>
-              <el-button
-                class="el-button-success"
-                @click="search()"
-              >搜索</el-button>
-              <el-button
-                class="el-button-cancel"
-                @click="resetSearch('filters')"
-              >重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search()">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -50,11 +44,10 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form
-                label-position="left"
-                inline
-                class="demo-table-expand"
-              >
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
@@ -70,13 +63,12 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="id"
-            label="ID"
-            width="100"
-          />
+          <el-table-column 
+            :show-overflow-tooltip="true" 
+            sortable 
+            prop="id" 
+            label="ID" 
+            width="100"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -98,15 +90,13 @@
             label="修改时间"
             min-width="100"
           />
-          <el-table-column
-            label="操作"
-            width="100"
-          >
+          <el-table-column 
+            label="操作" 
+            width="100">
             <template slot-scope="scope">
-              <el-button
-                size="small"
-                @click="linkToEdit(scope.row)"
-              >编辑</el-button>
+              <el-button 
+                size="small" 
+                @click="linkToEdit(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>

@@ -71,15 +71,13 @@
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="status"
+            prop="status_name"
             label="状态"
             min-width="100"
           >
-            <!-- <template slot-scope="scope">
-              <span
-                :class="(scope.row.screenStatus === 0) ? 'sold-out' : 'operating'"
-              >{{ scope.row.screenStatus === 0 ? '关闭': '开启' }}</span>
-            </template> -->
+            <template slot-scope="scope">
+              <span v-html="scope.row.status_name"/>
+            </template>
           </el-table-column>
           <el-table-column
             label="操作"
@@ -109,7 +107,7 @@
 
 <script>
 import { getOrderList } from "service";
-
+import moment from 'moment'
 import {
   Button,
   Table,
@@ -166,17 +164,16 @@ export default {
     getOrderList() {
       this.setting.loading = true;
       let args = {
-        // include: "items.product,items.productSku",
         page: this.pagination.currentPage,
         no: this.filters.no,
-        created_at: this.filters.created_at
+        created_at: moment(this.filters.created_at).format('YYYY-MM-DD')
       };
       if (!this.filters.no) {
         delete args.no;
       }
 
       if (!this.filters.created_at) {
-        delete args.status;
+        delete args.created_at;
       }
       getOrderList(this, args)
         .then(res => {

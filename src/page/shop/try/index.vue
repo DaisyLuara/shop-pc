@@ -362,9 +362,10 @@ export default {
       getProductProjects(this, this.package_id)
         .then(res => {
           this.projectList = res.data;
-          this.projectKey = this.projectList[0].id;
-          this.project_piid = this.projectList[0].piid;
-          this.project_name = this.projectList[0].title;
+          let { id, piid, title } = this.projectList[0];
+          this.projectKey = id;
+          this.project_piid = piid;
+          this.project_name = title;
           this.getProjectSkins();
           this.setting.loading = false;
         })
@@ -385,8 +386,7 @@ export default {
       this.getOpenPoints(val, index);
     },
     areaHandle(val) {
-      this.shopTryForm.market_id = null;
-      this.shopTryForm.point_id = null;
+      this.shopTryForm.market_id = this.shopTryForm.point_id = null;
       this.getOpenMarkets(val);
     },
     pointHandle(val) {
@@ -452,27 +452,28 @@ export default {
         return;
       }
       this.active++;
+      let { area_id, market_id, point_id } = this.shopTryForm;
       this.confirmInfo.skins_name = [];
       this.selectedSkins.map(r => {
         this.confirmInfo.skins_name.push(r.title);
       });
 
       this.areaList.find(area => {
-        if (area.id === this.shopTryForm.area_id) {
+        if (area.id === area_id) {
           this.confirmInfo.area_name = area.name;
           return;
         }
       });
 
       this.marketList.find(market => {
-        if (market.id === this.shopTryForm.market_id) {
+        if (market.id === market_id) {
           this.confirmInfo.market_name = market.name;
           return;
         }
       });
 
       this.pointList.find(point => {
-        if (point.id === this.shopTryForm.point_id) {
+        if (point.id === point_id) {
           this.confirmInfo.point_name = point.name;
           return;
         }
@@ -542,7 +543,7 @@ export default {
       this.selectedSkins.map(r => {
         this.skins.push(r.id);
       });
-      if(val.length!==0){
+      if (val.length !== 0) {
         this.getCartTotals();
       }
     },
@@ -733,7 +734,8 @@ export default {
         height: 35px;
         font-size: 14px;
       }
-      .operate-order_btn-prev,.operate-order_btn-add-shop{
+      .operate-order_btn-prev,
+      .operate-order_btn-add-shop {
         border: 1px solid #00d1cf;
         border-radius: 20px;
         display: flex;
