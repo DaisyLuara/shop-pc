@@ -131,9 +131,9 @@
               <el-button 
                 size="small" 
                 @click="modifyEditName(scope.row)">更换节目</el-button>
-              <el-button 
+              <!-- <el-button 
                 size="small" 
-                @click="modifyEditTime(scope.row)">更改时间</el-button>
+                @click="modifyEditTime(scope.row)">更改时间</el-button> -->
             </template>
           </el-table-column>
         </el-table>
