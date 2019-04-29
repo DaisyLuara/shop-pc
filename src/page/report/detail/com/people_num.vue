@@ -164,7 +164,9 @@
               <el-form-item label="围观">
                 <span>{{ scope.row.looknum }}</span>
               </el-form-item>
-              <el-form-item label="活跃"/>
+              <el-form-item label="活跃">
+                <span>{{ scope.row.playernum7 }}</span>
+              </el-form-item>
               <el-form-item label="铁杆">
                 <span>{{ scope.row.playernum }}</span>
               </el-form-item>
@@ -209,20 +211,18 @@
         <el-table-column 
           :show-overflow-tooltip="true" 
           label="活跃" 
-          min-width="90">
-          <template slot-scope="scope">暂无</template>
-        </el-table-column>
+          prop="playernum7" 
+          min-width="90"/>
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          label="铁杆" 
+          prop="playernum" 
+          min-width="90"/>
         <el-table-column 
           :show-overflow-tooltip="true" 
           label="拉新" 
           prop="lovenum" 
           min-width="90"/>
-        <el-table-column 
-          :show-overflow-tooltip="true" 
-          label="平均有效时长" 
-          min-width="90">
-          <template slot-scope="scope">暂无</template>
-        </el-table-column>
         <el-table-column 
           :show-overflow-tooltip="true" 
           label="输出" 
