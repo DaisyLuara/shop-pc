@@ -219,7 +219,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.totalPrices = val.length;
+      // this.totalPrices = val.length;
       if (val.length !== 0) {
         this.getCartTotals();
       }
