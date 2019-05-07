@@ -1,10 +1,5 @@
 <template>
   <div>
-    <!-- <div class="topbar">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>图片管理</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>-->
     <div
       v-loading="setting.loading"
       :element-loading-text="setting.loadingText"
@@ -13,10 +8,7 @@
       <div class="grouping-image-wrap">
         <div class="image-warp">
           <div class="image-title-group">
-            <el-checkbox 
-              v-model="checkbox.allChecked" 
-              size="small" 
-              @change="allCheckedHandle">全选</el-checkbox>
+            <!-- <el-checkbox v-model="checkbox.allChecked" size="small" @change="allCheckedHandle">全选</el-checkbox>
             <el-popover
               ref="delete-image"
               v-model="mediaImage.mediaDelete"
@@ -27,19 +19,14 @@
               <p>确定删除该图片?</p>
               <p class="hint">若删除，不会对目前已使用该图片的相关业务造成影响。</p>
               <div class="btn-wrap">
-                <el-button 
-                  type="primary" 
-                  size="small" 
-                  @click="imageDeleteHandle">确定</el-button>
+                <el-button type="primary" size="small" @click="imageDeleteHandle">确定</el-button>
                 <el-button
                   size="small"
                   @click="mediaImage.mediaDelete = false,setModelFlag(mediaImage.mediaList)"
                 >取消</el-button>
               </div>
             </el-popover>
-            <a 
-              v-popover:delete-image 
-              :class="{ haveChooseImage : !mediaImage.disabledFlag }">删除</a>
+            <a v-popover:delete-image :class="{ haveChooseImage : !mediaImage.disabledFlag }">删除</a>-->
           </div>
           <!-- 图片列表 -->
           <ul class="image-list">
@@ -47,9 +34,7 @@
               v-show="mediaImage.mediaList.length == 0"
               class="hint-message"
             >暂无数据，可点击左下角“上传图片”按钮添加</div>
-            <li 
-              v-for="(imageItem, index) in mediaImage.mediaList" 
-              :key="imageItem.id">
+            <li v-for="(imageItem, index) in mediaImage.mediaList" :key="imageItem.id">
               <img
                 :src="imageItem.url"
                 class="image-file"
@@ -57,11 +42,12 @@
               >
               <div class="image-size">{{ imageItem.width }} * {{ imageItem.height }}</div>
               <p class="item-text">
-                <el-checkbox
+                <!-- <el-checkbox
                   v-model="checkbox.checkboxList[index].flag"
                   size="small"
                   @change="checkBoxChange(index,imageItem.id)"
-                >{{ imageItem.name }}</el-checkbox>
+                >{{ imageItem.name }}</el-checkbox>-->
+                {{ imageItem.name.length>13 ? imageItem.name.substring(0,12)+'...':imageItem.name }}
               </p>
               <div class="image-operation">
                 <!-- 编辑名称 -->
@@ -90,7 +76,7 @@
                   <a slot="reference">重命名</a>
                 </el-popover>
                 <!-- 删除 -->
-                <el-popover
+                <!-- <el-popover
                   v-model="operate.deletePopoverArray[index].flag"
                   placement="bottom"
                   width="260"
@@ -109,12 +95,12 @@
                     >取消</el-button>
                   </div>
                   <a slot="reference">删除</a>
-                </el-popover>
+                </el-popover>-->
               </div>
             </li>
           </ul>
           <!-- 图片上传 -->
-          <div class="submit-warp">
+          <!-- <div class="submit-warp">
             <el-upload
               ref="upload"
               :action="SERVER_URL + '/api/picture'"
@@ -143,21 +129,45 @@
                 @current-change="changeCurrent"
               />
             </div>
+          </div>-->
+
+          <div class="submit-warp">
+            <el-upload
+              ref="upload"
+              :action="Domain"
+              :data="uploadForm"
+              :before-upload="beforeUpload"
+              :on-success="handleSuccess"
+              :multiple="false"
+              :auto-upload="true"
+              :show-file-list="false"
+              :on-error="handleError"
+              list-type="picture"
+              class="upload"
+            >
+              <el-button size="small" type="success">上传图片</el-button>
+            </el-upload>
+            <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
+            <div class="pagination">
+              <el-pagination
+                :page-size="pagination.limit"
+                :total="pagination.count"
+                :current-page.sync="pagination.page_num"
+                layout="prev, pager, next, jumper, total"
+                @current-change="changeCurrent"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- 图片弹窗 -->
-    <div 
-      v-show="mediaImage.imageVisible" 
-      class="widget-image">
+    <div v-show="mediaImage.imageVisible" class="widget-image">
       <div class="shade-image"/>
       <div class="widget-content">
         <img :src="mediaImage.mediaImageUrl">
       </div>
-      <div 
-        class="widget-close" 
-        @click="handleImageClose">
+      <div class="widget-close" @click="handleImageClose">
         <i class="widget-icon">X</i>
       </div>
     </div>
@@ -168,7 +178,9 @@
 import {
   getPictureMediaList,
   modifyPictureMedia,
-  deletePictureMedia
+  // deletePictureMedia,
+  getQiNiuToken,
+  mediaUpload
 } from "service";
 
 import Vue from "vue";
@@ -176,26 +188,29 @@ import {
   Popover,
   Button,
   Input,
-  Checkbox,
   Upload,
   Pagination,
   Dialog,
   Message
 } from "element-ui";
-import auth from "service/auth";
 
 export default {
   components: {
     "el-button": Button,
     "el-popover": Popover,
     "el-input": Input,
-    "el-checkbox": Checkbox,
     "el-upload": Upload,
     "el-pagination": Pagination,
     "el-dialog": Dialog
   },
   data() {
     return {
+      uploadToken: "",
+      Domain: "http://upload.qiniu.com",
+      uploadForm: {
+        token: "",
+        key: ""
+      },
       setting: {
         loading: true,
         loadingText: "拼命加载中"
@@ -207,33 +222,34 @@ export default {
       },
       operate: {
         renamePopoverArray: [],
-        deletePopoverArray: [],
+        // deletePopoverArray: [],
         renameValueArray: []
       },
-      checkbox: {
-        allChecked: false,
-        checkboxList: [],
-        checkedList: []
-      },
+
       mediaImage: {
         type: "image",
         disabledFlag: true,
         imageVisible: false,
-        mediaDelete: false,
         mediaRename: false,
         mediaImageUrl: "",
         mediaList: []
-      },
-      formHeader: {
-        Authorization: "Bearer " + auth.getToken()
-      },
-      SERVER_URL: process.env.SERVER_URL
+      }
     };
   },
   created: function() {
+    this.init();
     this.getPictureMediaList();
   },
   methods: {
+    async init() {
+      try {
+        let res = await getQiNiuToken(this);
+        this.uploadToken = res;
+        this.uploadForm.token = res;
+      } catch (e) {
+        console.log(e);
+      }
+    },
     handleError() {
       this.setting.loading = false;
     },
@@ -248,8 +264,8 @@ export default {
     getPictureMediaList() {
       let _this = this;
       let args = {
-        page: this.pagination.page_num,
-        type: "image"
+        page: this.pagination.page_num
+        // type: "image"
       };
       getPictureMediaList(this, args)
         .then(res => {
@@ -265,19 +281,13 @@ export default {
     },
     // 设置for循环列表中的v-model值
     setModelFlag(dataList) {
-      this.checkbox.checkboxList = [];
       this.operate.renameValueArray = [];
       this.operate.renamePopoverArray = [];
-      this.operate.deletePopoverArray = [];
       dataList.map(v => {
         this.operate.renamePopoverArray.push({ flag: false });
-        this.operate.deletePopoverArray.push({ flag: false });
-        this.checkbox.checkboxList.push({ flag: false });
         this.operate.renameValueArray.push({ name: v.name });
       });
-      this.checkbox.allChecked = false;
       this.mediaImage.disabledFlag = true;
-      this.checkbox.checkedList = [];
     },
     // 处理图片列表中按钮的确定和取消操作的标记
     handleOperationButtonClick(index, modelName, imageId) {
@@ -286,30 +296,6 @@ export default {
           index
         ].name;
         this.operate.renamePopoverArray[index].flag = false;
-      } else {
-        this.operate.deletePopoverArray[index].flag = false;
-      }
-      this.checkbox.checkboxList[index].flag = false;
-      this.disabledHandle(imageId);
-    },
-    // 处理修改分组，删除是否给以点击
-    disabledHandle(imageId, type) {
-      if (type != "boxChange") {
-        let indexArr = this.checkbox.checkedList.indexOf(imageId);
-        if (indexArr !== -1) {
-          this.checkbox.checkedList.splice(indexArr, 1);
-        }
-      }
-      if (this.checkbox.checkedList.length > 0) {
-        this.mediaImage.disabledFlag = false;
-        if (
-          this.checkbox.checkedList.length == this.checkbox.checkboxList.length
-        ) {
-          this.checkbox.allChecked = true;
-        }
-      } else {
-        this.mediaImage.disabledFlag = true;
-        this.checkbox.allChecked = false;
       }
     },
     // 图片的重命名处理
@@ -346,93 +332,50 @@ export default {
     },
     beforeUpload(file) {
       this.setting.loading = true;
+      let name = file.name;
+      let type = name.substring(name.lastIndexOf("."));
+      let isLt100M = file.size / 1024 / 1024 < 100;
+      let time = new Date().getTime();
+      let random = parseInt(Math.random() * 10 + 1, 10);
+      let suffix = time + "_" + random + "_" + name;
+      let key = encodeURI(`${suffix}`);
+
       const isJPG =
         file.type === "image/jpg" ||
         file.type === "image/png" ||
         file.type === "image/gif" ||
         file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 10;
+      const isLt10M = file.size / 1024 / 1024 < 10;
       if (!isJPG) {
         this.$message.error("上传图片仅支持jpg、jpeg 、gif、png四种格式!");
         this.setting.loading = false;
         return isJPG;
       }
-      if (!isLt2M) {
+      if (!isLt10M) {
         this.$message.error("上传图片大小不能超过 10MB!");
         this.setting.loading = false;
-        return isLt2M;
+        return isLt10M;
       }
+      this.uploadForm.key = key;
+      return this.uploadForm;
     },
     // 上传成功后的处理
-    handleSuccess() {
-      this.getPictureMediaList();
-    },
-    // 图片的删除操作
-    imageDeleteHandle(index, imageId) {
-      this.setting.loading = true;
-      if (imageId) {
-        this.checkbox.checkedList.push(imageId);
-        this.deleteMedia(index, imageId);
-      } else {
-        this.deleteMedia(index, this.checkbox.checkedList);
-      }
-    },
-    deleteMedia(index, ids) {
-      let arr = [];
-      if (this.mediaImage.mediaDelete) {
-        this.mediaImage.mediaDelete = false;
-      } else {
-        this.operate.deletePopoverArray[index].flag = false;
-      }
-      if (typeof ids === "object") {
-        arr = ids;
-      } else {
-        arr.push(ids);
-      }
-      let args = {
-        ids: arr
+    handleSuccess(response, file) {
+      let [key, name, size] = [response.key, file.name, file.size];
+      let type = name.substring(name.lastIndexOf("."));
+      let params = {
+        key: key,
+        name: name,
+        size: size
       };
-      deletePictureMedia(this, args)
+      this.mediaUpload(params);
+    },
+    mediaUpload(args) {
+      mediaUpload(this, args)
         .then(res => {
-          this.pagination.page_num = 1;
           this.getPictureMediaList();
         })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    // 多选框改变时候的处理
-    checkBoxChange(index, imageId) {
-      if (this.checkbox.checkboxList[index].flag === true) {
-        this.checkbox.checkedList.push(imageId);
-      } else {
-        let indexArr = this.checkbox.checkedList.indexOf(imageId);
-        this.checkbox.checkedList.splice(indexArr, 1);
-      }
-      this.disabledHandle(imageId, "boxChange");
-    },
-    // 全选框处理
-    allCheckedHandle() {
-      if (this.checkbox.allChecked) {
-        this.checkbox.checkedList = [];
-        for (let item of this.checkbox.checkboxList) {
-          item.flag = true;
-        }
-        for (let imageItem of this.mediaImage.mediaList) {
-          this.checkbox.checkedList.push(imageItem.id);
-        }
-        if (this.mediaImage.mediaList.length != 0) {
-          this.mediaImage.disabledFlag = false;
-        } else {
-          this.mediaImage.disabledFlag = true;
-        }
-      } else {
-        for (let item of this.checkbox.checkboxList) {
-          item.flag = false;
-        }
-        this.checkbox.checkedList = [];
-        this.mediaImage.disabledFlag = true;
-      }
+        .catch(err => {});
     }
   }
 };

@@ -3,46 +3,32 @@
     <div class="menu-bar">
       <div class="logo-wrap">
         <div class="logo">
-          <img 
-            :src="IMG_URL+'ad_shop/img/logo.png'" 
-            @click="toGuide">
+          <img :src="IMG_URL+'ad_shop/img/logo.png'" @click="toGuide">
         </div>
       </div>
       <div class="menu-wrap">
         <div class="menu-wrap_shop">
           <span style="font-weight:600;">积分:</span>
-          <img 
-            :src="group_icon" 
-            style="width: 12%;">
+          <img :src="group_icon" style="width: 12%;">
           <span>{{ group_name }}</span>
           <span>{{ p_credits }}</span>
         </div>
-        <div 
-          class="menu-wrap_shop" 
-          @click="gotoCarts">
+        <div class="menu-wrap_shop" @click="gotoCarts">
           <img :src="IMG_URL+'ad_shop/img/shop_icon.png'">
           购物车
         </div>
-        <el-dropdown 
-          :hide-on-click="true" 
-          @command="handleCommand">
+        <el-dropdown :hide-on-click="true" @command="handleCommand">
           <div class="user-avatar-wrap">
-            <div 
-              :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" 
-              class="user-avatar">
+            <div :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" class="user-avatar">
               <img :src="logo">
-              <i 
-                class="el-icon-arrow-down" 
-                style="color:#fff;font-size: 16px;"/>
+              <i class="el-icon-arrow-down" style="color:#fff;font-size: 16px;"/>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="account_set">
               <span class="item-info">账号设置</span>
             </el-dropdown-item>
-            <el-dropdown-item 
-              divided 
-              command="logout">
+            <el-dropdown-item divided command="logout">
               <span class="item-info">退出</span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -50,20 +36,10 @@
       </div>
     </div>
     <div class="first-sidebar">
-      <el-menu 
-        :default-active="'/' + currModule" 
-        router>
-        <el-menu-item 
-          v-for="m in modules" 
-          :key="m.path" 
-          :index="'/' + m.path" 
-          class="menu-item">
-          <img 
-            :src="IMG_URL+ m.src +'.png?v=1'" 
-            class="icon-default">
-          <img 
-            :src="IMG_URL+ m.src +'_white.png?v=1'" 
-            class="white-icon">
+      <el-menu :default-active="'/' + currModule" router>
+        <el-menu-item v-for="m in modules" :key="m.path" :index="'/' + m.path" class="menu-item">
+          <img :src="IMG_URL+ m.src +'.png?v=1'" class="icon-default">
+          <img :src="IMG_URL+ m.src +'_white.png?v=1'" class="white-icon">
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
@@ -151,6 +127,9 @@ export default {
                 break;
               case "shop":
                 m.src = "ad_shop/img/try_icon";
+                break;
+              case "resource":
+                m.src = "ad_shop/img/resource_icon";
                 break;
               default:
                 m.src = "";
