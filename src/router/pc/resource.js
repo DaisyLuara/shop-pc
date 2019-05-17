@@ -2,10 +2,10 @@ import auth from 'service/auth'
 
 let router = {
   path: 'resource',
-  name: '资源',
+  name: '资源管理',
   meta: {
-    title: '资源',
-    permission: 'shop_resource'
+    title: '资源管理',
+    permission: ''
   },
   component: () =>
     import(/* webpackChunkName: "page/resource/resourceView" */ 'page/resource/resourceView'),
@@ -14,7 +14,7 @@ let router = {
       path: 'picture',
       meta: {
         title: '图片管理',
-        permission: 'shop_resource.picture'
+        // permission: 'shop_resource.picture'
       },
       component: () =>
         import(/* webpackChunkName: "page/resource/picture/routerView" */ 'page/resource/picture/routerView'),
@@ -23,33 +23,33 @@ let router = {
           path: '/',
           meta: {
             title: '图片管理集合',
-            permission: 'shop_resource.picture.read'
+            // permission: 'shop_resource.picture.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/resource/picture/index" */ 'page/resource/picture/index')
         }
       ]
     },
-    {
-      path: 'video',
-      meta: {
-        title: '视频管理',
-        permission: 'shop_resource.video'
-      },
-      component: () =>
-        import(/* webpackChunkName: "page/resource/video/routerView" */ 'page/resource/video/routerView'),
-      children: [
-        {
-          path: '/',
-          meta: {
-            title: '视频管理集合',
-            permission: 'shop_resource.video.read'
-          },
-          component: () =>
-            import(/* webpackChunkName: "page/resource/video/index" */ 'page/resource/video/index')
-        }
-      ]
-    }
+    // {
+    //   path: 'video',
+    //   meta: {
+    //     title: '视频管理',
+    //     permission: 'shop_resource.video'
+    //   },
+    //   component: () =>
+    //     import(/* webpackChunkName: "page/resource/video/routerView" */ 'page/resource/video/routerView'),
+    //   children: [
+    //     {
+    //       path: '/',
+    //       meta: {
+    //         title: '视频管理集合',
+    //         permission: 'shop_resource.video.read'
+    //       },
+    //       component: () =>
+    //         import(/* webpackChunkName: "page/resource/video/index" */ 'page/resource/video/index')
+    //     }
+    //   ]
+    // }
   ]
 }
 

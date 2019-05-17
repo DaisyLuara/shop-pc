@@ -5,50 +5,96 @@
       :element-loading-text="setting.loadingText"
       class="picture-manage"
     >
-      <div class="grouping-image-wrap">
-        <div class="image-warp">
-          <div class="image-title-group">
-            <!-- <el-checkbox v-model="checkbox.allChecked" size="small" @change="allCheckedHandle">全选</el-checkbox>
-            <el-popover
-              ref="delete-image"
-              v-model="mediaImage.mediaDelete"
-              :disabled="mediaImage.disabledFlag"
-              placement="bottom"
-              width="260"
-            >
-              <p>确定删除该图片?</p>
-              <p class="hint">若删除，不会对目前已使用该图片的相关业务造成影响。</p>
-              <div class="btn-wrap">
-                <el-button type="primary" size="small" @click="imageDeleteHandle">确定</el-button>
-                <el-button
-                  size="small"
-                  @click="mediaImage.mediaDelete = false,setModelFlag(mediaImage.mediaList)"
-                >取消</el-button>
-              </div>
-            </el-popover>
-            <a v-popover:delete-image :class="{ haveChooseImage : !mediaImage.disabledFlag }">删除</a>-->
+      <div class="picture-group-title">
+        <span>分组名称：</span>
+        <span>{{ mediaGroup.renameGroupValue }}</span>
+        <el-popover
+          ref="rename"
+          v-model="mediaGroup.mediaGroupRenameFlag"
+          placement="bottom"
+          width="260"
+        >
+          <p>编辑名称 </p>
+          <el-input
+            v-model="mediaGroup.renameGroupValue"
+            :maxlength="6"
+            placeholder="不超过6个"
+            class="rename-input"
+          />
+          <div class="btn-wrap">
+            <el-button 
+              type="primary" 
+              size="small" 
+              @click="modifyGroupName">确定</el-button>
+            <el-button
+              size="small"
+              @click="mediaGroup.mediaGroupRenameFlag = false, mediaGroup.renameGroupValue = renameGroup"
+            >取消</el-button>
           </div>
+        </el-popover>
+        <a 
+          v-popover:rename 
+          v-show="mediaGroup.renameGroupValue !== '默认分组'">重命名</a>
+      </div>
+      <div class="grouping-image-wrap">
+        <div class="grouping-wrap">
+          <ul class="grouping-list clearfix">
+            <li
+              v-for="(item,index) in mediaGroup.mediaGroupList"
+              :key="index"
+              :class="{'grouping-active': mediaGroup.groupId == item.id}"
+              @click="getImgMediaList(item.id,item.name)"
+            >
+              <span>{{ item.name }}</span>
+              <span class="number">{{ item.count }}</span>
+            </li>
+          </ul>
+          <el-popover
+            ref="add-title"
+            v-model="mediaGroup.mediaGroupAddFlag"
+            placement="bottom"
+            width="260"
+          >
+            <p>添加分组</p>
+            <el-input
+              v-model="mediaGroup.addGroupNameValue"
+              :maxlength="6"
+              placeholder="不超过6个字"
+              class="group-input"
+            />
+            <div class="btn-wrap">
+              <el-button 
+                type="primary" 
+                size="small" 
+                @click="addMediaGroup">确定</el-button>
+              <el-button
+                size="small"
+                @click="mediaGroup.mediaGroupAddFlag = false,mediaGroup.addGroupNameValue = ''"
+              >取消</el-button>
+            </div>
+          </el-popover>
+          <el-button v-popover:add-title>添加分组</el-button>
+        </div>
+        <div class="image-warp">
+          <div class="image-title-group"/>
           <!-- 图片列表 -->
           <ul class="image-list">
             <div
               v-show="mediaImage.mediaList.length == 0"
               class="hint-message"
             >暂无数据，可点击左下角“上传图片”按钮添加</div>
-            <li v-for="(imageItem, index) in mediaImage.mediaList" :key="imageItem.id">
+            <li 
+              v-for="(imageItem, index) in mediaImage.mediaList" 
+              :key="imageItem.id">
               <img
                 :src="imageItem.url"
                 class="image-file"
                 @click="mediaImage.imageVisible = true, mediaImage.mediaImageUrl = imageItem.url"
               >
               <div class="image-size">{{ imageItem.width }} * {{ imageItem.height }}</div>
-              <p class="item-text">
-                <!-- <el-checkbox
-                  v-model="checkbox.checkboxList[index].flag"
-                  size="small"
-                  @change="checkBoxChange(index,imageItem.id)"
-                >{{ imageItem.name }}</el-checkbox>-->
-                {{ imageItem.name.length>13 ? imageItem.name.substring(0,12)+'...':imageItem.name }}
-              </p>
+              <p
+                class="item-text"
+              >{{ imageItem.name.length>13 ? imageItem.name.substring(0,12)+'...':imageItem.name }}</p>
               <div class="image-operation">
                 <!-- 编辑名称 -->
                 <el-popover
@@ -74,38 +120,17 @@
                     >取消</el-button>
                   </div>
                   <a slot="reference">重命名</a>
+                  <a slot="reference" >{{imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>                  
                 </el-popover>
-                <!-- 删除 -->
-                <!-- <el-popover
-                  v-model="operate.deletePopoverArray[index].flag"
-                  placement="bottom"
-                  width="260"
-                >
-                  <p>确定删除该图片?</p>
-                  <p class="hint">若删除，不会对目前已使用该图片的相关业务造成影响。</p>
-                  <div class="btn-wrap">
-                    <el-button
-                      type="primary"
-                      size="small"
-                      @click="imageDeleteHandle(index,imageItem.id)"
-                    >确定</el-button>
-                    <el-button
-                      size="small"
-                      @click="handleOperationButtonClick(index, '', imageItem.id)"
-                    >取消</el-button>
-                  </div>
-                  <a slot="reference">删除</a>
-                </el-popover>-->
               </div>
             </li>
           </ul>
           <!-- 图片上传 -->
-          <!-- <div class="submit-warp">
+          <div class="submit-warp">
             <el-upload
               ref="upload"
-              :action="SERVER_URL + '/api/picture'"
-              :data="{type: mediaImage.type}"
-              :headers="formHeader"
+              :action="Domain"
+              :data="uploadForm"
               :before-upload="beforeUpload"
               :on-success="handleSuccess"
               :multiple="false"
@@ -129,45 +154,21 @@
                 @current-change="changeCurrent"
               />
             </div>
-          </div>-->
-
-          <div class="submit-warp">
-            <el-upload
-              ref="upload"
-              :action="Domain"
-              :data="uploadForm"
-              :before-upload="beforeUpload"
-              :on-success="handleSuccess"
-              :multiple="false"
-              :auto-upload="true"
-              :show-file-list="false"
-              :on-error="handleError"
-              list-type="picture"
-              class="upload"
-            >
-              <el-button size="small" type="success">上传图片</el-button>
-            </el-upload>
-            <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
-            <div class="pagination">
-              <el-pagination
-                :page-size="pagination.limit"
-                :total="pagination.count"
-                :current-page.sync="pagination.page_num"
-                layout="prev, pager, next, jumper, total"
-                @current-change="changeCurrent"
-              />
-            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- 图片弹窗 -->
-    <div v-show="mediaImage.imageVisible" class="widget-image">
+    <div 
+      v-show="mediaImage.imageVisible" 
+      class="widget-image">
       <div class="shade-image"/>
       <div class="widget-content">
         <img :src="mediaImage.mediaImageUrl">
       </div>
-      <div class="widget-close" @click="handleImageClose">
+      <div 
+        class="widget-close" 
+        @click="handleImageClose">
         <i class="widget-icon">X</i>
       </div>
     </div>
@@ -176,14 +177,17 @@
 
 <script>
 import {
-  getPictureMediaList,
-  modifyPictureMedia,
-  // deletePictureMedia,
-  getQiNiuToken,
-  mediaUpload
+  getImgMediaList,
+  modifyImgMedia,
+  getQiniuToken,
+  imgMediaUpload,
+  getMediaGroup,// 分组列表 
+  saveMediaGroup,
+  modifyMediaGroupName,
+  //图片审核
+  imageReview
 } from "service";
 
-import Vue from "vue";
 import {
   Popover,
   Button,
@@ -205,30 +209,36 @@ export default {
   },
   data() {
     return {
-      uploadToken: "",
+      mediaGroup: {
+        mediaGroupRenameFlag: false,
+        mediaGroupAddFlag: false,
+        mediaGroupList: [],
+        addGroupNameValue: "",
+        renameGroupValue: "",
+        groupId: null
+      },
       Domain: "http://upload.qiniu.com",
       uploadForm: {
         token: "",
         key: ""
       },
+      audit:"",
       setting: {
-        loading: true,
+        loading: false,
         loadingText: "拼命加载中"
       },
       pagination: {
-        limit: 10,
+        limit: 20,
         page_num: 1,
         count: 0
       },
       operate: {
         renamePopoverArray: [],
-        // deletePopoverArray: [],
         renameValueArray: []
       },
-
+      groupId: null,
       mediaImage: {
         type: "image",
-        disabledFlag: true,
         imageVisible: false,
         mediaRename: false,
         mediaImageUrl: "",
@@ -236,18 +246,71 @@ export default {
       }
     };
   },
-  created: function() {
+  computed: {
+    renameGroup (){
+      let rename = ''
+       this.mediaGroup.mediaGroupList.find(item => {
+        if (item.id === this.mediaGroup.groupId) {
+          rename = item.name
+          return 
+        }
+      });
+      return rename
+    }
+  },
+  created() {
     this.init();
-    this.getPictureMediaList();
   },
   methods: {
     async init() {
       try {
-        let res = await getQiNiuToken(this);
-        this.uploadToken = res;
+        this.setting.loading = true;
+        let res = await getQiniuToken(this);
+        let mediaGroupsData = await getMediaGroup(this);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+        this.mediaGroup.groupId = this.mediaGroup.mediaGroupList[0].id;
+        this.mediaGroup.renameGroupValue = this.mediaGroup.mediaGroupList[0].name;
+        await this.getImgMediaList(this.mediaGroup.mediaGroupList[0].id);
         this.uploadForm.token = res;
+        this.setting.loading = false;
       } catch (e) {
         console.log(e);
+        this.setting.loading = false;
+      }
+    },
+    // 增加分组
+    async addMediaGroup() {
+      try {
+        if (this.mediaGroup.addGroupNameValue.trim()) {
+          let args = {
+            name: this.mediaGroup.addGroupNameValue
+          };
+          let res = await saveMediaGroup(this, args);
+          let mediaGroupsData = await getMediaGroup(this);
+          this.mediaGroup.mediaGroupAddFlag = false;
+          this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+          this.mediaGroup.addGroupNameValue = "";
+        } else {
+          this.mediaGroup.mediaGroupAddFlag = false;
+          this.mediaGroup.addGroupNameValue = "";
+          MessageBox.alert("增加的分组名称不能为空");
+        }
+      } catch (e) {}
+    },
+    // 修改分组名称
+    async modifyGroupName() {
+      let params = {
+        name: this.mediaGroup.renameGroupValue
+      };
+      console.log(params.name)
+      try {
+        await modifyMediaGroupName(this, this.mediaGroup.groupId, params);
+        let mediaGroupsData = await getMediaGroup(this);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+        this.mediaGroup.mediaGroupRenameFlag = false;
+      } catch (e) {
+        this.mediaGroup.mediaGroupRenameFlag = false;
+        ;
       }
     },
     handleError() {
@@ -258,19 +321,20 @@ export default {
     },
     changeCurrent(currentPage) {
       this.pagination.page_num = currentPage;
-      this.getPictureMediaList();
+      this.getImgMediaList(this.mediaGroup.groupId);
     },
     // 获取图片列表
-    getPictureMediaList() {
+    getImgMediaList(groupId, groupName) {
+      this.mediaGroup.groupId = groupId;
       let _this = this;
       let args = {
         page: this.pagination.page_num
-        // type: "image"
       };
-      getPictureMediaList(this, args)
+      getImgMediaList(this, groupId, args)
         .then(res => {
           this.mediaImage.mediaList = res.data;
           this.pagination.count = res.meta.pagination.total;
+          groupName ? (this.mediaGroup.renameGroupValue = groupName) : "";
           this.setModelFlag(this.mediaImage.mediaList);
           this.setting.loading = false;
         })
@@ -287,7 +351,6 @@ export default {
         this.operate.renamePopoverArray.push({ flag: false });
         this.operate.renameValueArray.push({ name: v.name });
       });
-      this.mediaImage.disabledFlag = true;
     },
     // 处理图片列表中按钮的确定和取消操作的标记
     handleOperationButtonClick(index, modelName, imageId) {
@@ -316,20 +379,41 @@ export default {
         });
       }
     },
-    // 修改名称
+    //图片审核
+    toSub(imageId){
+      console.log(imageId)
+      this.$confirm('是否审核通过该图片', '提示', {
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          type: 'warning',
+          center: true,
+        }).then(()=>{
+          this.$message({
+           type: 'success',
+           message: '审核成功!'
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消审核'
+          });
+        });
+    },
+    // 修改图片名称
     modifyMedia(id, name) {
       let args = {
         name: name
       };
-      modifyPictureMedia(this, id, args)
+      modifyImgMedia(this, id, args, this.mediaGroup.groupId)
         .then(res => {
-          this.getPictureMediaList();
+          this.getImgMediaList(this.mediaGroup.groupId);
         })
         .catch(err => {
           this.setting.loading = false;
-          console.log(err);
         });
     },
+    // 上传前调用的方法，主要用来获取token和key
     beforeUpload(file) {
       this.setting.loading = true;
       let name = file.name;
@@ -339,7 +423,6 @@ export default {
       let random = parseInt(Math.random() * 10 + 1, 10);
       let suffix = time + "_" + random + "_" + name;
       let key = encodeURI(`${suffix}`);
-
       const isJPG =
         file.type === "image/jpg" ||
         file.type === "image/png" ||
@@ -357,10 +440,11 @@ export default {
         return isLt10M;
       }
       this.uploadForm.key = key;
+      console.log(this.uploadForm)
       return this.uploadForm;
     },
     // 上传成功后的处理
-    handleSuccess(response, file) {
+    async handleSuccess(response, file) {
       let [key, name, size] = [response.key, file.name, file.size];
       let type = name.substring(name.lastIndexOf("."));
       let params = {
@@ -368,14 +452,14 @@ export default {
         name: name,
         size: size
       };
-      this.mediaUpload(params);
-    },
-    mediaUpload(args) {
-      mediaUpload(this, args)
-        .then(res => {
-          this.getPictureMediaList();
-        })
-        .catch(err => {});
+      try {
+        await imgMediaUpload(this, this.mediaGroup.groupId, params);
+        await this.getImgMediaList(this.mediaGroup.groupId);
+        let mediaGroupsData = await getMediaGroup(this);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 };
@@ -386,11 +470,64 @@ export default {
   background-color: #fff;
   min-height: 500px;
   padding-bottom: 100px;
+  .picture-group-title {
+    padding: 27px 0 13px 27px;
+    span {
+      color: #5e6d82;
+      font-size: 18px;
+      line-height: 25px;
+    }
+    a {
+      color: #20a0ff;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 18px;
+      padding-left: 18px;
+    }
+  }
   .grouping-image-wrap {
     padding-top: 30px;
     display: -webkit-flex;
     display: -moz-flex;
     display: flex;
+    .grouping-wrap {
+      background-color: #eff2f7;
+      margin-left: 27px;
+      max-height: 768px;
+      min-width: 180px;
+      min-height: 400px;
+      overflow: auto;
+      li {
+        cursor: pointer;
+        color: #5e6d82;
+        font-size: 14px;
+        line-height: 42px;
+        padding: 0 18px;
+        transition: all 0.5s;
+        &:hover {
+          color: #000;
+        }
+      }
+      .grouping-active {
+        background-color: #fff;
+      }
+      .number {
+        float: right;
+      }
+      .el-button {
+        background-color: #eff2f7;
+        color: #56636d;
+        font-size: 14px;
+        margin: 10px 18px 10px;
+        outline: none;
+        width: 144px;
+        border-radius: initial;
+      }
+      .el-button:hover {
+        border: 1px solid #bfcbd9;
+      }
+    }
+
     .image-warp {
       margin-left: 40px;
       position: relative;
@@ -470,6 +607,7 @@ export default {
 }
 .btn-wrap {
   text-align: right;
+  margin-top: 10px;
 }
 
 .submit-warp {

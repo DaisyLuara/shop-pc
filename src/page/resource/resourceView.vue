@@ -19,15 +19,13 @@ export default {
 
 <style lang="less" scoped>
 .resource-root {
-  height: 100%;
-  background-color: #eff2f7;
   .topbar {
     position: absolute;
     top: 0;
     left: 200px;
     right: 0;
-    height: 75px;
-    line-height: 75px;
+    height: 60px;
+    line-height: 60px;
     border-bottom: 1px solid #d3dce6;
     background-color: #fff;
     z-index: 98;

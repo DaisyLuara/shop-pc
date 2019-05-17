@@ -11,7 +11,7 @@ export * from './utils'
 export * from './chart'
 
 // 图片
-// export * from './picture'
+export * from './resource'
 
 // 智造
 export * from './smart'
