@@ -23,7 +23,7 @@ let router = {
           path: '/',
           meta: {
             title: '图片管理集合',
-            // permission: 'shop_resource.media.read'
+            permission: 'shop_resource.media.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/resource/picture/index" */ 'page/resource/picture/index')
