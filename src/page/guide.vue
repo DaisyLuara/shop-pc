@@ -77,12 +77,12 @@ export default {
           path: "/guide/about",
           class: "tab-item"
         },
-        {
-          name: "解决方案",
-          key: "product",
-          path: "/guide/product",
-          class: "tab-item"
-        },
+        // {
+        //   name: "解决方案",
+        //   key: "product",
+        //   path: "/guide/product",
+        //   class: "tab-item"
+        // },
         {
           name: "登录",
           key: "login",
