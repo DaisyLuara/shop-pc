@@ -30,26 +30,26 @@ let router = {
         }
       ]
     },
-    // {
-    //   path: 'video',
-    //   meta: {
-    //     title: '视频管理',
-    //     permission: 'shop_resource.video'
-    //   },
-    //   component: () =>
-    //     import(/* webpackChunkName: "page/resource/video/routerView" */ 'page/resource/video/routerView'),
-    //   children: [
-    //     {
-    //       path: '/',
-    //       meta: {
-    //         title: '视频管理集合',
-    //         permission: 'shop_resource.video.read'
-    //       },
-    //       component: () =>
-    //         import(/* webpackChunkName: "page/resource/video/index" */ 'page/resource/video/index')
-    //     }
-    //   ]
-    // }
+    {
+      path: 'video',
+      meta: {
+        title: '视频管理',
+        permission: ''
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/resource/video/routerView" */ 'page/resource/video/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '视频管理集合',
+            permission: ''
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/resource/video/index" */ 'page/resource/video/index')
+        }
+      ]
+    }
   ]
 }
 
