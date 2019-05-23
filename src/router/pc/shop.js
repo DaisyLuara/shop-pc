@@ -4,7 +4,7 @@ let router = {
   name: '节目试用',
   meta: {
     title: '节目试用',
-    permission: ''
+    permission: 'shop_try'
   },
   component: () =>
     import(/* webpackChunkName: "page/shop/shopView" */ 'page/shop/shopView'),
@@ -14,7 +14,7 @@ let router = {
       path: 'try',
       meta: {
         title: '试用',
-        permission: ''
+        permission: 'shop_try.try'
       },
       component: () =>
         import(/* webpackChunkName: "page/shop/try/routerView" */ 'page/shop/try/routerView'),
@@ -23,7 +23,7 @@ let router = {
           path: '/',
           meta: {
             title: '试用列表',
-            permission: ''
+            permission: 'shop_try.try.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/shop/try/index" */ 'page/shop/try/index')
