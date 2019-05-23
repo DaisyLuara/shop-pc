@@ -109,7 +109,6 @@ const modifyMediaGroupName = (context, groupId, params) => {
 
 export {
   getQiniuToken,
-  getMediaUpload,
   imgMediaUpload,
   getImgMediaList,
   modifyImgMedia,
