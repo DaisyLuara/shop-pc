@@ -1,17 +1,19 @@
 <template>
-  <div class="resource-root">
-    <second-sidebar module="resource"/>
+  <div 
+    class="ad-root">
+    <second-sidebar 
+      module="ad"/>
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: "ResourceView"
-};
+  name: 'managementView'
+}
 </script>
 
 <style lang="less" scoped>
-.resource-root {
+.ad-root {
   height: 100%;
   padding: 76px 50px 0;
   background-color: #eff2f7;

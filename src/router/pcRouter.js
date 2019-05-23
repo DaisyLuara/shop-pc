@@ -1,5 +1,7 @@
 import pcHome from 'page/home'
 import account from 'router/pc/account'
+import ad from 'router/pc/ad'
+import resource from 'router/pc/resource'
 import auth from 'router/pc/auth'
 import site from 'router/pc/site'
 import smart from 'router/pc/smart'
@@ -15,5 +17,5 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, device, auth, site, smart, prize, put, report]
+  children: [account, device, auth, site, smart, prize, resource, ad, put, report]
 }

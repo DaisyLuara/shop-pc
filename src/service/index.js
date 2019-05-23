@@ -11,7 +11,7 @@ export * from './utils'
 export * from './chart'
 
 // 图片
-// export * from './picture'
+export * from './resource'
 
 // 智造
 export * from './smart'
@@ -27,3 +27,7 @@ export * from './launch'
 
 // 设备
 export * from './device'
+
+// 奖品
+export * from './ad'
+

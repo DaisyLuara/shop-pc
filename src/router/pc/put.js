@@ -113,6 +113,40 @@ let router = {
             import(/* webpackChunkName: "page/put/prize/save" */ 'page/put/prize/save')
         }
       ]
+    },
+    {
+      path: 'adPut',
+      meta: {
+        title: '广告投放',
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/put/adPut/routerView" */ 'page/put/adPut/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '广告投放列表',  
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/adPut/index" */ 'page/put/adPut/index')
+        },
+        {
+          path: 'save',
+          meta: {
+            title: '广告投放新增',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/adPut/save" */ 'page/put/adPut/save')
+        },
+        {
+          path: 'edit/:uid',
+          meta: {
+            title: '广告投放编辑',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/adPut/save" */ 'page/put/adPut/save')
+        }
+      ]
     }
   ]
 }
