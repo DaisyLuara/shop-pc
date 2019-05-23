@@ -9,6 +9,7 @@ import report from 'router/pc/report'
 import device from 'router/pc/device'
 import shop from 'router/pc/shop'
 import resource from 'router/pc/resource'
+import ad from 'router/pc/ad'
 
 export default {
   path: '/',
@@ -17,5 +18,17 @@ export default {
   meta: {
     // permission: 'main',
   },
-  children: [account, device, auth, site, smart, prize,resource, put, report,shop]
+  children: [
+    account,
+    device,
+    auth,
+    site,
+    smart,
+    prize,
+    resource,
+    ad,
+    put,
+    report,
+    shop
+  ]
 }

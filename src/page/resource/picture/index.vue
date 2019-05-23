@@ -423,22 +423,22 @@ export default {
       let random = parseInt(Math.random() * 10 + 1, 10);
       let suffix = time + "_" + random + "_" + name;
       let key = encodeURI(`${suffix}`);
-      const isJPG =
-        file.type === "image/jpg" ||
-        file.type === "image/png" ||
-        file.type === "image/gif" ||
-        file.type === "image/jpeg";
-      const isLt10M = file.size / 1024 / 1024 < 10;
-      if (!isJPG) {
-        this.$message.error("上传图片仅支持jpg、jpeg 、gif、png四种格式!");
-        this.setting.loading = false;
-        return isJPG;
-      }
-      if (!isLt10M) {
-        this.$message.error("上传图片大小不能超过 10MB!");
-        this.setting.loading = false;
-        return isLt10M;
-      }
+      // const isJPG =
+      //   file.type === "image/jpg" ||
+      //   file.type === "image/png" ||
+      //   file.type === "image/gif" ||
+      //   file.type === "image/jpeg";
+      // const isLt10M = file.size / 1024 / 1024 < 10;
+      // if (!isJPG) {
+      //   this.$message.error("上传图片仅支持jpg、jpeg 、gif、png四种格式!");
+      //   this.setting.loading = false;
+      //   return isJPG;
+      // }
+      // if (!isLt10M) {
+      //   this.$message.error("上传图片大小不能超过 10MB!");
+      //   this.setting.loading = false;
+      //   return isLt10M;
+      // }
       this.uploadForm.key = key;
       console.log(this.uploadForm)
       return this.uploadForm;

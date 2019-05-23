@@ -131,6 +131,9 @@ export default {
               case "resource":
                 m.src = "ad_shop/img/resource_icon";
                 break;
+              case "ad":
+                m.src = "ad_shop/img/ad_icon";
+                break;
               default:
                 m.src = "";
                 break;
