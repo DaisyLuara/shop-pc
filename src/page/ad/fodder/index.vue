@@ -18,7 +18,7 @@
               <el-select v-model="filters.screen_status" placeholder="请选择类型" filterable clearable>
                 <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
-                  v-for="item in statusList"
+                  v-for="item in typeList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -54,21 +54,19 @@
                   <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="类型:">
-                  <span
-                    :class="(scope.row.screenStatus === 0) ? 'sold-out-expand' : 'operating-expand'"
-                  >{{ scope.row.screenStatus ===0 ? '关闭': '开启' }}</span>
+                  <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
                 </el-form-item>
                 <el-form-item label="附件:">
                   <span>
                     <a
-                      :href="scope.row.video_desc_url"
+                      :href="scope.row.link"
                       target="_blank"
                       style="color:#6b3ec2;font-weight:600;"
                     >点击查看</a>
                   </span>
                 </el-form-item>
                 <el-form-item label="广告标记:">
-                  <span>{{ scope.row.faceDate }}</span>
+                  <span>{{ scope.row.isad }}</span>
                 </el-form-item>
                 <el-form-item label="修改时间:">
                   <span>{{ scope.row.updated_at }}</span>
@@ -94,9 +92,7 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span
-                :class="(scope.row.screenStatus === 0) ? 'sold-out' : 'operating'"
-              >{{ scope.row.screenStatus === 0 ? '关闭': '开启' }}</span>
+              <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -117,7 +113,7 @@
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="networkDate"
+            prop="isad"
             label="广告标记"
             min-width="90"
           />
@@ -177,14 +173,18 @@ export default {
         screen_status: null,
         point_name: null
       },
-      statusList: [
+      typeList: [
         {
-          id: 0,
-          name: "关闭"
+          id: "static",
+          name: "静态图"
         },
         {
-          id: 1,
-          name: "开启"
+          id: "git",
+          name: "Gif"
+        },
+        {
+          id: "video",
+          name: "视频"
         }
       ],
       headerStyle: { background: "#6b3ec2", color: "#fff" },
@@ -201,14 +201,13 @@ export default {
     };
   },
   created() {
-    this.getDeviceList();
+    // this.getDeviceList();
   },
   methods: {
     addFodder(data) {
       this.$router.push({
         path: "/ad/fodder/add"
       });
-      console.log(data);
     },
     getDeviceList() {
       this.setting.loading = true;

@@ -16,40 +16,40 @@
           <el-form-item label=" " prop="type">
             <div class="type">
               <div class="type-item">类型</div>
-              <el-radio-group v-model="fodderForm.type">
-                <el-radio :label="0">静态图</el-radio>
-                <el-radio :label="1">GIF</el-radio>
-                <el-radio :label="2">帧序列</el-radio>
-                <el-radio :label="3">视频</el-radio>
+              <el-radio-group v-model="fodderForm.type" @change="typeHandle">
+                <el-radio :label="type.id" v-for="type in typeList" :key="type.id">{{ type.name }}</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
-          <!-- <el-form-item
-            :rules="[{ required: true, message: '请填写附件', trigger: 'submit'}]"
-            label="附件"
-            prop="stock"
-          >
-            <el-input v-model="fodderForm.stock" placeholder="请填写剩余库存" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"/>
-            </el-input>
-          </el-form-item>-->
           <el-form-item
             :rules="[{ required: true, message: '请上传附件', trigger: 'submit'}]"
             label="附件"
-            prop="media_id"
+            prop="link"
           >
-            <div class="fodder-uploader" @click="panelVisible=true">
-              <img v-if="fodderForm.url" :src="fodderForm.url" class="fodder">
+            <div
+              class="fodder-uploader"
+              @click="panelVisible=true"
+              v-if="fodderForm.type!=='video'"
+            >
+              <img v-if="url" :src="fodderForm.link" class="fodder">
+              <i v-else class="el-icon-plus fodder-uploader-icon"/>
+            </div>
+
+            <div
+              class="fodder-uploader"
+              @click="videoPanelVisible=true"
+              v-if="fodderForm.type==='video'"
+            >
+              <video v-if="url" :src="fodderForm.link" controls="controls" class="fodder">您的浏览器不支持</video>
               <i v-else class="el-icon-plus fodder-uploader-icon"/>
             </div>
           </el-form-item>
-
-          <el-form-item label=" " prop="remark">
+          <el-form-item label=" " prop="isad">
             <div class="type">
               <div class="type-item">广告标记</div>
-              <el-radio-group v-model="fodderForm.remark">
-                <el-radio :label="0">显示</el-radio>
-                <el-radio :label="1">隐藏</el-radio>
+              <el-radio-group v-model="fodderForm.isad">
+                <el-radio :label="1">显示</el-radio>
+                <el-radio :label="0">隐藏</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
@@ -60,6 +60,16 @@
         </el-form-item>
       </el-form>
     </div>
+    <PicturePanel
+      :panel-visible.sync="panelVisible"
+      :single-flag="singleFlag"
+      @close="handleClose"
+    />
+    <VideoPanel
+      :video-panel-visible.sync="videoPanelVisible"
+      :video-single-flag="videoSingleFlag"
+      @close="handleClose"
+    />
   </div>
 </template>
 
@@ -83,6 +93,8 @@ import {
   Radio
 } from "element-ui";
 import moment from "moment";
+import PicturePanel from "components/common/picturePanel";
+import VideoPanel from "components/common/videoPanel";
 
 export default {
   components: {
@@ -94,23 +106,48 @@ export default {
     ElDatePicker: DatePicker,
     ElRadioGroup: RadioGroup,
     ElRadio: Radio,
-    ElInput: Input
+    ElInput: Input,
+    PicturePanel,
+    VideoPanel
   },
   data() {
     return {
+      videoPanelVisible: false,
+      panelVisible: false,
+      singleFlag: true,
+      videoSingleFlag: true,
       setting: {
         isOpenSelectAll: true,
         loading: false,
         loadingText: "拼命加载中"
       },
+      typeList: [
+        {
+          id: "static",
+          name: "静态图"
+        },
+        {
+          id: "git",
+          name: "Gif"
+        },
+        {
+          id: "video",
+          name: "视频"
+        }
+        // {
+        //   id: "fps",
+        //   name: "帧序列"
+        // }
+      ],
       fodderID: null,
       searchLoading: false,
       fodderForm: {
         name: null,
-        url: "",
-        type: 1,
-        remark: 0
-      }
+        link: "",
+        type: "static",
+        isad: 0
+      },
+      url: ""
     };
   },
   mounted() {},
@@ -119,6 +156,18 @@ export default {
     // this.prizeDetails();
   },
   methods: {
+    typeHandle(val) {
+      this.url = "";
+      this.fodderForm.link = "";
+    },
+    handleClose(data) {
+      console.log(data);
+      if (data && data.length > 0) {
+        let { link, url } = data[0];
+        this.fodderForm.link = url;
+        this.url = url;
+      }
+    },
     prizeDetails() {
       this.setting.loading = true;
       let args = {
@@ -192,7 +241,7 @@ export default {
   }
   .fodder-uploader {
     width: 178px;
-    height: 178px;
+    min-height: 178px;
     line-height: 178px;
     border: 1px dashed #6b3dc4;
     border-radius: 6px;
@@ -209,13 +258,13 @@ export default {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
-    height: 178px;
+    min-height: 178px;
     line-height: 178px;
     text-align: center;
   }
   .fodder {
     width: 178px;
-    height: 178px;
+    min-height: 178px;
     display: block;
   }
   .pane {

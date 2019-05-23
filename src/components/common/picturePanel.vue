@@ -1,9 +1,6 @@
 <template>
   <div class="picture-panel">
-    <el-dialog 
-      :visible.sync="panelVisible" 
-      :before-close="cancel" 
-      @open="handleOpen()">
+    <el-dialog :visible.sync="panelVisible" :before-close="cancel" width="90%" @open="handleOpen()">
       <div slot="title">
         <span class="picture-panel__title">图片管理</span>
         <input
@@ -15,35 +12,46 @@
         >
       </div>
       <div>
-        <div 
-          v-loading="loading" 
-          class="picture-panel__body">
-          <li
-            v-for="obj in dataImg"
-            :key="obj.id"
-            class="picture-panel__img-item"
-            @click="selectImg(obj)"
+        <el-tabs
+          v-loading="loading"
+          v-model="activeTabName"
+          type="card"
+          @tab-click="handleTabsClick"
+        >
+          <el-tab-pane
+            v-for="item in mediaGroup.mediaGroupList"
+            :name="item.name"
+            :groupId="item.id"
+            :key="item.id"
           >
-            <img 
-              :src="obj.url" 
-              class="picture-panel__img">
-            <div class="picture-panel__img-size">{{ obj.width }} * {{ obj.height }}</div>
-            <div class="picture-panel__img-name">{{ obj.name }}</div>
-            <div 
-              v-for="selectedObj in selectedImgs" 
-              :key="selectedObj.id">
-              <div v-if="obj.id == selectedObj.id">
-                <div class="picture-panel__arrow-wrap"/>
-                <i class="picture-panel__arrow"/>
-              </div>
+            <span slot="label" :groupId="item.id">
+              {{ item.name }}
+              <span class="number">{{ item.count }}</span>
+            </span>
+            <div class="picture-panel__body">
+              <li
+                v-for="obj in dataImg"
+                :key="obj.id"
+                class="picture-panel__img-item"
+                @click="selectImg(obj)"
+              >
+                <img :src="obj.url" class="picture-panel__img">
+                <div class="picture-panel__img-size">{{ obj.width }} * {{ obj.height }}</div>
+                <div class="picture-panel__img-name">{{ obj.name }}</div>
+                <div v-for="selectedObj in selectedImgs" :key="selectedObj.id">
+                  <div v-if="obj.id == selectedObj.id">
+                    <div class="picture-panel__arrow-wrap"/>
+                    <i class="picture-panel__arrow"/>
+                  </div>
+                </div>
+              </li>
             </div>
-          </li>
-        </div>
+          </el-tab-pane>
+        </el-tabs>
         <div class="picture-panel__footer">
           <el-upload
-            :action="mediaBase + '/api/picture'"
-            :data="{type: type}"
-            :headers="formHeader"
+            :action="Domain"
+            :data="uploadForm"
             :before-upload="beforeUpload"
             :on-success="handleSuccess"
             :on-error="handleError"
@@ -54,14 +62,13 @@
             list-type="picture"
             class="picture-panel__upload"
           >
-            <el-button 
-              size="small" 
-              type="primary">点击上传</el-button>
+            <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
           <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
           <div class="picture-panel__page">
             <el-pagination
-              :total="pagination.count"
+              :total="130"
+              :pager-count="5"
               :page-size="pagination.limit"
               :current-page.sync="pagination.page_num"
               layout="total, prev, pager, next, jumper"
@@ -71,14 +78,10 @@
         </div>
       </div>
       <div slot="footer">
-        <div 
-          name="footer" 
-          class="footer">
+        <div name="footer" class="footer">
           <div class="picture-panel__choose-num">已选择{{ selectedImgs.length }}张图片</div>
           <el-button @click="cancel()">取 消</el-button>
-          <el-button 
-            type="primary" 
-            @click="confirm()">确 定</el-button>
+          <el-button type="primary" @click="confirm()">确 定</el-button>
         </div>
       </div>
     </el-dialog>
@@ -86,7 +89,12 @@
 </template>
 
 <script>
-import { getPictureMediaList } from "service";
+import {
+  getImgMediaList,
+  getQiniuToken,
+  imgMediaUpload,
+  getMediaGroup
+} from "service";
 
 import {
   Button,
@@ -97,7 +105,6 @@ import {
   Dialog,
   MessageBox
 } from "element-ui";
-import auth from "service/auth";
 
 export default {
   name: "PicturePanel",
@@ -121,17 +128,24 @@ export default {
   },
   data() {
     return {
+      activeTabName: "",
+      Domain: "http://upload.qiniu.com",
+      uploadForm: {
+        token: "",
+        key: ""
+      },
       loading: true,
       type: "image",
       dataImg: [],
       serch: {
         name: ""
       },
-      formHeader: {
-        Authorization: "Bearer" + auth.getToken()
+      mediaGroup: {
+        mediaGroupList: [],
+        groupId: null
       },
       pagination: {
-        limit: 10,
+        limit: 20,
         page_num: 1,
         count: 0
       },
@@ -140,19 +154,40 @@ export default {
       uploadDisabled: false
     };
   },
-  created() {
-    this.getPictureMediaList();
-  },
+  created() {},
   methods: {
+    async handleOpen() {
+      try {
+        let res = await getQiniuToken(this);
+        let args = {
+          type: "image",
+          status:1
+        };
+        let mediaGroupsData = await getMediaGroup(this, args);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+        this.mediaGroup.groupId = this.mediaGroup.mediaGroupList[0].id;
+        this.activeTabName = this.mediaGroup.mediaGroupList[0].name;
+        await this.getImgMediaList(this.mediaGroup.mediaGroupList[0].id);
+        this.uploadForm.token = res;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    handleTabsClick(tab, event) {
+      var selId = tab.$vnode.data.attrs.groupId;
+      if (selId == this.mediaGroup.groupId) {
+        return;
+      }
+      this.mediaGroup.groupId = selId;
+      this.loading = true;
+      this.getImgMediaList(this.mediaGroup.groupId);
+    },
     handleError() {
       this.loading = false;
     },
-    handleOpen() {
-      this.getPictureMediaList();
-    },
     changeCurrent(currentPage) {
       this.pagination.page_num = currentPage;
-      this.getPictureMediaList();
+      this.getImgMediaList(this.mediaGroup.groupId);
     },
     handleClose(selectedImgs) {
       this.serch.name = "";
@@ -186,13 +221,14 @@ export default {
         }
       }
     },
-    getPictureMediaList() {
+    getImgMediaList(groupId) {
       let params = {
         page: this.pagination.page_num,
-        type: "image",
-        name: this.serch.name
+        name: this.serch.name,
+        status: 1
       };
-      getPictureMediaList(this, params)
+      this.serch.name === "" ? delete params.name : "";
+      getImgMediaList(this, groupId, params)
         .then(res => {
           this.dataImg = res.data;
           this.pagination.count = res.meta.pagination.total;
@@ -205,32 +241,56 @@ export default {
     },
     searchMedia() {
       this.loading = true;
-      this.getPictureMediaList();
+      this.getImgMediaList(this.mediaGroup.groupId);
     },
 
-    handleSuccess(response, file, fileList) {
-      this.getPictureMediaList();
+    async handleSuccess(response, file, fileList) {
+      let [key, name, size] = [response.key, file.name, file.size];
+      let type = name.substring(name.lastIndexOf("."));
+      let params = {
+        key: key,
+        name: name,
+        size: size,
+        type:'image'
+      };
+      try {
+        await imgMediaUpload(this, this.mediaGroup.groupId, params);
+        await this.getImgMediaList(this.mediaGroup.groupId);
+        let args = {
+          type: "image",
+          status:1
+        };
+        let mediaGroupsData = await getMediaGroup(this,args);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+      } catch (e) {}
     },
-
     beforeUpload(file) {
       this.loading = true;
-
+      let name = file.name;
+      let type = name.substring(name.lastIndexOf("."));
+      let isLt100M = file.size / 1024 / 1024 < 100;
+      let time = new Date().getTime();
+      let random = parseInt(Math.random() * 10 + 1, 10);
+      let suffix = time + "_" + random + "_" + name;
+      let key = encodeURI(`${suffix}`);
       const isJPG =
-        file.type === "image/jpeg" ||
+        file.type === "image/jpg" ||
         file.type === "image/png" ||
         file.type === "image/gif" ||
         file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 10;
+      const isLt10M = file.size / 1024 / 1024 < 10;
       if (!isJPG) {
-        this.loading = false;
-        this.$message.error("上传图片仅支持jpg、jpeg 、gif 、png四种格式!");
+        this.$message.error("上传图片仅支持jpg、jpeg 、gif、png四种格式!");
+        this.setting.loading = false;
         return isJPG;
       }
-      if (!isLt2M) {
-        this.loading = false;
+      if (!isLt10M) {
         this.$message.error("上传图片大小不能超过 10MB!");
-        return isLt2M;
+        this.setting.loading = false;
+        return isLt10M;
       }
+      this.uploadForm.key = key;
+      return this.uploadForm;
     }
   }
 };
@@ -265,6 +325,46 @@ export default {
     border-top: 1px solid #d3dce6;
     border-bottom: 1px solid #d3dce6;
     border-right: 1px solid #d3dce6;
+    .el-tabs {
+      height: 450px;
+      .el-tabs__header {
+        float: left;
+      }
+    }
+    .el-tabs__header {
+      z-index: 3;
+      background-color: white;
+      height: 100%;
+      width: 170px;
+      border-right: 1px solid rgb(209, 219, 229);
+      border-bottom: none;
+      padding: 0;
+      position: relative;
+      margin: 0 0 15px;
+      float: left;
+      .el-tabs__nav {
+        width: 100%;
+        .el-tabs__item {
+          display: block;
+          background-color: #eff2f7;
+          .number {
+            float: right;
+          }
+          &.is-active {
+            border: none;
+            background-color: white;
+          }
+        }
+      }
+    }
+    .el-tabs__content {
+      height: 100%;
+      overflow: scroll;
+      .el-tab-pane {
+        padding-bottom: 100px;
+        height: 100%;
+      }
+    }
   }
   .el-dialog__footer {
     .footer {
@@ -306,7 +406,7 @@ export default {
   width: 163px;
   height: 33px;
   background-color: #eff2f7;
-  background-image: url("../../assets/images/icons/search-icon.png");
+  background-image: url("~assets/images/icons/search-icon.png");
   background-repeat: no-repeat;
   background-position: 5% 50%;
 }
@@ -349,7 +449,7 @@ export default {
   overflow: hidden;
 }
 .picture-panel__arrow {
-  background-image: url("../../assets/images/icons/selected.png");
+  background-image: url("~assets/images/icons/selected.png");
   background-repeat: no-repeat;
   height: 15px;
   position: absolute;
@@ -367,11 +467,17 @@ export default {
   right: -25px;
 }
 
+.picture-panel__searched-body {
+  overflow: scroll;
+  padding-bottom: 100px;
+}
+
 .picture-panel__footer {
   height: 57px;
   background-color: #eff2f7;
   position: absolute;
   bottom: 0px;
+  padding-left: 170px;
   width: 100%;
 }
 .picture-panel__upload {
@@ -380,6 +486,13 @@ export default {
     line-height: 57px;
     margin-left: 30px;
   }
+}
+
+.picture-panep__upload-btn {
+  width: 86px;
+  height: 36px;
+  background-color: #13ce66;
+  border: none;
 }
 
 .picture-panel__page {
