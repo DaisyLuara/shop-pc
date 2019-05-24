@@ -8,15 +8,33 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="name">
-              <el-input v-model="filters.name" placeholder="请填写广告素材名称" clearable>
-                <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+          <el-form 
+            ref="filters" 
+            :model="filters" 
+            :inline="true">
+            <el-form-item 
+              label 
+              prop="name">
+              <el-input 
+                v-model="filters.name" 
+                placeholder="请填写广告素材名称" 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item label prop="type">
-              <el-select v-model="filters.type" placeholder="请选择类型" filterable clearable>
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
+            <el-form-item 
+              label 
+              prop="type">
+              <el-select 
+                v-model="filters.type" 
+                placeholder="请选择类型" 
+                filterable 
+                clearable>
+                <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in typeList"
                   :key="item.id"
@@ -26,14 +44,21 @@
               </el-select>
             </el-form-item>
             <el-form-item label>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+              <el-button 
+                class="el-button-success" 
+                @click="search('filters')">搜索</el-button>
+              <el-button 
+                class="el-button-cancel" 
+                @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="actions-wrap">
           <span class="label">素材列表（ {{ pagination.total }} ）</span>
-          <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addFodder">新增广告素材</el-button>
+          <el-button 
+            type="primary" 
+            icon="el-icon-circle-plus-outline" 
+            @click="addFodder">新增广告素材</el-button>
         </div>
         <!-- 表格 -->
         <el-table
@@ -46,7 +71,10 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form 
+                label-position="left" 
+                inline 
+                class="demo-table-expand">
                 <el-form-item label="ID:">
                   <span>{{ scope.row.aid }}</span>
                 </el-form-item>
@@ -74,7 +102,12 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" sortable prop="aid" label="ID" width="90"/>
+          <el-table-column 
+            :show-overflow-tooltip="true" 
+            sortable 
+            prop="aid" 
+            label="ID" 
+            width="90"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -103,7 +136,10 @@
             min-width="80"
           >
             <template slot-scope="scope">
-              <a :href="scope.row.link" target="_blank" style="color:#6b3ec2;font-weight:600;">点击查看</a>
+              <a 
+                :href="scope.row.link" 
+                target="_blank" 
+                style="color:#6b3ec2;font-weight:600;">点击查看</a>
             </template>
           </el-table-column>
           <el-table-column
@@ -113,7 +149,7 @@
             label="广告标记"
             min-width="90"
           >
-            <template slot-scope="scope">{{scope.row.isad === 1 ? '显示' :'隐藏'}}</template>
+            <template slot-scope="scope">{{ scope.row.isad === 1 ? '显示' :'隐藏' }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -122,9 +158,13 @@
             label="修改时间"
             min-width="90"
           />
-          <el-table-column label="操作" width="150">
+          <el-table-column 
+            label="操作" 
+            width="150">
             <template slot-scope="scope">
-              <el-button size="small" @click="eidtAdFodder(scope.row)">编辑</el-button>
+              <el-button 
+                size="small" 
+                @click="eidtAdFodder(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>

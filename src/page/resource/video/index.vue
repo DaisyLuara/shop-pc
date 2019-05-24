@@ -22,14 +22,19 @@
             class="rename-input"
           />
           <div class="btn-wrap">
-            <el-button type="primary" size="small" @click="modifyGroupName">确定</el-button>
+            <el-button 
+              type="primary" 
+              size="small" 
+              @click="modifyGroupName">确定</el-button>
             <el-button
               size="small"
               @click="mediaGroup.mediaGroupRenameFlag = false, mediaGroup.renameGroupValue = renameGroup"
             >取消</el-button>
           </div>
         </el-popover>
-        <a v-popover:rename v-show="mediaGroup.renameGroupValue !== '默认分组'">重命名</a>
+        <a 
+          v-popover:rename 
+          v-show="mediaGroup.renameGroupValue !== '默认分组'">重命名</a>
       </div>
       <div class="grouping-image-wrap">
         <div class="grouping-wrap">
@@ -58,7 +63,10 @@
               class="group-input"
             />
             <div class="btn-wrap">
-              <el-button type="primary" size="small" @click="addMediaGroup">确定</el-button>
+              <el-button 
+                type="primary" 
+                size="small" 
+                @click="addMediaGroup">确定</el-button>
               <el-button
                 size="small"
                 @click="mediaGroup.mediaGroupAddFlag = false,mediaGroup.addGroupNameValue = ''"
@@ -75,7 +83,9 @@
               v-show="mediaImage.mediaList.length == 0"
               class="hint-message"
             >暂无数据，可点击左下角“上传视频”按钮添加</div>
-            <li v-for="(imageItem, index) in mediaImage.mediaList" :key="imageItem.id">
+            <li 
+              v-for="(imageItem, index) in mediaImage.mediaList" 
+              :key="imageItem.id">
               <video
                 :src="imageItem.url"
                 class="image-file"
@@ -112,7 +122,7 @@
                   <a slot="reference">重命名</a>
                   <a
                     slot="reference"
-                  >{{imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>
+                  >{{ imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>
                 </el-popover>
               </div>
             </li>
@@ -132,16 +142,18 @@
               list-type="video"
               class="upload"
             >
-              <el-button size="small" type="success">上传视频</el-button>
+              <el-button 
+                size="small" 
+                type="success">上传视频</el-button>
             </el-upload>
             <span class="image-type">仅支持mp4一种格式, 大小为100M以内</span>
             <div class="pagination">
               <el-pagination
-                small
                 :page-size="pagination.limit"
                 :pager-count="5"
                 :total="pagination.count"
                 :current-page.sync="pagination.page_num"
+                small
                 layout="prev, pager, next, total"
                 @current-change="changeCurrent"
               />

@@ -1,23 +1,41 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
-      <el-form ref="fodderForm" :model="fodderForm" label-position="top">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
+      <el-form 
+        ref="fodderForm" 
+        :model="fodderForm" 
+        label-position="top">
         <div class="prize">
-          <h4 class="prize-title">{{ fodderID ? '编辑广告素材' : '新增广告素材'}}</h4>
+          <h4 class="prize-title">{{ fodderID ? '编辑广告素材' : '新增广告素材' }}</h4>
           <el-form-item
             :rules="[{ required: true, message: '请填写广告素材名称', trigger: 'submit'}]"
             label="广告素材名称"
             prop="name"
           >
-            <el-input v-model="fodderForm.name" placeholder="请填写广告素材名称" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <el-input 
+              v-model="fodderForm.name" 
+              placeholder="请填写广告素材名称" 
+              clearable>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
             </el-input>
           </el-form-item>
-          <el-form-item label=" " prop="type">
+          <el-form-item 
+            label=" " 
+            prop="type">
             <div class="type">
               <div class="type-item">类型</div>
-              <el-radio-group v-model="fodderForm.type" @change="typeHandle">
-                <el-radio :label="type.id" v-for="type in typeList" :key="type.id">{{ type.name }}</el-radio>
+              <el-radio-group 
+                v-model="fodderForm.type" 
+                @change="typeHandle">
+                <el-radio 
+                  v-for="type in typeList" 
+                  :label="type.id" 
+                  :key="type.id">{{ type.name }}</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
@@ -27,24 +45,37 @@
             prop="link"
           >
             <div
+              v-if="fodderForm.type!=='video'"
               class="fodder-uploader"
               @click="panelVisible=true"
-              v-if="fodderForm.type!=='video'"
             >
-              <img v-if="url" :src="fodderForm.link" class="fodder">
-              <i v-else class="el-icon-plus fodder-uploader-icon"/>
+              <img 
+                v-if="url" 
+                :src="fodderForm.link" 
+                class="fodder">
+              <i 
+                v-else 
+                class="el-icon-plus fodder-uploader-icon"/>
             </div>
 
             <div
+              v-if="fodderForm.type==='video'"
               class="fodder-uploader"
               @click="videoPanelVisible=true"
-              v-if="fodderForm.type==='video'"
             >
-              <video v-if="url" :src="fodderForm.link" controls="controls" class="fodder">您的浏览器不支持</video>
-              <i v-else class="el-icon-plus fodder-uploader-icon"/>
+              <video 
+                v-if="url" 
+                :src="fodderForm.link" 
+                controls="controls" 
+                class="fodder">您的浏览器不支持</video>
+              <i 
+                v-else 
+                class="el-icon-plus fodder-uploader-icon"/>
             </div>
           </el-form-item>
-          <el-form-item label=" " prop="isad">
+          <el-form-item 
+            label=" " 
+            prop="isad">
             <div class="type">
               <div class="type-item">广告标记</div>
               <el-radio-group v-model="fodderForm.isad">
@@ -55,8 +86,12 @@
           </el-form-item>
         </div>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('fodderForm')">保存</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('fodderForm')">保存</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
