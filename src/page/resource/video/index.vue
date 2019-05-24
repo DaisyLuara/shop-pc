@@ -174,8 +174,7 @@ import {
   getMediaGroup, // 分组列表
   saveMediaGroup,
   modifyMediaGroupName,
-  //视频审核
-  imageReview
+  randomString,
 } from "service";
 
 import {
@@ -399,7 +398,8 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      let suffix = time + "_" + random + "_" + name;
+      // let suffix = time + "_" + random + "_" + name;
+      let suffix = randomString(25)
       let key = encodeURI(`${suffix}`);
       const isJPG = file.type === "video/mp4";
       const isLt10M = file.size / 1024 / 1024 < 100;
