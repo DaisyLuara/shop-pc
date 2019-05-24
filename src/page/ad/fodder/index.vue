@@ -113,7 +113,7 @@
             sortable
             prop="name"
             label="广告素材名称"
-            min-width="80"
+            min-width="90"
           >
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
@@ -122,7 +122,7 @@
             sortable
             prop="type"
             label="类型"
-            min-width="100"
+            min-width="80"
           >
             <template slot-scope="scope">
               <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
@@ -160,7 +160,7 @@
           />
           <el-table-column 
             label="操作" 
-            width="150">
+            width="100">
             <template slot-scope="scope">
               <el-button 
                 size="small" 
