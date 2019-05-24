@@ -25,7 +25,7 @@
           <el-tab-pane
             v-for="item in mediaGroup.mediaGroupList"
             :name="item.name"
-            :groupId="item.id"
+            :group-id="item.id"
             :key="item.id"
           >
             <span 
@@ -109,7 +109,8 @@ import {
   getImgMediaList,
   getQiniuToken,
   imgMediaUpload,
-  getMediaGroup
+  getMediaGroup,
+  randomString
 } from "service";
 
 import {
@@ -170,14 +171,16 @@ export default {
       uploadDisabled: false
     };
   },
-  created() {},
+  created() {
+    console.log();
+  },
   methods: {
     async handleOpen() {
       try {
         let res = await getQiniuToken(this);
         let args = {
           type: "image",
-          status:1
+          status: 1
         };
         let mediaGroupsData = await getMediaGroup(this, args);
         this.mediaGroup.mediaGroupList = mediaGroupsData.data;
@@ -267,16 +270,16 @@ export default {
         key: key,
         name: name,
         size: size,
-        type:'image'
+        type: "image"
       };
       try {
         await imgMediaUpload(this, this.mediaGroup.groupId, params);
         await this.getImgMediaList(this.mediaGroup.groupId);
         let args = {
           type: "image",
-          status:1
+          status: 1
         };
-        let mediaGroupsData = await getMediaGroup(this,args);
+        let mediaGroupsData = await getMediaGroup(this, args);
         this.mediaGroup.mediaGroupList = mediaGroupsData.data;
       } catch (e) {}
     },
@@ -287,7 +290,8 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      let suffix = time + "_" + random + "_" + name;
+      // let suffix = time + "_" + random + "_" + name;
+      let suffix = randomString(25);
       let key = encodeURI(`${suffix}`);
       const isJPG =
         file.type === "image/jpg" ||
