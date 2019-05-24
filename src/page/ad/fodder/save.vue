@@ -1,23 +1,41 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
-      <el-form ref="fodderForm" :model="fodderForm" label-position="top">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
+      <el-form 
+        ref="fodderForm" 
+        :model="fodderForm" 
+        label-position="top">
         <div class="prize">
-          <h4 class="prize-title">{{ fodderID ? '编辑广告素材' : '新增广告素材'}}</h4>
+          <h4 class="prize-title">{{ fodderID ? '编辑广告素材' : '新增广告素材' }}</h4>
           <el-form-item
             :rules="[{ required: true, message: '请填写广告素材名称', trigger: 'submit'}]"
             label="广告素材名称"
             prop="name"
           >
-            <el-input v-model="fodderForm.name" placeholder="请填写广告素材名称" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <el-input 
+              v-model="fodderForm.name" 
+              placeholder="请填写广告素材名称" 
+              clearable>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
             </el-input>
           </el-form-item>
-          <el-form-item label=" " prop="type">
+          <el-form-item 
+            label=" " 
+            prop="type">
             <div class="type">
               <div class="type-item">类型</div>
-              <el-radio-group v-model="fodderForm.type" @change="typeHandle">
-                <el-radio :label="type.id" v-for="type in typeList" :key="type.id">{{ type.name }}</el-radio>
+              <el-radio-group 
+                v-model="fodderForm.type" 
+                @change="typeHandle">
+                <el-radio 
+                  v-for="type in typeList" 
+                  :label="type.id" 
+                  :key="type.id">{{ type.name }}</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
@@ -27,24 +45,37 @@
             prop="link"
           >
             <div
+              v-if="fodderForm.type!=='video'"
               class="fodder-uploader"
               @click="panelVisible=true"
-              v-if="fodderForm.type!=='video'"
             >
-              <img v-if="url" :src="fodderForm.link" class="fodder">
-              <i v-else class="el-icon-plus fodder-uploader-icon"/>
+              <img 
+                v-if="url" 
+                :src="fodderForm.link" 
+                class="fodder">
+              <i 
+                v-else 
+                class="el-icon-plus fodder-uploader-icon"/>
             </div>
 
             <div
+              v-if="fodderForm.type==='video'"
               class="fodder-uploader"
               @click="videoPanelVisible=true"
-              v-if="fodderForm.type==='video'"
             >
-              <video v-if="url" :src="fodderForm.link" controls="controls" class="fodder">您的浏览器不支持</video>
-              <i v-else class="el-icon-plus fodder-uploader-icon"/>
+              <video 
+                v-if="url" 
+                :src="fodderForm.link" 
+                controls="controls" 
+                class="fodder">您的浏览器不支持</video>
+              <i 
+                v-else 
+                class="el-icon-plus fodder-uploader-icon"/>
             </div>
           </el-form-item>
-          <el-form-item label=" " prop="isad">
+          <el-form-item 
+            label=" " 
+            prop="isad">
             <div class="type">
               <div class="type-item">广告标记</div>
               <el-radio-group v-model="fodderForm.isad">
@@ -55,8 +86,12 @@
           </el-form-item>
         </div>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('fodderForm')">保存</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('fodderForm')">保存</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -76,9 +111,9 @@
 <script>
 import {
   historyBack,
-  modifyPrize,
-  prizeDetails,
-  handleDateTypeTransform
+  modifyAdMedia,
+  getAdMediaDetail,
+  saveAdMedia
 } from "service";
 import {
   Form,
@@ -92,7 +127,6 @@ import {
   RadioGroup,
   Radio
 } from "element-ui";
-import moment from "moment";
 import PicturePanel from "components/common/picturePanel";
 import VideoPanel from "components/common/videoPanel";
 
@@ -103,7 +137,6 @@ export default {
     ElOption: Option,
     ElFormItem: FormItem,
     ElButton: Button,
-    ElDatePicker: DatePicker,
     ElRadioGroup: RadioGroup,
     ElRadio: Radio,
     ElInput: Input,
@@ -127,7 +160,7 @@ export default {
           name: "静态图"
         },
         {
-          id: "git",
+          id: "gif",
           name: "Gif"
         },
         {
@@ -145,7 +178,7 @@ export default {
         name: null,
         link: "",
         type: "static",
-        isad: 0
+        isad: 1
       },
       url: ""
     };
@@ -153,7 +186,9 @@ export default {
   mounted() {},
   created() {
     this.fodderID = this.$route.params.uid;
-    // this.prizeDetails();
+    if (this.fodderID) {
+      this.getAdMediaDetail();
+    }
   },
   methods: {
     typeHandle(val) {
@@ -161,28 +196,23 @@ export default {
       this.fodderForm.link = "";
     },
     handleClose(data) {
-      console.log(data);
       if (data && data.length > 0) {
         let { link, url } = data[0];
         this.fodderForm.link = url;
         this.url = url;
       }
     },
-    prizeDetails() {
+    getAdMediaDetail() {
       this.setting.loading = true;
-      let args = {
-        include: "company,market,point,writeOffMarket,writeOffStore"
-      };
-      prizeDetails(this, this.fodderID, args)
+      getAdMediaDetail(this, this.fodderID)
         .then(res => {
           this.setting.loading = false;
-          let { name, stock, description, start_date, end_date, type } = res;
+          let { name, link, type, isad } = res;
           this.fodderForm.name = name;
-          this.fodderForm.stock = stock;
-          this.fodderForm.description = description;
-          this.fodderForm.start_date = start_date;
-          this.fodderForm.end_date = end_date;
+          this.fodderForm.link = link;
+          this.url = link;
           this.fodderForm.type = type;
+          this.fodderForm.isad = isad;
         })
         .catch(err => {
           this.setting.loading = false;
@@ -200,28 +230,45 @@ export default {
         if (valid) {
           this.setting.loading = true;
           let args = this.fodderForm;
-          let start_date = args.start_date;
-          let end_date = args.end_date;
-          args.start_date = moment(start_date).format("YYYY-MM-DD HH:mm:ss");
-          args.end_date = moment(end_date).format("YYYY-MM-DD HH:mm:ss");
-          modifyPrize(this, this.fodderID, args)
-            .then(res => {
-              this.setting.loading = false;
-              this.$message({
-                message: "修改成功",
-                type: "success"
+          if (this.fodderID) {
+            modifyAdMedia(this, this.fodderID, args)
+              .then(res => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "修改成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/ad/fodder"
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err.response.data.message,
+                  type: "warning"
+                });
+                this.setting.loading = false;
               });
-              this.$router.push({
-                path: "/prize/list"
+          } else {
+            saveAdMedia(this, args)
+              .then(res => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "新增成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/ad/fodder"
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err.response.data.message,
+                  type: "warning"
+                });
+                this.setting.loading = false;
               });
-            })
-            .catch(err => {
-              this.$message({
-                message: err.response.data.message,
-                type: "success"
-              });
-              this.setting.loading = false;
-            });
+          }
         }
       });
     }

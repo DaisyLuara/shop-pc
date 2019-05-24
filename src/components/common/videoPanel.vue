@@ -26,10 +26,12 @@
           <el-tab-pane
             v-for="item in mediaGroup.mediaGroupList"
             :name="item.name"
-            :groupId="item.id"
+            :group-id="item.id"
             :key="item.id"
           >
-            <span slot="label" :groupId="item.id">
+            <span 
+              slot="label" 
+              :groupId="item.id">
               {{ item.name }}
               <span class="number">{{ item.count }}</span>
             </span>
@@ -40,9 +42,14 @@
                 class="video-panel__img-item"
                 @click="selectImg(obj)"
               >
-                <video :src="obj.url" controls="controls" class="video-panel__img">您的浏览器不支持</video>
+                <video 
+                  :src="obj.url" 
+                  controls="controls" 
+                  class="video-panel__img">您的浏览器不支持</video>
                 <div class="video-panel__img-name">{{ obj.name }}</div>
-                <div v-for="selectedObj in selectedImgs" :key="selectedObj.id">
+                <div 
+                  v-for="selectedObj in selectedImgs" 
+                  :key="selectedObj.id">
                   <div v-if="obj.id == selectedObj.id">
                     <div class="video-panel__arrow-wrap"/>
                     <i class="video-panel__arrow"/>
@@ -66,7 +73,9 @@
             list-type="video"
             class="video-panel__upload"
           >
-            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button 
+              size="small" 
+              type="primary">点击上传</el-button>
           </el-upload>
           <span class="image-type">仅支持mp4一种格式, 大小为100M以内</span>
           <div class="video-panel__page">
@@ -82,10 +91,14 @@
         </div>
       </div>
       <div slot="footer">
-        <div name="footer" class="footer">
+        <div 
+          name="footer" 
+          class="footer">
           <div class="video-panel__choose-num">已选择{{ selectedImgs.length }}个视频</div>
           <el-button @click="cancel()">取 消</el-button>
-          <el-button type="primary" @click="confirm()">确 定</el-button>
+          <el-button 
+            type="primary" 
+            @click="confirm()">确 定</el-button>
         </div>
       </div>
     </el-dialog>

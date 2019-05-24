@@ -34,7 +34,7 @@ let router = {
       path: 'video',
       meta: {
         title: '视频管理',
-        permission: ''
+        permission: 'shop_resource.media'
       },
       component: () =>
         import(/* webpackChunkName: "page/resource/video/routerView" */ 'page/resource/video/routerView'),
@@ -43,7 +43,7 @@ let router = {
           path: '/',
           meta: {
             title: '视频管理集合',
-            permission: ''
+            permission: 'shop_resource.media.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/resource/video/index" */ 'page/resource/video/index')
