@@ -3,9 +3,9 @@
     <div
       v-loading="setting.loading"
       :element-loading-text="setting.loadingText"
-      class="picture-manage"
+      class="video-manage"
     >
-      <div class="picture-group-title">
+      <div class="video-group-title">
         <span>分组名称：</span>
         <span>{{ mediaGroup.renameGroupValue }}</span>
         <el-popover
@@ -82,11 +82,6 @@
                 controls="controls"
                 @click="mediaVideo.imageVisible = true, mediaVideo.mediaVideoUrl = imageItem.url"
               >您的浏览器不支持</video>
-              <!-- <img
-                :src="imageItem.url"
-                class="image-file"
-                @click="mediaImage.imageVisible = true, mediaImage.mediaImageUrl = imageItem.url"
-              >-->
               <p
                 class="item-text"
               >{{ imageItem.name.length>8 ? imageItem.name.substring(0,7)+'...':imageItem.name }}</p>
@@ -134,7 +129,7 @@
               :auto-upload="true"
               :show-file-list="false"
               :on-error="handleError"
-              list-type="picture"
+              list-type="video"
               class="upload"
             >
               <el-button size="small" type="success">上传视频</el-button>
@@ -220,8 +215,8 @@ export default {
         renameValueArray: []
       },
       groupId: null,
+      type: "video",
       mediaImage: {
-        type: "image",
         imageVisible: false,
         mediaRename: false,
         mediaImageUrl: "",
@@ -249,7 +244,7 @@ export default {
       try {
         this.setting.loading = true;
         let args = {
-          type: "video"
+          type: this.type
         };
         let res = await getQiniuToken(this);
         let mediaGroupsData = await getMediaGroup(this, args);
@@ -270,11 +265,11 @@ export default {
         if (this.mediaGroup.addGroupNameValue.trim()) {
           let args = {
             name: this.mediaGroup.addGroupNameValue,
-            type: "video"
+            type: this.type
           };
           let res = await saveMediaGroup(this, args);
           let argsGroup = {
-            type: "video"
+            type: this.type
           };
           let mediaGroupsData = await getMediaGroup(this, argsGroup);
           this.mediaGroup.mediaGroupAddFlag = false;
@@ -291,11 +286,11 @@ export default {
     async modifyGroupName() {
       let params = {
         name: this.mediaGroup.renameGroupValue,
-        type: "video"
+        type: this.type
       };
       try {
         let argsGroup = {
-          type: "video"
+          type: this.type
         };
         await modifyMediaGroupName(this, this.mediaGroup.groupId, params);
         let mediaGroupsData = await getMediaGroup(this, argsGroup);
@@ -417,15 +412,15 @@ export default {
         key: key,
         name: name,
         size: size,
-        type: "video"
+        type: this.type
       };
       try {
         let argsGroup = {
-          type: "video"
+          type: this.type
         };
         await imgMediaUpload(this, this.mediaGroup.groupId, params);
         await this.getImgMediaList(this.mediaGroup.groupId);
-        let mediaGroupsData = await getMediaGroup(this,argsGroup);
+        let mediaGroupsData = await getMediaGroup(this, argsGroup);
         this.mediaGroup.mediaGroupList = mediaGroupsData.data;
       } catch (e) {
         console.log(e);
@@ -436,11 +431,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.picture-manage {
+.video-manage {
   background-color: #fff;
   min-height: 500px;
   padding-bottom: 100px;
-  .picture-group-title {
+  .video-group-title {
     padding: 27px 0 13px 27px;
     span {
       color: #5e6d82;

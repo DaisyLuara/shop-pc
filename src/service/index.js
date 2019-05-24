@@ -42,3 +42,6 @@ export * from './cart'
 
 //订单
 export * from './order'
+
+//广告
+export * from './ad'

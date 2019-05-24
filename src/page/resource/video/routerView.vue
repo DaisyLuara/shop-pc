@@ -5,14 +5,14 @@
 </template>
 <script>
 export default {
-  name: 'PictureView'
-}
+  name: "PictureView"
+};
 </script>
 
 <style lang="less" scoped>
 .vedio-root {
   height: 100%;
-  margin: 10px;
+  padding: 76px 50px 0;
   background-color: #eff2f7;
 }
 </style>

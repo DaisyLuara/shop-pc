@@ -76,9 +76,9 @@
 <script>
 import {
   historyBack,
-  modifyPrize,
-  prizeDetails,
-  handleDateTypeTransform
+  modifyAdMedia,
+  getAdMediaDetail,
+  saveAdMedia
 } from "service";
 import {
   Form,
@@ -92,7 +92,6 @@ import {
   RadioGroup,
   Radio
 } from "element-ui";
-import moment from "moment";
 import PicturePanel from "components/common/picturePanel";
 import VideoPanel from "components/common/videoPanel";
 
@@ -103,7 +102,6 @@ export default {
     ElOption: Option,
     ElFormItem: FormItem,
     ElButton: Button,
-    ElDatePicker: DatePicker,
     ElRadioGroup: RadioGroup,
     ElRadio: Radio,
     ElInput: Input,
@@ -127,7 +125,7 @@ export default {
           name: "静态图"
         },
         {
-          id: "git",
+          id: "gif",
           name: "Gif"
         },
         {
@@ -145,7 +143,7 @@ export default {
         name: null,
         link: "",
         type: "static",
-        isad: 0
+        isad: 1
       },
       url: ""
     };
@@ -153,7 +151,9 @@ export default {
   mounted() {},
   created() {
     this.fodderID = this.$route.params.uid;
-    // this.prizeDetails();
+    if (this.fodderID) {
+      this.getAdMediaDetail();
+    }
   },
   methods: {
     typeHandle(val) {
@@ -161,28 +161,23 @@ export default {
       this.fodderForm.link = "";
     },
     handleClose(data) {
-      console.log(data);
       if (data && data.length > 0) {
         let { link, url } = data[0];
         this.fodderForm.link = url;
         this.url = url;
       }
     },
-    prizeDetails() {
+    getAdMediaDetail() {
       this.setting.loading = true;
-      let args = {
-        include: "company,market,point,writeOffMarket,writeOffStore"
-      };
-      prizeDetails(this, this.fodderID, args)
+      getAdMediaDetail(this, this.fodderID)
         .then(res => {
           this.setting.loading = false;
-          let { name, stock, description, start_date, end_date, type } = res;
+          let { name, link, type, isad } = res;
           this.fodderForm.name = name;
-          this.fodderForm.stock = stock;
-          this.fodderForm.description = description;
-          this.fodderForm.start_date = start_date;
-          this.fodderForm.end_date = end_date;
+          this.fodderForm.link = link;
+          this.url = link;
           this.fodderForm.type = type;
+          this.fodderForm.isad = isad;
         })
         .catch(err => {
           this.setting.loading = false;
@@ -200,28 +195,45 @@ export default {
         if (valid) {
           this.setting.loading = true;
           let args = this.fodderForm;
-          let start_date = args.start_date;
-          let end_date = args.end_date;
-          args.start_date = moment(start_date).format("YYYY-MM-DD HH:mm:ss");
-          args.end_date = moment(end_date).format("YYYY-MM-DD HH:mm:ss");
-          modifyPrize(this, this.fodderID, args)
-            .then(res => {
-              this.setting.loading = false;
-              this.$message({
-                message: "修改成功",
-                type: "success"
+          if (this.fodderID) {
+            modifyAdMedia(this, this.fodderID, args)
+              .then(res => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "修改成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/ad/fodder"
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err.response.data.message,
+                  type: "warning"
+                });
+                this.setting.loading = false;
               });
-              this.$router.push({
-                path: "/prize/list"
+          } else {
+            saveAdMedia(this, args)
+              .then(res => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "新增成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/ad/fodder"
+                });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err.response.data.message,
+                  type: "warning"
+                });
+                this.setting.loading = false;
               });
-            })
-            .catch(err => {
-              this.$message({
-                message: err.response.data.message,
-                type: "success"
-              });
-              this.setting.loading = false;
-            });
+          }
         }
       });
     }

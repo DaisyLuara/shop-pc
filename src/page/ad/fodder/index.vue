@@ -9,13 +9,13 @@
         <!-- 搜索 -->
         <div class="search-wrap">
           <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="point_name">
-              <el-input v-model="filters.point_name" placeholder="请填写广告素材名称" clearable>
+            <el-form-item label prop="name">
+              <el-input v-model="filters.name" placeholder="请填写广告素材名称" clearable>
                 <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
               </el-input>
             </el-form-item>
-            <el-form-item label prop="screen_status">
-              <el-select v-model="filters.screen_status" placeholder="请选择类型" filterable clearable>
+            <el-form-item label prop="type">
+              <el-select v-model="filters.type" placeholder="请选择类型" filterable clearable>
                 <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in typeList"
@@ -48,10 +48,10 @@
             <template slot-scope="scope">
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="ID:">
-                  <span>{{ scope.row.id }}</span>
+                  <span>{{ scope.row.aid }}</span>
                 </el-form-item>
                 <el-form-item label="广告素材名称:">
-                  <span>{{ scope.row.project.name }}</span>
+                  <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="类型:">
                   <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
@@ -66,7 +66,7 @@
                   </span>
                 </el-form-item>
                 <el-form-item label="广告标记:">
-                  <span>{{ scope.row.isad }}</span>
+                  <span>{{ scope.row.isad === 1 ? '显示' :'隐藏' }}</span>
                 </el-form-item>
                 <el-form-item label="修改时间:">
                   <span>{{ scope.row.updated_at }}</span>
@@ -74,7 +74,7 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" sortable prop="id" label="ID" width="90"/>
+          <el-table-column :show-overflow-tooltip="true" sortable prop="aid" label="ID" width="90"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -82,7 +82,7 @@
             label="广告素材名称"
             min-width="80"
           >
-            <template slot-scope="scope">{{ scope.row.project.name }}</template>
+            <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -103,11 +103,7 @@
             min-width="80"
           >
             <template slot-scope="scope">
-              <a
-                :href="scope.row.video_desc_url"
-                target="_blank"
-                style="color:#6b3ec2;font-weight:600;"
-              >点击查看</a>
+              <a :href="scope.row.link" target="_blank" style="color:#6b3ec2;font-weight:600;">点击查看</a>
             </template>
           </el-table-column>
           <el-table-column
@@ -116,7 +112,9 @@
             prop="isad"
             label="广告标记"
             min-width="90"
-          />
+          >
+            <template slot-scope="scope">{{scope.row.isad === 1 ? '显示' :'隐藏'}}</template>
+          </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -124,6 +122,11 @@
             label="修改时间"
             min-width="90"
           />
+          <el-table-column label="操作" width="150">
+            <template slot-scope="scope">
+              <el-button size="small" @click="eidtAdFodder(scope.row)">编辑</el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <div class="pagination-wrap">
           <el-pagination
@@ -140,7 +143,7 @@
 </template>
 
 <script>
-import { getDeviceList } from "service";
+import { getAdMediaList } from "service";
 
 import {
   Button,
@@ -170,8 +173,8 @@ export default {
   data() {
     return {
       filters: {
-        screen_status: null,
-        point_name: null
+        name: null,
+        type: null
       },
       typeList: [
         {
@@ -179,7 +182,7 @@ export default {
           name: "静态图"
         },
         {
-          id: "git",
+          id: "gif",
           name: "Gif"
         },
         {
@@ -201,52 +204,54 @@ export default {
     };
   },
   created() {
-    // this.getDeviceList();
+    this.getAdMediaList();
   },
   methods: {
+    eidtAdFodder(data) {
+      this.$router.push({
+        path: `/ad/fodder/edit/${data.aid}`
+      });
+    },
     addFodder(data) {
       this.$router.push({
         path: "/ad/fodder/add"
       });
     },
-    getDeviceList() {
+    async getAdMediaList() {
       this.setting.loading = true;
-      let { point_name, screen_status } = this.filters;
+      let { name, type } = this.filters;
       let args = {
-        include: "point,project",
         page: this.pagination.currentPage,
-        point_name: point_name,
-        screen_status: screen_status
+        name: name,
+        type: type
       };
-      if (point_name === "") {
-        delete args.point_name;
+      if (!name) {
+        delete args.name;
       }
-
-      if (screen_status === "") {
-        delete args.screen_status;
+      if (!type) {
+        delete args.type;
       }
-      getDeviceList(this, args)
-        .then(res => {
-          this.tableData = res.data;
-          this.pagination.total = res.meta.pagination.total;
-          this.setting.loading = false;
-        })
-        .catch(err => {
-          this.setting.loading = false;
-        });
+      try {
+        let res = await getAdMediaList(this, args);
+        this.tableData = res.data;
+        this.pagination.total = res.meta.pagination.total;
+        this.setting.loading = false;
+      } catch (e) {
+        this.setting.loading = false;
+      }
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getDeviceList();
+      this.getAdMediaList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getDeviceList();
+      this.getAdMediaList();
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getDeviceList();
+      this.getAdMediaList();
     }
   }
 };
