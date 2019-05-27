@@ -1,12 +1,12 @@
 <template>
-  <div class="picture-root">
+  <div class="adput-child-root">
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: 'PictureView'
-}
+  name: "AdView"
+};
 </script>
 
 <style lang="less" scoped>

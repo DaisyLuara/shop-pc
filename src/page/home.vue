@@ -146,6 +146,9 @@ export default {
               case "prize":
                 m.src = "ad_shop/img/gift_icon";
                 break;
+              case "resource":
+                m.src = "ad_shop/img/resource_icon";
+                break;
               case "report":
                 m.src = "ad_shop/img/chart_icon";
                 break;

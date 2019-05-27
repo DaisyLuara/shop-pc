@@ -28,6 +28,8 @@ Vue.use(BreadcrumbItem)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
+
 Vue.prototype.$loading = Loading.service
 Vue.component('second-sidebar', secondSidebar)
 Vue.component('headModule', headModule)

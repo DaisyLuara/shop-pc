@@ -15,11 +15,11 @@
           >
             <el-form-item
               label
-              prop="name"
+              prop="atiid"
             >
               <el-input
-                v-model="filters.name"
-                placeholder="请填写广告素材名称"
+                v-model="filters.atiid"
+                placeholder="请填写广告模版"
                 clearable
               >
                 <i
@@ -30,11 +30,12 @@
             </el-form-item>
             <el-form-item
               label
-              prop="type"
+              prop="piid"
             >
               <el-select
-                v-model="filters.type"
-                placeholder="请选择类型"
+                v-model="filters.piid"
+                :loading="searchLoading"
+                placeholder="请选择节目"
                 filterable
                 clearable
               >
@@ -43,14 +44,40 @@
                   class="el-input__icon el-icon-status el-icon-same"
                 />
                 <el-option
-                  v-for="item in typeList"
+                  v-for="item in projectList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label>
+            <el-form-item
+              label
+              prop="oid"
+            >
+              <el-select
+                v-model="filters.oid"
+                :loading="searchLoading"
+                placeholder="请选择点位"
+                filterable
+                clearable
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
+                <el-option
+                  v-for="item in pointList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              label
+              prop
+            >
               <el-button
                 class="el-button-success"
                 @click="search('filters')"
@@ -63,14 +90,16 @@
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">素材列表（ {{ pagination.total }} ）</span>
-          <el-button
-            type="primary"
-            icon="el-icon-circle-plus-outline"
-            @click="addFodder"
-          >新增广告素材</el-button>
+          <span class="label">广告投放列表: ( {{ pagination.total }} )</span>
+          <div>
+            <el-button
+              type="primary"
+              icon="el-icon-circle-plus-outline"
+              @click="addAdmeterial"
+            >新增广告素材</el-button>
+          </div>
         </div>
-        <!-- 表格 -->
+        <!-- 广告投放列表 -->
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -86,99 +115,75 @@
                 inline
                 class="demo-table-expand"
               >
-                <el-form-item label="ID:">
-                  <span>{{ scope.row.aid }}</span>
+                <el-form-item label="广告模版:">
+                  <span>{{ scope.row.template.name }}</span>
                 </el-form-item>
-                <el-form-item label="广告素材名称:">
-                  <span>{{ scope.row.name }}</span>
+                <el-form-item label="点位名称:">
+                  <span>{{scope.row.point.name}}</span>
                 </el-form-item>
-                <el-form-item label="类型:">
-                  <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
+                <el-form-item label="节目名称:">
+                  <span>{{scope.row.project.name }}</span>
                 </el-form-item>
-                <el-form-item label="附件:">
-                  <span>
-                    <a
-                      :href="scope.row.link"
-                      target="_blank"
-                      style="color:#6b3ec2;font-weight:600;"
-                    >点击查看</a>
-                  </span>
-                </el-form-item>
-                <el-form-item label="广告标记:">
-                  <span>{{ scope.row.isad === 1 ? '显示' :'隐藏' }}</span>
+                <el-form-item label="模版投放时间:">
+                  <span>{{ scope.row.start_date}}</span>
                 </el-form-item>
                 <el-form-item label="修改时间:">
-                  <span>{{ scope.row.updated_at }}</span>
+                  <span>{{ scope.row.end_date }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
           <el-table-column
-            :show-overflow-tooltip="true"
             sortable
-            prop="aid"
+            prop="aoid"
             label="ID"
-            width="90"
+            width="80"
           />
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="name"
-            label="广告素材名称"
-            min-width="90"
+            prop="scope.row.template.name"
+            label="广告模版"
+            width="100"
           >
-            <template slot-scope="scope">{{ scope.row.name }}</template>
+            <template slot-scope="scope">{{ scope.row.template.name }}</template>
+          </el-table-column>
+
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="scope.row.point.name"
+            label="点位名称"
+            min-width="100"
+          >
+            <template slot-scope="scope">{{ scope.row.point.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="type"
-            label="类型"
-            min-width="80"
+            prop="scope.row.project.name"
+            label="节目名称"
+            min-width="100"
           >
-            <template slot-scope="scope">
-              <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
-            </template>
+            <template slot-scope="scope">{{ scope.row.project.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            sortable
-            prop="link"
-            label="附件"
-            min-width="80"
-          >
-            <template slot-scope="scope">
-              <a
-                :href="scope.row.link"
-                target="_blank"
-                style="color:#6b3ec2;font-weight:600;"
-              >点击查看</a>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="isad"
-            label="广告标记"
-            min-width="90"
-          >
-            <template slot-scope="scope">{{ scope.row.isad === 1 ? '显示' :'隐藏' }}</template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="updated_at"
+            prop="scope.row.end_date"
             label="修改时间"
-            min-width="90"
-          />
+            min-width="100"
+          >
+            <template slot-scope="scope">{{ scope.row.updated_at }}</template>
+          </el-table-column>
           <el-table-column
             label="操作"
-            width="100"
+            width="250"
           >
             <template slot-scope="scope">
               <el-button
                 size="small"
-                @click="eidtAdFodder(scope.row)"
+                @click="editAdmeterial(scope.row)"
+                msg-father=scope.row
               >编辑</el-button>
             </template>
           </el-table-column>
@@ -196,12 +201,11 @@
     </div>
   </div>
 </template>
-
 <script>
-import { getAdMediaList } from "service";
-
+import { getLaunchadPutList, getAdList, getPoint, getProject } from "service";
 import {
   Button,
+  Input,
   Table,
   TableColumn,
   Pagination,
@@ -210,7 +214,7 @@ import {
   MessageBox,
   Select,
   Option,
-  Input
+  DatePicker
 } from "element-ui";
 
 export default {
@@ -218,34 +222,33 @@ export default {
     "el-table": Table,
     "el-table-column": TableColumn,
     "el-button": Button,
+    "el-input": Input,
     "el-pagination": Pagination,
     "el-form": Form,
     "el-form-item": FormItem,
     "el-select": Select,
     "el-option": Option,
-    "el-input": Input
+    "el-date-picker": DatePicker,
   },
   data() {
     return {
-      filters: {
-        name: null,
-        type: null
-      },
-      typeList: [
-        {
-          id: "static",
-          name: "静态图"
-        },
-        {
-          id: "gif",
-          name: "Gif"
-        },
-        {
-          id: "video",
-          name: "视频"
-        }
-      ],
+      searchLoading: false,
       headerStyle: { background: "#6b3ec2", color: "#fff" },
+      filters: {
+        atiid: null,
+        piid: null,
+        oid: null,
+        put_time: ""
+      },
+      //模板列表
+      adTemplateList: [],
+      //节目列表
+      projectList: [],
+      //点位列表
+      pointList: [],
+      //投放列表
+      tableData: [],
+      aoid: '',
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -255,58 +258,105 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: []
     };
   },
   created() {
-    this.getAdMediaList();
+    this.getLaunchadPutList();
+    // this.getAdList();
+    this.getPoint();
+    this.init()
   },
   methods: {
-    eidtAdFodder(data) {
-      this.$router.push({
-        path: `/ad/fodder/edit/${data.aid}`
-      });
-    },
-    addFodder(data) {
-      this.$router.push({
-        path: "/ad/fodder/add"
-      });
-    },
-    async getAdMediaList() {
-      this.setting.loading = true;
-      let { name, type } = this.filters;
-      let args = {
-        page: this.pagination.currentPage,
-        name: name,
-        type: type
-      };
-      if (!name) {
-        delete args.name;
-      }
-      if (!type) {
-        delete args.type;
-      }
+    async init() {
       try {
-        let res = await getAdMediaList(this, args);
-        this.tableData = res.data;
-        this.pagination.total = res.meta.pagination.total;
-        this.setting.loading = false;
+        let projectRes = await getProject(this)
+        this.projectList = projectRes
       } catch (e) {
-        this.setting.loading = false;
+
       }
+    },
+    //广告投放列表
+    getLaunchadPutList() {
+      this.setting.loading = true;
+      let searchArgs = {
+        page: this.pagination.currentPage,
+        include: "template,point,project",
+        atiid: this.filters.atiid,
+        piid: this.filters.piid,
+        oid: this.filters.oid,
+        start_dat: this.filters.start_dat
+      };
+      if (!this.filters.atiid) {
+        delete searchArgs.atiid;
+      }
+      if (!this.filters.piid) {
+        delete searchArgs.piid;
+      }
+      if (!this.filters.oid) {
+        delete searchArgs.oid;
+      }
+      if (this.filters.start_dat === "") {
+        delete searchArgs.start_dat;
+      }
+      getLaunchadPutList(this, searchArgs)
+        .then(response => {
+          this.tableData = response.data;
+          this.pagination.total = response.meta.pagination.total;
+          this.setting.loading = false;
+        })
+        .catch(error => {
+          this.setting.loading = false;
+          this.$message({
+            type: "warning",
+            message: error.response.data.message
+          });
+        });
+    },
+    //点位下拉列表
+    getPoint() {
+      this.searchLoading = true;
+      getPoint(this)
+        .then(res => {
+          this.pointList = res;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
+    addAdmeterial() {
+      this.$router.push({
+        path: "/put/adPut/save"
+      });
+    },
+    editAdmeterial(data) {
+      this.$router.push({
+        path: "/put/adPut/edit/" + data.aoid,
+        query: {
+          point: data.point.name,
+          project: data.project.name,
+          template: data.template.name
+        }
+      });
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getAdMediaList();
+      this.getLaunchadPutList();
     },
     search(formName) {
       this.pagination.currentPage = 1;
-      this.getAdMediaList();
+      this.getLaunchadPutList();
+
+
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getAdMediaList();
+      this.getLaunchadPutList();
     }
   }
 };
@@ -319,31 +369,18 @@ export default {
   color: #5e6d82;
 
   .item-list-wrap {
+    .el-select,
+    .item-input,
+    .el-input {
+      width: 200px;
+    }
+    .modify-width {
+      width: 300px;
+    }
+
     background: #fff;
     padding: 30px;
-
     .item-content-wrap {
-      .icon-item {
-        padding: 10px;
-        width: 60%;
-      }
-      .demo-table-expand {
-        font-size: 0;
-      }
-      .demo-table-expand label {
-        width: 90px;
-        color: #99a9bf;
-      }
-      .demo-table-expand .el-form-item {
-        margin-right: 0;
-        margin-bottom: 0;
-        width: 50%;
-      }
-      .point-btn {
-        background: #05c99a;
-        color: #fff;
-        border-color: #05c99a;
-      }
       .sold-out {
         background: #ff7696;
         color: #fff;
@@ -372,6 +409,22 @@ export default {
         padding: 3px 5px;
         border-radius: 5px;
       }
+      .icon-item {
+        padding: 10px;
+        width: 60%;
+      }
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
       .search-wrap {
         margin-top: 5px;
         display: flex;
@@ -384,7 +437,10 @@ export default {
           margin-bottom: 10px;
         }
         .el-select {
-          width: 200px;
+          width: 180px;
+        }
+        .item-input {
+          width: 180px;
         }
         .warning {
           background: #ebf1fd;
@@ -404,7 +460,7 @@ export default {
         justify-content: space-between;
         font-size: 16px;
         align-items: center;
-        margin: 20px 0;
+        margin-bottom: 10px;
         .label {
           color: #6b3dc4;
           font-size: 16px;

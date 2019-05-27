@@ -1,5 +1,6 @@
 import pcHome from 'page/home'
 import account from 'router/pc/account'
+import ad from 'router/pc/ad'
 import auth from 'router/pc/auth'
 import site from 'router/pc/site'
 import smart from 'router/pc/smart'
@@ -9,7 +10,6 @@ import report from 'router/pc/report'
 import device from 'router/pc/device'
 import shop from 'router/pc/shop'
 import resource from 'router/pc/resource'
-import ad from 'router/pc/ad'
 
 export default {
   path: '/',

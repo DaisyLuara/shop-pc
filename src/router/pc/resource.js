@@ -54,6 +54,7 @@ let router = {
 }
 
 router.redirect = () => {
+  console.log(3)
   let routes = router.children
   for (let route of routes) {
     if (auth.checkPathPermission(route)) {

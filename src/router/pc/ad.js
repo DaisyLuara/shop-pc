@@ -14,8 +14,6 @@ let router = {
       path: 'fodder',
       meta: {
         title: '广告素材',
-        // permission: 'shop_ad.fodder'
-        permission: ''
       },
       component: () =>
         import(/* webpackChunkName: "page/ad/fodder/routerView" */ 'page/ad/fodder/routerView'),
@@ -23,9 +21,7 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '广告素材详情',
-            // permission: 'shop_ad.fodder.read'
-            permission: ''
+            title: '广告素材列表',
           },
           component: () =>
             import(/* webpackChunkName: "page/ad/fodder/index" */ 'page/ad/fodder/index')
@@ -34,8 +30,6 @@ let router = {
           path: 'add',
           meta: {
             title: '广告素材新增',
-            // permission: 'shop_ad.fodder.create'
-            permission: ''
           },
           component: () =>
             import(/* webpackChunkName: "page/ad/fodder/save" */ 'page/ad/fodder/save')
@@ -43,12 +37,52 @@ let router = {
         {
           path: 'edit/:uid',
           meta: {
-            title: '广告素材修改',
-            // permission: 'shop_ad.fodder.update'
-            permission: ''
+            title: '广告素材编辑',
           },
           component: () =>
             import(/* webpackChunkName: "page/ad/fodder/save" */ 'page/ad/fodder/save')
+        }
+      ]
+    },
+    {
+      path: 'template',
+      meta: {
+        title: '广告模板',
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/ad/template/routerView" */ 'page/ad/template/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '广告模板列表',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/ad/template/index" */ 'page/ad/template/index')
+        },
+        {
+          path: 'items',
+          meta: {
+            title: '子条目列表',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/ad/template/items" */ 'page/ad/template/items')
+        },
+        {
+          path: 'save',
+          meta: {
+            title: '子条目新增',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/ad/template/save" */ 'page/ad/template/save')
+        },
+        {
+          path: 'edit/:id',
+          meta: {
+            title: '子条目编辑',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/ad/template/save" */ 'page/ad/template/save')
         }
       ]
     }

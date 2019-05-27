@@ -45,3 +45,6 @@ export * from './order'
 
 //广告
 export * from './ad'
+
+//广告投放
+export * from './adput'
