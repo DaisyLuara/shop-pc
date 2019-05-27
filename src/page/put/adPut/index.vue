@@ -318,7 +318,6 @@ export default {
       getPoint(this)
         .then(res => {
           this.pointList = res;
-          console.log(this.pointList)
           this.searchLoading = false;
         })
         .catch(err => {
@@ -350,7 +349,6 @@ export default {
       this.getLaunchadPutList();
     },
     search(formName) {
-      console.log(formName)
       this.pagination.currentPage = 1;
       this.getLaunchadPutList();
 

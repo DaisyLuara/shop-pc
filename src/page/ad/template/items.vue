@@ -215,7 +215,6 @@ export default {
       })
     },
     editItem(data) {
-      console.log(data)
       this.$router.push({
         path: '/ad/template/edit/' + data.id,
         query: {

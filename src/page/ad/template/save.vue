@@ -104,14 +104,11 @@ import {
   FormItem,
   Button,
   Input,
-  DatePicker,
   MessageBox,
-  Upload,
   TimePicker,
   Col,
   Radio,
-  RadioGroup,
-  Progress
+  RadioGroup
 } from "element-ui";
 import { historyBack, saveItemsProject, getMaterial } from "service";
 import moment from "moment";
@@ -128,8 +125,7 @@ export default {
     ElCol: Col,
     ElRadio: Radio,
     ElRadioGroup: RadioGroup,
-    ElInput: Input,
-    ElProgress: Progress
+    ElInput: Input
   },
   data() {
     return {
@@ -174,7 +170,6 @@ export default {
       getMaterial(this)
         .then(res => {
           this.mediaList = res.data;
-          console.log(this.mediaList)
           this.searchLoading = false;
         })
         .catch(err => {
@@ -200,7 +195,7 @@ export default {
           args.ktime *= 1
           args.shm = moment(args.shm).format("HH:mm");
           args.ehm = moment(args.ehm).format("HH:mm");
-          console.log(args)
+
           return saveItemsProject(this, args)
             .then(response => {
               this.setting.loading = false;

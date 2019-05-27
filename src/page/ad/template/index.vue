@@ -214,10 +214,6 @@ export default {
       })
         .then((confirm) => {
           this.modifyAdName(confirm)
-          this.$message({
-            type: 'success',
-            message: "新增成功"
-          });
         })
         .catch(() => {
           this.$message({
@@ -232,6 +228,10 @@ export default {
       };
       try {
         await modifyMediaAdName(this, params);
+        this.$message({
+          type: 'success',
+          message: "新增成功"
+        });
         let mediaAdData = await getAdList(this);
         this.tableData = mediaAdData.data;
       } catch (e) {
@@ -249,10 +249,6 @@ export default {
       })
         .then((confirm) => {
           this.editmodifyAdName(confirm)
-          this.$message({
-            type: 'success',
-            message: "修改成功"
-          });
         })
         .catch(() => {
           this.$message({
@@ -268,6 +264,10 @@ export default {
       let atiid = this.atiid
       try {
         await editmodifyMediaAdName(this, atiid, params);
+        this.$message({
+          type: 'success',
+          message: "修改成功"
+        });
         let mediaAdData = await getAdList(this);
         this.tableData = mediaAdData.data;
       } catch (e) {
@@ -287,15 +287,6 @@ export default {
       this.pagination.currentPage = currentPage;
       this.getAdList();
     },
-    // editPrizePolicy(item) {
-    //   this.title = "修改模板";
-    //   let name = item.name;
-    //   this.templateForm = {
-    //     pid: item.id,
-    //     name: name
-    //   };
-    //   this.templateVisible = true;
-    // },
     //子条目
     toItem(item) {
       this.$router.push({
