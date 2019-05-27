@@ -96,7 +96,7 @@
               type="primary"
               icon="el-icon-circle-plus-outline"
               @click="addAdmeterial"
-            >新增广告素材</el-button>
+            >新增广告投放</el-button>
           </div>
         </div>
         <!-- 广告投放列表 -->
@@ -336,11 +336,6 @@ export default {
     editAdmeterial(data) {
       this.$router.push({
         path: "/put/adPut/edit/" + data.aoid,
-        query: {
-          point: data.point.name,
-          project: data.project.name,
-          template: data.template.name
-        }
       });
     },
     resetSearch(formName) {

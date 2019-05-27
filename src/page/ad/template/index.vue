@@ -67,7 +67,7 @@
                 <span>{{ scope.row.name }}</span>
               </el-form-item>
               <el-form-item label="节目运行状态">
-                <span>{{ scope.row.hardware ==1? '开启':'关闭'}}</span>
+                <span>{{ scope.row.hardware == 1? '开启':'关闭'}}</span>
               </el-form-item>
               <el-form-item label="修改时间:">
                 <span>{{ scope.row.updated_at }}</span>

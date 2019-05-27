@@ -1,6 +1,5 @@
 const LAUNCH_AD_API = '/api/launch/ad'
 const HOST = process.env.SERVER_URL
-
 //广告投放列表
 
 const getLaunchadPutList = (context, params) => {
@@ -55,9 +54,23 @@ const modifyLaunchPut = (context, id, params) => {
       })
   })
 }
+//广告投放详情
+const getLaunchPutDetail = (context, id, params) => {
+  return new Promise(function (resolve, reject) {
+    context.$http
+      .get(HOST + LAUNCH_AD_API + '/' + id, { params: params })
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
 export {
   getLaunchadPutList,
   editPutlist,
   saveLaunchPut,
-  modifyLaunchPut
+  modifyLaunchPut,
+  getLaunchPutDetail
 }

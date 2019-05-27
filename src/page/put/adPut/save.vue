@@ -126,7 +126,8 @@ import {
   getPoint,
   modifyLaunchPut,
   getAdList,
-  saveLaunchPut
+  saveLaunchPut,
+  getLaunchPutDetail
 } from "service";
 import moment from "moment";
 
@@ -180,16 +181,35 @@ export default {
     this.getProject();
     this.getPoint();
     this.getAdList();
+    this.getLaunchPutDetail()
     this.putLaunchId = this.$route.params.uid;
     if (this.putLaunchId) {
-      //修改时列表默认值
-      this.prizeLaunchForm.oid = this.$route.query
-      this.prizeLaunchForm.piid = this.$route.query
-      this.prizeLaunchForm.atiid = this.$route.query
+      this.getLaunchPutDetail();
       this.disabled = true
     }
   },
   methods: {
+    getLaunchPutDetail() {
+      this.setting.loading = true;
+      let args = {
+        include: "template,point,project"
+      };
+      getLaunchPutDetail(this, this.putLaunchId, args)
+        .then(res => {
+          this.prizeLaunchForm.piid =
+            res.project.id + "," + res.project.name;
+          this.prizeLaunchForm.oid = res.point.id;
+          this.prizeLaunchForm.atiid = res.template.atiid;
+          this.setting.loading = false;
+        })
+        .catch(err => {
+          this.setting.loading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
     getAdList() {
       this.searchLoading = true;
       getAdList(this)
@@ -243,7 +263,7 @@ export default {
         if (valid) {
           this.setting.loading = true;
           let args = {
-            piid: this.prizeLaunchForm.piid,
+            piid: this.prizeLaunchForm.piid.split(",")[0],
             oid: this.prizeLaunchForm.oid,
             atiid: this.prizeLaunchForm.atiid,
             sdate: moment(this.prizeLaunchForm.sdate).format("YYYY-MM-DD HH:mm:ss"),
