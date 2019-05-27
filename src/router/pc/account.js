@@ -1,9 +1,9 @@
 import auth from 'service/auth'
 let router = {
   path: 'account',
-  name: '账户管理',
+  name: '我的主页',
   meta: {
-    title: '账户管理',
+    title: '我的主页',
     permission: 'shop_account'
   },
   component: () =>
@@ -12,7 +12,7 @@ let router = {
     {
       path: 'datum',
       meta: {
-        title: '我的资料',
+        title: '我的账号',
         permission: 'shop_account.datum'
       },
       component: () =>
@@ -28,28 +28,56 @@ let router = {
             import(/* webpackChunkName: "page/account/account/index" */ 'page/account/account/index')
         }
       ]
+    },
+    {
+      path: 'cart',
+      meta: {
+        title: '我的购物车',
+        permission: ''
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/account/cart/routerView" */ 'page/account/cart/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '购物车',
+            permission: ''
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/account/cart/index" */ 'page/account/cart/index')
+        }
+      ]
+    },
+    {
+      path: 'order',
+      permission: '',
+      meta: {
+        title: '我的订单'
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/account/order/routerView" */ 'page/account/order/routerView'),
+      children: [
+        {
+          path: '/',
+          name: '我的订单列表',
+          meta: {
+            title: '我的订单列表'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/account/order/index" */ 'page/account/order/index')
+        },
+        {
+          path: 'detail/:uid',
+          name: '我的订单详情',
+          meta: {
+            title: '我的订单详情'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/account/order/detail" */ 'page/account/order/detail')
+        }
+      ]
     }
-    // {
-    //   path: 'deal',
-    //   name: '交易明细',
-    //   redirect: 'deal',
-    //   meta: {
-    //     title: '交易明细'
-    //   },
-    //   component: () =>
-    //     import(/* webpackChunkName: "page/account/deal/routerView" */ 'page/account/deal/routerView'),
-    //   children: [
-    //     {
-    //       path: '/',
-    //       name: '交易明细列表',
-    //       meta: {
-    //         title: '交易明细列表'
-    //       },
-    //       component: () =>
-    //         import(/* webpackChunkName: "page/account/deal/index" */ 'page/account/deal/index')
-    //     }
-    //   ]
-    // }
   ]
 }
 

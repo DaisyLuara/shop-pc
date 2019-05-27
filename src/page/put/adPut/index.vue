@@ -8,66 +8,64 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form 
-            ref="filters" 
-            :model="filters" 
-            :inline="true">
-            <el-form-item 
-              label 
-              prop="project_id">
-              <el-select
-                v-model="filters.project_id"
-                :loading="searchLoading"
-                min-width="130"
-                placeholder="请输入广告模板名称"
-                filterable
+          <el-form
+            ref="filters"
+            :model="filters"
+            :inline="true"
+          >
+            <el-form-item
+              label
+              prop="atiid"
+            >
+              <el-input
+                v-model="filters.atiid"
+                placeholder="请填写广告模版"
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-icon-printer"/>
-                <el-option
-                  v-for="item in adTemplateList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-name el-icon-same"
                 />
-              </el-select>
+              </el-input>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="oid">
+            <el-form-item
+              label
+              prop="piid"
+            >
               <el-select
-                v-model="filters.show"
+                v-model="filters.piid"
                 :loading="searchLoading"
                 placeholder="请选择节目"
                 filterable
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-status el-icon-same"/>
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
                 <el-option
-                  v-for="item in showList"
+                  v-for="item in projectList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
                 />
               </el-select>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="oid">
+            <el-form-item
+              label
+              prop="oid"
+            >
               <el-select
-                v-model="filters.point"
+                v-model="filters.oid"
                 :loading="searchLoading"
                 placeholder="请选择点位"
                 filterable
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-status el-icon-same"/>
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -76,27 +74,18 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="policy_name">
-                <el-date-picker
-                    v-model="filters.put_time"
-                    type="datetime"
-                    placeholder="请选择投放时间">
-                    <i 
-                    slot="prefix" 
-                    class="el-input__icon el-icon-name el-icon-same"/>
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item 
-              label 
-              prop>
-              <el-button 
-                class="el-button-success" 
-                @click="search('filters')">搜索</el-button>
-              <el-button 
-                class="el-button-cancel" 
-                @click="resetSearch('filters')">重置</el-button>
+            <el-form-item
+              label
+              prop
+            >
+              <el-button
+                class="el-button-success"
+                @click="search('filters')"
+              >搜索</el-button>
+              <el-button
+                class="el-button-cancel"
+                @click="resetSearch('filters')"
+              >重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -121,46 +110,49 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form 
-                label-position="left" 
-                inline 
-                class="demo-table-expand">
+              <el-form
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-form-item label="广告模版:">
-                  <span>{{ scope.row.policy.name }}</span>
+                  <span>{{ scope.row.template.name }}</span>
                 </el-form-item>
                 <el-form-item label="点位名称:">
-                  <span>{{ scope.row.point.name }}</span>
+                  <span>{{scope.row.point.name}}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
-                  <span>{{ scope.row.project.name }}</span>
+                  <span>{{scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="模版投放时间:">
-                  <span>{{ scope.row.updated_at }}</span>
+                  <span>{{ scope.row.start_date}}</span>
                 </el-form-item>
                 <el-form-item label="修改时间:">
-                  <span>{{ scope.row.updated_at }}</span>
+                  <span>{{ scope.row.end_date }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column 
-            sortable 
-            prop="id" 
-            label="ID" 
-            width="80"/>
+          <el-table-column
+            sortable
+            prop="aoid"
+            label="ID"
+            width="80"
+          />
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="policy_name"
+            prop="scope.row.template.name"
             label="广告模版"
             width="100"
           >
-            <template slot-scope="scope">{{ scope.row.policy.name }}</template>
+            <template slot-scope="scope">{{ scope.row.template.name }}</template>
           </el-table-column>
+
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="name"
+            prop="scope.row.point.name"
             label="点位名称"
             min-width="100"
           >
@@ -169,7 +161,7 @@
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="icon"
+            prop="scope.row.project.name"
             label="节目名称"
             min-width="100"
           >
@@ -177,27 +169,22 @@
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
-            prop="updated_at"
-            label="模版投放时间"
-            min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.updated_at }}</template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="updated_at"
+            prop="scope.row.end_date"
             label="修改时间"
             min-width="100"
           >
             <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column 
-            label="操作" 
-            width="250">
+          <el-table-column
+            label="操作"
+            width="250"
+          >
             <template slot-scope="scope">
-              <el-button 
-                size="small" 
-                @click="editAdmeterial(scope.row)">编辑</el-button>
+              <el-button
+                size="small"
+                @click="editAdmeterial(scope.row)"
+                msg-father=scope.row
+              >编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -215,7 +202,7 @@
   </div>
 </template>
 <script>
-import { getLaunchadPutList, getAdList, getPoint, getShowList } from "service";
+import { getLaunchadPutList, getAdList, getPoint, getProject } from "service";
 import {
   Button,
   Input,
@@ -248,14 +235,20 @@ export default {
       searchLoading: false,
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       filters: {
-        project_id: null,
-        show: null,
-        point: null,
+        atiid: null,
+        piid: null,
+        oid: null,
         put_time: ""
       },
+      //模板列表
       adTemplateList: [],
-      showList: [],
+      //节目列表
+      projectList: [],
+      //点位列表
       pointList: [],
+      //投放列表
+      tableData: [],
+      aoid: '',
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -265,36 +258,69 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: []
     };
   },
   created() {
     this.getLaunchadPutList();
-    this.getAdList();
+    // this.getAdList();
     this.getPoint();
-    this.getShowList();
+    this.init()
   },
   methods: {
-    getShowList() {
-      this.searchLoading = true;
-      getAdList(this)
-        .then(res => {
-          this.showList = res;
-          this.searchLoading = false;
+    async init() {
+      try {
+        let projectRes = await getProject(this)
+        this.projectList = projectRes
+        console.log(projectRes)
+      } catch (e) {
+
+      }
+    },
+    //广告投放列表
+    getLaunchadPutList() {
+      this.setting.loading = true;
+      let searchArgs = {
+        page: this.pagination.currentPage,
+        include: "template,point,project",
+        atiid: this.filters.atiid,
+        piid: this.filters.piid,
+        oid: this.filters.oid,
+        start_dat: this.filters.start_dat
+      };
+      if (!this.filters.atiid) {
+        delete searchArgs.atiid;
+      }
+      if (!this.filters.piid) {
+        delete searchArgs.piid;
+      }
+      if (!this.filters.oid) {
+        delete searchArgs.oid;
+      }
+      if (this.filters.start_dat === "") {
+        delete searchArgs.start_dat;
+      }
+      getLaunchadPutList(this, searchArgs)
+        .then(response => {
+          this.tableData = response.data;
+          console.log(this.tableData)
+          this.pagination.total = response.meta.pagination.total;
+          this.setting.loading = false;
         })
-        .catch(err => {
-          this.searchLoading = false;
+        .catch(error => {
+          this.setting.loading = false;
           this.$message({
-            message: err.response.data.message,
-            type: "success"
+            type: "warning",
+            message: error.response.data.message
           });
         });
     },
+    //点位下拉列表
     getPoint() {
       this.searchLoading = true;
       getPoint(this)
         .then(res => {
           this.pointList = res;
+          console.log(this.pointList)
           this.searchLoading = false;
         })
         .catch(err => {
@@ -311,58 +337,30 @@ export default {
       });
     },
     editAdmeterial(data) {
+      console.log(data)
       this.$router.push({
-        path: "/put/adPut/edit/" + data.id
+        path: "/put/adPut/edit/" + data.aoid,
+        query: {
+          point: data.point.name,
+          project: data.project.name,
+        }
       });
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
-      this.getLaunchPirzeList();
-    },
-    getLaunchPirzeList() {
-      this.setting.loading = true;
-      let searchArgs = {
-        page: this.pagination.currentPage,
-        include: "point.market,project,policy",
-        project_id: this.filters.project_id,
-        show: this.filters.show,
-        point: this.filters.point,
-        put_time: this.filters.put_time,
-      };
-      if (!this.filters.project_id) {
-        delete searchArgs.project_id;
-      }
-      if (!this.filters.show) {
-        delete searchArgs.show;
-      }
-      if (!this.filters.point) {
-        delete searchArgs.point;
-      }
-      if (this.filters.put_time === "") {
-        delete searchArgs.put_time;
-      }
-      getLaunchPirzeList(this, searchArgs)
-        .then(response => {
-          this.tableData = response.data;
-          this.pagination.total = response.meta.pagination.total;
-          this.setting.loading = false;
-        })
-        .catch(error => {
-          this.setting.loading = false;
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
-        });
+      this.getLaunchadPutList();
     },
     search(formName) {
+      console.log(formName)
       this.pagination.currentPage = 1;
-      this.getLaunchPirzeList();
+      this.getLaunchadPutList();
+
+
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.getLaunchPirzeList();
+      this.getLaunchadPutList();
     }
   }
 };

@@ -1,6 +1,21 @@
 const PICTURE_MEDIA_API = '/api/picture'
 const VIDEO_MEDIA_API = '/api/video'
+const QINNIU_API = '/api/qiniu_oauth'
+const MEDIA_UPLOAD_AP = '/api/company_media/upload'
 const HOST = process.env.SERVER_URL
+
+const mediaUpload = (context, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .post(HOST + MEDIA_UPLOAD_AP, params)
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(e => {
+        reject(e)
+      })
+  })
+}
 
 const getPictureMediaList = (context, params) => {
   return new Promise(function(resolve, reject) {
@@ -75,11 +90,26 @@ const modifyVideoMedia = (context, id, params) => {
       })
   })
 }
+// 七牛token
+const getQiNiuToken = (context, params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .get(HOST + QINNIU_API, { params: params })
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(e => {
+        reject(e)
+      })
+  })
+}
 export {
   getPictureMediaList,
   deletePictureMedia,
   modifyPictureMedia,
   getVideoMediaList,
   deleteVideoMedia,
-  modifyVideoMedia
+  modifyVideoMedia,
+  getQiNiuToken,
+  mediaUpload
 }

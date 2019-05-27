@@ -121,16 +121,6 @@
                 :src="scope.row.image" 
                 alt="image" 
                 style="width: 80%;">
-            </template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="video_desc_url"
-            label="介绍视频"
-            min-width="80"
-          >
-            <template slot-scope="scope">
               <a
                 v-if="scope.row.video_desc_url"
                 :href="scope.row.video_desc_url"

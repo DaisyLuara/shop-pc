@@ -46,7 +46,7 @@
             <el-date-picker
               v-model="prizeForm.start_date"
               :editable="false"
-              type="date"
+              type="datetime"
               placeholder="请选择开始时间"
             />
           </el-form-item>
@@ -58,7 +58,7 @@
             <el-date-picker
               v-model="prizeForm.end_date"
               :editable="false"
-              type="date"
+              type="datetime"
               placeholder="请选择结束时间"
             />
           </el-form-item>
@@ -117,7 +117,7 @@ import {
   RadioGroup,
   Radio
 } from "element-ui";
-import { truncate } from "fs";
+import moment from "moment";
 
 export default {
   components: {
@@ -164,12 +164,20 @@ export default {
       prizeDetails(this, this.PrizeID, args)
         .then(res => {
           this.setting.loading = false;
-          this.prizeForm.name = res.name;
-          this.prizeForm.stock = res.stock;
-          this.prizeForm.description = res.description;
-          this.prizeForm.start_date = res.start_date;
-          this.prizeForm.end_date = res.end_date;
-          this.prizeForm.is_active = res.is_active;
+          let {
+            name,
+            stock,
+            description,
+            start_date,
+            end_date,
+            is_active
+          } = res;
+          this.prizeForm.name = name;
+          this.prizeForm.stock = stock;
+          this.prizeForm.description = description;
+          this.prizeForm.start_date = start_date;
+          this.prizeForm.end_date = end_date;
+          this.prizeForm.is_active = is_active;
         })
         .catch(err => {
           this.setting.loading = false;
@@ -187,8 +195,10 @@ export default {
         if (valid) {
           this.setting.loading = true;
           let args = this.prizeForm;
-          args.start_date = handleDateTypeTransform(args.start_date);
-          args.end_date = handleDateTypeTransform(args.end_date);
+          let start_date = args.start_date;
+          let end_date = args.end_date;
+          args.start_date = moment(start_date).format("YYYY-MM-DD HH:mm:ss");
+          args.end_date = moment(end_date).format("YYYY-MM-DD HH:mm:ss");
           modifyPrize(this, this.PrizeID, args)
             .then(res => {
               this.setting.loading = false;

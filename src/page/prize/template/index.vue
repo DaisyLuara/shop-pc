@@ -44,125 +44,32 @@
         >新增奖品模板</el-button>
       </div>
     </div>
-    <!-- 模板奖品列表 -->
-    <el-collapse 
-      v-model="activeNames" 
-      accordion>
-      <el-collapse-item
-        v-for="(item, index) in tableData"
-        :name="index"
-        :key="item.id"
-        class="collapse-item-wrap"
-      >
-        <template slot="title">
-          <span>{{ item.name }}&nbsp;&nbsp;</span>
+
+    <el-table 
+      :data="tableData" 
+      :header-cell-style="headerStyle" 
+      style="width: 100%">
+      <el-table-column 
+        prop="id" 
+        label="ID" 
+        min-width="100"/>
+      <el-table-column 
+        prop="name" 
+        label="模版名称" 
+        min-width="100"/>
+      <el-table-column 
+        label="操作" 
+        min-width="100">
+        <template slot-scope="scope">
           <el-button 
-            icon="el-icon-edit" 
-            circle 
             size="mini" 
-            @click="modifyTemplateName(item)"/>
+            @click="editPrizePolicy(scope.row)">编辑</el-button>
+          <el-button 
+            size="mini" 
+            @click="childPrizePolicy(scope.row)">子条目</el-button>
         </template>
-        <div class="actions-wrap">
-          <span class="label">数目: {{ item.batches.data.length }}</span>
-          <div>
-            <el-button 
-              size="small" 
-              @click="addSchedule(index)">增加</el-button>
-          </div>
-        </div>
-        <el-table 
-          :data="item.batches.data" 
-          :header-cell-style="headerStyle" 
-          style="width: 100%">
-          <el-table-column 
-            prop="id" 
-            label="ID" 
-            width="100"/>
-          <el-table-column 
-            prop 
-            label="公司名称" 
-            min-width="150">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.company.id"
-                :loading="searchLoading"
-                filterable
-                placeholder="请选择公司名称"
-                clearable
-              >
-                <!-- @change="companyChangeHandle($event,index,scope.$index)" -->
-                <el-option
-                  v-for="item in companyList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column 
-            prop 
-            label="奖品名称" 
-            min-width="150">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.pivot.coupon_batch_id"
-                :loading="searchLoading"
-                filterable
-                placeholder="请选择奖品名称"
-                clearable
-              >
-                <el-option
-                  v-for="item in ( batchesList ? (batchesList)[scope.row.company.id]: [])"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column 
-            prop="icon" 
-            label="概率" 
-            min-width="100">
-            <template slot-scope="scope">
-              <el-input 
-                v-model="scope.row.pivot.rate" 
-                class="item-input">
-                <template slot="append">%</template>
-              </el-input>
-            </template>
-          </el-table-column>
-          <el-table-column 
-            label="操作" 
-            min-width="100">
-            <template slot-scope="scope">
-              <el-button 
-                v-if="scope.row.id" 
-                size="mini" 
-                @click="editEntry(scope.row,item)">编辑</el-button>
-              <el-button 
-                v-if="scope.row.id" 
-                size="mini" 
-                @click="deleteEntry(scope.row,item)">删除</el-button>
-              <el-button
-                v-if="!scope.row.id"
-                size="mini"
-                type="danger"
-                icon="el-icon-delete"
-                @click="deleteAddSchedule(index, scope.$index, scope.row)"
-              />
-              <el-button
-                v-if="!scope.row.id"
-                size="mini"
-                style="background-color: #8bc34a;border-color: #8bc34a; color: #fff;"
-                @click="saveEntry(scope.row)"
-              >保存</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-collapse-item>
-    </el-collapse>
+      </el-table-column>
+    </el-table>
     <div class="pagination-wrap">
       <el-pagination
         :total="pagination.total"
@@ -204,25 +111,14 @@
 </template>
 <script>
 import {
-  deletePrizePolicyEntry,
-  savePrizePolicyEntry,
-  modifyPrizePolicyEntry,
-  prizePolicyEntryDetails,
-  getCompanies,
   getPrizePolicyList,
   savePrizePolicy,
-  modifyPrizePolicy,
-  // getCouponBatches,
-  prizePolicyDetails
+  modifyPrizePolicy
 } from "service";
 import {
   Form,
   FormItem,
   Button,
-  Collapse,
-  CollapseItem,
-  Select,
-  Option,
   Pagination,
   Table,
   TableColumn,
@@ -233,37 +129,29 @@ import {
 
 export default {
   components: {
-    ElCollapse: Collapse,
-    ElCollapseItem: CollapseItem,
     ElDialog: Dialog,
     ElPagination: Pagination,
     ElInput: Input,
     ElForm: Form,
     ElFormItem: FormItem,
     ElButton: Button,
-    ElSelect: Select,
-    ElOption: Option,
     ElTable: Table,
     ElTableColumn: TableColumn
   },
   data() {
     return {
-      activeNames: 0,
-      companyList: [],
       headerStyle: { color: "#444" },
       templateVisible: false,
       setting: {
         loading: false,
         loadingText: "拼命加载中"
       },
-      searchLoading: false,
       loading: false,
       title: "",
       templateForm: {
         pid: "",
         name: ""
       },
-      batchesList: {},
       pagination: {
         total: 0,
         pageSize: 10,
@@ -275,19 +163,24 @@ export default {
       tableData: []
     };
   },
-  computed: {},
   created() {
-    this.getCompanies();
     this.getPrizePolicyList();
   },
   methods: {
+    childPrizePolicy(item) {
+      this.$router.push({
+        path: "/prize/template/policy",
+        query: {
+          pid: item.id
+        }
+      });
+    },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
       this.getPrizePolicyList();
     },
-    modifyTemplateName(item) {
-      this.loading = false;
+    editPrizePolicy(item) {
       this.title = "修改模板";
       let name = item.name;
       this.templateForm = {
@@ -296,104 +189,16 @@ export default {
       };
       this.templateVisible = true;
     },
-    deleteEntry(row, item) {
-      this.$confirm("此操作将删除该条目, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          let id = row.id;
-          let pid = item.id;
-          deletePrizePolicyEntry(this, pid, id)
-            .then(res => {
-              this.$message({
-                message: "删除成功",
-                type: "success"
-              });
-              this.getPrizePolicyList();
-            })
-            .catch(err => {
-              this.$message({
-                type: "warning",
-                message: err.response.data.message
-              });
-            });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    editEntry(row, item) {
-      this.setting.loading = true;
-      let id = row.id;
-      let pid = item.id;
-      let coupon_batch_id = row.pivot.coupon_batch_id;
-      let rate = row.pivot.rate;
-      let args = {
-        rate: rate,
-        coupon_batch_id: coupon_batch_id
-      };
-      modifyPrizePolicyEntry(this, pid, id, args)
-        .then(response => {
-          this.setting.loading = false;
-          this.$message({
-            message: "修改成功",
-            type: "success"
-          });
-          this.getPrizePolicyList();
-        })
-        .catch(err => {
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
-          this.setting.loading = false;
-        });
-    },
-    saveEntry(row) {
-      this.setting.loading = true;
-      let pid = row.pid;
-      let coupon_batch_id = row.pivot.coupon_batch_id;
-      let rate = row.pivot.rate;
-      let args = {
-        rate: rate,
-        coupon_batch_id: coupon_batch_id
-      };
-      savePrizePolicyEntry(this, pid, args)
-        .then(response => {
-          this.setting.loading = false;
-          this.$message({
-            message: "添加成功",
-            type: "success"
-          });
-          this.getPrizePolicyList();
-        })
-        .catch(err => {
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
-          this.setting.loading = false;
-        });
-    },
     addPrizePolicy() {
-      this.templateForm.name = "";
-      this.templateForm.pid = "";
+      this.templateForm.name = this.templateForm.pid ="";
       this.templateVisible = true;
       this.title = "增加模板";
     },
-    deleteAddSchedule(pIndex, index, r) {
-      this.tableData[pIndex].batches.data.splice(index, 1);
-    },
+
     getPrizePolicyList() {
       this.setting.loading = true;
       let args = {
         page: this.pagination.currentPage,
-        include: "company,batches.company",
         name: this.searchForm.name
       };
       getPrizePolicyList(this, args)
@@ -410,46 +215,11 @@ export default {
           this.setting.loading = false;
         });
     },
-    addSchedule(index) {
-      let pid = this.tableData[index].id;
-      let td = {
-        id: null,
-        company: {
-          id: ""
-        },
-        pivot: {
-          id: "",
-          rate: 0
-        },
-        pid: pid
-      };
-      this.tableData[index].batches.data.push(td);
-    },
+
     dialogClose() {
       this.templateVisible = false;
     },
-    getCompanies() {
-      this.searchLoading = true;
-      let args = {
-        include: "couponBatches"
-      };
-      getCompanies(this, args)
-        .then(response => {
-          for (let i of response) {
-            let id = i.id;
-            this.batchesList[i.id] = i.couponBatches.data;
-          }
-          this.companyList = response;
-          this.searchLoading = false;
-        })
-        .catch(err => {
-          this.$message({
-            type: "warning",
-            message: err.response.data.message
-          });
-          this.searchLoading = false;
-        });
-    },
+
     submit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

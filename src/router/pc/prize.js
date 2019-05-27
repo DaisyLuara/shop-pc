@@ -55,6 +55,34 @@ let router = {
           },
           component: () =>
             import(/* webpackChunkName: "page/prize/template/index" */ 'page/prize/template/index')
+        },
+        {
+          path: 'policy',
+          meta: {
+            title: '奖品模板子条目列表',
+            permission: 'shop_prize.policy.childRead'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/prize/template/policy" */ 'page/prize/template/policy')
+        },
+        {
+          path: 'add',
+          meta: {
+            title: '子条目增加',
+            permission: 'shop_prize.policy.childCreate'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/prize/template/save" */ 'page/prize/template/save')
+        },
+        {
+          path: 'edit/:uid',
+          component: () =>
+            import(/* webpackChunkName: "page/prize/template/save" */ 'page/prize/template/save'),
+          name: '奖品修改',
+          meta: {
+            title: '奖品增加',
+            permission: 'shop_prize.policy.childUpdate'
+          }
         }
       ]
     },

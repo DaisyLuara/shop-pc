@@ -57,7 +57,7 @@ let router = {
             import(/* webpackChunkName: "page/put/accredit/index" */ 'page/put/accredit/index')
         },
         {
-          path: 'save',
+          path: 'save/:uid',
           meta: {
             title: '授权投放新增',
             permission: 'shop_launch.wechat.create'
@@ -125,7 +125,7 @@ let router = {
         {
           path: '/',
           meta: {
-            title: '广告投放列表',  
+            title: '广告投放列表',
           },
           component: () =>
             import(/* webpackChunkName: "page/put/adPut/index" */ 'page/put/adPut/index')

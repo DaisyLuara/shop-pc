@@ -120,7 +120,7 @@
                     >取消</el-button>
                   </div>
                   <a slot="reference">重命名</a>
-                  <a slot="reference" >{{imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>                  
+                  <a slot="reference" >{{ imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>                  
                 </el-popover>
               </div>
             </li>

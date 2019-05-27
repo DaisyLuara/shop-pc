@@ -131,9 +131,6 @@
               <el-button 
                 size="small" 
                 @click="modifyEditName(scope.row)">更换节目</el-button>
-              <!-- <el-button 
-                size="small" 
-                @click="modifyEditTime(scope.row)">更改时间</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -158,7 +155,6 @@
           :model="projectForm" 
           label-position="top">
           <el-form-item
-            v-if="modifyOptionFlag.project"
             :rules="[{ required: true, message: '请选择节目', trigger: 'submit'}]"
             label="节目"
             prop="project_id"
@@ -181,34 +177,6 @@
                 :value="item.id"
               />
             </el-select>
-          </el-form-item>
-          <el-form-item
-            v-if="modifyOptionFlag.time"
-            :rules="[{ required: true, message: '请选择开始时间', trigger: 'submit'}]"
-            label="开始时间"
-            prop="sdate"
-          >
-            <el-date-picker
-              v-model="projectForm.sdate"
-              :editable="false"
-              class="modify-width"
-              type="date"
-              placeholder="选择开始时间"
-            />
-          </el-form-item>
-          <el-form-item
-            v-if="modifyOptionFlag.time"
-            :rules="[{ required: true, message: '请选择结束时间', trigger: 'submit'}]"
-            label="结束时间"
-            prop="edate"
-          >
-            <el-date-picker
-              v-model="projectForm.edate"
-              :editable="false"
-              class="modify-width"
-              type="date"
-              placeholder="选择结束时间"
-            />
           </el-form-item>
           <el-form-item>
             <el-button 
@@ -279,10 +247,6 @@ export default {
         sdate: "",
         edate: ""
       },
-      modifyOptionFlag: {
-        project: false,
-        time: false
-      },
       tableData: []
     };
   },
@@ -322,43 +286,30 @@ export default {
       this.getLaunchProjectList();
     },
     modifyEditName(data) {
-      this.editID = data.id;
-      this.editVisible = true;
-      this.modifyOptionFlag.project = true;
-      this.modifyOptionFlag.time = false;
+      this.modifyEditColumn(data);
     },
     cancel() {
       this.$refs["projectForm"].resetFields();
       this.editVisible = false;
     },
-    modifyEditTime(data) {
-      this.projectForm.sdate = data.start_date;
-      this.projectForm.edate = data.end_date;
-      this.editID = data.id;
+    modifyEditColumn(data) {
+      let { start_date, end_date, id, project } = data;
+      this.projectForm.sdate = start_date;
+      this.projectForm.edate = end_date;
+      this.projectForm.project_id = project.id;
+      this.editID = id;
       this.editVisible = true;
-      this.modifyOptionFlag.time = true;
-      this.modifyOptionFlag.project = false;
     },
     submitModify(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let args = {};
           this.setting.loading = true;
-          if (this.modifyOptionFlag.project) {
-            args = {
-              default_plid: this.projectForm.project_id
-            };
-          }
-          if (this.modifyOptionFlag.time) {
-            let edate =
-              (new Date(this.projectForm.edate).getTime() +
-                ((23 * 60 + 59) * 60 + 59) * 1000) /
-              1000;
-            args = {
-              sdate: new Date(this.projectForm.sdate).getTime() / 1000,
-              edate: edate
-            };
-          }
+          let args = {
+            oid: this.editID,
+            default_plid: this.projectForm.project_id,
+            sdate: new Date(this.projectForm.sdate).getTime() / 1000,
+            edate: new Date(this.projectForm.edate).getTime() / 1000
+          };
           return modifyLaunchProject(this, this.editID, args)
             .then(response => {
               this.setting.loading = false;

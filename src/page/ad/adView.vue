@@ -1,15 +1,17 @@
 <template>
-  <div 
-    class="ad-root">
-    <second-sidebar 
-      module="ad"/>
+  <div class="ad-root">
+    <second-sidebar module="ad"/>
     <router-view/>
   </div>
 </template>
 <script>
 export default {
-  name: 'managementView'
-}
+  name: "AdView",
+  data() {
+    return {};
+  },
+  methods: {}
+};
 </script>
 
 <style lang="less" scoped>

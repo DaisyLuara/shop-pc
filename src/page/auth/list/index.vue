@@ -315,15 +315,16 @@ export default {
     },
     getAuthorizationList() {
       this.setting.loading = true;
+      let {nick_name,service_type} = this.filters
       let args = {
         page: this.pagination.currentPage,
-        nick_name: this.filters.nick_name,
-        service_type: this.filters.service_type
+        nick_name: nick_name,
+        service_type: service_type
       };
-      if (this.filters.service_type === "") {
+      if (service_type === "") {
         delete args.service_type;
       }
-      if (this.filters.nick_name === "") {
+      if (nick_name === "") {
         delete args.nick_name;
       }
       getAuthorizationList(this, args)
