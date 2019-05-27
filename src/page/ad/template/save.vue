@@ -119,8 +119,6 @@ export default {
     ElOption: Option,
     ElFormItem: FormItem,
     ElButton: Button,
-    ElDatePicker: DatePicker,
-    ElUpload: Upload,
     ElTimePicker: TimePicker,
     ElCol: Col,
     ElRadio: Radio,
