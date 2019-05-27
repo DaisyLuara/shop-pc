@@ -92,6 +92,17 @@ const saveItemsProject = (context, params) => {
       })
   })
 }
+//编辑子条目
+const editItemsProject = (context, id, params) => {
+  return new Promise(function (resolve, reject) {
+    context.$http
+      .patch(HOST + ITEMS_ADD_API + "/" + id, params).then(response => {
+        resolve(response.data)
+      }).catch(err => {
+        reject(err)
+      })
+  })
+}
 
 // 修改广告素材
 const modifyAdMedia = (context, id, params) => {
@@ -153,6 +164,7 @@ export {
   getMaterial,
   saveItemsProject,
   modifyMediaAdName,
+  editItemsProject,
   getItemDetail,
   getAdMediaList, getAdMediaDetail, saveAdMedia, modifyAdMedia, editmodifyMediaAdName
 

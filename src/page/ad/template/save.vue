@@ -68,7 +68,6 @@
           :rules="[{ required: true, trigger: 'submit'}]"
           label="活动时间"
         >
-
           <div class="time">
             <el-time-picker
               v-model="form.shm"
@@ -110,7 +109,7 @@ import {
   Radio,
   RadioGroup
 } from "element-ui";
-import { historyBack, saveItemsProject, getMaterial } from "service";
+import { historyBack, saveItemsProject, getMaterial, editItemsProject } from "service";
 import moment from "moment";
 export default {
   components: {
@@ -137,9 +136,9 @@ export default {
       itemsID: null,
       form: {
         aid: "",
-        mode: "fullscreen",
-        resource: "",
-        ktime: 15,
+        mode: "全屏显示",
+        resource: "默认时长",
+        ktime: null,
         shm: new Date("2108-09-01 00:00:00"),
         ehm: new Date("2108-09-01 23:59:59")
       },
@@ -149,6 +148,7 @@ export default {
     };
   },
   created() {
+    this.editLaunchId = this.$route.params.id;
     this.atiid = this.$route.query.atiid
     this.form.aid = this.$route.query.name
     this.form.time1 = new Date("2108-09-01 00:00:00");
@@ -193,29 +193,54 @@ export default {
           args.ktime *= 1
           args.shm = moment(args.shm).format("HH:mm");
           args.ehm = moment(args.ehm).format("HH:mm");
-
-          return saveItemsProject(this, args)
-            .then(response => {
-              this.setting.loading = false;
-              this.$message({
-                message: "添加成功",
-                type: "success"
+          args.mode = 'fullscreen'
+          if (this.editLaunchId) {
+            editItemsProject(this, this.editLaunchId, args)
+              .then(response => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "修改成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/ad/template/items",
+                  query: {
+                    atiid: this.atiid
+                  }
+                });
+              })
+              .catch(err => {
+                this.setting.loading = false;
+                this.$message({
+                  message: err.response.data.message,
+                  type: "success"
+                });
               });
-              this.$router.push({
-                path: "/ad/template/items",
-                query: {
-                  atiid: this.atiid
-                }
-              });
-            })
-            .catch(err => {
-              this.setting.loading = false;
-              this.$message({
-                message: err.response.data.message,
-                type: "success"
-              });
-            });
+          } else {
+            saveItemsProject(this, args)
+              .then(response => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "添加成功",
+                  type: "success"
+                });
+                this.$router.push({
+                  path: "/ad/template/items",
+                  query: {
+                    atiid: this.atiid
+                  }
+                });
+              })
+              .catch(err => {
+                this.setting.loading = false;
+                this.$message({
+                  message: err.response.data.message,
+                  type: "success"
+                });
+              })
+          }
         }
+
       });
     },
     back() {

@@ -218,10 +218,6 @@ export default {
           this.modifyAdName(confirm)
         })
         .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消"
-          });
         });
     },
     async modifyAdName(data) {
@@ -253,10 +249,6 @@ export default {
           this.editmodifyAdName(confirm)
         })
         .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消"
-          });
         });
     },
     async editmodifyAdName(data) {
