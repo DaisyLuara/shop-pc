@@ -81,7 +81,7 @@
               v-for="item in projectList"
               :key="item.id"
               :label="item.name"
-              :value="item.id + ',' + item.versionname"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -181,7 +181,6 @@ export default {
     this.getProject();
     this.getPoint();
     this.getAdList();
-    this.getLaunchPutDetail()
     this.putLaunchId = this.$route.params.uid;
     if (this.putLaunchId) {
       this.getLaunchPutDetail();
@@ -196,8 +195,7 @@ export default {
       };
       getLaunchPutDetail(this, this.putLaunchId, args)
         .then(res => {
-          this.prizeLaunchForm.piid =
-            res.project.id + "," + res.project.name;
+          this.prizeLaunchForm.piid = res.project.id
           this.prizeLaunchForm.oid = res.point.id;
           this.prizeLaunchForm.atiid = res.template.atiid;
           this.setting.loading = false;
@@ -263,7 +261,7 @@ export default {
         if (valid) {
           this.setting.loading = true;
           let args = {
-            piid: this.prizeLaunchForm.piid.split(",")[0],
+            piid: this.prizeLaunchForm.piid,
             oid: this.prizeLaunchForm.oid,
             atiid: this.prizeLaunchForm.atiid,
             sdate: moment(this.prizeLaunchForm.sdate).format("YYYY-MM-DD HH:mm:ss"),

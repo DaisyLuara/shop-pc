@@ -67,7 +67,7 @@
                 <span>{{ scope.row.name }}</span>
               </el-form-item>
               <el-form-item label="节目运行状态">
-                <span>{{ scope.row.hardware == 1? '开启':'关闭'}}</span>
+                <span>{{ scope.row.hardware === 1? '开启':'关闭'}}</span>
               </el-form-item>
               <el-form-item label="修改时间:">
                 <span>{{ scope.row.updated_at }}</span>
@@ -95,7 +95,9 @@
           prop="hardware"
           label="节目运行状态"
           min-width="100"
-        />
+        >
+          <template slot-scope="scope">{{ scope.row.hardware === 1? '开启':'关闭' }}</template>
+        </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
           sortable
