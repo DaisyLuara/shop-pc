@@ -110,7 +110,7 @@
           <template slot-scope="scope">
             <el-button
               size="small"
-              @click="addPrizePolicy(scope.row)"
+              @click="editPrizePolicy(scope.row)"
             >编辑</el-button>
             <el-button
               size="small"
@@ -132,7 +132,7 @@
   </div>
 </template>
 <script>
-import { getAdList, modifyMediaAdName } from 'service';
+import { getAdList, modifyMediaAdName, editmodifyMediaAdName } from 'service';
 import {
   Button,
   Select,
@@ -176,7 +176,8 @@ export default {
         total: 0,
         pageSize: 10,
         currentPage: 1
-      }
+      },
+      atiid: null
     };
   },
   created() {
@@ -196,8 +197,6 @@ export default {
         .then(res => {
           this.tableData = res.data;
           this.pagination = res.meta.pagination;
-          console.log(this.pagination)
-          console.log(this.tableData)
           this.pagination.total = response.meta.pagination.total;
           this.setting.loading = false;
         })
@@ -239,6 +238,42 @@ export default {
         console.log(e);
       }
     },
+    //修改模板
+    editPrizePolicy(item) {
+      this.atiid = item.atiid
+      this.$prompt("模板名", "修改模板", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPlaceholder: "请输入模板名",
+        inputValue: item.title
+      })
+        .then((confirm) => {
+          this.editmodifyAdName(confirm)
+          this.$message({
+            type: 'success',
+            message: "修改成功"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消"
+          });
+        });
+    },
+    async editmodifyAdName(data) {
+      let params = {
+        name: data.value,
+      };
+      let atiid = this.atiid
+      try {
+        await editmodifyMediaAdName(this, atiid, params);
+        let mediaAdData = await getAdList(this);
+        this.tableData = mediaAdData.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
     search(formName) {
       this.pagination.currentPage = 1;
       this.getAdList();
@@ -252,18 +287,17 @@ export default {
       this.pagination.currentPage = currentPage;
       this.getAdList();
     },
-    editPrizePolicy(item) {
-      this.title = "修改模板";
-      let name = item.name;
-      this.templateForm = {
-        pid: item.id,
-        name: name
-      };
-      this.templateVisible = true;
-    },
+    // editPrizePolicy(item) {
+    //   this.title = "修改模板";
+    //   let name = item.name;
+    //   this.templateForm = {
+    //     pid: item.id,
+    //     name: name
+    //   };
+    //   this.templateVisible = true;
+    // },
     //子条目
     toItem(item) {
-      console.log(item)
       this.$router.push({
         path: "/ad/template/items",
         query: {

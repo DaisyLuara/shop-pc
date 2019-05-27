@@ -119,10 +119,6 @@
               size="small"
               @click="editItem(scope.row)"
             >编辑</el-button>
-            <el-button
-              size="small"
-              @click="deleteItem"
-            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -152,7 +148,7 @@ import {
   Pagination,
 
 } from "element-ui";
-import { getItemList, getItemDetail } from "service";
+import { getItemList } from "service";
 
 export default {
   components: {
@@ -174,7 +170,6 @@ export default {
         loadingText: "拼命加载中"
       },
       atiid: '',
-      id: '',
       tableData: [],
       pagination: {
         total: 0,
@@ -185,36 +180,30 @@ export default {
   },
   created() {
     this.getItemList();
-    this.getItemDetail();
     this.atiid = this.$route.query.atiid
-    console.log(this.atiid)
   },
   methods: {
     getItemList() {
       let atiid = this.$route.query.atiid
       let args = {
+        atiid: atiid,
         include: "media",
       }
       this.setting.loading = true;
-      getItemList(this, atiid, args)
+      getItemList(this, args)
         .then(res => {
           this.tableData = res.data;
-          console.log(this.tableData)
           this.pagination = res.meta.pagination;
-          this.pagination.total = response.meta.pagination.total;
+          this.pagination.total = res.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(err => {
           this.setting.loading = false;
           this.$message({
             type: "warning",
-            message: err
+            message: err.response.data.message
           });
         })
-    },
-    getItemDetail() {
-      let id = this.tableData.id
-      console.log(this.tableData)
     },
     saveItem() {
       this.$router.push({
@@ -226,10 +215,12 @@ export default {
       })
     },
     editItem(data) {
+      console.log(data)
       this.$router.push({
-        path: '/ad/template/save',
+        path: '/ad/template/edit/' + data.id,
         query: {
-          atiid: this.atiid
+          atiid: this.atiid,
+          name: data.media.name
         }
       })
     },
@@ -237,9 +228,6 @@ export default {
       this.pagination.currentPage = currentPage;
       this.getAdList();
     },
-    deleteItem() {
-      console.log(1)
-    }
   }
 }
 </script>

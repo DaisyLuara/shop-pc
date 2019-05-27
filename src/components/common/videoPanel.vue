@@ -1,9 +1,11 @@
 <template>
   <div class="video-panel">
-    <el-dialog 
-      :visible.sync="videoVisible" 
-      :before-close="cancel" 
-      @open="handleOpen()">
+    <el-dialog
+      :visible.sync="videoPanelVisible"
+      :before-close="cancel"
+      width="90%"
+      @open="handleOpen()"
+    >
       <div slot="title">
         <span class="video-panel__title">视频管理</span>
         <input
@@ -15,35 +17,52 @@
         >
       </div>
       <div>
-        <div 
-          v-loading="loading" 
-          class="video-panel__body">
-          <li
-            v-for="obj in dataVideo"
-            :key="obj.id"
-            class="video-panel__img-item"
-            @click="selectImg(obj)"
+        <el-tabs
+          v-loading="loading"
+          v-model="activeTabName"
+          type="card"
+          @tab-click="handleTabsClick"
+        >
+          <el-tab-pane
+            v-for="item in mediaGroup.mediaGroupList"
+            :name="item.name"
+            :group-id="item.id"
+            :key="item.id"
           >
-            <video 
-              :src="obj.url" 
-              controls="controls" 
-              class="video-panel__img">您的浏览器不支持</video>
-            <div class="video-panel__img-name">{{ obj.name }}</div>
-            <div 
-              v-for="selectedObj in selectedImgs" 
-              :key="selectedObj.id">
-              <div v-if="obj.id == selectedObj.id">
-                <div class="video-panel__arrow-wrap"/>
-                <i class="video-panel__arrow"/>
-              </div>
+            <span 
+              slot="label" 
+              :groupId="item.id">
+              {{ item.name }}
+              <span class="number">{{ item.count }}</span>
+            </span>
+            <div class="video-panel__body">
+              <li
+                v-for="obj in dataImg"
+                :key="obj.id"
+                class="video-panel__img-item"
+                @click="selectImg(obj)"
+              >
+                <video 
+                  :src="obj.url" 
+                  controls="controls" 
+                  class="video-panel__img">您的浏览器不支持</video>
+                <div class="video-panel__img-name">{{ obj.name }}</div>
+                <div 
+                  v-for="selectedObj in selectedImgs" 
+                  :key="selectedObj.id">
+                  <div v-if="obj.id == selectedObj.id">
+                    <div class="video-panel__arrow-wrap"/>
+                    <i class="video-panel__arrow"/>
+                  </div>
+                </div>
+              </li>
             </div>
-          </li>
-        </div>
+          </el-tab-pane>
+        </el-tabs>
         <div class="video-panel__footer">
           <el-upload
-            :action="SERVER_URL + '/api/video'"
-            :data="{type: type}"
-            :headers="formHeader"
+            :action="Domain"
+            :data="uploadForm"
             :before-upload="beforeUpload"
             :on-success="handleSuccess"
             :on-error="handleError"
@@ -51,17 +70,18 @@
             :auto-upload="true"
             :show-file-list="false"
             :disabled="uploadDisabled"
-            list-type="picture"
+            list-type="video"
             class="video-panel__upload"
           >
             <el-button 
               size="small" 
               type="primary">点击上传</el-button>
           </el-upload>
-          <span class="image-type">仅支持mp4一种格式, 大小为50M以内</span>
+          <span class="image-type">仅支持mp4一种格式, 大小为100M以内</span>
           <div class="video-panel__page">
             <el-pagination
               :total="pagination.count"
+              :pager-count="5"
               :page-size="pagination.limit"
               :current-page.sync="pagination.page_num"
               layout="total, prev, pager, next, jumper"
@@ -86,7 +106,13 @@
 </template>
 
 <script>
-import { getVideoMediaList } from "service";
+import {
+  getImgMediaList,
+  getQiniuToken,
+  imgMediaUpload,
+  getMediaGroup,
+  randomString
+} from "service";
 
 import {
   Button,
@@ -94,13 +120,12 @@ import {
   TabPane,
   Upload,
   Pagination,
-  MessageBox,
-  Dialog
+  Dialog,
+  MessageBox
 } from "element-ui";
-import auth from "service/auth";
 
 export default {
-  name: "VideoPanel",
+  name: "PicturePanel",
   components: {
     "el-button": Button,
     "el-tabs": Tabs,
@@ -110,54 +135,84 @@ export default {
     "el-dialog": Dialog
   },
   props: {
-    videoVisible: {
+    videoPanelVisible: {
       type: Boolean,
       required: true
     },
-    singleFlag: {
+    videoSingleFlag: {
       type: Boolean,
       required: true
     }
   },
   data() {
     return {
+      activeTabName: "",
+      Domain: "http://upload.qiniu.com",
+      uploadForm: {
+        token: "",
+        key: ""
+      },
       loading: true,
       type: "video",
-      dataVideo: [],
+      dataImg: [],
       serch: {
         name: ""
       },
-      formHeader: {
-        Authorization: "Bearer" + auth.getToken()
+      mediaGroup: {
+        mediaGroupList: [],
+        groupId: null
       },
       pagination: {
-        limit: 10,
+        limit: 20,
         page_num: 1,
         count: 0
       },
       selectedImgs: [],
-      SERVER_URL: process.env.SERVER_URL,
+      mediaBase: process.env.SERVER_URL,
       uploadDisabled: false
     };
   },
   created() {},
   methods: {
+    async handleOpen() {
+      try {
+        let res = await getQiniuToken(this);
+        let args = {
+          type: this.type,
+          status: 1
+        };
+        let mediaGroupsData = await getMediaGroup(this, args);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+        this.mediaGroup.groupId = this.mediaGroup.mediaGroupList[0].id;
+        this.activeTabName = this.mediaGroup.mediaGroupList[0].name;
+        await this.getImgMediaList(this.mediaGroup.mediaGroupList[0].id);
+        this.uploadForm.token = res;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    handleTabsClick(tab, event) {
+      var selId = tab.$vnode.data.attrs.groupId;
+      if (selId == this.mediaGroup.groupId) {
+        return;
+      }
+      this.mediaGroup.groupId = selId;
+      this.loading = true;
+      this.getImgMediaList(this.mediaGroup.groupId);
+    },
     handleError() {
       this.loading = false;
     },
-    handleOpen() {
-      this.getVideoMediaList();
-    },
     changeCurrent(currentPage) {
       this.pagination.page_num = currentPage;
-      this.getVideoMediaList();
+      this.getImgMediaList(this.mediaGroup.groupId);
     },
     handleClose(selectedImgs) {
       this.serch.name = "";
       this.searchedMediaList = [];
       this.selectedImgs = [];
       this.uploadDisabled = false;
-      this.$emit("update:videoVisible", false);
+      this.$emit("update:videoPanelVisible", false);
       this.$emit("close", selectedImgs);
     },
 
@@ -171,7 +226,7 @@ export default {
 
     selectImg(obj) {
       var isExsisted = false;
-      if (this.singleFlag) {
+      if (this.videoSingleFlag) {
         this.selectedImgs = [];
         this.selectedImgs.push(obj);
       } else {
@@ -184,15 +239,16 @@ export default {
         }
       }
     },
-    getVideoMediaList() {
+    getImgMediaList(groupId) {
       let params = {
         page: this.pagination.page_num,
-        type: "video",
-        name: this.serch.name
+        name: this.serch.name,
+        status: 1
       };
-      getVideoMediaList(this, params)
+      this.serch.name === "" ? delete params.name : "";
+      getImgMediaList(this, groupId, params)
         .then(res => {
-          this.dataVideo = res.data;
+          this.dataImg = res.data;
           this.pagination.count = res.meta.pagination.total;
           this.loading = false;
         })
@@ -203,27 +259,53 @@ export default {
     },
     searchMedia() {
       this.loading = true;
-      this.getVideoMediaList();
+      this.getImgMediaList(this.mediaGroup.groupId);
     },
 
-    handleSuccess(response, file, fileList) {
-      this.getVideoMediaList();
+    async handleSuccess(response, file, fileList) {
+      let [key, name, size] = [response.key, file.name, file.size];
+      let type = name.substring(name.lastIndexOf("."));
+      let params = {
+        key: key,
+        name: name,
+        size: size,
+        type: this.type
+      };
+      try {
+        await imgMediaUpload(this, this.mediaGroup.groupId, params);
+        await this.getImgMediaList(this.mediaGroup.groupId);
+        let args = {
+          type: this.type,
+          status: 1
+        };
+        let mediaGroupsData = await getMediaGroup(this, args);
+        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
+      } catch (e) {}
     },
-
     beforeUpload(file) {
       this.loading = true;
-      const isJPG = file.type === "video/mp4";
-      const isLt2M = file.size / 1024 / 1024 < 10;
-      if (!isJPG) {
-        this.loading = false;
-        this.$message.error("上传图片仅支持mp4一种格式!");
-        return isJPG;
+      let name = file.name;
+      let type = name.substring(name.lastIndexOf("."));
+      let isLt100M = file.size / 1024 / 1024 < 100;
+      let time = new Date().getTime();
+      let random = parseInt(Math.random() * 10 + 1, 10);
+      // let suffix = time + "_" + random + "_" + name;
+      let suffix = randomString(25);
+      let key = encodeURI(`${suffix}`);
+      const isVideo = file.type === "video/mp4";
+      const isLt10M = file.size / 1024 / 1024 < 100;
+      if (!isVideo) {
+        this.$message.error("上传视频仅支持mp4一种格式!");
+        this.setting.loading = false;
+        return isVideo;
       }
-      if (!isLt2M) {
-        this.loading = false;
-        this.$message.error("上传图片大小不能超过 50MB!");
-        return isLt2M;
+      if (!isLt10M) {
+        this.$message.error("上传视频大小不能超过 100MB!");
+        this.setting.loading = false;
+        return isLt10M;
       }
+      this.uploadForm.key = key;
+      return this.uploadForm;
     }
   }
 };
@@ -258,6 +340,46 @@ export default {
     border-top: 1px solid #d3dce6;
     border-bottom: 1px solid #d3dce6;
     border-right: 1px solid #d3dce6;
+    .el-tabs {
+      height: 450px;
+      .el-tabs__header {
+        float: left;
+      }
+    }
+    .el-tabs__header {
+      z-index: 3;
+      background-color: white;
+      height: 100%;
+      width: 170px;
+      border-right: 1px solid rgb(209, 219, 229);
+      border-bottom: none;
+      padding: 0;
+      position: relative;
+      margin: 0 0 15px;
+      float: left;
+      .el-tabs__nav {
+        width: 100%;
+        .el-tabs__item {
+          display: block;
+          background-color: #eff2f7;
+          .number {
+            float: right;
+          }
+          &.is-active {
+            border: none;
+            background-color: white;
+          }
+        }
+      }
+    }
+    .el-tabs__content {
+      height: 100%;
+      overflow: scroll;
+      .el-tab-pane {
+        padding-bottom: 100px;
+        height: 100%;
+      }
+    }
   }
   .el-dialog__footer {
     .footer {
@@ -299,7 +421,7 @@ export default {
   width: 163px;
   height: 33px;
   background-color: #eff2f7;
-  background-image: url("../../assets/images/icons/search-icon.png");
+  background-image: url("~assets/images/icons/search-icon.png");
   background-repeat: no-repeat;
   background-position: 5% 50%;
 }
@@ -313,13 +435,13 @@ export default {
   margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 24px;
-  height: 200px;
+  height: 160px;
   display: inline-block;
   cursor: pointer;
 }
 .video-panel__img {
-  width: 300px;
-  height: 170px;
+  width: 130px;
+  height: 130px;
 }
 .video-panel__img-size {
   position: absolute;
@@ -342,7 +464,7 @@ export default {
   overflow: hidden;
 }
 .video-panel__arrow {
-  background-image: url("../../assets/images/icons/selected.png");
+  background-image: url("~assets/images/icons/selected.png");
   background-repeat: no-repeat;
   height: 15px;
   position: absolute;
@@ -360,11 +482,17 @@ export default {
   right: -25px;
 }
 
+.video-panel__searched-body {
+  overflow: scroll;
+  padding-bottom: 100px;
+}
+
 .video-panel__footer {
   height: 57px;
   background-color: #eff2f7;
   position: absolute;
   bottom: 0px;
+  padding-left: 170px;
   width: 100%;
 }
 .video-panel__upload {
@@ -373,6 +501,13 @@ export default {
     line-height: 57px;
     margin-left: 30px;
   }
+}
+
+.video-panep__upload-btn {
+  width: 86px;
+  height: 36px;
+  background-color: #13ce66;
+  border: none;
 }
 
 .video-panel__page {

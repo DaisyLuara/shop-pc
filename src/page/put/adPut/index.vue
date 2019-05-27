@@ -271,7 +271,6 @@ export default {
       try {
         let projectRes = await getProject(this)
         this.projectList = projectRes
-        console.log(projectRes)
       } catch (e) {
 
       }
@@ -302,7 +301,6 @@ export default {
       getLaunchadPutList(this, searchArgs)
         .then(response => {
           this.tableData = response.data;
-          console.log(this.tableData)
           this.pagination.total = response.meta.pagination.total;
           this.setting.loading = false;
         })
@@ -337,12 +335,12 @@ export default {
       });
     },
     editAdmeterial(data) {
-      console.log(data)
       this.$router.push({
         path: "/put/adPut/edit/" + data.aoid,
         query: {
           point: data.point.name,
           project: data.project.name,
+          template: data.template.name
         }
       });
     },

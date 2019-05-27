@@ -156,6 +156,7 @@ export default {
   },
   created() {
     this.atiid = this.$route.query.atiid
+    this.form.aid = this.$route.query.name
     this.form.time1 = new Date("2108-09-01 00:00:00");
     this.itemsID = this.$route.params.id;
     this.getMaterial();
@@ -172,7 +173,8 @@ export default {
       this.searchLoading = true;
       getMaterial(this)
         .then(res => {
-          this.mediaList = res;
+          this.mediaList = res.data;
+          console.log(this.mediaList)
           this.searchLoading = false;
         })
         .catch(err => {

@@ -180,13 +180,12 @@ export default {
     this.getProject();
     this.getPoint();
     this.getAdList();
-
     this.putLaunchId = this.$route.params.uid;
-    console.log(this.putLaunchId)
     if (this.putLaunchId) {
       //修改时列表默认值
       this.prizeLaunchForm.oid = this.$route.query
       this.prizeLaunchForm.piid = this.$route.query
+      this.prizeLaunchForm.atiid = this.$route.query
       this.disabled = true
     }
   },
@@ -244,8 +243,7 @@ export default {
         if (valid) {
           this.setting.loading = true;
           let args = {
-
-            piid: this.prizeLaunchForm.piid.split(",")[0],
+            piid: this.prizeLaunchForm.piid,
             oid: this.prizeLaunchForm.oid,
             atiid: this.prizeLaunchForm.atiid,
             sdate: moment(this.prizeLaunchForm.sdate).format("YYYY-MM-DD HH:mm:ss"),

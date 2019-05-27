@@ -3,9 +3,9 @@
     <div
       v-loading="setting.loading"
       :element-loading-text="setting.loadingText"
-      class="picture-manage"
+      class="video-manage"
     >
-      <div class="picture-group-title">
+      <div class="video-group-title">
         <span>分组名称：</span>
         <span>{{ mediaGroup.renameGroupValue }}</span>
         <el-popover
@@ -14,7 +14,7 @@
           placement="bottom"
           width="260"
         >
-          <p>编辑名称 </p>
+          <p>编辑名称</p>
           <el-input
             v-model="mediaGroup.renameGroupValue"
             :maxlength="6"
@@ -22,19 +22,21 @@
             class="rename-input"
           />
           <div class="btn-wrap">
-            <el-button 
-              type="primary" 
-              size="small" 
-              @click="modifyGroupName">确定</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              @click="modifyGroupName"
+            >确定</el-button>
             <el-button
               size="small"
               @click="mediaGroup.mediaGroupRenameFlag = false, mediaGroup.renameGroupValue = renameGroup"
             >取消</el-button>
           </div>
         </el-popover>
-        <a 
-          v-popover:rename 
-          v-show="mediaGroup.renameGroupValue !== '默认分组'">重命名</a>
+        <a
+          v-popover:rename
+          v-show="mediaGroup.renameGroupValue !== '默认分组'"
+        >重命名</a>
       </div>
       <div class="grouping-image-wrap">
         <div class="grouping-wrap">
@@ -63,10 +65,11 @@
               class="group-input"
             />
             <div class="btn-wrap">
-              <el-button 
-                type="primary" 
-                size="small" 
-                @click="addMediaGroup">确定</el-button>
+              <el-button
+                type="primary"
+                size="small"
+                @click="addMediaGroup"
+              >确定</el-button>
               <el-button
                 size="small"
                 @click="mediaGroup.mediaGroupAddFlag = false,mediaGroup.addGroupNameValue = ''"
@@ -76,25 +79,24 @@
           <el-button v-popover:add-title>添加分组</el-button>
         </div>
         <div class="image-warp">
-          <div class="image-title-group"/>
-          <!-- 图片列表 -->
+          <div class="image-title-group" />
+          <!-- 视频列表 -->
           <ul class="image-list">
             <div
               v-show="mediaImage.mediaList.length == 0"
               class="hint-message"
             >暂无数据，可点击左下角“上传视频”按钮添加</div>
-            <li 
-              v-for="(imageItem, index) in mediaImage.mediaList" 
-              :key="imageItem.id">
-              <img
+            <li
+              v-for="(imageItem, index) in mediaImage.mediaList"
+              :key="imageItem.id"
+            >
+              <video
                 :src="imageItem.url"
                 class="image-file"
-                @click="mediaImage.imageVisible = true, mediaImage.mediaImageUrl = imageItem.url"
-              >
-              <div class="image-size">{{ imageItem.width }} * {{ imageItem.height }}</div>
-              <p
-                class="item-text"
-              >{{ imageItem.name.length>13 ? imageItem.name.substring(0,12)+'...':imageItem.name }}</p>
+                controls="controls"
+                @click="mediaVideo.imageVisible = true, mediaVideo.mediaVideoUrl = imageItem.url"
+              >您的浏览器不支持</video>
+              <p class="item-text">{{ imageItem.name.length>8 ? imageItem.name.substring(0,7)+'...':imageItem.name }}</p>
               <div class="image-operation">
                 <!-- 编辑名称 -->
                 <el-popover
@@ -120,12 +122,12 @@
                     >取消</el-button>
                   </div>
                   <a slot="reference">重命名</a>
-                  <a slot="reference" >{{ imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>                  
+                  <a slot="reference">{{ imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>
                 </el-popover>
               </div>
             </li>
           </ul>
-          <!-- 图片上传 -->
+          <!-- 视频上传 -->
           <div class="submit-warp">
             <el-upload
               ref="upload"
@@ -137,39 +139,28 @@
               :auto-upload="true"
               :show-file-list="false"
               :on-error="handleError"
-              list-type="picture"
+              list-type="video"
               class="upload"
             >
-              <el-button 
-                size="small" 
-                type="success">上传视频</el-button>
+              <el-button
+                size="small"
+                type="success"
+              >上传视频</el-button>
             </el-upload>
-            <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
+            <span class="image-type">仅支持mp4一种格式, 大小为100M以内</span>
             <div class="pagination">
               <el-pagination
                 :page-size="pagination.limit"
+                :pager-count="5"
                 :total="pagination.count"
                 :current-page.sync="pagination.page_num"
-                layout="prev, pager, next, jumper, total"
+                small
+                layout="prev, pager, next, total"
                 @current-change="changeCurrent"
               />
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- 图片弹窗 -->
-    <div 
-      v-show="mediaImage.imageVisible" 
-      class="widget-image">
-      <div class="shade-image"/>
-      <div class="widget-content">
-        <img :src="mediaImage.mediaImageUrl">
-      </div>
-      <div 
-        class="widget-close" 
-        @click="handleImageClose">
-        <i class="widget-icon">X</i>
       </div>
     </div>
   </div>
@@ -181,11 +172,10 @@ import {
   modifyImgMedia,
   getQiniuToken,
   imgMediaUpload,
-  getMediaGroup,// 分组列表 
+  getMediaGroup, // 分组列表
   saveMediaGroup,
   modifyMediaGroupName,
-  //图片审核
-  imageReview
+  randomString,
 } from "service";
 
 import {
@@ -222,7 +212,7 @@ export default {
         token: "",
         key: ""
       },
-      audit:"",
+      audit: "",
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -237,8 +227,8 @@ export default {
         renameValueArray: []
       },
       groupId: null,
+      type: "video",
       mediaImage: {
-        type: "image",
         imageVisible: false,
         mediaRename: false,
         mediaImageUrl: "",
@@ -247,15 +237,15 @@ export default {
     };
   },
   computed: {
-    renameGroup (){
-      let rename = ''
-       this.mediaGroup.mediaGroupList.find(item => {
+    renameGroup() {
+      let rename = "";
+      this.mediaGroup.mediaGroupList.find(item => {
         if (item.id === this.mediaGroup.groupId) {
-          rename = item.name
-          return 
+          rename = item.name;
+          return;
         }
       });
-      return rename
+      return rename;
     }
   },
   created() {
@@ -265,8 +255,11 @@ export default {
     async init() {
       try {
         this.setting.loading = true;
+        let args = {
+          type: this.type
+        };
         let res = await getQiniuToken(this);
-        let mediaGroupsData = await getMediaGroup(this);
+        let mediaGroupsData = await getMediaGroup(this, args);
         this.mediaGroup.mediaGroupList = mediaGroupsData.data;
         this.mediaGroup.groupId = this.mediaGroup.mediaGroupList[0].id;
         this.mediaGroup.renameGroupValue = this.mediaGroup.mediaGroupList[0].name;
@@ -283,10 +276,14 @@ export default {
       try {
         if (this.mediaGroup.addGroupNameValue.trim()) {
           let args = {
-            name: this.mediaGroup.addGroupNameValue
+            name: this.mediaGroup.addGroupNameValue,
+            type: this.type
           };
           let res = await saveMediaGroup(this, args);
-          let mediaGroupsData = await getMediaGroup(this);
+          let argsGroup = {
+            type: this.type
+          };
+          let mediaGroupsData = await getMediaGroup(this, argsGroup);
           this.mediaGroup.mediaGroupAddFlag = false;
           this.mediaGroup.mediaGroupList = mediaGroupsData.data;
           this.mediaGroup.addGroupNameValue = "";
@@ -295,22 +292,24 @@ export default {
           this.mediaGroup.addGroupNameValue = "";
           MessageBox.alert("增加的分组名称不能为空");
         }
-      } catch (e) {}
+      } catch (e) { }
     },
     // 修改分组名称
     async modifyGroupName() {
       let params = {
-        name: this.mediaGroup.renameGroupValue
+        name: this.mediaGroup.renameGroupValue,
+        type: this.type
       };
-      console.log(params.name)
       try {
+        let argsGroup = {
+          type: this.type
+        };
         await modifyMediaGroupName(this, this.mediaGroup.groupId, params);
-        let mediaGroupsData = await getMediaGroup(this);
+        let mediaGroupsData = await getMediaGroup(this, argsGroup);
         this.mediaGroup.mediaGroupList = mediaGroupsData.data;
         this.mediaGroup.mediaGroupRenameFlag = false;
       } catch (e) {
         this.mediaGroup.mediaGroupRenameFlag = false;
-        ;
       }
     },
     handleError() {
@@ -323,7 +322,7 @@ export default {
       this.pagination.page_num = currentPage;
       this.getImgMediaList(this.mediaGroup.groupId);
     },
-    // 获取图片列表
+    // 获取视频列表
     getImgMediaList(groupId, groupName) {
       this.mediaGroup.groupId = groupId;
       let _this = this;
@@ -352,7 +351,7 @@ export default {
         this.operate.renameValueArray.push({ name: v.name });
       });
     },
-    // 处理图片列表中按钮的确定和取消操作的标记
+    // 处理视频列表中按钮的确定和取消操作的标记
     handleOperationButtonClick(index, modelName, imageId) {
       if (modelName === "rename") {
         this.operate.renameValueArray[index].name = this.mediaImage.mediaList[
@@ -361,7 +360,7 @@ export default {
         this.operate.renamePopoverArray[index].flag = false;
       }
     },
-    // 图片的重命名处理
+    // 视频的重命名处理
     mediaRenameHandle(index, imageId) {
       if (this.operate.renameValueArray[index].name.trim()) {
         this.setting.loading = true;
@@ -379,28 +378,7 @@ export default {
         });
       }
     },
-    //图片审核
-    toSub(imageId){
-      console.log(imageId)
-      this.$confirm('是否审核通过该图片', '提示', {
-          confirmButtonText: '是',
-          cancelButtonText: '否',
-          type: 'warning',
-          center: true,
-        }).then(()=>{
-          this.$message({
-           type: 'success',
-           message: '审核成功!'
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消审核'
-          });
-        });
-    },
-    // 修改图片名称
+    // 修改视频名称
     modifyMedia(id, name) {
       let args = {
         name: name
@@ -421,26 +399,22 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      let suffix = time + "_" + random + "_" + name;
+      // let suffix = time + "_" + random + "_" + name;
+      let suffix = randomString(25)
       let key = encodeURI(`${suffix}`);
-      const isJPG =
-        file.type === "image/jpg" ||
-        file.type === "image/png" ||
-        file.type === "image/gif" ||
-        file.type === "image/jpeg";
-      const isLt10M = file.size / 1024 / 1024 < 10;
+      const isJPG = file.type === "video/mp4";
+      const isLt10M = file.size / 1024 / 1024 < 100;
       if (!isJPG) {
-        this.$message.error("上传图片仅支持jpg、jpeg 、gif、png四种格式!");
+        this.$message.error("上传视频仅支持mp4一种格式!");
         this.setting.loading = false;
         return isJPG;
       }
-      if (!isLt10M) {
-        this.$message.error("上传图片大小不能超过 10MB!");
+      if (!isLt100M) {
+        this.$message.error("上传视频大小不能超过 100MB!");
         this.setting.loading = false;
         return isLt10M;
       }
       this.uploadForm.key = key;
-      console.log(this.uploadForm)
       return this.uploadForm;
     },
     // 上传成功后的处理
@@ -450,12 +424,16 @@ export default {
       let params = {
         key: key,
         name: name,
-        size: size
+        size: size,
+        type: this.type
       };
       try {
+        let argsGroup = {
+          type: this.type
+        };
         await imgMediaUpload(this, this.mediaGroup.groupId, params);
         await this.getImgMediaList(this.mediaGroup.groupId);
-        let mediaGroupsData = await getMediaGroup(this);
+        let mediaGroupsData = await getMediaGroup(this, argsGroup);
         this.mediaGroup.mediaGroupList = mediaGroupsData.data;
       } catch (e) {
         console.log(e);
@@ -466,11 +444,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.picture-manage {
+.video-manage {
   background-color: #fff;
   min-height: 500px;
   padding-bottom: 100px;
-  .picture-group-title {
+  .video-group-title {
     padding: 27px 0 13px 27px;
     span {
       color: #5e6d82;

@@ -1,6 +1,5 @@
 
 const QINNIU_API = '/api/qiniu_oauth'
-const MEDIA_UPLOAD_API = '/api/media_upload'
 const PUB_MEDIA = '/company_media'
 const MEDIA_GROUP_API = '/api/company_group'
 const HOST = process.env.SERVER_URL
@@ -10,20 +9,6 @@ const getQiniuToken = context => {
   return new Promise(function(resolve, reject) {
     context.$http
       .get(HOST + QINNIU_API)
-      .then(response => {
-        resolve(response.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
-
-// 传给后台七牛的key和文件name，主要用在不是图片上传的
-const getMediaUpload = (context, params) => {
-  return new Promise(function(resolve, reject) {
-    context.$http
-      .post(HOST + MEDIA_UPLOAD_API, params)
       .then(response => {
         resolve(response.data)
       })
@@ -121,33 +106,13 @@ const modifyMediaGroupName = (context, groupId, params) => {
       })
   })
 }
-// //图片审核
-const imageReview= (context, groupId, params) => {
-  // return new Promise(function(resolve, reject) {
-  //   context.$http
-  //     .patch(HOST + MEDIA_GROUP_API + '/' + groupId, params)
-  //     .then(response => {
-  //       resolve(response.data)
-  //     })
-  //     .catch(error => {
-  //       reject(error)
-  //     })
-  // })
-  console.log(1111,groupId)
-}
 
 export {
-  // getActivityMediaList,
-  // activityMediaAudit,
-  // getTenantMediaList,
-  // TenantMediaAudit,
   getQiniuToken,
-  getMediaUpload,
   imgMediaUpload,
   getImgMediaList,
   modifyImgMedia,
   getMediaGroup,
   saveMediaGroup,
   modifyMediaGroupName,
-  imageReview
 }
