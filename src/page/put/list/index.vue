@@ -293,11 +293,11 @@ export default {
       this.editVisible = false;
     },
     modifyEditColumn(data) {
-      let { start_date, end_date, id, project } = data;
+      let { start_date, end_date, point, project } = data;
       this.projectForm.sdate = start_date;
       this.projectForm.edate = end_date;
       this.projectForm.project_id = project.id;
-      this.editID = id;
+      this.editID = point.id;
       this.editVisible = true;
     },
     submitModify(formName) {
