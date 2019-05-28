@@ -142,8 +142,8 @@ export default {
         aid: "",
         mode: "fullscreen",
         ktime: 0,
-        shm: "",
-        ehm: ""
+        shm: "10:00",
+        ehm: "22:00"
       },
       atiid: "",
     };
