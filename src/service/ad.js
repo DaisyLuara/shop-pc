@@ -2,7 +2,6 @@ const COUPON_ITEMS_API = '/api/ad/template_items'
 const AD_MEDIA_API = '/api/ad/media'
 const ITEMS_ADD_API = '/api/ad/template_items'
 const MEDIA_AD_API = '/api/ad/template'
-const MEDIA_API_QUERY = '/api/ad/medias/query'
 const HOST = process.env.SERVER_URL
 
 //广告模板列表
@@ -68,19 +67,7 @@ const getItemDetail = (context, id, args) => {
       })
   })
 }
-//广告素材列表
-const getMaterial = (context) => {
-  return new Promise(function (resolve, reject) {
-    context.$http
-      .get(HOST + MEDIA_API_QUERY)
-      .then(response => {
-        resolve(response.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
-}
+
 //新增子条目
 const saveItemsProject = (context, params) => {
   return new Promise(function (resolve, reject) {
@@ -161,11 +148,14 @@ const getAdMediaList = (context, params) => {
 export {
   getAdList,
   getItemList,
-  getMaterial,
   saveItemsProject,
   modifyMediaAdName,
   editItemsProject,
   getItemDetail,
-  getAdMediaList, getAdMediaDetail, saveAdMedia, modifyAdMedia, editmodifyMediaAdName
+  getAdMediaList,
+  getAdMediaDetail,
+  saveAdMedia,
+  modifyAdMedia,
+  editmodifyMediaAdName
 
 }

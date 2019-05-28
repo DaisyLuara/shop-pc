@@ -125,7 +125,7 @@ import {
   getProject,
   getPoint,
   modifyLaunchPut,
-  getAdList,
+  getAdTemplate,
   saveLaunchPut,
   getLaunchPutDetail
 } from "service";
@@ -169,8 +169,7 @@ export default {
         oid: null,
         piid: null,
         sdate: null,
-        edate: null,
-        data: null
+        edate: null
       }
 
     };
@@ -180,7 +179,7 @@ export default {
   created() {
     this.getProject();
     this.getPoint();
-    this.getAdList();
+    this.getAdTemplate();
     this.putLaunchId = this.$route.params.uid;
     if (this.putLaunchId) {
       this.getLaunchPutDetail();
@@ -195,31 +194,34 @@ export default {
       };
       getLaunchPutDetail(this, this.putLaunchId, args)
         .then(res => {
-          this.prizeLaunchForm.piid = res.project.id
-          this.prizeLaunchForm.oid = res.point.id;
-          this.prizeLaunchForm.atiid = res.template.atiid;
+          let { project, point, template, end_date, start_date } = res
+          this.prizeLaunchForm.piid = project.id
+          this.prizeLaunchForm.oid = point.id;
+          this.prizeLaunchForm.atiid = template.atiid;
+          this.prizeLaunchForm.sdate = start_date;
+          this.prizeLaunchForm.edate = end_date;
           this.setting.loading = false;
         })
         .catch(err => {
           this.setting.loading = false;
           this.$message({
             message: err.response.data.message,
-            type: "success"
+            type: "warning"
           });
         });
     },
-    getAdList() {
+    getAdTemplate() {
       this.searchLoading = true;
-      getAdList(this)
+      getAdTemplate(this)
         .then(res => {
-          this.tempList = res.data;
+          this.tempList = res;
           this.searchLoading = false;
         })
         .catch(err => {
           this.searchLoading = false;
           this.$message({
             message: err.response.data.message,
-            type: "success"
+            type: "warning"
           });
         });
     },
@@ -249,7 +251,7 @@ export default {
           this.searchLoading = false;
           this.$message({
             message: err.response.data.message,
-            type: "success"
+            type: "warning"
           });
         });
     },
@@ -267,7 +269,6 @@ export default {
             sdate: moment(this.prizeLaunchForm.sdate).format("YYYY-MM-DD HH:mm:ss"),
             edate: moment(this.prizeLaunchForm.edate).format("YYYY-MM-DD HH:mm:ss"),
           };
-          console.log(args)
           if (this.putLaunchId) {
             modifyLaunchPut(this, this.putLaunchId, args)
               .then(response => {
@@ -306,7 +307,7 @@ export default {
                 this.setting.loading = false;
                 this.$message({
                   message: err.response.data.message,
-                  type: "success"
+                  type: "warning"
                 });
               });
           }
