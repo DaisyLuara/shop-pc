@@ -25,7 +25,7 @@
           <el-tab-pane
             v-for="item in mediaGroup.mediaGroupList"
             :name="item.name"
-            :groupId="item.id"
+            :group-id="item.id"
             :key="item.id"
           >
             <span 
@@ -290,8 +290,7 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      // let suffix = time + "_" + random + "_" + name;
-      let suffix = randomString(25);
+      let suffix = randomString(25) + type;
       let key = encodeURI(`${suffix}`);
       const isJPG =
         file.type === "image/jpg" ||

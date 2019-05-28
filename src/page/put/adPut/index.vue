@@ -20,12 +20,12 @@
               <el-select
                 v-model="filters.atiid"
                 :loading="searchLoading"
+                :multiple-limit="1"
+                :remote-method="getAdTemplate"
                 placeholder="请选择广告模版"
                 filterable
                 multiple
-                :multiple-limit="1"
                 remote
-                :remote-method="getAdTemplate"
                 clearable
               >
                 <el-option
@@ -127,10 +127,10 @@
                   <span>{{ scope.row.template.name }}</span>
                 </el-form-item>
                 <el-form-item label="点位名称:">
-                  <span>{{scope.row.point.name}}</span>
+                  <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
-                  <span>{{scope.row.project.name }}</span>
+                  <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="模版投放时间:">
                   <span>{{ scope.row.sdate }} - {{ scope.row.edate }}</span>
@@ -190,8 +190,8 @@
             <template slot-scope="scope">
               <el-button
                 size="small"
+                msg-father="scope.row"
                 @click="editAdmeterial(scope.row)"
-                msg-father=scope.row
               >编辑</el-button>
             </template>
           </el-table-column>

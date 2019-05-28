@@ -6,8 +6,10 @@
       class="ad_templates_items"
     >
       <div class="ad_list_title">
-        <div class="title">子条目列表({{ pagination.count}})</div>
-        <el-button class="save" @click="saveItem">新增条目</el-button>
+        <div class="title">子条目列表({{ pagination.count }})</div>
+        <el-button 
+          class="save" 
+          @click="saveItem">新增条目</el-button>
       </div>
       <el-table
         :data="tableData"
@@ -18,7 +20,10 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="demo-table-expand">
+            <el-form 
+              label-position="left" 
+              inline 
+              class="demo-table-expand">
               <el-form-item label="ID:">
                 <span>{{ scope.row.id }}</span>
               </el-form-item>
@@ -49,7 +54,12 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column :show-overflow-tooltip="true" sortable prop="id" label="ID" width="100"/>
+        <el-table-column 
+          :show-overflow-tooltip="true" 
+          sortable 
+          prop="id" 
+          label="ID" 
+          width="100"/>
         <el-table-column
           :show-overflow-tooltip="true"
           sortable
@@ -89,7 +99,7 @@
           label="显示模式"
           min-width="100"
         >
-          <template slot-scope="scope">{{scope.row.mode === "fullscreen"? "全屏显示":"" }}</template>
+          <template slot-scope="scope">{{ scope.row.mode === "fullscreen"? "全屏显示":"" }}</template>
         </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
@@ -114,9 +124,13 @@
           label="修改时间"
           min-width="110"
         />
-        <el-table-column label="操作" width="100">
+        <el-table-column 
+          label="操作" 
+          width="100">
           <template slot-scope="scope">
-            <el-button size="small" @click="editItem(scope.row)">编辑</el-button>
+            <el-button 
+              size="small" 
+              @click="editItem(scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
