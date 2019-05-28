@@ -183,7 +183,7 @@ export default {
         this.prizeLaunchForm.atiid = template.atiid;
         this.prizeLaunchForm.sdate = sdate;
         this.prizeLaunchForm.edate = edate;
-        await this.getAdTemplate(template.type);
+        await this.typeHandle(template.type);
         this.setting.loading = false;
       } catch (e) {
         this.setting.loading = false;
