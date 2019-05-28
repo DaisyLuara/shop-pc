@@ -52,6 +52,7 @@
             v-model="form.ktime"
             placeholder="请输入素材播放时长"
             style="width:350px"
+            :maxlength="4"
           >
             <template slot="append">秒</template>
           </el-input>
