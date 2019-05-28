@@ -22,21 +22,14 @@
             class="rename-input"
           />
           <div class="btn-wrap">
-            <el-button
-              type="primary"
-              size="small"
-              @click="modifyGroupName"
-            >确定</el-button>
+            <el-button type="primary" size="small" @click="modifyGroupName">确定</el-button>
             <el-button
               size="small"
               @click="mediaGroup.mediaGroupRenameFlag = false, mediaGroup.renameGroupValue = renameGroup"
             >取消</el-button>
           </div>
         </el-popover>
-        <a
-          v-popover:rename
-          v-show="mediaGroup.renameGroupValue !== '默认分组'"
-        >重命名</a>
+        <a v-popover:rename v-show="mediaGroup.renameGroupValue !== '默认分组'">重命名</a>
       </div>
       <div class="grouping-image-wrap">
         <div class="grouping-wrap">
@@ -65,11 +58,7 @@
               class="group-input"
             />
             <div class="btn-wrap">
-              <el-button
-                type="primary"
-                size="small"
-                @click="addMediaGroup"
-              >确定</el-button>
+              <el-button type="primary" size="small" @click="addMediaGroup">确定</el-button>
               <el-button
                 size="small"
                 @click="mediaGroup.mediaGroupAddFlag = false,mediaGroup.addGroupNameValue = ''"
@@ -79,24 +68,23 @@
           <el-button v-popover:add-title>添加分组</el-button>
         </div>
         <div class="image-warp">
-          <div class="image-title-group" />
+          <div class="image-title-group"/>
           <!-- 视频列表 -->
           <ul class="image-list">
             <div
               v-show="mediaImage.mediaList.length == 0"
               class="hint-message"
             >暂无数据，可点击左下角“上传视频”按钮添加</div>
-            <li
-              v-for="(imageItem, index) in mediaImage.mediaList"
-              :key="imageItem.id"
-            >
+            <li v-for="(imageItem, index) in mediaImage.mediaList" :key="imageItem.id">
               <video
                 :src="imageItem.url"
                 class="image-file"
                 controls="controls"
                 @click="mediaVideo.imageVisible = true, mediaVideo.mediaVideoUrl = imageItem.url"
               >您的浏览器不支持</video>
-              <p class="item-text">{{ imageItem.name.length>8 ? imageItem.name.substring(0,7)+'...':imageItem.name }}</p>
+              <p
+                class="item-text"
+              >{{ imageItem.name.length>8 ? imageItem.name.substring(0,7)+'...':imageItem.name }}</p>
               <div class="image-operation">
                 <!-- 编辑名称 -->
                 <el-popover
@@ -122,7 +110,9 @@
                     >取消</el-button>
                   </div>
                   <a slot="reference">重命名</a>
-                  <a slot="reference">{{ imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>
+                  <a
+                    slot="reference"
+                  >{{ imageItem.status === 0 ? '未通过' : imageItem.status === 1 ? '通过' : '待审核' }}</a>
                 </el-popover>
               </div>
             </li>
@@ -142,10 +132,7 @@
               list-type="video"
               class="upload"
             >
-              <el-button
-                size="small"
-                type="success"
-              >上传视频</el-button>
+              <el-button size="small" type="success">上传视频</el-button>
             </el-upload>
             <span class="image-type">仅支持mp4一种格式, 大小为100M以内</span>
             <div class="pagination">
@@ -175,7 +162,7 @@ import {
   getMediaGroup, // 分组列表
   saveMediaGroup,
   modifyMediaGroupName,
-  randomString,
+  randomString
 } from "service";
 
 import {
@@ -292,7 +279,7 @@ export default {
           this.mediaGroup.addGroupNameValue = "";
           MessageBox.alert("增加的分组名称不能为空");
         }
-      } catch (e) { }
+      } catch (e) {}
     },
     // 修改分组名称
     async modifyGroupName() {
@@ -399,8 +386,7 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      // let suffix = time + "_" + random + "_" + name;
-      let suffix = randomString(25)
+      let suffix = randomString(25) + type;
       let key = encodeURI(`${suffix}`);
       const isJPG = file.type === "video/mp4";
       const isLt10M = file.size / 1024 / 1024 < 100;
