@@ -17,16 +17,24 @@
               label
               prop="atiid"
             >
-              <el-input
+              <el-select
                 v-model="filters.atiid"
-                placeholder="请填写广告模版"
+                :loading="searchLoading"
+                placeholder="请选择广告模版"
+                filterable
+                multiple
+                :multiple-limit="1"
+                remote
+                :remote-method="getAdTemplate"
                 clearable
               >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-name el-icon-same"
+                <el-option
+                  v-for="item in adTemplateList"
+                  :key="item.atiid"
+                  :label="item.name"
+                  :value="item.atiid"
                 />
-              </el-input>
+              </el-select>
             </el-form-item>
             <el-form-item
               label
@@ -202,7 +210,7 @@
   </div>
 </template>
 <script>
-import { getLaunchadPutList, getAdList, getPoint, getProject } from "service";
+import { getLaunchadPutList, getAdTemplate, getPoint, getProject } from "service";
 import {
   Button,
   Input,
@@ -262,17 +270,36 @@ export default {
   },
   created() {
     this.getLaunchadPutList();
-    // this.getAdList();
-    this.getPoint();
     this.init()
   },
   methods: {
     async init() {
       try {
+        this.searchLoading = true
         let projectRes = await getProject(this)
         this.projectList = projectRes
+        let pointRes = await getPoint(this)
+        this.pointList = pointRes
+        this.searchLoading = false
       } catch (e) {
 
+      }
+    },
+    getAdTemplate(query) {
+      if (query !== '') {
+        this.searchLoading = true
+        let args = {
+          name: query
+        }
+        getAdTemplate(this, args).then(res => {
+          this.adTemplateList = res
+          this.searchLoading = false
+
+        }).catch(err => {
+          this.searchLoading = false
+        })
+      } else {
+        this.adTemplateList = [];
       }
     },
     //广告投放列表
@@ -309,22 +336,6 @@ export default {
           this.$message({
             type: "warning",
             message: error.response.data.message
-          });
-        });
-    },
-    //点位下拉列表
-    getPoint() {
-      this.searchLoading = true;
-      getPoint(this)
-        .then(res => {
-          this.pointList = res;
-          this.searchLoading = false;
-        })
-        .catch(err => {
-          this.searchLoading = false;
-          this.$message({
-            message: err.response.data.message,
-            type: "success"
           });
         });
     },

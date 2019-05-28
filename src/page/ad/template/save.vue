@@ -2,7 +2,11 @@
   <div>
     <div class="ad_templates_save">
       <span class="item_list">{{ itemsID ? '子条目修改':'子条目新增' }}</span>
-      <el-form ref="form" :model="form" label-position="top">
+      <el-form
+        ref="form"
+        :model="form"
+        label-position="top"
+      >
         <el-form-item
           :rules="[{ required: true, message: '请选择素材', trigger: 'submit'}]"
           label="广告素材名称"
@@ -11,11 +15,13 @@
           <el-select
             v-model="form.aid"
             :loading="searchLoading"
-            filterable
             placeholder="请选择广告素材"
+            filterable
             clearable
+            remote
+            :remote-method="getMaterial"
           >
-            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
+
             <el-option
               v-for="item in mediaList"
               :key="item.aid"
@@ -24,17 +30,36 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="显示模式">
-          <el-select v-model="form.mode" disabled>
-            <el-option label="全屏显示" value="fullscreen"/>
+        <el-form-item
+          :rules="[{ required: true, trigger: 'submit'}]"
+          label="显示模式"
+        >
+          <el-select
+            v-model="form.mode"
+            disabled
+          >
+            <el-option
+              label="全屏显示"
+              value="fullscreen"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="素材播放时长">
-          <el-input placeholder="请输入素材播放时长" v-model="form.ktime" style="width:350px">
+        <el-form-item
+          :rules="[{ required: true, trigger: 'submit'}]"
+          label="素材播放时长"
+        >
+          <el-input
+            placeholder="请输入素材播放时长"
+            v-model="form.ktime"
+            style="width:350px"
+          >
             <template slot="append">秒</template>
           </el-input>
         </el-form-item>
-        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="活动时间">
+        <el-form-item
+          :rules="[{ required: true, trigger: 'submit'}]"
+          label="活动时间"
+        >
           <div class="time">
             <el-time-select
               v-model="form.shm"
@@ -59,7 +84,10 @@
         </el-form-item>
 
         <el-form-item label-width="110px">
-          <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+          <el-button
+            type="primary"
+            @click="onSubmit('form')"
+          >保存</el-button>
           <el-button @click="back">返回</el-button>
         </el-form-item>
       </el-form>
@@ -106,7 +134,8 @@ export default {
         loading: false,
         loadingText: "拼命加载中"
       },
-      mediaList: [],
+      mediaList: [
+      ],
       searchLoading: false,
       itemsID: null,
       form: {
@@ -122,7 +151,6 @@ export default {
   created() {
     this.atiid = this.$route.query.atiid;
     this.itemsID = this.$route.params.id;
-    this.getMaterial();
     if (this.itemsID) {
       this.getItemDetail();
     }
@@ -130,36 +158,43 @@ export default {
   methods: {
     async getItemDetail() {
       try {
-        let res = await getItemDetail(this, this.itemsID);
-        let { aid, ehm, mode, ktime, shm } = res;
+        let args = {
+          include: 'media'
+        }
+        let res = await getItemDetail(this, this.itemsID, args);
+        let { aid, ehm, mode, ktime, shm, media } = res;
+        this.getMaterial(media.name)
         this.form.aid = aid;
         this.form.mode = mode;
         this.form.ktime = ktime;
         this.form.shm = shm;
         this.form.ehm = ehm;
-      } catch (e) {}
+      } catch (e) { }
     },
     //获取广告素材下拉列表
-    getMaterial() {
-      this.searchLoading = true;
-      getMaterial(this)
-        .then(res => {
-          this.mediaList = res.data;
-          this.searchLoading = false;
+    getMaterial(query) {
+      if (query !== '') {
+        let args = {
+          name: query
+        }
+        this.searchLoading = true
+        getMaterial(this, args).then(res => {
+          this.mediaList = res.data
+          this.searchLoading = false
+        }).catch(err => {
+          this.searchLoading = false
         })
-        .catch(err => {
-          this.searchLoading = false;
-          this.$message({
-            message: err.response.data.message,
-            type: "success"
-          });
-        });
+      } else {
+        this.mediaList = [];
+      }
     },
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.setting.loading = true;
           let args = this.form;
+          args.atiid = this.atiid
+          args.aid = this.form.aid
           if (this.itemsID) {
             editItemsProject(this, this.itemsID, args)
               .then(response => {
