@@ -8,24 +8,17 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form
-            ref="filters"
-            :model="filters"
-            :inline="true"
-          >
-            <el-form-item
-              label
-              prop="atiid"
-            >
+          <el-form ref="filters" :model="filters" :inline="true">
+            <el-form-item label prop="atiid">
               <el-select
                 v-model="filters.atiid"
                 :loading="searchLoading"
+                :multiple-limit="1"
+                :remote-method="getAdTemplate"
                 placeholder="请选择广告模版"
                 filterable
                 multiple
-                :multiple-limit="1"
                 remote
-                :remote-method="getAdTemplate"
                 clearable
               >
                 <el-option
@@ -36,10 +29,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop="piid"
-            >
+            <el-form-item label prop="piid">
               <el-select
                 v-model="filters.piid"
                 :loading="searchLoading"
@@ -47,10 +37,7 @@
                 filterable
                 clearable
               >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-status el-icon-same"
-                />
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -59,10 +46,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop="oid"
-            >
+            <el-form-item label prop="oid">
               <el-select
                 v-model="filters.oid"
                 :loading="searchLoading"
@@ -70,10 +54,7 @@
                 filterable
                 clearable
               >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-status el-icon-same"
-                />
+                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -82,18 +63,9 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label
-              prop
-            >
-              <el-button
-                class="el-button-success"
-                @click="search('filters')"
-              >搜索</el-button>
-              <el-button
-                class="el-button-cancel"
-                @click="resetSearch('filters')"
-              >重置</el-button>
+            <el-form-item label prop>
+              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -118,19 +90,18 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form
-                label-position="left"
-                inline
-                class="demo-table-expand"
-              >
+              <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="广告模版:">
                   <span>{{ scope.row.template.name }}</span>
                 </el-form-item>
+                <el-form-item label="类型">
+                  <span>{{ scope.row.template.type === 'program'? '节目广告':'小屏广告' }}</span>
+                </el-form-item>
                 <el-form-item label="点位名称:">
-                  <span>{{scope.row.point.name}}</span>
+                  <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
-                  <span>{{scope.row.project.name }}</span>
+                  <span>{{ scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="模版投放时间:">
                   <span>{{ scope.row.sdate }} - {{ scope.row.edate }}</span>
@@ -141,12 +112,7 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column
-            sortable
-            prop="aoid"
-            label="ID"
-            width="80"
-          />
+          <el-table-column sortable prop="aoid" label="ID" width="80"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -156,7 +122,15 @@
           >
             <template slot-scope="scope">{{ scope.row.template.name }}</template>
           </el-table-column>
-
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="type"
+            label="类型"
+            min-width="100"
+          >
+            <template slot-scope="scope">{{ scope.row.template.type === 'program'? '节目广告':'小屏广告' }}</template>
+          </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -183,16 +157,9 @@
           >
             <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column
-            label="操作"
-            width="250"
-          >
+          <el-table-column label="操作" width="250">
             <template slot-scope="scope">
-              <el-button
-                size="small"
-                @click="editAdmeterial(scope.row)"
-                msg-father=scope.row
-              >编辑</el-button>
+              <el-button size="small" msg-father="scope.row" @click="editAdmeterial(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -210,7 +177,12 @@
   </div>
 </template>
 <script>
-import { getLaunchadPutList, getAdTemplate, getPoint, getProject } from "service";
+import {
+  getLaunchadPutList,
+  getAdTemplate,
+  getPoint,
+  getProject
+} from "service";
 import {
   Button,
   Input,
@@ -236,7 +208,7 @@ export default {
     "el-form-item": FormItem,
     "el-select": Select,
     "el-option": Option,
-    "el-date-picker": DatePicker,
+    "el-date-picker": DatePicker
   },
   data() {
     return {
@@ -256,7 +228,7 @@ export default {
       pointList: [],
       //投放列表
       tableData: [],
-      aoid: '',
+      aoid: "",
       setting: {
         loading: false,
         loadingText: "拼命加载中"
@@ -265,39 +237,38 @@ export default {
         total: 0,
         pageSize: 10,
         currentPage: 1
-      },
+      }
     };
   },
   created() {
     this.getLaunchadPutList();
-    this.init()
+    this.init();
   },
   methods: {
     async init() {
       try {
-        this.searchLoading = true
-        let projectRes = await getProject(this)
-        this.projectList = projectRes
-        let pointRes = await getPoint(this)
-        this.pointList = pointRes
-        this.searchLoading = false
-      } catch (e) {
-
-      }
+        this.searchLoading = true;
+        let projectRes = await getProject(this);
+        this.projectList = projectRes;
+        let pointRes = await getPoint(this);
+        this.pointList = pointRes;
+        this.searchLoading = false;
+      } catch (e) {}
     },
     getAdTemplate(query) {
-      if (query !== '') {
-        this.searchLoading = true
+      if (query !== "") {
+        this.searchLoading = true;
         let args = {
           name: query
-        }
-        getAdTemplate(this, args).then(res => {
-          this.adTemplateList = res
-          this.searchLoading = false
-
-        }).catch(err => {
-          this.searchLoading = false
-        })
+        };
+        getAdTemplate(this, args)
+          .then(res => {
+            this.adTemplateList = res;
+            this.searchLoading = false;
+          })
+          .catch(err => {
+            this.searchLoading = false;
+          });
       } else {
         this.adTemplateList = [];
       }
@@ -346,7 +317,7 @@ export default {
     },
     editAdmeterial(data) {
       this.$router.push({
-        path: "/put/adPut/edit/" + data.aoid,
+        path: "/put/adPut/edit/" + data.aoid
       });
     },
     resetSearch(formName) {
@@ -357,8 +328,6 @@ export default {
     search(formName) {
       this.pagination.currentPage = 1;
       this.getLaunchadPutList();
-
-
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
