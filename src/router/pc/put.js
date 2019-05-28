@@ -57,7 +57,7 @@ let router = {
             import(/* webpackChunkName: "page/put/accredit/index" */ 'page/put/accredit/index')
         },
         {
-          path: 'save',
+          path: 'save/:uid',
           meta: {
             title: '授权投放新增',
             permission: 'shop_launch.wechat.create'
@@ -111,6 +111,40 @@ let router = {
           },
           component: () =>
             import(/* webpackChunkName: "page/put/prize/save" */ 'page/put/prize/save')
+        }
+      ]
+    },
+    {
+      path: 'adPut',
+      meta: {
+        title: '广告投放',
+      },
+      component: () =>
+        import(/* webpackChunkName: "page/put/adPut/routerView" */ 'page/put/adPut/routerView'),
+      children: [
+        {
+          path: '/',
+          meta: {
+            title: '广告投放列表',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/adPut/index" */ 'page/put/adPut/index')
+        },
+        {
+          path: 'save',
+          meta: {
+            title: '广告投放新增',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/adPut/save" */ 'page/put/adPut/save')
+        },
+        {
+          path: 'edit/:uid',
+          meta: {
+            title: '广告投放编辑',
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/put/adPut/save" */ 'page/put/adPut/save')
         }
       ]
     }

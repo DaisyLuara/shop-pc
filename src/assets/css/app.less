@@ -23,7 +23,7 @@ body {
 
 .first-sidebar {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: 0;
   width: @sidebar_w_1;
   height: 100%;
@@ -38,6 +38,7 @@ body {
     width: 100%;
     height: 55px;
     .logo {
+      cursor: pointer;
       height: 55px;
       padding: 15px 25px;
       background: #6b3ec2;
@@ -46,36 +47,6 @@ body {
       justify-content: center;
       img {
         width: 80%;
-      }
-    }
-  }
-
-  .user-avatar-wrap {
-    margin-bottom: 10px;
-    .user-avatar {
-      padding: 10px;
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 40px 10px;
-      img {
-        width: 90%;
-      }
-    }
-    .user-avatar-no-logo {
-      background: #627fa3;
-    }
-    .user-avatar-logo {
-      background: none;
-    }
-    .user-name {
-      color: #fff;
-      font-weight: 600;
-      text-align: center;
-      margin-top: 15px;
-      .title {
-        word-break: break-word;
       }
     }
   }
@@ -123,7 +94,7 @@ body {
 
 .second-sidebar {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: @sidebar_w_1;
   width: @sidebar_w_2;
   height: 100%;
@@ -188,6 +159,7 @@ body {
   width: 100%;
   padding-left: @sidebar_w_1 + @sidebar_w_2;
   // padding-top: @topbar_h;
+  padding-top:50px;
 
   .content {
     background-color: #fff;

@@ -2,9 +2,9 @@ import auth from 'service/auth'
 
 let router = {
   path: 'resource',
-  name: '资源',
+  name: '资源管理',
   meta: {
-    title: '资源',
+    title: '资源管理',
     permission: 'shop_resource'
   },
   component: () =>
@@ -14,7 +14,7 @@ let router = {
       path: 'picture',
       meta: {
         title: '图片管理',
-        permission: 'shop_resource.picture'
+        permission: 'shop_resource.media'
       },
       component: () =>
         import(/* webpackChunkName: "page/resource/picture/routerView" */ 'page/resource/picture/routerView'),
@@ -23,7 +23,7 @@ let router = {
           path: '/',
           meta: {
             title: '图片管理集合',
-            permission: 'shop_resource.picture.read'
+            permission: 'shop_resource.media.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/resource/picture/index" */ 'page/resource/picture/index')
@@ -34,7 +34,7 @@ let router = {
       path: 'video',
       meta: {
         title: '视频管理',
-        permission: 'shop_resource.video'
+        permission: 'shop_resource.media'
       },
       component: () =>
         import(/* webpackChunkName: "page/resource/video/routerView" */ 'page/resource/video/routerView'),
@@ -43,7 +43,7 @@ let router = {
           path: '/',
           meta: {
             title: '视频管理集合',
-            permission: 'shop_resource.video.read'
+            permission: 'shop_resource.media.read'
           },
           component: () =>
             import(/* webpackChunkName: "page/resource/video/index" */ 'page/resource/video/index')
@@ -54,6 +54,7 @@ let router = {
 }
 
 router.redirect = () => {
+  console.log(3)
   let routes = router.children
   for (let route of routes) {
     if (auth.checkPathPermission(route)) {

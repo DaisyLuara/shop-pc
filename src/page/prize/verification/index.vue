@@ -131,7 +131,7 @@
                 :clearable="false"
                 :picker-options="pickerOptions"
                 size="medium"
-                type="daterange"
+                type="datetimerange"
                 align="right"
                 unlink-panels
                 start-placeholder="发放开始日期"
@@ -283,8 +283,10 @@ import {
   getPrizeVerifyList,
   verifyPrize,
   getPoint,
-  handleDateTimesTransform
+  handleDateTimesTransform,
+  handleDateTransform
 } from "service";
+import moment from "moment";
 
 import {
   Button,
@@ -466,8 +468,10 @@ export default {
         coupon_batch_name: this.filters.coupon_batch_name,
         customer_name: this.filters.customer_name,
         point_id: this.filters.point_id,
-        start_date: handleDateTimesTransform(this.filters.dateTime[0]),
-        end_date: handleDateTimesTransform(this.filters.dateTime[1])
+        start_date: moment(this.filters.dateTime[0]).format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        end_date: moment(this.filters.dateTime[1]).format("YYYY-MM-DD HH:mm:ss")
       };
       !this.filters.dateTime[0] ? delete args.start_date : args.start_date;
       !this.filters.dateTime[1] ? delete args.end_date : args.end_date;

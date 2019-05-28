@@ -58,7 +58,21 @@ const handleDateTypeTransform = valueDate => {
 const historyBack = () => {
   router.back()
 }
+
+const randomString = len => {
+  len = len || 32
+  let timestamp = new Date().getTime()
+  let _chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+  let maxPos = _chars.length
+  let randomStr = ''
+  for (let i = 0; i < len; i++) {
+    randomStr += _chars.charAt(Math.floor(Math.random() * maxPos))
+  }
+  return randomStr + timestamp
+}
+
 export {
+  randomString,
   handleDateTransform,
   handleDateTimesTransform,
   handleDateTypeTransform,

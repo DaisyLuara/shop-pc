@@ -11,7 +11,7 @@ export * from './utils'
 export * from './chart'
 
 // 图片
-// export * from './picture'
+export * from './resource'
 
 // 智造
 export * from './smart'
@@ -27,3 +27,24 @@ export * from './launch'
 
 // 设备
 export * from './device'
+
+//引导
+export * from './guide'
+
+//购物
+export * from './product'
+
+//开放的省市区联动
+export * from './address'
+
+//购物车
+export * from './cart'
+
+//订单
+export * from './order'
+
+//广告
+export * from './ad'
+
+//广告投放
+export * from './adput'

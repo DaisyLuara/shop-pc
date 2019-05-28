@@ -1,21 +1,55 @@
 <template>
   <div class="main">
-    <div class="first-sidebar">
+    <div class="menu-bar">
       <div class="logo-wrap">
         <div class="logo">
-          <img :src="IMG_URL+'ad_shop/img/logo.png'">
+          <img 
+            :src="IMG_URL+'ad_shop/img/logo.png'" 
+            @click="toGuide">
         </div>
       </div>
-      <div class="user-avatar-wrap">
+      <div class="menu-wrap">
+        <div class="menu-wrap_shop">
+          <span style="font-weight:600;">积分:</span>
+          <img 
+            :src="group_icon" 
+            style="width: 12%;">
+          <span>{{ group_name }}</span>
+          <span>{{ p_credits }}</span>
+        </div>
         <div 
-          :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" 
-          class="user-avatar">
-          <img :src="logo">
+          class="menu-wrap_shop" 
+          @click="gotoCarts">
+          <img :src="IMG_URL+'ad_shop/img/shop_icon.png'">
+          购物车
         </div>
-        <div class="user-name">
-          <span class="title">{{ user_name }}</span>
-        </div>
+        <el-dropdown 
+          :hide-on-click="true" 
+          @command="handleCommand">
+          <div class="user-avatar-wrap">
+            <div 
+              :class="noLogo ? 'user-avatar-no-logo':'user-avatar-logo'" 
+              class="user-avatar">
+              <img :src="logo">
+              <i 
+                class="el-icon-arrow-down" 
+                style="color:#fff;font-size: 16px;"/>
+            </div>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="account_set">
+              <span class="item-info">账号设置</span>
+            </el-dropdown-item>
+            <el-dropdown-item 
+              divided 
+              command="logout">
+              <span class="item-info">退出</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
+    </div>
+    <div class="first-sidebar">
       <el-menu 
         :default-active="'/' + currModule" 
         router>
@@ -25,20 +59,14 @@
           :index="'/' + m.path" 
           class="menu-item">
           <img 
-            :src="IMG_URL+ m.src +'.png'" 
+            :src="IMG_URL+ m.src +'.png?v=1'" 
             class="icon-default">
           <img 
-            :src="IMG_URL+ m.src +'_white.png'" 
+            :src="IMG_URL+ m.src +'_white.png?v=1'" 
             class="white-icon">
           {{ m.meta.title }}
         </el-menu-item>
       </el-menu>
-      <div class="logout-btn">
-        <img 
-          :src="IMG_URL +'/ad_shop/img/logout_icon.png'" 
-          class="logout-icon" 
-          @click="logout">
-      </div>
     </div>
     <div class="modules">
       <router-view/>
@@ -48,8 +76,20 @@
 
 <script>
 const IMG_URL = process.env.IMG_URL;
-import { Menu, MenuItem, Popover, Button, Badge, Icon } from "element-ui";
+import {
+  Menu,
+  MenuItem,
+  Popover,
+  Button,
+  Badge,
+  Icon,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu
+} from "element-ui";
 import auth from "service/auth";
+
+import { getCreditTotal } from "service";
 
 export default {
   name: "Home",
@@ -58,7 +98,10 @@ export default {
     "el-menu-item": MenuItem,
     "el-popover": Popover,
     "el-button": Button,
-    "el-badge": Badge
+    "el-badge": Badge,
+    "el-dropdown": Dropdown,
+    "el-dropdown-item": DropdownItem,
+    "el-dropdown-menu": DropdownMenu
   },
   data() {
     return {
@@ -66,7 +109,10 @@ export default {
       visible: false,
       user_name: "",
       logo: null,
-      noLogo: true
+      noLogo: true,
+      group_name: "",
+      p_credits: 0,
+      group_icon: ""
     };
   },
   computed: {
@@ -100,8 +146,20 @@ export default {
               case "prize":
                 m.src = "ad_shop/img/gift_icon";
                 break;
+              case "resource":
+                m.src = "ad_shop/img/resource_icon";
+                break;
               case "report":
                 m.src = "ad_shop/img/chart_icon";
+                break;
+              case "shop":
+                m.src = "ad_shop/img/try_icon";
+                break;
+              case "resource":
+                m.src = "ad_shop/img/resource_icon";
+                break;
+              case "ad":
+                m.src = "ad_shop/img/ad_icon";
                 break;
               default:
                 m.src = "";
@@ -128,7 +186,9 @@ export default {
         : "";
     }
   },
-  mounted() {},
+  mounted() {
+    this.getCreditTotal();
+  },
   created() {
     let customer = JSON.parse(localStorage.getItem("customer_info"));
     customer.roles = customer.display_name;
@@ -145,6 +205,38 @@ export default {
     this.$store.commit("setCurUserInfo", customer);
   },
   methods: {
+    gotoCarts() {
+      this.$router.push({
+        path: "/account/cart"
+      });
+    },
+    getCreditTotal() {
+      getCreditTotal(this)
+        .then(res => {
+          let { group_name, p_credits, group_icon } = res;
+          this.group_name = group_name;
+          this.p_credits = p_credits;
+          this.group_icon = group_icon;
+        })
+        .catch(err => {});
+    },
+    handleCommand(command) {
+      switch (command) {
+        case "account_set":
+          this.$router.push({
+            path: "/account/datum"
+          });
+          break;
+        case "logout":
+          this.logout();
+          break;
+      }
+    },
+    toGuide() {
+      this.$router.push({
+        path: "/guide"
+      });
+    },
     logout() {
       this.visible = false;
       auth.logout(this);
@@ -155,6 +247,80 @@ export default {
 
 <style lang="less">
 @import "../assets/css/pcCommon.less";
+.menu-bar {
+  display: flex;
+  flex-direction: row;
+  background: #7e58cc;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 300;
+  .logo-wrap {
+    position: relative;
+    display: flex;
+    width: 140px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    .logo {
+      width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .menu-wrap {
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    justify-content: flex-end;
+    margin-right: 30px;
+    align-items: center;
+    .user-avatar-wrap {
+      cursor: pointer;
+      width: 60px;
+      .user-avatar {
+        border-radius: 5px;
+        img {
+          width: 60%;
+          border-radius: 50%;
+        }
+      }
+      .user-avatar-no-logo {
+        background: #627fa3;
+      }
+      .user-avatar-logo {
+        background: none;
+      }
+      .user-name {
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 15px;
+        .title {
+          word-break: break-word;
+        }
+      }
+    }
+    .menu-wrap_shop {
+      color: #fff;
+      margin-right: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      img {
+        width: 30%;
+      }
+    }
+  }
+}
 .menu-item {
   display: flex;
   flex-direction: row;
@@ -175,21 +341,6 @@ export default {
   padding: 0;
   min-width: 80px;
   text-align: center;
-}
-.logout-btn {
-  position: absolute;
-  bottom: 15px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-  cursor: pointer;
-  flex-direction: row;
-  cursor: pointer;
-  .logout-icon {
-    width: 15%;
-    height: 15%;
-  }
 }
 
 .icon-default {

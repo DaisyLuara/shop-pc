@@ -8,13 +8,15 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form 
-            ref="filters" 
-            :model="filters" 
-            :inline="true">
-            <el-form-item 
-              label 
-              prop="project_id">
+          <el-form
+            ref="filters"
+            :model="filters"
+            :inline="true"
+          >
+            <el-form-item
+              label
+              prop="project_id"
+            >
               <el-select
                 v-model="filters.project_id"
                 :loading="searchLoading"
@@ -22,9 +24,10 @@
                 filterable
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-porject el-icon-same"/>
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-porject el-icon-same"
+                />
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -33,9 +36,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="oid">
+            <el-form-item
+              label
+              prop="oid"
+            >
               <el-select
                 v-model="filters.oid"
                 :loading="searchLoading"
@@ -43,9 +47,10 @@
                 filterable
                 clearable
               >
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-status el-icon-same"/>
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -54,27 +59,33 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop="policy_name">
-              <el-input 
-                v-model="filters.policy_name" 
-                placeholder="请填写奖品模版" 
-                clearable>
-                <i 
-                  slot="prefix" 
-                  class="el-input__icon el-icon-name el-icon-same"/>
+            <el-form-item
+              label
+              prop="policy_name"
+            >
+              <el-input
+                v-model="filters.policy_name"
+                placeholder="请填写奖品模版"
+                clearable
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-name el-icon-same"
+                />
               </el-input>
             </el-form-item>
-            <el-form-item 
-              label 
-              prop>
-              <el-button 
-                class="el-button-success" 
-                @click="search('filters')">搜索</el-button>
-              <el-button 
-                class="el-button-cancel" 
-                @click="resetSearch('filters')">重置</el-button>
+            <el-form-item
+              label
+              prop
+            >
+              <el-button
+                class="el-button-success"
+                @click="search('filters')"
+              >搜索</el-button>
+              <el-button
+                class="el-button-cancel"
+                @click="resetSearch('filters')"
+              >重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -99,10 +110,11 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form 
-                label-position="left" 
-                inline 
-                class="demo-table-expand">
+              <el-form
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-form-item label="奖品模版:">
                   <span>{{ scope.row.policy.name }}</span>
                 </el-form-item>
@@ -118,11 +130,12 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column 
-            sortable 
-            prop="id" 
-            label="ID" 
-            width="80"/>
+          <el-table-column
+            sortable
+            prop="id"
+            label="ID"
+            width="80"
+          />
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -158,13 +171,15 @@
           >
             <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column 
-            label="操作" 
-            width="250">
+          <el-table-column
+            label="操作"
+            width="250"
+          >
             <template slot-scope="scope">
-              <el-button 
-                size="small" 
-                @click="editPirzeLaunch(scope.row)">编辑</el-button>
+              <el-button
+                size="small"
+                @click="editPirzeLaunch(scope.row)"
+              >编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -316,6 +331,7 @@ export default {
         });
     },
     search(formName) {
+      console.log(formName)
       this.pagination.currentPage = 1;
       this.getLaunchPirzeList();
     },

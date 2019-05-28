@@ -194,7 +194,7 @@
           :show-overflow-tooltip="true" 
           label="点位" 
           prop="point" 
-          min-width="130">
+          min-width="100">
           <template
             slot-scope="props"
           >{{ props.row.area_name }} {{ props.row.market_name }} {{ props.row.point_name }}</template>
@@ -203,7 +203,7 @@
           :show-overflow-tooltip="true" 
           label="节目" 
           prop="projects" 
-          min-width="130"/>
+          min-width="100"/>
         <el-table-column 
           label="围观" 
           prop="looknum" 
@@ -228,7 +228,8 @@
           label="输出" 
           prop="scannum" 
           min-width="120">
-          <template slot-scope="props">*
+          <template slot-scope="props">
+            *
             <div>
               <div>CPF: {{ ((props.row.playernum7 / props.row.looknum) * 100).toFixed(2) }}%</div>
               <div>CPR：{{ ((props.row.playernum / props.row.looknum) * 100).toFixed(2) }}%</div>
