@@ -289,19 +289,18 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      // let suffix = time + "_" + random + "_" + name;
       let suffix = randomString(25);
       let key = encodeURI(`${suffix}`);
       const isVideo = file.type === "video/mp4";
       const isLt10M = file.size / 1024 / 1024 < 100;
       if (!isVideo) {
         this.$message.error("上传视频仅支持mp4一种格式!");
-        this.setting.loading = false;
+        this.loading = false;
         return isVideo;
       }
       if (!isLt10M) {
         this.$message.error("上传视频大小不能超过 100MB!");
-        this.setting.loading = false;
+        this.loading = false;
         return isLt10M;
       }
       this.uploadForm.key = key;

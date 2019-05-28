@@ -194,12 +194,12 @@ export default {
       };
       getLaunchPutDetail(this, this.putLaunchId, args)
         .then(res => {
-          let { project, point, template, end_date, start_date } = res
+          let { project, point, template, edate, sdate } = res
           this.prizeLaunchForm.piid = project.id
           this.prizeLaunchForm.oid = point.id;
           this.prizeLaunchForm.atiid = template.atiid;
-          this.prizeLaunchForm.sdate = start_date;
-          this.prizeLaunchForm.edate = end_date;
+          this.prizeLaunchForm.sdate = sdate;
+          this.prizeLaunchForm.edate = edate;
           this.setting.loading = false;
         })
         .catch(err => {

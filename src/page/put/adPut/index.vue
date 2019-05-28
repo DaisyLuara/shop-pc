@@ -133,10 +133,10 @@
                   <span>{{scope.row.project.name }}</span>
                 </el-form-item>
                 <el-form-item label="模版投放时间:">
-                  <span>{{ scope.row.start_date }} - {{ scope.row.end_date }}</span>
+                  <span>{{ scope.row.sdate }} - {{ scope.row.edate }}</span>
                 </el-form-item>
                 <el-form-item label="修改时间:">
-                  <span>{{ scope.row.end_date }}</span>
+                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
               </el-form>
             </template>
