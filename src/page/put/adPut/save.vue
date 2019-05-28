@@ -39,7 +39,7 @@
         </el-form-item>
         <el-form-item
           :rules="[{ required: true, message: '点位名称', trigger: 'submit'}]"
-          label="点位名称 "
+          label="点位名称"
           prop="oid"
         >
           <el-select
@@ -61,8 +61,9 @@
         </el-form-item>
         <el-form-item
           :rules="[{ required: true, message: '节目名称', trigger: 'submit'}]"
-          label="节目名称 "
+          label="节目名称"
           prop="piid"
+          v-if="projectShow"
         >
           <el-select
             v-model="prizeLaunchForm.piid"
@@ -135,6 +136,7 @@ export default {
   },
   data() {
     return {
+      projectShow:false,
       putLaunchId: null,
       setting: {
         isOpenSelectAll: true,
@@ -192,6 +194,11 @@ export default {
       }
     },
     typeHandle(val) {
+      if(val === 'program'){
+        this.projectShow = true 
+      }else{
+        this.projectShow = false 
+      }
       this.prizeLaunchForm.atiid = null;
       this.getAdTemplate(val);
     },
