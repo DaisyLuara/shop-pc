@@ -17,7 +17,7 @@ const getAdList = (context, args) => {
 }
 
 // 增加模版名称
-const modifyMediaAdName = (context, params) => {
+const saveAdTemplate = (context, params) => {
   return new Promise(function (resolve, reject) {
     context.$http
       .post(HOST + MEDIA_AD_API, params)
@@ -30,7 +30,7 @@ const modifyMediaAdName = (context, params) => {
 }
 
 //修改模板名称
-const editmodifyMediaAdName = (context, id, params) => {
+const modifyAdTemplate = (context, id, params) => {
   return new Promise(function (resolve, reject) {
     context.$http
       .patch(HOST + MEDIA_AD_API + '/' + id, params)
@@ -149,13 +149,13 @@ export {
   getAdList,
   getItemList,
   saveItemsProject,
-  modifyMediaAdName,
+  saveAdTemplate,
   editItemsProject,
   getItemDetail,
   getAdMediaList,
   getAdMediaDetail,
   saveAdMedia,
   modifyAdMedia,
-  editmodifyMediaAdName
+  modifyAdTemplate
 
 }
