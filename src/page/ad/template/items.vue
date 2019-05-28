@@ -38,7 +38,7 @@
                 <span>{{ scope.row.media.link }}</span>
               </el-form-item>
               <el-form-item label="显示模式">
-                <span>{{ scope.row.mode }}</span>
+                <span>{{ scope.row.mode === "fullscreen"? "全屏显示":"" }}</span>
               </el-form-item>
               <el-form-item label="素材时长">
                 <span>{{ scope.row.ktime }}</span>
@@ -88,7 +88,9 @@
           prop="mode"
           label="显示模式"
           min-width="100"
-        />
+        >
+          <template slot-scope="scope">{{scope.row.mode === "fullscreen"? "全屏显示":"" }}</template>
+        </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
           sortable

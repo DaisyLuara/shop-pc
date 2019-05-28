@@ -267,6 +267,7 @@ export default {
             sdate: moment(this.prizeLaunchForm.sdate).format("YYYY-MM-DD HH:mm:ss"),
             edate: moment(this.prizeLaunchForm.edate).format("YYYY-MM-DD HH:mm:ss"),
           };
+          console.log(args)
           if (this.putLaunchId) {
             modifyLaunchPut(this, this.putLaunchId, args)
               .then(response => {
@@ -276,7 +277,10 @@ export default {
                   type: "success"
                 });
                 this.$router.push({
-                  path: "/put/adPut"
+                  path: "/put/adPut",
+                  query: {
+                    atiid: this.prizeLaunchForm.atiid
+                  }
                 });
               })
               .catch(err => {
