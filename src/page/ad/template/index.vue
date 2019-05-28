@@ -6,44 +6,21 @@
       class="ad_templates"
     >
       <div class="ad_search_warp">
-        <el-form
-          ref="filters"
-          :model="filters"
-          :inline="true"
-        >
-          <el-form-item
-            label
-            prop="name"
-          >
-            <el-input
-              v-model="filters.name"
-              placeholder="请填写广告模板名称"
-              clearable
-            >
-              <i
-                slot="prefix"
-                class="el-input__icon el-icon-name el-icon-same"
-              />
+        <el-form ref="filters" :model="filters" :inline="true">
+          <el-form-item label prop="name">
+            <el-input v-model="filters.name" placeholder="请填写广告模板名称" clearable>
+              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item label>
-            <el-button
-              class="el-button-success"
-              @click="search('filters')"
-            >搜索</el-button>
-            <el-button
-              class="el-button-cancel"
-              @click="resetSearch('filters')"
-            >重置</el-button>
+            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
+            <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="ad_list_title">
         <div class="title">广告模板列表({{ pagination.count }})</div>
-        <el-button
-          class="save"
-          @click="addPrizePolicy"
-        >新增广告模板</el-button>
+        <el-button class="save" @click="addPrizePolicy">新增广告模板</el-button>
       </div>
       <!-- 列表 -->
       <el-table
@@ -55,11 +32,7 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form
-              label-position="left"
-              inline
-              class="demo-table-expand"
-            >
+            <el-form label-position="left" inline class="demo-table-expand">
               <el-form-item label="ID:">
                 <span>{{ scope.row.atiid }}</span>
               </el-form-item>
@@ -68,6 +41,9 @@
               </el-form-item>
               <el-form-item label="节目运行状态">
                 <span>{{ scope.row.hardware === 1? '开启':'关闭' }}</span>
+              </el-form-item>
+              <el-form-item label="类型">
+                <span>{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</span>
               </el-form-item>
               <el-form-item label="修改时间:">
                 <span>{{ scope.row.updated_at }}</span>
@@ -101,23 +77,23 @@
         <el-table-column
           :show-overflow-tooltip="true"
           sortable
+          prop="type"
+          label="类型"
+          min-width="100"
+        >
+          <template slot-scope="scope">{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</template>
+        </el-table-column>
+        <el-table-column
+          :show-overflow-tooltip="true"
+          sortable
           prop="updated_at"
           label="修改时间"
           min-width="100"
         />
-        <el-table-column
-          label="操作"
-          width="200"
-        >
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button
-              size="small"
-              @click="editPrizePolicy(scope.row)"
-            >编辑</el-button>
-            <el-button
-              size="small"
-              @click="toItem(scope.row)"
-            >子条目</el-button>
+            <el-button size="small" @click="editPrizePolicy(scope.row)">编辑</el-button>
+            <el-button size="small" @click="toItem(scope.row)">子条目</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -131,10 +107,40 @@
         />
       </div>
     </div>
+    <el-dialog :visible.sync="dialogFormVisible" :show-close="false" :title="title">
+      <el-form ref="templateForm" :model="templateForm" label-position="top">
+        <el-form-item
+          :rules="[{ required: true, message: '请填写模版名称', trigger: 'submit'}]"
+          label="模版名称"
+          prop="name"
+        >
+          <el-input
+            v-model="templateForm.name"
+            placeholder="请填写模版名称"
+            clearable
+            style="width:210px"
+          />
+        </el-form-item>
+        <el-form-item
+          :rules="[{ required: true, message: '请选择类型', trigger: 'submit'}]"
+          label="类型"
+          prop="type"
+        >
+          <el-radio-group v-model="templateForm.type">
+            <el-radio label="ads">小屏广告</el-radio>
+            <el-radio label="program">节目广告</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="el-button-success" @click="submit('templateForm')">完成</el-button>
+          <el-button class="el-button-cancel" @click="cancel">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getAdList, modifyMediaAdName, editmodifyMediaAdName } from 'service';
+import { getAdList, saveAdTemplate, modifyAdTemplate } from "service";
 import {
   Button,
   Select,
@@ -145,8 +151,10 @@ import {
   TableColumn,
   Form,
   FormItem,
-  Input
-
+  Input,
+  Dialog,
+  RadioGroup,
+  Radio
 } from "element-ui";
 
 export default {
@@ -159,10 +167,19 @@ export default {
     "el-form-item": FormItem,
     "el-select": Select,
     "el-option": Option,
-    "el-input": Input
+    "el-input": Input,
+    "el-dialog": Dialog,
+    "el-radio-group": RadioGroup,
+    "el-radio": Radio
   },
   data() {
     return {
+      templateForm: {
+        name: "",
+        type: "program"
+      },
+      title: "新增模版",
+      dialogFormVisible: false,
       filters: {
         name: ""
       },
@@ -186,6 +203,10 @@ export default {
     this.getAdList();
   },
   methods: {
+    cancel() {
+      this.$refs["templateForm"].resetFields();
+      this.dialogFormVisible = false;
+    },
     getAdList() {
       this.setting.loading = true;
       let args = {
@@ -208,65 +229,62 @@ export default {
     },
     //增加模板
     addPrizePolicy(item) {
-      this.$prompt("模板名", "增加模板", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPlaceholder: "请输入模板名",
-        inputValue: item.title
-      })
-        .then((confirm) => {
-          this.modifyAdName(confirm)
-        })
-        .catch(() => {
-        });
-    },
-    async modifyAdName(data) {
-      let params = {
-        name: data.value
-      };
-      try {
-        await modifyMediaAdName(this, params);
-        this.$message({
-          type: 'success',
-          message: "新增成功"
-        });
-        let mediaAdData = await getAdList(this);
-        this.tableData = mediaAdData.data;
-      } catch (e) {
-        console.log(e);
-      }
+      this.dialogFormVisible = true;
     },
     //修改模板
     editPrizePolicy(item) {
-      this.atiid = item.atiid
-      this.$prompt("模板名", "修改模板", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPlaceholder: "请输入模板名",
-        inputValue: item.title
-      })
-        .then((confirm) => {
-          this.editmodifyAdName(confirm)
-        })
-        .catch(() => {
-        });
+      this.atiid = item.atiid;
+      this.title = '编辑模版'
+      this.templateForm.name = item.name
+      this.templateForm.type = item.type
+      this.dialogFormVisible = true;
     },
-    async editmodifyAdName(data) {
-      let params = {
-        name: data.value,
-      };
-      let atiid = this.atiid
-      try {
-        await editmodifyMediaAdName(this, atiid, params);
-        this.$message({
-          type: 'success',
-          message: "修改成功"
-        });
-        let mediaAdData = await getAdList(this);
-        this.tableData = mediaAdData.data;
-      } catch (e) {
-        console.log(e);
-      }
+    submit(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.setting.loading = true;
+          let args = this.templateForm;
+          if (this.atiid) {
+            modifyAdTemplate(this, this.atiid, args)
+              .then(response => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "更改成功",
+                  type: "success"
+                });
+                this.cancel();
+                this.getAdList();
+              })
+              .catch(err => {
+                this.setting.loading = false;
+                this.cancel();
+                this.$message({
+                  message: err.response.data.message,
+                  type: "success"
+                });
+              });
+          } else {
+            saveAdTemplate(this, args)
+              .then(response => {
+                this.setting.loading = false;
+                this.$message({
+                  message: "更改成功",
+                  type: "success"
+                });
+                this.cancel();
+                this.getAdList();
+              })
+              .catch(err => {
+                this.setting.loading = false;
+                this.cancel();
+                this.$message({
+                  message: err.response.data.message,
+                  type: "success"
+                });
+              });
+          }
+        }
+      });
     },
     search(formName) {
       this.pagination.currentPage = 1;
