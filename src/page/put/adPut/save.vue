@@ -43,10 +43,10 @@
           <el-select
             v-model="prizeLaunchForm.oid"
             :loading="searchLoading"
+            :disabled="disabled"
             placeholder="请选择点位名称"
             filterable
             clearable
-            :disabled="disabled"
           >
             <i
               slot="prefix"
@@ -68,10 +68,10 @@
           <el-select
             v-model="prizeLaunchForm.piid"
             :loading="searchLoading"
+            :disabled="disabled"
             filterable
             placeholder="请选择节目名称"
             clearable
-            :disabled="disabled"
           >
             <i
               slot="prefix"

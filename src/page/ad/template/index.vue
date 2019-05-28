@@ -39,7 +39,7 @@
         </el-form>
       </div>
       <div class="ad_list_title">
-        <div class="title">广告模板列表({{pagination.count }})</div>
+        <div class="title">广告模板列表({{ pagination.count }})</div>
         <el-button
           class="save"
           @click="addPrizePolicy"
@@ -67,7 +67,7 @@
                 <span>{{ scope.row.name }}</span>
               </el-form-item>
               <el-form-item label="节目运行状态">
-                <span>{{ scope.row.hardware === 1? '开启':'关闭'}}</span>
+                <span>{{ scope.row.hardware === 1? '开启':'关闭' }}</span>
               </el-form-item>
               <el-form-item label="修改时间:">
                 <span>{{ scope.row.updated_at }}</span>

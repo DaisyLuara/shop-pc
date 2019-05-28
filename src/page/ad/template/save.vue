@@ -15,11 +15,11 @@
           <el-select
             v-model="form.aid"
             :loading="searchLoading"
+            :remote-method="getMaterial"
             placeholder="请选择广告素材"
             filterable
             clearable
             remote
-            :remote-method="getMaterial"
           >
 
             <el-option
@@ -49,8 +49,8 @@
           label="素材播放时长"
         >
           <el-input
-            placeholder="请输入素材播放时长"
             v-model="form.ktime"
+            placeholder="请输入素材播放时长"
             style="width:350px"
           >
             <template slot="append">秒</template>
@@ -69,7 +69,7 @@
                 end: '23:59'
               }"
               placeholder="选择时间"
-            ></el-time-select>
+            />
             <div style="width:20px;text-align:center">-</div>
             <el-time-select
               v-model="form.ehm"
@@ -79,7 +79,7 @@
                 end: '23:59'
               }"
               placeholder="选择时间"
-            ></el-time-select>
+            />
           </div>
         </el-form-item>
 
