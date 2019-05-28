@@ -418,7 +418,6 @@ export default {
     // 上传成功后的处理
     async handleSuccess(response, file) {
       let [key, name, size] = [response.key, file.name, file.size];
-      let type = name.substring(name.lastIndexOf("."));
       let params = {
         key: key,
         name: name,

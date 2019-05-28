@@ -39,7 +39,7 @@
         </el-form-item>
         <el-form-item
           :rules="[{ required: true, message: '点位名称', trigger: 'submit'}]"
-          label="点位名称 "
+          label="点位名称"
           prop="oid"
         >
           <el-select
@@ -61,8 +61,9 @@
         </el-form-item>
         <el-form-item
           :rules="[{ required: true, message: '节目名称', trigger: 'submit'}]"
-          label="节目名称 "
+          label="节目名称"
           prop="piid"
+          v-if="projectShow"
         >
           <el-select
             v-model="prizeLaunchForm.piid"
@@ -135,6 +136,7 @@ export default {
   },
   data() {
     return {
+      projectShow:false,
       putLaunchId: null,
       setting: {
         isOpenSelectAll: true,
@@ -177,11 +179,11 @@ export default {
         let { project, point, template, edate, sdate } = res;
         this.prizeLaunchForm.piid = project.id;
         this.prizeLaunchForm.type = template.type;
+        await this.typeHandle(template.type);
         this.prizeLaunchForm.oid = point.id;
         this.prizeLaunchForm.atiid = template.atiid;
         this.prizeLaunchForm.sdate = sdate;
         this.prizeLaunchForm.edate = edate;
-        await this.getAdTemplate(template.type);
         this.setting.loading = false;
       } catch (e) {
         this.setting.loading = false;
@@ -192,6 +194,11 @@ export default {
       }
     },
     typeHandle(val) {
+      if(val === 'program'){
+        this.projectShow = true 
+      }else{
+        this.projectShow = false 
+      }
       this.prizeLaunchForm.atiid = null;
       this.getAdTemplate(val);
     },
@@ -202,6 +209,7 @@ export default {
       this.searchLoading = true;
       getAdTemplate(this, args)
         .then(res => {
+          console.log(res)
           this.tempList = res;
           this.searchLoading = false;
         })
@@ -261,6 +269,9 @@ export default {
               "YYYY-MM-DD HH:mm:ss"
             )
           };
+          if(this.prizeLaunchForm.type === 'ads'){
+            delete args.piid
+          }
           if (this.putLaunchId) {
             modifyLaunchPut(this, this.putLaunchId, args)
               .then(response => {
