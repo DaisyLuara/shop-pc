@@ -6,13 +6,8 @@
       class="ad_templates_items"
     >
       <div class="ad_list_title">
-        <div class="title">
-          子条目列表({{ pagination.count}})
-        </div>
-        <el-button
-          class="save"
-          @click="saveItem"
-        >新增条目</el-button>
+        <div class="title">子条目列表({{ pagination.count}})</div>
+        <el-button class="save" @click="saveItem">新增条目</el-button>
       </div>
       <el-table
         :data="tableData"
@@ -23,11 +18,7 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form
-              label-position="left"
-              inline
-              class="demo-table-expand"
-            >
+            <el-form label-position="left" inline class="demo-table-expand">
               <el-form-item label="ID:">
                 <span>{{ scope.row.id }}</span>
               </el-form-item>
@@ -35,7 +26,13 @@
                 <span>{{ scope.row.media.name }}</span>
               </el-form-item>
               <el-form-item label="素材:">
-                <span>{{ scope.row.media.link }}</span>
+                <span>
+                  <a
+                    :href="scope.row.media.link"
+                    target="_blank"
+                    style="color:#6b3ec2;font-weight:600;"
+                  >点击查看</a>
+                </span>
               </el-form-item>
               <el-form-item label="显示模式">
                 <span>{{ scope.row.mode === "fullscreen"? "全屏显示":"" }}</span>
@@ -44,21 +41,15 @@
                 <span>{{ scope.row.ktime }}</span>
               </el-form-item>
               <el-form-item label="素材投放时间">
-                <span>{{ scope.row.shm }}</span>
+                <span>{{ scope.row.shm }} - {{ scope.row.ehm }}</span>
               </el-form-item>
-              <el-form-item label="素材修改时间">
-                <span>{{ scope.row.ehm }}</span>
+              <el-form-item label="修改时间">
+                <span>{{ scope.row.updated_at }}</span>
               </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="id"
-          label="ID"
-          width="100"
-        />
+        <el-table-column :show-overflow-tooltip="true" sortable prop="id" label="ID" width="100"/>
         <el-table-column
           :show-overflow-tooltip="true"
           sortable
@@ -71,14 +62,23 @@
           sortable
           prop="media.link"
           label="素材"
-          min-width="100"
+          width="150"
         >
           <template slot-scope="scope">
             <span>
               <img
+                v-if="scope.row.media.type === 'image'"
                 :src="scope.row.media.link"
-                width="40px"
+                alt
+                class="icon-item"
+                @click="imgShow(scope.row)"
               >
+              <video
+                v-if="scope.row.media.type === 'video'"
+                :src="scope.row.media.link"
+                controls="controls"
+                class="icon-item"
+              >您的浏览器不支持</video>
             </span>
           </template>
         </el-table-column>
@@ -104,23 +104,19 @@
           prop="shm"
           label="素材投放时间"
           min-width="130"
-        />
+        >
+          <template slot-scope="scope">{{ scope.row.shm }} - {{ scope.row.ehm }}</template>
+        </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
           sortable
-          prop="ehm"
+          prop="updated_at"
           label="修改时间"
           min-width="110"
         />
-        <el-table-column
-          label="操作"
-          width="170"
-        >
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <el-button
-              size="small"
-              @click="editItem(scope.row)"
-            >编辑</el-button>
+            <el-button size="small" @click="editItem(scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -137,7 +133,7 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 import {
   Button,
   Select,
@@ -147,8 +143,7 @@ import {
   TableColumn,
   Form,
   FormItem,
-  Pagination,
-
+  Pagination
 } from "element-ui";
 import { getItemList } from "service";
 
@@ -171,26 +166,26 @@ export default {
         loading: false,
         loadingText: "拼命加载中"
       },
-      atiid: '',
+      atiid: "",
       tableData: [],
       pagination: {
         total: 0,
         pageSize: 10,
         currentPage: 1
       }
-    }
+    };
   },
   created() {
     this.getItemList();
-    this.atiid = this.$route.query.atiid
+    this.atiid = this.$route.query.atiid;
   },
   methods: {
     getItemList() {
-      let atiid = this.$route.query.atiid
+      let atiid = this.$route.query.atiid;
       let args = {
         atiid: atiid,
-        include: "media",
-      }
+        include: "media"
+      };
       this.setting.loading = true;
       getItemList(this, args)
         .then(res => {
@@ -205,32 +200,31 @@ export default {
             type: "warning",
             message: err.response.data.message
           });
-        })
+        });
     },
     saveItem() {
       this.$router.push({
-        path: '/ad/template/save',
+        path: "/ad/template/save",
         query: {
           atiid: this.atiid
         }
-
-      })
+      });
     },
     editItem(data) {
       this.$router.push({
-        path: '/ad/template/edit/' + data.id,
+        path: "/ad/template/edit/" + data.id,
         query: {
           atiid: this.atiid,
           name: data.media.name
         }
-      })
+      });
     },
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
       this.getAdList();
-    },
+    }
   }
-}
+};
 </script>
 <style lang='less' scoped>
 .ad_templates_items {
@@ -250,6 +244,10 @@ export default {
       float: right;
     }
   }
+}
+.icon-item {
+  padding: 10px;
+  width: 50%;
 }
 .demo-table-expand {
   font-size: 0;

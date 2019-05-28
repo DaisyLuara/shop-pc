@@ -2,11 +2,7 @@
   <div>
     <div class="ad_templates_save">
       <span class="item_list">{{ itemsID ? '子条目修改':'子条目新增' }}</span>
-      <el-form
-        ref="form"
-        :model="form"
-        label-position="top"
-      >
+      <el-form ref="form" :model="form" label-position="top">
         <el-form-item
           :rules="[{ required: true, message: '请选择素材', trigger: 'submit'}]"
           label="广告素材名称"
@@ -19,10 +15,7 @@
             placeholder="请选择广告素材"
             clearable
           >
-            <i
-              slot="prefix"
-              class="el-input__icon el-icon-project el-icon-same"
-            />
+            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
             <el-option
               v-for="item in mediaList"
               :key="item.aid"
@@ -31,65 +24,43 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
-          :rules="[{ required: true, trigger: 'submit'}]"
-          label="显示模式"
-        >
-          <el-select v-model="form.mode" />
+        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="显示模式">
+          <el-select v-model="form.mode" disabled>
+            <el-option label="全屏显示" value="fullscreen"/>
+          </el-select>
         </el-form-item>
-        <el-form-item
-          :rules="[{ required: true, trigger: 'submit'}]"
-          label=""
-        >
-          <div class="type">
-            <div class="type-item">类型</div>
-            <el-radio-group v-model="form.resource">
-              <el-radio
-                label="默认时长"
-                @change="hidden()"
-              />
-              <el-radio
-                label="自定义时长"
-                @change="show()"
-              />
-            </el-radio-group>
-          </div>
+        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="素材播放时长">
+          <el-input placeholder="请输入素材播放时长" v-model="form.ktime" style="width:350px">
+            <template slot="append">秒</template>
+          </el-input>
         </el-form-item>
-        <el-form-item
-          v-show="isShow"
-          :rules="[{ required: true, trigger: 'submit'}]"
-          label="素材播放时长"
-        >
-          <el-col :span="10">
-            <el-input v-model="form.ktime" />
-          </el-col>&nbsp;&nbsp;秒
-        </el-form-item>
-        <el-form-item
-          :rules="[{ required: true, trigger: 'submit'}]"
-          label="活动时间"
-        >
+        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="活动时间">
           <div class="time">
-            <el-time-picker
+            <el-time-select
               v-model="form.shm"
-              placeholder="任意时间点"
-              @change="getTime1"
-            />
+              :picker-options="{
+                start: '00:00',
+                step: '00:01',
+                end: '23:59'
+              }"
+              placeholder="选择时间"
+            ></el-time-select>
             <div style="width:20px;text-align:center">-</div>
-            <el-time-picker
+            <el-time-select
               v-model="form.ehm"
-              placeholder="任意时间点"
-              @change="getTime2"
-            />
+              :picker-options="{
+                start: '00:00',
+                step: '00:01',
+                end: '23:59'
+              }"
+              placeholder="选择时间"
+            ></el-time-select>
           </div>
-
         </el-form-item>
 
         <el-form-item label-width="110px">
-          <el-button
-            type="primary"
-            @click="onSubmit('form')"
-          >保存</el-button>
-          <el-button @click="back">取消</el-button>
+          <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+          <el-button @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -104,12 +75,17 @@ import {
   Button,
   Input,
   MessageBox,
-  TimePicker,
-  Col,
+  TimeSelect,
   Radio,
   RadioGroup
 } from "element-ui";
-import { historyBack, saveItemsProject, getMaterial, editItemsProject } from "service";
+import {
+  getItemDetail,
+  historyBack,
+  saveItemsProject,
+  getMaterial,
+  editItemsProject
+} from "service";
 import moment from "moment";
 export default {
   components: {
@@ -118,11 +94,10 @@ export default {
     ElOption: Option,
     ElFormItem: FormItem,
     ElButton: Button,
-    ElTimePicker: TimePicker,
-    ElCol: Col,
     ElRadio: Radio,
     ElRadioGroup: RadioGroup,
-    ElInput: Input
+    ElInput: Input,
+    elTimeSelect: TimeSelect
   },
   data() {
     return {
@@ -136,31 +111,33 @@ export default {
       itemsID: null,
       form: {
         aid: "",
-        mode: "全屏显示",
-        resource: "默认时长",
-        ktime: null,
-        shm: new Date("2108-09-01 00:00:00"),
-        ehm: new Date("2108-09-01 23:59:59")
+        mode: "fullscreen",
+        ktime: 0,
+        shm: "",
+        ehm: ""
       },
       atiid: "",
-      videoFlag: "",
-      isShow: false
     };
   },
   created() {
-    this.editLaunchId = this.$route.params.id;
-    this.atiid = this.$route.query.atiid
-    this.form.aid = this.$route.query.name
-    this.form.time1 = new Date("2108-09-01 00:00:00");
+    this.atiid = this.$route.query.atiid;
     this.itemsID = this.$route.params.id;
     this.getMaterial();
+    if (this.itemsID) {
+      this.getItemDetail();
+    }
   },
   methods: {
-    getTime1(val) {
-      let start_date = moment(val).format("HH:mm:ss");
-    },
-    getTime2(val) {
-      let end_date = moment(val).format("HH:mm:ss");
+    async getItemDetail() {
+      try {
+        let res = await getItemDetail(this, this.itemsID);
+        let { aid, ehm, mode, ktime, shm } = res;
+        this.form.aid = aid;
+        this.form.mode = mode;
+        this.form.ktime = ktime;
+        this.form.shm = shm;
+        this.form.ehm = ehm;
+      } catch (e) {}
     },
     //获取广告素材下拉列表
     getMaterial() {
@@ -178,24 +155,13 @@ export default {
           });
         });
     },
-    hidden() {
-      this.isShow = false;
-    },
-    show() {
-      this.isShow = !this.isShow;
-    },
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.setting.loading = true;
           let args = this.form;
-          args.atiid = this.atiid
-          args.ktime *= 1
-          args.shm = moment(args.shm).format("HH:mm");
-          args.ehm = moment(args.ehm).format("HH:mm");
-          args.mode = 'fullscreen'
-          if (this.editLaunchId) {
-            editItemsProject(this, this.editLaunchId, args)
+          if (this.itemsID) {
+            editItemsProject(this, this.itemsID, args)
               .then(response => {
                 this.setting.loading = false;
                 this.$message({
@@ -237,10 +203,9 @@ export default {
                   message: err.response.data.message,
                   type: "success"
                 });
-              })
+              });
           }
         }
-
       });
     },
     back() {

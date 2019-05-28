@@ -1,7 +1,6 @@
 const LAUNCH_AD_API = '/api/launch/ad'
 const HOST = process.env.SERVER_URL
 //广告投放列表
-
 const getLaunchadPutList = (context, params) => {
   return new Promise(function (resolve, reject) {
     context.$http
