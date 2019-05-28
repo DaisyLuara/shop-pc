@@ -398,7 +398,6 @@ export default {
       let isLt100M = file.size / 1024 / 1024 < 100;
       let time = new Date().getTime();
       let random = parseInt(Math.random() * 10 + 1, 10);
-      console.log(type)
       let suffix = randomString(25) + type;
       let key = encodeURI(`${suffix}`);
       const isJPG = file.type === "video/mp4";
