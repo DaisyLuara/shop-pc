@@ -79,7 +79,7 @@
           <span class="image-type">仅支持jpg、jpeg、gif 、png四种格式, 大小为10M以内</span>
           <div class="picture-panel__page">
             <el-pagination
-              :total="130"
+              :total="pagination.count"
               :pager-count="5"
               :page-size="pagination.limit"
               :current-page.sync="pagination.page_num"
@@ -172,7 +172,6 @@ export default {
     };
   },
   created() {
-    console.log();
   },
   methods: {
     async handleOpen() {
