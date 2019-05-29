@@ -6,22 +6,58 @@
       class="ad_templates"
     >
       <div class="ad_search_warp">
-        <el-form ref="filters" :model="filters" :inline="true">
-          <el-form-item label prop="name">
-            <el-input v-model="filters.name" placeholder="请填写广告模板名称" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+        <el-form
+          ref="filters"
+          :model="filters"
+          :inline="true"
+        >
+          <el-form-item
+            label
+            prop="name"
+          >
+            <el-input
+              v-model="filters.name"
+              placeholder="请填写广告模板名称"
+              clearable
+            >
+              <i
+                slot="prefix"
+                class="el-input__icon el-icon-name el-icon-same"
+              />
             </el-input>
           </el-form-item>
           <el-form-item label>
-            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-            <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            <el-button
+              class="el-button-success"
+              @click="search('filters')"
+            >搜索</el-button>
+            <el-button
+              class="el-button-cancel"
+              @click="resetSearch('filters')"
+            >重置</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="ad_list_title">
         <div class="title">广告模板列表({{ pagination.count }})</div>
-        <el-button class="save" @click="addPrizePolicy">新增广告模板</el-button>
+        <el-button
+          class="save"
+          @click="addPrizePolicy"
+        >新增广告模板</el-button>
       </div>
+      <el-tabs
+        v-model="activeName"
+        @tab-click="tabClick"
+      >
+        <el-tab-pane
+          label=节目广告
+          name="first"
+        ></el-tab-pane>
+        <el-tab-pane
+          label=小屏广告
+          name="second"
+        ></el-tab-pane>
+      </el-tabs>
       <!-- 列表 -->
       <el-table
         :data="tableData"
@@ -32,7 +68,11 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="demo-table-expand">
+            <el-form
+              label-position="left"
+              inline
+              class="demo-table-expand"
+            >
               <el-form-item label="ID:">
                 <span>{{ scope.row.atiid }}</span>
               </el-form-item>
@@ -90,25 +130,41 @@
           label="修改时间"
           min-width="100"
         />
-        <el-table-column label="操作" width="200">
+        <el-table-column
+          label="操作"
+          width="200"
+        >
           <template slot-scope="scope">
-            <el-button size="small" @click="editPrizePolicy(scope.row)">编辑</el-button>
-            <el-button size="small" @click="toItem(scope.row)">子条目</el-button>
+            <el-button
+              size="small"
+              @click="editPrizePolicy(scope.row)"
+            >编辑</el-button>
+            <el-button
+              size="small"
+              @click="toItem(scope.row)"
+            >子条目</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="pagination-wrap">
         <el-pagination
           :total="pagination.total"
-          :page-size="pagination.pageSize"
-          :current-page="pagination.currentPage"
+          :current-page="pagination.current_page"
           layout="prev, pager, next, jumper, total"
           @current-change="changePage"
         />
       </div>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible" :show-close="false" :title="title">
-      <el-form ref="templateForm" :model="templateForm" label-position="top">
+    <el-dialog
+      :visible.sync="dialogFormVisible"
+      :show-close="false"
+      :title="title"
+    >
+      <el-form
+        ref="templateForm"
+        :model="templateForm"
+        label-position="top"
+      >
         <el-form-item
           :rules="[{ required: true, message: '请填写模版名称', trigger: 'submit'}]"
           label="模版名称"
@@ -132,8 +188,14 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button class="el-button-success" @click="submit('templateForm')">完成</el-button>
-          <el-button class="el-button-cancel" @click="cancel">取消</el-button>
+          <el-button
+            class="el-button-success"
+            @click="submit('templateForm')"
+          >完成</el-button>
+          <el-button
+            class="el-button-cancel"
+            @click="cancel"
+          >取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -154,7 +216,9 @@ import {
   Input,
   Dialog,
   RadioGroup,
-  Radio
+  Radio,
+  TabPane,
+  Tabs,
 } from "element-ui";
 
 export default {
@@ -170,7 +234,9 @@ export default {
     "el-input": Input,
     "el-dialog": Dialog,
     "el-radio-group": RadioGroup,
-    "el-radio": Radio
+    "el-radio": Radio,
+    "el-tab-pane": TabPane,
+    "el-tabs": Tabs,
   },
   data() {
     return {
@@ -194,9 +260,11 @@ export default {
       pagination: {
         total: 0,
         pageSize: 10,
-        currentPage: 1
+        current_page: 1
       },
-      atiid: null
+      atiid: null,
+      activeName: "first",
+      type: "program"
     };
   },
   created() {
@@ -207,11 +275,16 @@ export default {
       this.$refs["templateForm"].resetFields();
       this.dialogFormVisible = false;
     },
-    getAdList() {
+    tabClick(tab) {
+      this.type = tab.label === "节目广告" ? "program" : "ads"
+      this.getAdList(this.type);
+    },
+    getAdList(type) {
       this.setting.loading = true;
       let args = {
-        page: this.pagination.currentPage,
-        name: this.filters.name
+        page: this.pagination.current_page,
+        name: this.filters.name,
+        type: this.type
       };
       if (this.filters.name === "") {
         delete args.name;
@@ -287,16 +360,16 @@ export default {
       });
     },
     search(formName) {
-      this.pagination.currentPage = 1;
+      this.pagination.current_page = 1;
       this.getAdList();
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
-      this.pagination.currentPage = 1;
+      this.pagination.current_page = 1;
       this.getAdList();
     },
     changePage(currentPage) {
-      this.pagination.currentPage = currentPage;
+      this.pagination.current_page = currentPage;
       this.getAdList();
     },
     //子条目
@@ -307,7 +380,7 @@ export default {
           atiid: item.atiid
         }
       });
-    }
+    },
   }
 };
 </script>

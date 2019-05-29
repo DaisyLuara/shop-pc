@@ -8,8 +8,15 @@
       <div class="item-content-wrap">
         <!-- 搜索 -->
         <div class="search-wrap">
-          <el-form ref="filters" :model="filters" :inline="true">
-            <el-form-item label prop="atiid">
+          <el-form
+            ref="filters"
+            :model="filters"
+            :inline="true"
+          >
+            <el-form-item
+              label
+              prop="atiid"
+            >
               <el-select
                 v-model="filters.atiid"
                 :loading="searchLoading"
@@ -29,7 +36,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="piid">
+            <el-form-item
+              label
+              prop="piid"
+            >
               <el-select
                 v-model="filters.piid"
                 :loading="searchLoading"
@@ -37,7 +47,10 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
                 <el-option
                   v-for="item in projectList"
                   :key="item.id"
@@ -46,7 +59,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop="oid">
+            <el-form-item
+              label
+              prop="oid"
+            >
               <el-select
                 v-model="filters.oid"
                 :loading="searchLoading"
@@ -54,7 +70,10 @@
                 filterable
                 clearable
               >
-                <i slot="prefix" class="el-input__icon el-icon-status el-icon-same"/>
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-status el-icon-same"
+                />
                 <el-option
                   v-for="item in pointList"
                   :key="item.id"
@@ -63,9 +82,18 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label prop>
-              <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-              <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            <el-form-item
+              label
+              prop
+            >
+              <el-button
+                class="el-button-success"
+                @click="search('filters')"
+              >搜索</el-button>
+              <el-button
+                class="el-button-cancel"
+                @click="resetSearch('filters')"
+              >重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -79,6 +107,19 @@
             >新增广告投放</el-button>
           </div>
         </div>
+        <el-tabs
+          v-model="activeName"
+          @tab-click="tabClick"
+        >
+          <el-tab-pane
+            label=节目广告
+            name="first"
+          ></el-tab-pane>
+          <el-tab-pane
+            label=小屏广告
+            name="second"
+          ></el-tab-pane>
+        </el-tabs>
         <!-- 广告投放列表 -->
         <el-table
           ref="multipleTable"
@@ -90,7 +131,11 @@
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-form label-position="left" inline class="demo-table-expand">
+              <el-form
+                label-position="left"
+                inline
+                class="demo-table-expand"
+              >
                 <el-form-item label="广告模版:">
                   <span>{{ scope.row.template.name }}</span>
                 </el-form-item>
@@ -112,7 +157,12 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column sortable prop="aoid" label="ID" width="80"/>
+          <el-table-column
+            sortable
+            prop="aoid"
+            label="ID"
+            width="80"
+          />
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
@@ -157,9 +207,16 @@
           >
             <template slot-scope="scope">{{ scope.row.updated_at }}</template>
           </el-table-column>
-          <el-table-column label="操作" width="250">
+          <el-table-column
+            label="操作"
+            width="250"
+          >
             <template slot-scope="scope">
-              <el-button size="small" msg-father="scope.row" @click="editAdmeterial(scope.row)">编辑</el-button>
+              <el-button
+                size="small"
+                msg-father="scope.row"
+                @click="editAdmeterial(scope.row)"
+              >编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -194,7 +251,10 @@ import {
   MessageBox,
   Select,
   Option,
-  DatePicker
+  DatePicker,
+  TabPane,
+  Tabs,
+
 } from "element-ui";
 
 export default {
@@ -208,7 +268,9 @@ export default {
     "el-form-item": FormItem,
     "el-select": Select,
     "el-option": Option,
-    "el-date-picker": DatePicker
+    "el-date-picker": DatePicker,
+    "el-tabs": Tabs,
+    "el-tab-pane": TabPane,
   },
   data() {
     return {
@@ -237,7 +299,9 @@ export default {
         total: 0,
         pageSize: 10,
         currentPage: 1
-      }
+      },
+      activeName: "first",
+      type: "program"
     };
   },
   created() {
@@ -253,7 +317,7 @@ export default {
         let pointRes = await getPoint(this);
         this.pointList = pointRes;
         this.searchLoading = false;
-      } catch (e) {}
+      } catch (e) { }
     },
     getAdTemplate(query) {
       if (query !== "") {
@@ -273,8 +337,13 @@ export default {
         this.adTemplateList = [];
       }
     },
+    //节目切换
+    tabClick(tab) {
+      this.type = tab.label === "节目广告" ? "program" : "ads"
+      this.getLaunchadPutList(this.type);
+    },
     //广告投放列表
-    getLaunchadPutList() {
+    getLaunchadPutList(type) {
       this.setting.loading = true;
       let searchArgs = {
         page: this.pagination.currentPage,
@@ -282,7 +351,8 @@ export default {
         atiid: this.filters.atiid,
         piid: this.filters.piid,
         oid: this.filters.oid,
-        start_dat: this.filters.start_dat
+        start_dat: this.filters.start_dat,
+        type: this.type
       };
       if (!this.filters.atiid) {
         delete searchArgs.atiid;
@@ -300,6 +370,7 @@ export default {
         .then(response => {
           this.tableData = response.data;
           this.pagination.total = response.meta.pagination.total;
+          console.log(this.pagination)
           this.setting.loading = false;
         })
         .catch(error => {
