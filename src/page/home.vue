@@ -361,7 +361,6 @@ export default {
   width: 100%;
   height: 90px;
   text-align: center;
-  // background: #20a0ff url(../assets/images/user-bg.png) no-repeat center 5px;
   color: #fff;
   cursor: pointer;
   .avatar {
@@ -376,8 +375,6 @@ export default {
   right: 16%;
   color: #000;
   font-weight: 600;
-  // display: table-cell;
-  // vertical-align: middle;
 }
 .sidebar-user-item {
   max-width: 90px;
