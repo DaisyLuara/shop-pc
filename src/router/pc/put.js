@@ -57,7 +57,7 @@ let router = {
             import(/* webpackChunkName: "page/put/accredit/index" */ 'page/put/accredit/index')
         },
         {
-          path: 'save/:uid',
+          path: 'save',
           meta: {
             title: '授权投放新增',
             permission: 'shop_launch.wechat.create'

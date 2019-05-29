@@ -8,7 +8,7 @@ const HOST = process.env.SERVER_URL
 const getPrizeVerifyList = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(`${HOST}${COUPONS_API}}`, { params: params })
+      .get(`${HOST}${COUPONS_API}`, { params: params })
       .then(response => {
         resolve(response.data)
       })
