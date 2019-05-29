@@ -102,7 +102,7 @@
                 prop="people_max_get"
               >
                 <el-input
-                  :max-length="5"
+                  :maxLength="5"
                   v-model="prizeForm.people_max_get"
                   placeholder="请输入每人每天最大获取数"
                   class="item-input"
@@ -114,7 +114,7 @@
                 prop="day_max_get"
               >
                 <el-input
-                  :max-length="5"
+                  :maxLength="5"
                   v-model="prizeForm.day_max_get"
                   placeholder="请输入每天最大获取数"
                   class="item-input"
