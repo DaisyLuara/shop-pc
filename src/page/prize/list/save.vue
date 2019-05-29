@@ -1,21 +1,40 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
-      <el-form ref="prizeForm" :model="prizeForm" label-position="top">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
+      <el-form 
+        ref="prizeForm" 
+        :model="prizeForm" 
+        label-position="top">
         <div class="prize">
-          <h4 class="prize-title">{{prizeID ? '编辑奖品': '新增奖品'}}</h4>
-          <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="prize-tabs">
-            <el-tab-pane label="奖品设置" name="first">
+          <h4 class="prize-title">{{ prizeID ? '编辑奖品': '新增奖品' }}</h4>
+          <el-tabs 
+            v-model="activeName" 
+            type="card" 
+            class="prize-tabs" 
+            @tab-click="handleClick">
+            <el-tab-pane 
+              label="奖品设置" 
+              name="first">
               <el-form-item
                 :rules="[{ required: true, message: '请填写奖品名称', trigger: 'submit'}]"
                 label="奖品名称"
                 prop="name"
               >
-                <el-input v-model="prizeForm.name" placeholder="请填写奖品名称" clearable>
-                  <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+                <el-input 
+                  v-model="prizeForm.name" 
+                  placeholder="请填写奖品名称" 
+                  clearable>
+                  <i 
+                    slot="prefix" 
+                    class="el-input__icon el-icon-name el-icon-same"/>
                 </el-input>
               </el-form-item>
-              <el-form-item label="使用说明" prop="description">
+              <el-form-item 
+                label="使用说明" 
+                prop="description">
                 <el-input
                   v-model="prizeForm.description"
                   :autosize="{ minRows: 2, maxRows: 10}"
@@ -24,20 +43,33 @@
                   class="item-input"
                 />
               </el-form-item>
-              <el-form-item label="图片" prop="image_url">
-                <div class="pirze-uploader" @click="panelVisible=true">
-                  <img v-if="url" :src="prizeForm.image_url" class="pirze">
-                  <i v-else class="el-icon-plus pirze-uploader-icon"/>
+              <el-form-item 
+                label="图片" 
+                prop="image_url">
+                <div 
+                  class="pirze-uploader" 
+                  @click="panelVisible=true">
+                  <img 
+                    v-if="url" 
+                    :src="prizeForm.image_url" 
+                    class="pirze">
+                  <i 
+                    v-else 
+                    class="el-icon-plus pirze-uploader-icon"/>
                 </div>
               </el-form-item>
-              <el-form-item label="跳转链接" prop="redirect_url">
+              <el-form-item 
+                label="跳转链接" 
+                prop="redirect_url">
                 <el-input
                   v-model="prizeForm.redirect_url"
                   placeholder="请输入跳转链接"
                   class="item-input"
                 />
               </el-form-item>
-              <el-form-item label=" " prop="is_active">
+              <el-form-item 
+                label=" " 
+                prop="is_active">
                 <div class="status">
                   <div class="status-item">状态</div>
                   <el-radio-group v-model="prizeForm.is_active">
@@ -47,14 +79,21 @@
                 </div>
               </el-form-item>
             </el-tab-pane>
-            <el-tab-pane label="使用设置" name="second">
+            <el-tab-pane 
+              label="使用设置" 
+              name="second">
               <el-form-item
                 :rules="[{ required: true, message: '请填写剩余库存', trigger: 'submit'}]"
                 label="剩余库存"
                 prop="stock"
               >
-                <el-input v-model="prizeForm.stock" placeholder="请填写剩余库存" clearable>
-                  <i slot="prefix" class="el-input__icon el-icon-type el-icon-same"/>
+                <el-input 
+                  v-model="prizeForm.stock" 
+                  placeholder="请填写剩余库存" 
+                  clearable>
+                  <i 
+                    slot="prefix" 
+                    class="el-input__icon el-icon-type el-icon-same"/>
                 </el-input>
               </el-form-item>
               <el-form-item
@@ -107,8 +146,12 @@
           </el-tabs>
         </div>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('prizeForm')">保存</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('prizeForm')">保存</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
