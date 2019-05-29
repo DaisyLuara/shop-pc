@@ -39,7 +39,7 @@
         </el-form>
       </div>
       <div class="ad_list_title">
-        <div class="title">广告模板列表({{ pagination.count }})</div>
+        <div class="title">广告模板列表({{ pagination.total }})</div>
         <el-button
           class="save"
           @click="addPrizePolicy"
@@ -52,104 +52,23 @@
         <el-tab-pane
           label=节目广告
           name="first"
-        ></el-tab-pane>
+        >
+          <!-- 列表 -->
+          <AdTable :tableData="tableData" />
+        </el-tab-pane>
         <el-tab-pane
           label=小屏广告
           name="second"
-        ></el-tab-pane>
+        >
+          <!-- 列表 -->
+          <AdTable :tableData="tableData" />
+        </el-tab-pane>
       </el-tabs>
-      <!-- 列表 -->
-      <el-table
-        :data="tableData"
-        :row-style="{height:'70px'}"
-        :header-cell-style="headerStyle"
-        style="width: 100%"
-        type="expand"
-      >
-        <el-table-column type="expand">
-          <template slot-scope="scope">
-            <el-form
-              label-position="left"
-              inline
-              class="demo-table-expand"
-            >
-              <el-form-item label="ID:">
-                <span>{{ scope.row.atiid }}</span>
-              </el-form-item>
-              <el-form-item label="广告模板名称:">
-                <span>{{ scope.row.name }}</span>
-              </el-form-item>
-              <el-form-item label="节目运行状态">
-                <span>{{ scope.row.hardware === 1? '开启':'关闭' }}</span>
-              </el-form-item>
-              <el-form-item label="类型">
-                <span>{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</span>
-              </el-form-item>
-              <el-form-item label="修改时间:">
-                <span>{{ scope.row.updated_at }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="atiid"
-          label="ID"
-          width="100"
-        />
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="name"
-          label="广告模板名称"
-          min-width="100"
-        />
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="hardware"
-          label="节目运行状态"
-          min-width="100"
-        >
-          <template slot-scope="scope">{{ scope.row.hardware === 1? '开启':'关闭' }}</template>
-        </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="type"
-          label="类型"
-          min-width="100"
-        >
-          <template slot-scope="scope">{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</template>
-        </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="updated_at"
-          label="修改时间"
-          min-width="100"
-        />
-        <el-table-column
-          label="操作"
-          width="200"
-        >
-          <template slot-scope="scope">
-            <el-button
-              size="small"
-              @click="editPrizePolicy(scope.row)"
-            >编辑</el-button>
-            <el-button
-              size="small"
-              @click="toItem(scope.row)"
-            >子条目</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+
       <div class="pagination-wrap">
         <el-pagination
           :total="pagination.total"
-          :current-page="pagination.current_page"
+          :current-page="pagination.currentPage"
           layout="prev, pager, next, jumper, total"
           @current-change="changePage"
         />
@@ -203,14 +122,13 @@
 </template>
 <script>
 import { getAdList, saveAdTemplate, modifyAdTemplate } from "service";
+import AdTable from "./TableComponents/AdTable";
 import {
   Button,
   Select,
   Option,
   Pagination,
   MessageBox,
-  Table,
-  TableColumn,
   Form,
   FormItem,
   Input,
@@ -222,9 +140,9 @@ import {
 } from "element-ui";
 
 export default {
+  name: "AdList",
+
   components: {
-    "el-table": Table,
-    "el-table-column": TableColumn,
     "el-button": Button,
     "el-pagination": Pagination,
     "el-form": Form,
@@ -237,6 +155,7 @@ export default {
     "el-radio": Radio,
     "el-tab-pane": TabPane,
     "el-tabs": Tabs,
+    AdTable
   },
   data() {
     return {
@@ -249,18 +168,15 @@ export default {
       filters: {
         name: ""
       },
-      headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
         loading: false,
         loadingText: "拼命加载中"
       },
       tableData: [],
-      ad_data_name: [],
-      value: "",
       pagination: {
         total: 0,
         pageSize: 10,
-        current_page: 1
+        currentPage: 1
       },
       atiid: null,
       activeName: "first",
@@ -268,7 +184,7 @@ export default {
     };
   },
   created() {
-    this.getAdList();
+    this.getAdList()
   },
   methods: {
     cancel() {
@@ -276,13 +192,13 @@ export default {
       this.dialogFormVisible = false;
     },
     tabClick(tab) {
-      this.type = tab.label === "节目广告" ? "program" : "ads"
-      this.getAdList(this.type);
+      this.type = tab.name === "first" ? "program" : "ads"
+      this.getAdList();
     },
-    getAdList(type) {
+    getAdList() {
       this.setting.loading = true;
       let args = {
-        page: this.pagination.current_page,
+        page: this.pagination.currentPage,
         name: this.filters.name,
         type: this.type
       };
@@ -360,16 +276,16 @@ export default {
       });
     },
     search(formName) {
-      this.pagination.current_page = 1;
+      this.pagination.currentPage = 1;
       this.getAdList();
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
-      this.pagination.current_page = 1;
+      this.pagination.currentPage = 1;
       this.getAdList();
     },
     changePage(currentPage) {
-      this.pagination.current_page = currentPage;
+      this.pagination.currentPage = currentPage;
       this.getAdList();
     },
     //子条目

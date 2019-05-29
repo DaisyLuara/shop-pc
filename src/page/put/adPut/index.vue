@@ -114,112 +114,18 @@
           <el-tab-pane
             label=节目广告
             name="first"
-          ></el-tab-pane>
+          >
+            <!-- 列表 -->
+            <AdputTable :tableData="tableData" />
+          </el-tab-pane>
           <el-tab-pane
             label=小屏广告
             name="second"
-          ></el-tab-pane>
+          >
+            <!-- 列表 -->
+            <AdputTable :tableData="tableData" />
+          </el-tab-pane>
         </el-tabs>
-        <!-- 广告投放列表 -->
-        <el-table
-          ref="multipleTable"
-          :data="tableData"
-          :row-style="{height:'70px'}"
-          :header-cell-style="headerStyle"
-          style="width: 100%"
-          type="expand"
-        >
-          <el-table-column type="expand">
-            <template slot-scope="scope">
-              <el-form
-                label-position="left"
-                inline
-                class="demo-table-expand"
-              >
-                <el-form-item label="广告模版:">
-                  <span>{{ scope.row.template.name }}</span>
-                </el-form-item>
-                <el-form-item label="类型">
-                  <span>{{ scope.row.template.type === 'program'? '节目广告':'小屏广告' }}</span>
-                </el-form-item>
-                <el-form-item label="点位名称:">
-                  <span>{{ scope.row.point.name }}</span>
-                </el-form-item>
-                <el-form-item label="节目名称:">
-                  <span>{{ scope.row.project.name }}</span>
-                </el-form-item>
-                <el-form-item label="模版投放时间:">
-                  <span>{{ scope.row.sdate }} - {{ scope.row.edate }}</span>
-                </el-form-item>
-                <el-form-item label="修改时间:">
-                  <span>{{ scope.row.updated_at }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="aoid"
-            label="ID"
-            width="80"
-          />
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="scope.row.template.name"
-            label="广告模版"
-            width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.template.name }}</template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="type"
-            label="类型"
-            min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.template.type === 'program'? '节目广告':'小屏广告' }}</template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="scope.row.point.name"
-            label="点位名称"
-            min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.point.name }}</template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="scope.row.project.name"
-            label="节目名称"
-            min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.project.name }}</template>
-          </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            prop="scope.row.end_date"
-            label="修改时间"
-            min-width="100"
-          >
-            <template slot-scope="scope">{{ scope.row.updated_at }}</template>
-          </el-table-column>
-          <el-table-column
-            label="操作"
-            width="250"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="small"
-                msg-father="scope.row"
-                @click="editAdmeterial(scope.row)"
-              >编辑</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
         <div class="pagination-wrap">
           <el-pagination
             :total="pagination.total"
@@ -240,6 +146,8 @@ import {
   getPoint,
   getProject
 } from "service";
+import AdputTable from "./adputComponents/adputTable";
+
 import {
   Button,
   Input,
@@ -258,6 +166,7 @@ import {
 } from "element-ui";
 
 export default {
+  name: "AdputList",
   components: {
     "el-table": Table,
     "el-table-column": TableColumn,
@@ -271,6 +180,7 @@ export default {
     "el-date-picker": DatePicker,
     "el-tabs": Tabs,
     "el-tab-pane": TabPane,
+    AdputTable
   },
   data() {
     return {
@@ -319,6 +229,11 @@ export default {
         this.searchLoading = false;
       } catch (e) { }
     },
+    // tabClick(tab) {
+    //   console.log(tab)
+    //   this.type = tab.label === "节目广告" ? "program" : "ads"
+    //   this.getAdList();
+    // },
     getAdTemplate(query) {
       if (query !== "") {
         this.searchLoading = true;
@@ -339,8 +254,8 @@ export default {
     },
     //节目切换
     tabClick(tab) {
-      this.type = tab.label === "节目广告" ? "program" : "ads"
-      this.getLaunchadPutList(this.type);
+      this.type = tab.name === "first" ? "program" : "ads"
+      this.getLaunchadPutList();
     },
     //广告投放列表
     getLaunchadPutList(type) {
@@ -370,7 +285,6 @@ export default {
         .then(response => {
           this.tableData = response.data;
           this.pagination.total = response.meta.pagination.total;
-          console.log(this.pagination)
           this.setting.loading = false;
         })
         .catch(error => {
