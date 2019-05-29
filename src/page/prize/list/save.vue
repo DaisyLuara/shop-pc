@@ -98,10 +98,11 @@
               </el-form-item>
               <el-form-item
                 :rules="[{ required: true, message: '请填写每人每天最大获取数', trigger: 'submit'}]"
-                label="每人每天最大获取数"
+                label="每人每天最大获取数(如不限量可填写：99999)"
                 prop="people_max_get"
               >
                 <el-input
+                  :max-length="5"
                   v-model="prizeForm.people_max_get"
                   placeholder="请输入每人每天最大获取数"
                   class="item-input"
@@ -109,10 +110,11 @@
               </el-form-item>
               <el-form-item
                 :rules="[{ required: true, message: '请填写每天最大获取数', trigger: 'submit'}]"
-                label="每天最大获取数"
+                label="每天最大获取数(如不限量可填写：99999)"
                 prop="day_max_get"
               >
                 <el-input
+                  :max-length="5"
                   v-model="prizeForm.day_max_get"
                   placeholder="请输入每天最大获取数"
                   class="item-input"
