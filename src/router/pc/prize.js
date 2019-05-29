@@ -28,6 +28,15 @@ let router = {
             import(/* webpackChunkName: "page/prize/list/index" */ 'page/prize/list/index')
         },
         {
+          path: 'save',
+          meta: {
+            title: '保存奖品',
+            permission: 'shop_prize.batch.create'
+          },
+          component: () =>
+            import(/* webpackChunkName: "page/prize/list/save" */ 'page/prize/list/save')
+        },
+        {
           path: 'edit/:uid',
           meta: {
             title: '修改奖品',

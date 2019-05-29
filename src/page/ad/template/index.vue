@@ -6,21 +6,37 @@
       class="ad_templates"
     >
       <div class="ad_search_warp">
-        <el-form ref="filters" :model="filters" :inline="true">
-          <el-form-item label prop="name">
-            <el-input v-model="filters.name" placeholder="请填写广告模板名称" clearable>
-              <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+        <el-form 
+          ref="filters" 
+          :model="filters" 
+          :inline="true">
+          <el-form-item 
+            label 
+            prop="name">
+            <el-input 
+              v-model="filters.name" 
+              placeholder="请填写广告模板名称" 
+              clearable>
+              <i 
+                slot="prefix" 
+                class="el-input__icon el-icon-name el-icon-same"/>
             </el-input>
           </el-form-item>
           <el-form-item label>
-            <el-button class="el-button-success" @click="search('filters')">搜索</el-button>
-            <el-button class="el-button-cancel" @click="resetSearch('filters')">重置</el-button>
+            <el-button 
+              class="el-button-success" 
+              @click="search('filters')">搜索</el-button>
+            <el-button 
+              class="el-button-cancel" 
+              @click="resetSearch('filters')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="ad_list_title">
         <div class="title">广告模板列表({{ pagination.count }})</div>
-        <el-button class="save" @click="addPrizePolicy">新增广告模板</el-button>
+        <el-button 
+          class="save" 
+          @click="addPrizePolicy">新增广告模板</el-button>
       </div>
       <!-- 列表 -->
       <el-table
@@ -32,7 +48,10 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-form label-position="left" inline class="demo-table-expand">
+            <el-form 
+              label-position="left" 
+              inline 
+              class="demo-table-expand">
               <el-form-item label="ID:">
                 <span>{{ scope.row.atiid }}</span>
               </el-form-item>
@@ -90,10 +109,16 @@
           label="修改时间"
           min-width="100"
         />
-        <el-table-column label="操作" width="200">
+        <el-table-column 
+          label="操作" 
+          width="200">
           <template slot-scope="scope">
-            <el-button size="small" @click="editPrizePolicy(scope.row)">编辑</el-button>
-            <el-button size="small" @click="toItem(scope.row)">子条目</el-button>
+            <el-button 
+              size="small" 
+              @click="editPrizePolicy(scope.row)">编辑</el-button>
+            <el-button 
+              size="small" 
+              @click="toItem(scope.row)">子条目</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -107,8 +132,14 @@
         />
       </div>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible" :show-close="false" :title="title">
-      <el-form ref="templateForm" :model="templateForm" label-position="top">
+    <el-dialog 
+      :visible.sync="dialogFormVisible" 
+      :show-close="false" 
+      :title="title">
+      <el-form 
+        ref="templateForm" 
+        :model="templateForm" 
+        label-position="top">
         <el-form-item
           :rules="[{ required: true, message: '请填写模版名称', trigger: 'submit'}]"
           label="模版名称"
@@ -132,8 +163,12 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button class="el-button-success" @click="submit('templateForm')">完成</el-button>
-          <el-button class="el-button-cancel" @click="cancel">取消</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('templateForm')">完成</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
