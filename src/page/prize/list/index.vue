@@ -34,6 +34,13 @@
             </el-form-item>
           </el-form>
         </div>
+        <div class="actions-wrap">
+          <span class="label">奖品列表（ {{ pagination.total }} ）</span>
+          <el-button 
+            type="primary" 
+            icon="el-icon-circle-plus-outline" 
+            @click="addPrize">新增奖品</el-button>
+        </div>
         <!-- 列表 -->
         <el-table
           :data="tableData"
@@ -159,9 +166,14 @@ export default {
     this.getCouponRulesList();
   },
   methods: {
+    addPrize() {
+      this.$router.push({
+        path: "/prize/list/save"
+      });
+    },
     linkToEdit(currentCoupon) {
       this.$router.push({
-        path: "/prize/list/edit/" + currentCoupon.id
+        path: `/prize/list/edit/${currentCoupon.id}`
       });
     },
     getCouponRulesList() {
@@ -260,17 +272,17 @@ export default {
           }
         }
       }
-      .total-wrap {
-        margin-top: 5px;
+      .actions-wrap {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         font-size: 16px;
         align-items: center;
-        margin-bottom: 10px;
+        margin: 20px 0;
         .label {
-          font-size: 14px;
-          margin: 5px 0;
+          color: #6b3dc4;
+          font-size: 16px;
+          font-weight: 600;
         }
       }
       .pagination-wrap {

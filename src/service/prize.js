@@ -8,7 +8,7 @@ const HOST = process.env.SERVER_URL
 const getPrizeVerifyList = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + COUPONS_API, { params: params })
+      .get(`${HOST}${COUPONS_API}`, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -21,7 +21,7 @@ const getPrizeVerifyList = (context, params) => {
 const verifyPrize = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .post(HOST + COUPONS_API, params)
+      .post(`${HOST}${COUPONS_API}`, params)
       .then(response => {
         resolve(response.data)
       })
@@ -34,7 +34,21 @@ const verifyPrize = (context, params) => {
 const getCouponRulesList = (context, args) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + COUPON_RULES_API, { params: args })
+      .get(`${HOST}${COUPON_RULES_API}`, { params: args })
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
+// 奖品新增
+const savePrize = (context,  params) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .post(`${HOST}${COUPON_RULES_API}`, params)
       .then(response => {
         resolve(response.data)
       })
@@ -48,7 +62,7 @@ const getCouponRulesList = (context, args) => {
 const modifyPrize = (context, id, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .patch(HOST + COUPON_RULES_API + '/' + id, params)
+      .patch(`${HOST}${COUPON_RULES_API}/${id}`, params)
       .then(response => {
         resolve(response.data)
       })
@@ -62,7 +76,7 @@ const modifyPrize = (context, id, params) => {
 const prizeDetails = (context, id, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + COUPON_RULES_API + '/' + id, { params: params })
+      .get(`${HOST}${COUPON_RULES_API}/${id}`, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -75,7 +89,7 @@ const prizeDetails = (context, id, params) => {
 const getPrizePolicyList = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + PRIZE_POLICIES_API, { params: params })
+      .get(`${HOST}${PRIZE_POLICIES_API}`, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -89,7 +103,7 @@ const getPrizePolicyList = (context, params) => {
 const savePrizePolicy = (context, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .post(HOST + PRIZE_POLICIES_API, params)
+      .post(`${HOST}${PRIZE_POLICIES_API}`, params)
       .then(response => {
         resolve(response.data)
       })
@@ -103,7 +117,7 @@ const savePrizePolicy = (context, params) => {
 const modifyPrizePolicy = (context, id, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .patch(HOST + PRIZE_POLICIES_API + '/' + id, params)
+      .patch(`${HOST}${PRIZE_POLICIES_API}/${id}`, params)
       .then(response => {
         resolve(response.data)
       })
@@ -117,7 +131,7 @@ const modifyPrizePolicy = (context, id, params) => {
 const prizePolicyDetails = (context, id, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + PRIZE_POLICIES_API + '/' + id, { params: params })
+      .get(`${HOST}${PRIZE_POLICIES_API}/${id}`, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -131,7 +145,7 @@ const prizePolicyDetails = (context, id, params) => {
 const getPrizePolicyEntryList = (context,pid, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + PRIZE_POLICIES_ENTRY_API+'/'+pid+'/batch_policies', { params: params })
+      .get(`${HOST}${PRIZE_POLICIES_ENTRY_API}/${pid}/batch_policies`, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -145,7 +159,7 @@ const getPrizePolicyEntryList = (context,pid, params) => {
 const prizePolicyEntryDetails = (context,pid, id, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .get(HOST + PRIZE_POLICIES_ENTRY_API  + '/' + pid + '/batch_policies/' +id, { params: params })
+      .get(`${HOST}${PRIZE_POLICIES_ENTRY_API}/${pid}/batch_policies/${id}`, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -160,7 +174,7 @@ const savePrizePolicyEntry = (context, pid, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
       .post(
-        HOST + PRIZE_POLICIES_ENTRY_API + '/' + pid + '/batch_policies',
+        `${HOST}${PRIZE_POLICIES_ENTRY_API}/${pid}/batch_policies`,
         params
       )
       .then(response => {
@@ -177,7 +191,7 @@ const modifyPrizePolicyEntry = (context, pid, id, params) => {
   return new Promise(function(resolve, reject) {
     context.$http
       .patch(
-        HOST + PRIZE_POLICIES_ENTRY_API + '/' + pid + '/batch_policies/' + id,
+        `${HOST}${PRIZE_POLICIES_ENTRY_API}/${pid}/batch_policies/${id}`,
         params
       )
       .then(response => {
@@ -194,7 +208,7 @@ const deletePrizePolicyEntry = (context, pid, id) => {
   return new Promise(function(resolve, reject) {
     context.$http
       .delete(
-        HOST + PRIZE_POLICIES_ENTRY_API + '/' + pid + '/batch_policies/' + id
+        `${HOST}${PRIZE_POLICIES_ENTRY_API}/${pid}/batch_policies/${id}`
       )
       .then(response => {
         resolve(response.data)
@@ -219,5 +233,6 @@ export {
   modifyPrize,
   prizeDetails,
   prizePolicyEntryDetails,
-  getPrizePolicyEntryList
+  getPrizePolicyEntryList,
+  savePrize
 }

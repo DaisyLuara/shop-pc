@@ -1,8 +1,14 @@
 <template>
   <div class="item-wrap-template">
-    <div v-loading="setting.loading" :element-loading-text="setting.loadingText" class="pane">
+    <div 
+      v-loading="setting.loading" 
+      :element-loading-text="setting.loadingText" 
+      class="pane">
       <div class="pane-title">{{ putLaunchId ? '修改广告投放': '新增广告投放' }}</div>
-      <el-form ref="prizeLaunchForm" :model="prizeLaunchForm" label-position="top">
+      <el-form 
+        ref="prizeLaunchForm" 
+        :model="prizeLaunchForm" 
+        label-position="top">
         <el-form-item
           :rules="[{ required: true, message: '类型', trigger: 'submit'}]"
           label
@@ -10,7 +16,9 @@
         >
           <div class="type">
             <div class="type-item">类型</div>
-            <el-radio-group v-model="prizeLaunchForm.type" @change="typeHandle">
+            <el-radio-group 
+              v-model="prizeLaunchForm.type" 
+              @change="typeHandle">
               <el-radio label="ads">小屏广告</el-radio>
               <el-radio label="program">节目广告</el-radio>
             </el-radio-group>
@@ -28,7 +36,9 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in tempList"
               :key="item.atiid"
@@ -50,7 +60,9 @@
             filterable
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-name el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-name el-icon-same"/>
             <el-option
               v-for="item in pointList"
               :key="item.id"
@@ -60,10 +72,10 @@
           </el-select>
         </el-form-item>
         <el-form-item
+          v-if="projectShow"
           :rules="[{ required: true, message: '节目名称', trigger: 'submit'}]"
           label="节目名称"
           prop="piid"
-          v-if="projectShow"
         >
           <el-select
             v-model="prizeLaunchForm.piid"
@@ -73,7 +85,9 @@
             placeholder="请选择节目名称"
             clearable
           >
-            <i slot="prefix" class="el-input__icon el-icon-project el-icon-same"/>
+            <i 
+              slot="prefix" 
+              class="el-input__icon el-icon-project el-icon-same"/>
             <el-option
               v-for="item in projectList"
               :key="item.id"
@@ -82,16 +96,28 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :rules="[{ required: true, trigger: 'submit'}]" label="模板投放时间">
+        <el-form-item 
+          :rules="[{ required: true, trigger: 'submit'}]" 
+          label="模板投放时间">
           <div class="time">
-            <el-date-picker v-model="prizeLaunchForm.sdate" placeholder="任意时间点" type="datetime"/>
+            <el-date-picker 
+              v-model="prizeLaunchForm.sdate" 
+              placeholder="任意时间点" 
+              type="datetime"/>
             <div style="width:20px;text-align:center">-</div>
-            <el-date-picker v-model="prizeLaunchForm.edate" placeholder="任意时间点" type="datetime"/>
+            <el-date-picker 
+              v-model="prizeLaunchForm.edate" 
+              placeholder="任意时间点" 
+              type="datetime"/>
           </div>
         </el-form-item>
         <el-form-item class="btn-wrap">
-          <el-button class="el-button-success" @click="submit('prizeLaunchForm')">完成</el-button>
-          <el-button class="el-button-cancel" @click="back">返回</el-button>
+          <el-button 
+            class="el-button-success" 
+            @click="submit('prizeLaunchForm')">完成</el-button>
+          <el-button 
+            class="el-button-cancel" 
+            @click="back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
