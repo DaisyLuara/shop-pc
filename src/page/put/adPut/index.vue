@@ -253,7 +253,7 @@ export default {
       this.getLaunchadPutList();
     },
     //广告投放列表
-    getLaunchadPutList(type) {
+    getLaunchadPutList() {
       this.setting.loading = true;
       let searchArgs = {
         page: this.pagination.currentPage,
@@ -261,7 +261,7 @@ export default {
         atiid: this.filters.atiid,
         piid: this.filters.piid,
         oid: this.filters.oid,
-        start_dat: this.filters.start_dat,
+        start_date: this.filters.start_date,
         type: this.type
       };
       if (!this.filters.atiid) {
@@ -273,8 +273,8 @@ export default {
       if (!this.filters.oid) {
         delete searchArgs.oid;
       }
-      if (this.filters.start_dat === "") {
-        delete searchArgs.start_dat;
+      if (this.filters.start_date === "") {
+        delete searchArgs.start_date;
       }
       getLaunchadPutList(this, searchArgs)
         .then(response => {
