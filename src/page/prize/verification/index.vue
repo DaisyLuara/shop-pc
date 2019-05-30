@@ -373,18 +373,18 @@ export default {
       },
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       statusList: [
-        {
-          id: 0,
-          name: "未领取"
-        },
+        // {
+        //   id: 0,
+        //   name: "未领取"
+        // },
         {
           id: 1,
           name: "已使用"
         },
-        {
-          id: 2,
-          name: "停用"
-        },
+        // {
+        //   id: 2,
+        //   name: "停用"
+        // },
         {
           id: 3,
           name: "未使用"
