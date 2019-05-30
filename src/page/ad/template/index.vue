@@ -6,140 +6,90 @@
       class="ad_templates"
     >
       <div class="ad_search_warp">
-        <el-form 
-          ref="filters" 
-          :model="filters" 
-          :inline="true">
-          <el-form-item 
-            label 
-            prop="name">
-            <el-input 
-              v-model="filters.name" 
-              placeholder="请填写广告模板名称" 
-              clearable>
-              <i 
-                slot="prefix" 
-                class="el-input__icon el-icon-name el-icon-same"/>
+        <el-form
+          ref="filters"
+          :model="filters"
+          :inline="true"
+        >
+          <el-form-item
+            label
+            prop="name"
+          >
+            <el-input
+              v-model="filters.name"
+              placeholder="请填写广告模板名称"
+              clearable
+            >
+              <i
+                slot="prefix"
+                class="el-input__icon el-icon-name el-icon-same"
+              />
             </el-input>
           </el-form-item>
           <el-form-item label>
-            <el-button 
-              class="el-button-success" 
-              @click="search('filters')">搜索</el-button>
-            <el-button 
-              class="el-button-cancel" 
-              @click="resetSearch('filters')">重置</el-button>
+            <el-button
+              class="el-button-success"
+              @click="search('filters')"
+            >搜索</el-button>
+            <el-button
+              class="el-button-cancel"
+              @click="resetSearch('filters')"
+            >重置</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="ad_list_title">
-        <div class="title">广告模板列表({{ pagination.count }})</div>
-        <el-button 
-          class="save" 
-          @click="addPrizePolicy">新增广告模板</el-button>
+        <div class="title">广告模板列表({{ pagination.total }})</div>
+        <el-button
+          class="save"
+          @click="addPrizePolicy"
+        >新增广告模板</el-button>
       </div>
-      <!-- 列表 -->
-      <el-table
-        :data="tableData"
-        :row-style="{height:'70px'}"
-        :header-cell-style="headerStyle"
-        style="width: 100%"
-        type="expand"
+      <el-tabs
+        v-model="activeName"
+        @tab-click="tabClick"
       >
-        <el-table-column type="expand">
-          <template slot-scope="scope">
-            <el-form 
-              label-position="left" 
-              inline 
-              class="demo-table-expand">
-              <el-form-item label="ID:">
-                <span>{{ scope.row.atiid }}</span>
-              </el-form-item>
-              <el-form-item label="广告模板名称:">
-                <span>{{ scope.row.name }}</span>
-              </el-form-item>
-              <el-form-item label="节目运行状态">
-                <span>{{ scope.row.hardware === 1? '开启':'关闭' }}</span>
-              </el-form-item>
-              <el-form-item label="类型">
-                <span>{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</span>
-              </el-form-item>
-              <el-form-item label="修改时间:">
-                <span>{{ scope.row.updated_at }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="atiid"
-          label="ID"
-          width="100"
-        />
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="name"
-          label="广告模板名称"
-          min-width="100"
-        />
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="hardware"
-          label="节目运行状态"
-          min-width="100"
+        <el-tab-pane
+          label=节目广告
+          name="first"
         >
-          <template slot-scope="scope">{{ scope.row.hardware === 1? '开启':'关闭' }}</template>
-        </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="type"
-          label="类型"
-          min-width="100"
+          <!-- 列表 -->
+          <AdTable
+            :tableData="tableData"
+            v-on:toIndex="getAdTable"
+          />
+        </el-tab-pane>
+        <el-tab-pane
+          label=小屏广告
+          name="second"
         >
-          <template slot-scope="scope">{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</template>
-        </el-table-column>
-        <el-table-column
-          :show-overflow-tooltip="true"
-          sortable
-          prop="updated_at"
-          label="修改时间"
-          min-width="100"
-        />
-        <el-table-column 
-          label="操作" 
-          width="200">
-          <template slot-scope="scope">
-            <el-button 
-              size="small" 
-              @click="editPrizePolicy(scope.row)">编辑</el-button>
-            <el-button 
-              size="small" 
-              @click="toItem(scope.row)">子条目</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+          <!-- 列表 -->
+          <AdTable
+            :tableData="tableData"
+            v-on:toIndex="getAdTable"
+          />
+        </el-tab-pane>
+      </el-tabs>
+
       <div class="pagination-wrap">
         <el-pagination
           :total="pagination.total"
-          :page-size="pagination.pageSize"
           :current-page="pagination.currentPage"
           layout="prev, pager, next, jumper, total"
           @current-change="changePage"
         />
       </div>
     </div>
-    <el-dialog 
-      :visible.sync="dialogFormVisible" 
-      :show-close="false" 
-      :title="title">
-      <el-form 
-        ref="templateForm" 
-        :model="templateForm" 
-        label-position="top">
+    <el-dialog
+      :visible.sync="dialogFormVisible"
+      :show-close="false"
+      :title="title"
+    >
+      <el-form
+        ref="templateForm"
+        :model="templateForm"
+        label-position="top"
+      >
         <el-form-item
           :rules="[{ required: true, message: '请填写模版名称', trigger: 'submit'}]"
           label="模版名称"
@@ -163,12 +113,14 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button 
-            class="el-button-success" 
-            @click="submit('templateForm')">完成</el-button>
-          <el-button 
-            class="el-button-cancel" 
-            @click="cancel">取消</el-button>
+          <el-button
+            class="el-button-success"
+            @click="submit('templateForm')"
+          >完成</el-button>
+          <el-button
+            class="el-button-cancel"
+            @click="cancel"
+          >取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -176,26 +128,27 @@
 </template>
 <script>
 import { getAdList, saveAdTemplate, modifyAdTemplate } from "service";
+import AdTable from "./TableComponents/AdTable";
 import {
   Button,
   Select,
   Option,
   Pagination,
   MessageBox,
-  Table,
-  TableColumn,
   Form,
   FormItem,
   Input,
   Dialog,
   RadioGroup,
-  Radio
+  Radio,
+  TabPane,
+  Tabs,
 } from "element-ui";
 
 export default {
+  name: "AdList",
+
   components: {
-    "el-table": Table,
-    "el-table-column": TableColumn,
     "el-button": Button,
     "el-pagination": Pagination,
     "el-form": Form,
@@ -205,7 +158,10 @@ export default {
     "el-input": Input,
     "el-dialog": Dialog,
     "el-radio-group": RadioGroup,
-    "el-radio": Radio
+    "el-radio": Radio,
+    "el-tab-pane": TabPane,
+    "el-tabs": Tabs,
+    AdTable
   },
   data() {
     return {
@@ -218,35 +174,55 @@ export default {
       filters: {
         name: ""
       },
-      headerStyle: { background: "#6b3ec2", color: "#fff" },
       setting: {
         loading: false,
         loadingText: "拼命加载中"
       },
       tableData: [],
-      ad_data_name: [],
-      value: "",
       pagination: {
         total: 0,
         pageSize: 10,
         currentPage: 1
       },
-      atiid: null
+      atiid: null,
+      activeName: "first",
+      type: "program"
     };
   },
   created() {
-    this.getAdList();
+    this.getAdList()
   },
   methods: {
     cancel() {
       this.$refs["templateForm"].resetFields();
       this.dialogFormVisible = false;
     },
+    tabClick(tab) {
+      this.type = tab.name === "first" ? "program" : "ads"
+      this.getAdList();
+    },
+    //修改模板
+    editPrizePolicy(item) {
+      this.atiid = item.atiid;
+      this.title = '编辑模版'
+      this.templateForm.name = item.name
+      this.templateForm.type = item.type
+      this.dialogFormVisible = true;
+    },
+    //获取adtable值
+    getAdTable(item) {
+      this.atiid = item.atiid;
+      this.title = '编辑模版'
+      this.templateForm.name = item.name
+      this.templateForm.type = item.type
+      this.dialogFormVisible = true;
+    },
     getAdList() {
       this.setting.loading = true;
       let args = {
         page: this.pagination.currentPage,
-        name: this.filters.name
+        name: this.filters.name,
+        type: this.type
       };
       if (this.filters.name === "") {
         delete args.name;
@@ -266,14 +242,6 @@ export default {
     addPrizePolicy(item) {
       this.dialogFormVisible = true;
     },
-    //修改模板
-    editPrizePolicy(item) {
-      this.atiid = item.atiid;
-      this.title = '编辑模版'
-      this.templateForm.name = item.name
-      this.templateForm.type = item.type
-      this.dialogFormVisible = true;
-    },
     submit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -284,7 +252,7 @@ export default {
               .then(response => {
                 this.setting.loading = false;
                 this.$message({
-                  message: "更改成功",
+                  message: "修改成功",
                   type: "success"
                 });
                 this.cancel();
@@ -303,7 +271,7 @@ export default {
               .then(response => {
                 this.setting.loading = false;
                 this.$message({
-                  message: "更改成功",
+                  message: "新增成功",
                   type: "success"
                 });
                 this.cancel();
@@ -334,15 +302,6 @@ export default {
       this.pagination.currentPage = currentPage;
       this.getAdList();
     },
-    //子条目
-    toItem(item) {
-      this.$router.push({
-        path: "/ad/template/items",
-        query: {
-          atiid: item.atiid
-        }
-      });
-    }
   }
 };
 </script>
