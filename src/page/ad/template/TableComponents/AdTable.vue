@@ -117,9 +117,32 @@ export default {
   data() {
     return {
       headerStyle: { background: "#6b3ec2", color: "#fff" },
+      templateForm: {
+        name: "",
+        type: "program"
+      },
     }
   },
-  created() {
+  methods: {
+    // 修改模板
+    editPrizePolicy(item) {
+      this.atiid = item.atiid;
+      this.title = '编辑模版'
+      this.templateForm.name = item.name
+      this.templateForm.type = item.type
+      this.dialogFormVisible = true;
+      this.$emit("toIndex", item
+      )
+    },
+    //子条目
+    toItem(item) {
+      this.$router.push({
+        path: "/ad/template/items",
+        query: {
+          atiid: item.atiid
+        }
+      });
+    },
   }
 }
 </script>

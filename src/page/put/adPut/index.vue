@@ -295,11 +295,6 @@ export default {
         path: "/put/adPut/save"
       });
     },
-    editAdmeterial(data) {
-      this.$router.push({
-        path: "/put/adPut/edit/" + data.aoid
-      });
-    },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;
