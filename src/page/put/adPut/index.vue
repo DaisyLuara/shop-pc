@@ -229,11 +229,6 @@ export default {
         this.searchLoading = false;
       } catch (e) { }
     },
-    // tabClick(tab) {
-    //   console.log(tab)
-    //   this.type = tab.label === "节目广告" ? "program" : "ads"
-    //   this.getAdList();
-    // },
     getAdTemplate(query) {
       if (query !== "") {
         this.searchLoading = true;
