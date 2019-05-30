@@ -252,7 +252,7 @@ export default {
               .then(response => {
                 this.setting.loading = false;
                 this.$message({
-                  message: "更改成功",
+                  message: "修改成功",
                   type: "success"
                 });
                 this.cancel();
@@ -271,7 +271,7 @@ export default {
               .then(response => {
                 this.setting.loading = false;
                 this.$message({
-                  message: "更改成功",
+                  message: "新增成功",
                   type: "success"
                 });
                 this.cancel();
