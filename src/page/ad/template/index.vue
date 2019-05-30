@@ -54,14 +54,20 @@
           name="first"
         >
           <!-- 列表 -->
-          <AdTable :tableData="tableData" />
+          <AdTable
+            :tableData="tableData"
+            v-on:toIndex="getAdTable"
+          />
         </el-tab-pane>
         <el-tab-pane
           label=小屏广告
           name="second"
         >
           <!-- 列表 -->
-          <AdTable :tableData="tableData" />
+          <AdTable
+            :tableData="tableData"
+            v-on:toIndex="getAdTable"
+          />
         </el-tab-pane>
       </el-tabs>
 
@@ -195,6 +201,22 @@ export default {
       this.type = tab.name === "first" ? "program" : "ads"
       this.getAdList();
     },
+    //修改模板
+    editPrizePolicy(item) {
+      this.atiid = item.atiid;
+      this.title = '编辑模版'
+      this.templateForm.name = item.name
+      this.templateForm.type = item.type
+      this.dialogFormVisible = true;
+    },
+    //获取adtable值
+    getAdTable(item) {
+      this.atiid = item.atiid;
+      this.title = '编辑模版'
+      this.templateForm.name = item.name
+      this.templateForm.type = item.type
+      this.dialogFormVisible = true;
+    },
     getAdList() {
       this.setting.loading = true;
       let args = {
@@ -218,14 +240,6 @@ export default {
     },
     //增加模板
     addPrizePolicy(item) {
-      this.dialogFormVisible = true;
-    },
-    //修改模板
-    editPrizePolicy(item) {
-      this.atiid = item.atiid;
-      this.title = '编辑模版'
-      this.templateForm.name = item.name
-      this.templateForm.type = item.type
       this.dialogFormVisible = true;
     },
     submit(formName) {
@@ -287,15 +301,6 @@ export default {
     changePage(currentPage) {
       this.pagination.currentPage = currentPage;
       this.getAdList();
-    },
-    //子条目
-    toItem(item) {
-      this.$router.push({
-        path: "/ad/template/items",
-        query: {
-          atiid: item.atiid
-        }
-      });
     },
   }
 };

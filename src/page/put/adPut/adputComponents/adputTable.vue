@@ -48,7 +48,7 @@
         sortable
         prop="scope.row.template.name"
         label="广告模版"
-        width="100"
+        width="150"
       >
         <template slot-scope="scope">{{ scope.row.template.name }}</template>
       </el-table-column>
@@ -132,7 +132,11 @@ export default {
     }
   },
   methods: {
-
+    editAdmeterial(data) {
+      this.$router.push({
+        path: "/put/adPut/edit/" + data.aoid
+      });
+    },
   }
 }
 </script>
