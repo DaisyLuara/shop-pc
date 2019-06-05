@@ -97,7 +97,7 @@
             sortable 
             prop="icon" 
             label="节目icon" 
-            min-width="100">
+            width="150">
             <template slot-scope="scope">
               <img 
                 :src="scope.row.project.icon" 
