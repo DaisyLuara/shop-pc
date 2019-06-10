@@ -80,6 +80,7 @@ export default {
           user.perms = result.permissions
           user.company = result.company
           user.media = result.media
+          user.z = result.z
           localStorage.removeItem('customer_info')
           localStorage.setItem('customer_info', JSON.stringify(user))
           resolve(result.data)
