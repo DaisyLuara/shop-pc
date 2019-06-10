@@ -1,13 +1,9 @@
 <template>
   <div>
     <!-- 授权页入口 -->
-    <div 
-      class="auth-entrance" 
-      @click="handleEntClick">
+    <div class="auth-entrance" @click="handleEntClick">
       <div class="entrance-icon">
-        <img 
-          :src="IMG_URL + 'ad_shop/img/auth/entrance_icon.png'" 
-          class="icon">
+        <img :src="IMG_URL + 'ad_shop/img/auth/entrance_icon.png'" class="icon">
       </div>
       <div class="entrance-info">
         <div class="entrance-title">授权入口</div>
@@ -50,8 +46,17 @@ export default {
   data() {
     return {
       IMG_URL: process.env.IMG_URL,
-      authLink: "http://xingstation.cn/client/wxsdk/wxthird/?api=json&uid=1138"
+      authLink: "http://xingstation.cn/client/wxsdk/wxthird/?api=json&z="
     };
+  },
+  created() {
+    let user = JSON.parse(localStorage.getItem("customer_info"));
+    let z = user.z;
+    if (z) {
+      this.authLink = `${this.authLink}${z}`;
+    } else {
+      this.authLink = "";
+    }
   },
   methods: {
     handleEntClick() {
