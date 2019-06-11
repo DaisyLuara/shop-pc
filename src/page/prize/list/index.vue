@@ -148,7 +148,6 @@ export default {
   },
   data() {
     return {
-      centerDialogVisible: false,
       headerStyle: { background: "#6b3ec2", color: "#fff" },
       loading: true,
       filters: {
@@ -163,8 +162,7 @@ export default {
         pageSize: 10,
         currentPage: 1
       },
-      tableData: [],
-      id: null
+      tableData: []
     };
   },
   created() {
@@ -248,24 +246,6 @@ export default {
           });
         });
     },
-    determine(){
-      console.log(this.id)
-      let args ={
-        id: this.id
-      }
-      deleteItem(this,args)
-      .then(response => {
-       this.centerDialogVisible = false
-        this.getCouponRulesList();
-      })
-      .catch(error => {
-        this.setting.loading = false;
-        this.$message({
-          type: "warning",
-          message: err.response.data.message
-        });
-      })
-    }
   }
 };
 </script>
@@ -341,12 +321,6 @@ export default {
       .pagination-wrap {
         margin: 10px auto;
         text-align: right;
-      }
-      .isDelete{
-        width: 100%;
-        display: inline-block;
-        text-align: center;
-        font: 500 18px/20px "";
       }
     }
   }
