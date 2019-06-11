@@ -12,7 +12,7 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '标准节目',
+        title: '待定...',
         permission: 'shop_project.project'
       },
       component: () =>

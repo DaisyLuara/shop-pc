@@ -52,7 +52,7 @@
                 label-position="left" 
                 inline 
                 class="demo-table-expand">
-                <el-form-item label="ID:">
+                <el-form-item label="节目ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
@@ -72,9 +72,6 @@
                 </el-form-item>
                 <el-form-item label="版本号码:">
                   <span>{{ scope.row.version_code }}</span>
-                </el-form-item>
-                <el-form-item label="更新时间:">
-                  <span>{{ scope.row.updated_at }}</span>
                 </el-form-item>
                 <el-form-item label="互动指数:">
                   <div>
@@ -102,7 +99,7 @@
           <el-table-column 
             sortable 
             prop="id" 
-            label="ID" 
+            label="节目ID" 
             min-width="80"/>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -152,13 +149,6 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            :show-overflow-tooltip="true"
-            sortable
-            prop="updated_at"
-            label="更新时间"
-            min-width="80"
-          />
         </el-table>
         <div class="pagination-wrap">
           <el-pagination

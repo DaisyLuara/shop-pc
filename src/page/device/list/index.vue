@@ -90,6 +90,9 @@
                 <el-form-item label="点位:">
                   <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
+                <el-form-item label="场地名称:">
+                  <span>{{ scope.row.point.site }}</span>
+                </el-form-item>
                 <el-form-item label="上次互动:">
                   <span>{{ scope.row.faceDate }}</span>
                 </el-form-item>
@@ -129,6 +132,15 @@
             min-width="80"
           >
             <template slot-scope="scope">{{ scope.row.point.name }}</template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="site"
+            label="场地名称"
+            min-width="80"
+          >
+            <template slot-scope="scope">{{ scope.row.point.site }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"

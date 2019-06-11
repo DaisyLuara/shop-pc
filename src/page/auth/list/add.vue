@@ -21,7 +21,7 @@
     <!-- 配置说明 -->
     <div class="config-intro-wrap">
       <el-tabs type="border-card">
-        <el-tab-pane label="账号权限">
+        <el-tab-pane label="微信订阅/公众号">
           <auth-table/>
         </el-tab-pane>
         <el-tab-pane label="小程序SDK">

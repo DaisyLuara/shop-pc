@@ -25,9 +25,9 @@
             <el-form-item label="点位名称:">
               <span>{{ scope.row.point.name }}</span>
             </el-form-item>
-            <el-form-item label="节目名称:">
-              <span>{{ scope.row.project.name }}</span>
-            </el-form-item>
+              <el-form-item label="节目名称:" v-if="scope.row.template.type === 'ads'? false : true">
+                <span>{{ scope.row.project.name }}</span>
+              </el-form-item>
             <el-form-item label="模版投放时间:">
               <span>{{ scope.row.sdate }} - {{ scope.row.edate }}</span>
             </el-form-item>
@@ -40,8 +40,8 @@
       <el-table-column
         sortable
         prop="aoid"
-        label="ID"
-        width="80"
+        label="广告投放ID"
+        width="130"
       />
       <el-table-column
         :show-overflow-tooltip="true"
@@ -71,6 +71,7 @@
         <template slot-scope="scope">{{ scope.row.point.name }}</template>
       </el-table-column>
       <el-table-column
+        v-if="this.type === 'ads' ? false : true "
         :show-overflow-tooltip="true"
         sortable
         prop="scope.row.project.name"
@@ -83,7 +84,7 @@
         :show-overflow-tooltip="true"
         prop="scope.row.end_date"
         label="修改时间"
-        min-width="100"
+        :min-width=width
       >
         <template slot-scope="scope">{{ scope.row.updated_at }}</template>
       </el-table-column>
@@ -115,7 +116,12 @@ export default {
     tableData: {
       type: Array,
       default: [],
-      required: true,
+      required: true
+    },
+    type:{
+      type: String,
+      default: '',
+      required: true
     }
   },
   name: "AdputTable",
@@ -129,6 +135,15 @@ export default {
   data() {
     return {
       headerStyle: { background: "#6b3ec2", color: "#fff" },
+    }
+  },
+  computed:{
+    width:function(){
+      if(this.type==='ads'){
+        return 300
+      }else{
+        return 200
+      }
     }
   },
   methods: {
