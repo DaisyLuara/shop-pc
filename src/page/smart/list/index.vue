@@ -35,7 +35,7 @@
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">标准节目列表（ {{ pagination.total }} ）</span>
+          <span class="label">模版订阅列表（ {{ pagination.total }} ）</span>
         </div>
         <!-- 表格 -->
         <el-table

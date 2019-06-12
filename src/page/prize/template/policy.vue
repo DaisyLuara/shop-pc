@@ -23,27 +23,27 @@
       <el-table-column 
         prop="id" 
         label="子条目ID" 
-        min-width="100"/>
+        min-width="50"/>
       <el-table-column 
         prop="company" 
         label="公司名称" 
-        min-width="100">
+        min-width="80">
         <template slot-scope="scope">{{ scope.row.company.name }}</template>
       </el-table-column>
       <el-table-column 
         prop="name" 
         label="奖品名称" 
-        min-width="100"/>
+        min-width="60"/>
       <el-table-column 
         prop="icon" 
         label="概率" 
-        min-width="100">
+        min-width="50">
         <template slot-scope="scope">{{ scope.row.pivot.rate }}</template>
       </el-table-column>
       <el-table-column 
         prop="real_reate" 
         label="实际概率" 
-        min-width="100">
+        min-width="50">
         <template slot-scope="scope">{{ scope.row.pivot.real_reate }}</template>
       </el-table-column>
       <el-table-column 

@@ -36,6 +36,28 @@
           </el-form-item>
           <el-form-item 
             label 
+            prop="point_project">
+            <el-select
+              v-model="searchForm.point_project"
+              :loading="searchLoading"
+              class="chart-data-select"
+              placeholder="请选择节目"
+              filterable
+              clearable
+            >
+              <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-project el-icon-same"/>
+              <el-option
+                v-for="item in projectList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item 
+            label 
             prop="date">
             <el-date-picker
               v-model="searchForm.dateTime"
@@ -168,6 +190,7 @@ export default {
       },
       activeName: "first",
       pointList: [],
+      projectList: [],
       searchLoading: false
     };
   },
@@ -205,6 +228,7 @@ export default {
       getPoint(this)
         .then(res => {
           this.pointList = res;
+          console.log(this.pointList)
           this.searchLoading = false;
         })
         .catch(err => {
