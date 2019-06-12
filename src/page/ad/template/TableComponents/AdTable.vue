@@ -14,7 +14,7 @@
             inline
             class="demo-table-expand"
           >
-            <el-form-item label="ID:">
+            <el-form-item label="广告模板ID:">
               <span>{{ scope.row.atiid }}</span>
             </el-form-item>
             <el-form-item label="广告模板名称:">
@@ -36,8 +36,8 @@
         :show-overflow-tooltip="true"
         sortable
         prop="atiid"
-        label="ID"
-        width="100"
+        label="广告模板ID"
+        width="130"
       />
       <el-table-column
         :show-overflow-tooltip="true"

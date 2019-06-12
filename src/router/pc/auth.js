@@ -1,9 +1,9 @@
 import auth from 'service/auth'
 let router = {
   path: 'auth',
-  name: '公众平台',
+  name: '第三方',
   meta: {
-    title: '公众平台',
+    title: '第三方',
     permission: 'shop_wechat'
   },
   component: () =>
