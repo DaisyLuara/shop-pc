@@ -91,7 +91,7 @@
                   <span>{{ scope.row.point.name }}</span>
                 </el-form-item>
                 <el-form-item label="场地名称:">
-                  <span>{{ scope.row.point.site }}</span>
+                  <span>{{ scope.row.point.site_name }}</span>
                 </el-form-item>
                 <el-form-item label="上次互动:">
                   <span>{{ scope.row.faceDate }}</span>
@@ -136,11 +136,11 @@
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="site"
+            prop="market"
             label="场地名称"
             min-width="80"
           >
-            <template slot-scope="scope">{{ scope.row.point.site }}</template>
+            <template slot-scope="scope">{{ scope.row.point.market.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -254,7 +254,7 @@ export default {
       this.setting.loading = true;
       let {point_name,screen_status} = this.filters
       let args = {
-        include: "point,project",
+        include: "point.market,project",
         page: this.pagination.currentPage,
         point_name: point_name,
         screen_status: screen_status

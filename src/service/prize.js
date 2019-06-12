@@ -2,7 +2,7 @@ const COUPONS_API = '/api/coupons'
 const COUPON_RULES_API = '/api/coupon/batches'
 const PRIZE_POLICIES_API = '/api/coupon/policies'
 const PRIZE_POLICIES_ENTRY_API = '/api/policies'
-const DELETE_PRIZE__API = '/api/coupon/batches'
+const DELETE_PRIZE_API = '/api/coupon/batches'
 
 const HOST = process.env.SERVER_URL
 // 奖品核销列表
@@ -223,7 +223,7 @@ const deletePrizePolicyEntry = (context, pid, id) => {
 const deletePrize = (context, id) => {
   return new Promise(function(resolve, reject) {
     context.$http
-      .delete(`${HOST}${DELETE_PRIZE__API}/${id}`)
+      .delete(`${HOST}${DELETE_PRIZE_API}/${id}`)
       .then(response => {
         resolve(response.data)
       })
