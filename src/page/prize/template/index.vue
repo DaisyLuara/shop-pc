@@ -171,7 +171,8 @@ export default {
       this.$router.push({
         path: "/prize/template/policy",
         query: {
-          pid: item.id
+          pid: item.id,
+          name: item.name
         }
       });
     },
