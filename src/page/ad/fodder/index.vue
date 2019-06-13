@@ -63,7 +63,7 @@
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">素材列表（ {{ pagination.total }} ）</span>
+          <span class="label">广告素材列表（ {{ pagination.total }} ）</span>
           <el-button
             type="primary"
             icon="el-icon-circle-plus-outline"
