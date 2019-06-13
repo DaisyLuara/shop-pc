@@ -502,6 +502,11 @@ export default {
           this.setting.loading = false;
         });
     },
+    resetverifyPrize(formName) {
+      this.$refs[formName].resetFields();
+      this.pagination.currentPage = 1;
+      this.getPrizeVerifyList();
+    },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
       this.pagination.currentPage = 1;

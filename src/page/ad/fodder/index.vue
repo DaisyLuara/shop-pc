@@ -93,7 +93,7 @@
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="类型:">
-                  <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
+                  <span>{{ scope.row.type === 'static' ? '静态图': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
                 </el-form-item>
                 <el-form-item label="附件:">
                   <span>
@@ -137,7 +137,7 @@
             min-width="80"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
+              <span>{{ scope.row.type === 'static' ? '静态图': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
             </template>
           </el-table-column>
           <el-table-column
