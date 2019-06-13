@@ -199,6 +199,7 @@ export default {
     },
     tabClick(tab) {
       this.type = tab.name === "first" ? "program" : "ads"
+      this.pagination.currentPage = 1;
       this.getAdList();
     },
     //修改模板
@@ -231,6 +232,7 @@ export default {
         .then(res => {
           this.tableData = res.data;
           this.pagination.total = res.meta.pagination.total;
+          console.log(res.meta.pagination)
           this.setting.loading = false;
         })
         .catch(error => {
