@@ -4,7 +4,7 @@
     :element-loading-text="setting.loadingText"
     class="schedule-wrap"
   >
-    <div class="prizeTemplate">奖品模板名称</div>
+    <div class="prizeTemplate">模板名称:{{name}}</div>
     <div class="actions-wrap">
       <span class="label">子条目列表 ( {{ pagination.total }} )</span>
       <div>
@@ -76,7 +76,6 @@ import {
   savePrizePolicyEntry,
   modifyPrizePolicyEntry,
   prizePolicyEntryDetails,
-  getCompanies,
   getPrizePolicyEntryList
 } from "service";
 import {
@@ -111,13 +110,14 @@ export default {
         currentPage: 1
       },
       tableData: [],
-      pid: null
+      pid: null,
+      name:''
     };
   },
   computed: {},
   created() {
-    // this.getCompanies();
     this.pid = this.$route.query.pid;
+    this.name = this.$route.query.name;
     this.getPrizePolicyEntryList();
   },
   methods: {
