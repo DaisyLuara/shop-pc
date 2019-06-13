@@ -60,24 +60,7 @@
           </el-tab-pane>
         </el-tabs>
         <div class="video-panel__footer">
-          <el-upload
-            :action="Domain"
-            :data="uploadForm"
-            :before-upload="beforeUpload"
-            :on-success="handleSuccess"
-            :on-error="handleError"
-            :multiple="false"
-            :auto-upload="true"
-            :show-file-list="false"
-            :disabled="uploadDisabled"
-            list-type="video"
-            class="video-panel__upload"
-          >
-            <el-button 
-              size="small" 
-              type="primary">点击上传</el-button>
-          </el-upload>
-          <span class="image-type">仅支持mp4一种格式, 大小为100M以内</span>
+          <span class="image-type">新文件在资源管理模块上传审核后方可使用</span>
           <div class="video-panel__page">
             <el-pagination
               :total="pagination.count"
@@ -147,11 +130,6 @@ export default {
   data() {
     return {
       activeTabName: "",
-      Domain: "http://upload.qiniu.com",
-      uploadForm: {
-        token: "",
-        key: ""
-      },
       loading: true,
       type: "video",
       dataImg: [],
@@ -169,7 +147,6 @@ export default {
       },
       selectedImgs: [],
       mediaBase: process.env.SERVER_URL,
-      uploadDisabled: false
     };
   },
   created() {},
@@ -186,7 +163,6 @@ export default {
         this.mediaGroup.groupId = this.mediaGroup.mediaGroupList[0].id;
         this.activeTabName = this.mediaGroup.mediaGroupList[0].name;
         await this.getImgMediaList(this.mediaGroup.mediaGroupList[0].id);
-        this.uploadForm.token = res;
       } catch (e) {
         console.log(e);
       }
@@ -200,9 +176,6 @@ export default {
       this.loading = true;
       this.getImgMediaList(this.mediaGroup.groupId);
     },
-    handleError() {
-      this.loading = false;
-    },
     changeCurrent(currentPage) {
       this.pagination.page_num = currentPage;
       this.getImgMediaList(this.mediaGroup.groupId);
@@ -211,7 +184,6 @@ export default {
       this.serch.name = "";
       this.searchedMediaList = [];
       this.selectedImgs = [];
-      this.uploadDisabled = false;
       this.$emit("update:videoPanelVisible", false);
       this.$emit("close", selectedImgs);
     },
@@ -260,51 +232,6 @@ export default {
     searchMedia() {
       this.loading = true;
       this.getImgMediaList(this.mediaGroup.groupId);
-    },
-
-    async handleSuccess(response, file, fileList) {
-      let [key, name, size] = [response.key, file.name, file.size];
-      let type = name.substring(name.lastIndexOf("."));
-      let params = {
-        key: key,
-        name: name,
-        size: size,
-        type: this.type
-      };
-      try {
-        await imgMediaUpload(this, this.mediaGroup.groupId, params);
-        await this.getImgMediaList(this.mediaGroup.groupId);
-        let args = {
-          type: this.type,
-          status: 1
-        };
-        let mediaGroupsData = await getMediaGroup(this, args);
-        this.mediaGroup.mediaGroupList = mediaGroupsData.data;
-      } catch (e) {}
-    },
-    beforeUpload(file) {
-      this.loading = true;
-      let name = file.name;
-      let type = name.substring(name.lastIndexOf("."));
-      let isLt100M = file.size / 1024 / 1024 < 100;
-      let time = new Date().getTime();
-      let random = parseInt(Math.random() * 10 + 1, 10);
-      let suffix = randomString(25) + type;
-      let key = encodeURI(`${suffix}`);
-      const isVideo = file.type === "video/mp4";
-      const isLt10M = file.size / 1024 / 1024 < 100;
-      if (!isVideo) {
-        this.$message.error("上传视频仅支持mp4一种格式!");
-        this.loading = false;
-        return isVideo;
-      }
-      if (!isLt10M) {
-        this.$message.error("上传视频大小不能超过 100MB!");
-        this.loading = false;
-        return isLt10M;
-      }
-      this.uploadForm.key = key;
-      return this.uploadForm;
     }
   }
 };
@@ -332,6 +259,8 @@ export default {
   .image-type {
     color: #999;
     font-size: 12px;
+    margin: 20px 20px;
+    display: inline-block;
   }
   .el-dialog__body {
     position: relative;
@@ -493,20 +422,6 @@ export default {
   bottom: 0px;
   padding-left: 170px;
   width: 100%;
-}
-.video-panel__upload {
-  display: inline-block;
-  .el-upload {
-    line-height: 57px;
-    margin-left: 30px;
-  }
-}
-
-.video-panep__upload-btn {
-  width: 86px;
-  height: 36px;
-  background-color: #13ce66;
-  border: none;
 }
 
 .video-panel__page {

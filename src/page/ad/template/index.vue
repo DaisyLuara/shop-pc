@@ -230,8 +230,7 @@ export default {
       getAdList(this, args)
         .then(res => {
           this.tableData = res.data;
-          this.pagination = res.meta.pagination;
-          this.pagination.total = response.meta.pagination.total;
+          this.pagination.total = res.meta.pagination.total;
           this.setting.loading = false;
         })
         .catch(error => {
