@@ -116,14 +116,14 @@
             name="first"
           >
             <!-- 列表 -->
-            <AdputTable :tableData="tableData" />
+            <AdputTable :tableData="tableData" :type="type" />
           </el-tab-pane>
           <el-tab-pane
             label=小屏广告
             name="second"
           >
             <!-- 列表 -->
-            <AdputTable :tableData="tableData" />
+            <AdputTable :tableData="tableData" :type="type"/>
           </el-tab-pane>
         </el-tabs>
         <div class="pagination-wrap">

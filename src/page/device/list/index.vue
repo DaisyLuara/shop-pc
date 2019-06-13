@@ -81,7 +81,7 @@
                 inline
                 class="demo-table-expand"
               >
-                <el-form-item label="设备号:">
+                <el-form-item label="设备ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
@@ -89,6 +89,9 @@
                 </el-form-item>
                 <el-form-item label="点位:">
                   <span>{{ scope.row.point.name }}</span>
+                </el-form-item>
+                <el-form-item label="场地名称:">
+                  <span>{{ scope.row.point.site_name }}</span>
                 </el-form-item>
                 <el-form-item label="上次互动:">
                   <span>{{ scope.row.faceDate }}</span>
@@ -109,7 +112,7 @@
             :show-overflow-tooltip="true"
             sortable
             prop="id"
-            label="设备号"
+            label="设备ID"
             width="90"
           />
           <el-table-column
@@ -129,6 +132,15 @@
             min-width="80"
           >
             <template slot-scope="scope">{{ scope.row.point.name }}</template>
+          </el-table-column>
+          <el-table-column
+            :show-overflow-tooltip="true"
+            sortable
+            prop="market"
+            label="场地名称"
+            min-width="80"
+          >
+            <template slot-scope="scope">{{ scope.row.point.market.name }}</template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -242,7 +254,7 @@ export default {
       this.setting.loading = true;
       let {point_name,screen_status} = this.filters
       let args = {
-        include: "point,project",
+        include: "point.market,project",
         page: this.pagination.currentPage,
         point_name: point_name,
         screen_status: screen_status

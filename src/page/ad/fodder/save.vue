@@ -89,7 +89,13 @@
             prop="isad"
           >
             <div class="type">
-              <div class="type-item">广告标记</div>
+              <div class="type-item">广告标记
+                <el-tooltip class="item" effect="dark" 
+                  content="《互联网广告管理暂行办法》第七条　互联网广告应当具有可识别性，显著标明“广告”，使消费者能够辨明其为广告。" 
+                  placement="right">
+                  <i class="el-icon-info"/>
+                </el-tooltip>
+              </div>
               <el-radio-group v-model="fodderForm.isad">
                 <el-radio :label="1">显示</el-radio>
                 <el-radio :label="0">隐藏</el-radio>
@@ -139,7 +145,8 @@ import {
   DatePicker,
   MessageBox,
   RadioGroup,
-  Radio
+  Radio,
+  Tooltip
 } from "element-ui";
 import PicturePanel from "components/common/picturePanel";
 import VideoPanel from "components/common/videoPanel";
@@ -155,7 +162,8 @@ export default {
     ElRadio: Radio,
     ElInput: Input,
     PicturePanel,
-    VideoPanel
+    VideoPanel,
+    ElTooltip: Tooltip
   },
   data() {
     return {

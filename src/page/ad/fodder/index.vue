@@ -86,7 +86,7 @@
                 inline
                 class="demo-table-expand"
               >
-                <el-form-item label="ID:">
+                <el-form-item label="广告素材ID:">
                   <span>{{ scope.row.aid }}</span>
                 </el-form-item>
                 <el-form-item label="广告素材名称:">
@@ -117,8 +117,8 @@
             :show-overflow-tooltip="true"
             sortable
             prop="aid"
-            label="ID"
-            width="90"
+            label="广告素材ID"
+            width="120"
           />
           <el-table-column
             :show-overflow-tooltip="true"
