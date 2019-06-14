@@ -58,7 +58,7 @@
           </el-form-item>
           <el-form-item 
             label 
-            prop="date">
+            prop="dateTime">
             <el-date-picker
               v-model="searchForm.dateTime"
               :default-value="searchForm.dateTime"
@@ -264,10 +264,6 @@ export default {
     },
     resetSearch(formName) {
       this.$refs[formName].resetFields();
-      this.searchForm.dateTime = [
-        new Date().getTime() - 3600 * 1000 * 24 * 7,
-        new Date().getTime() - 3600 * 1000 * 24
-      ];
       if (this.activeName === "first") {
         this.$refs.personTimes.resetSearch();
       } else {
