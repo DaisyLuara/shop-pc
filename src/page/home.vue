@@ -64,7 +64,7 @@
           <img 
             :src="IMG_URL+ m.src +'_white.png?v=1'" 
             class="white-icon">
-          {{ m.meta.title }}
+          <span v-html="m.meta.title"></span>
         </el-menu-item>
       </el-menu>
     </div>

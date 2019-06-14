@@ -3,7 +3,7 @@ let router = {
   path: 'auth',
   name: '第三方',
   meta: {
-    title: '第 三 方',
+    title: '第&nbsp;&nbsp;三&nbsp;&nbsp;方',
     permission: 'shop_wechat'
   },
   component: () =>
