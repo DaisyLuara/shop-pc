@@ -1484,8 +1484,10 @@ export default {
           new Date(this.searchForm.dateTime[1]).getTime()
         ),
         point_id: this.searchForm.point_id,
+        alias: this.searchForm.project_id,
         times: this.times
       };
+      console.log(args)
       if (this.times === "") {
         delete args.times;
       }

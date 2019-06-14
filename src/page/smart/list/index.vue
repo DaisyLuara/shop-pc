@@ -52,7 +52,7 @@
                 label-position="left" 
                 inline 
                 class="demo-table-expand">
-                <el-form-item label="节目ID:">
+                <el-form-item label="模板ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
@@ -99,7 +99,7 @@
           <el-table-column 
             sortable 
             prop="id" 
-            label="节目ID" 
+            label="模板ID" 
             min-width="80"/>
           <el-table-column
             :show-overflow-tooltip="true"
