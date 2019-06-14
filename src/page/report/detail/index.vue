@@ -36,9 +36,9 @@
           </el-form-item>
           <el-form-item 
             label 
-            prop="project_id">
+            prop="versionname">
             <el-select
-              v-model="searchForm.project_id"
+              v-model="searchForm.versionname"
               :loading="searchLoading"
               class="chart-data-select"
               placeholder="请选择节目"
@@ -52,7 +52,7 @@
                 v-for="item in projectList"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id"
+                :value="item.versionname"
               />
             </el-select>
           </el-form-item>
@@ -81,7 +81,7 @@
             <el-button 
               size="small" 
               class="el-button-data-cancel" 
-              @click="resetSearch">重置</el-button>
+              @click="resetSearch('searchForm')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -245,6 +245,7 @@ export default {
       getProject(this)
         .then(res => {
           this.projectList = res;
+          console.log(this.projectList)
           this.searchLoading = false;
         })
         .catch(err => {
@@ -262,9 +263,8 @@ export default {
         this.$refs.peopleCount.searchHandle();
       }
     },
-    resetSearch() {
-      this.searchForm.point_id = "";
-      this.searchForm.project_id = "";
+    resetSearch(formName) {
+      this.$refs[formName].resetFields();
       this.searchForm.dateTime = [
         new Date().getTime() - 3600 * 1000 * 24 * 7,
         new Date().getTime() - 3600 * 1000 * 24
