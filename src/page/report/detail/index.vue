@@ -245,7 +245,6 @@ export default {
       getProject(this)
         .then(res => {
           this.projectList = res;
-          console.log(this.projectList)
           this.searchLoading = false;
         })
         .catch(err => {
