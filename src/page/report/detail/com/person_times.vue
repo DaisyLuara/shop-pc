@@ -1484,6 +1484,7 @@ export default {
           new Date(this.searchForm.dateTime[1]).getTime()
         ),
         point_id: this.searchForm.point_id,
+        alias: this.searchForm.versionname,
         times: this.times
       };
       if (this.times === "") {

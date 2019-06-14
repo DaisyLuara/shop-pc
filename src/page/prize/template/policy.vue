@@ -44,7 +44,7 @@
         prop="real_reate" 
         label="实际概率" 
         min-width="50">
-        <template slot-scope="scope">{{ scope.row.pivot.real_reate }}</template>
+        <template slot-scope="scope">{{ scope.row.pivot.real_reate }}%</template>
       </el-table-column>
       <el-table-column 
         label="操作" 

@@ -1593,8 +1593,10 @@ export default {
         end_date: handleDateTypeTransform(
           new Date(this.searchForm.dateTime[1]).getTime()
         ),
-        point_id: this.searchForm.point_id
+        point_id: this.searchForm.point_id,
+        alias: this.searchForm.versionname
       };
+
       if (!this.searchForm.point_id) {
         delete args.point_id;
       }
