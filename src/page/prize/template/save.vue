@@ -49,13 +49,13 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            :rules="[{ required: true, message: '请填写概率', trigger: 'submit'}]"
-            label="概率"
+            :rules="[{ required: true, message: '请填写发放比例', trigger: 'submit'}]"
+            label="发放比例"
             prop="rate"
           >
             <el-input 
               v-model="policyForm.rate" 
-              placeholder="请填写概率" 
+              placeholder="请填写发放比例" 
               clearable/>
           </el-form-item>
           <el-form-item>
