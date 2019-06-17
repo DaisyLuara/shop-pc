@@ -39,6 +39,7 @@
             <el-form-item
               label
               prop="piid"
+              v-if="this.type === 'program' "
             >
               <el-select
                 v-model="filters.piid"

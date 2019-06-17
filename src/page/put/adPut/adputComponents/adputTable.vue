@@ -155,5 +155,10 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less" scoped>
+.demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 45%;
+      }
 </style>
