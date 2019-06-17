@@ -259,7 +259,7 @@ export default {
     getSmartList() {
       this.setting.loading = true;
       let args = {
-        include: "project.template",
+        include: "template",
         page: this.pagination.currentPage,
         name: this.filters.name
       };
