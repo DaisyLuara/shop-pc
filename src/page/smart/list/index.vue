@@ -56,40 +56,40 @@
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="节目名称:">
-                  <span>{{ scope.row.project.name }}</span>
+                  <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="介绍视频:">
                   <a
-                    v-if="scope.row.project.video_desc_url"
-                    :href="scope.row.project.video_desc_url"
+                    v-if="scope.row.video_desc_url"
+                    :href="scope.row.video_desc_url"
                     target="_blank"
                     style="color:#6b3ec2;font-weight:600;"
                   >点击播放</a>
-                  <span v-if="!scope.row.project.video_desc_url">无</span>
+                  <span v-if="!scope.row.video_desc_url">无</span>
                 </el-form-item>
                 <el-form-item label="模版:">
-                  <span>{{ scope.row.project.template.name }}</span>
+                  <span>{{ scope.row.template.name }}</span>
                 </el-form-item>
                 <el-form-item label="版本号码:">
-                  <span>{{ scope.row.project.version_code }}</span>
+                  <span>{{ scope.row.version_code }}</span>
                 </el-form-item>
                 <el-form-item label="互动指数:">
                   <div>
                     <span>人气指数</span>
-                    <span v-html="starShow(scope.row.project.top_num)"/>
+                    <span v-html="starShow(scope.row.top_num)"/>
                   </div>
                   <div>
                     <span>幸运指数</span>
-                    <span v-html="starShow(scope.row.project.luck_num)"/>
+                    <span v-html="starShow(scope.row.luck_num)"/>
                   </div>
                   <div>
                     <span>推荐指数</span>
-                    <span v-html="starShow(scope.row.project.invite_num)"/>
+                    <span v-html="starShow(scope.row.invite_num)"/>
                   </div>
                 </el-form-item>
                 <el-form-item label="节目封面:">
                   <img 
-                    :src="scope.row.project.image" 
+                    :src="scope.row.image" 
                     alt="image" 
                     style="width: 20%;">
                 </el-form-item>
@@ -104,48 +104,48 @@
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="project.name"
+            prop="name"
             label="节目名称"
             min-width="80"
           />
           <el-table-column 
             sortable 
-            prop="project.image" 
+            prop="image" 
             label="节目封面" 
             width="100">
             <template slot-scope="scope">
               <img 
-                :src="scope.row.project.image" 
+                :src="scope.row.image" 
                 alt="image" 
                 style="width: 80%;">
               <a
-                v-if="scope.row.project.video_desc_url"
-                :href="scope.row.project.video_desc_url"
+                v-if="scope.row.video_desc_url"
+                :href="scope.row.video_desc_url"
                 target="_blank"
                 style="color:#6b3ec2;font-weight:600;"
               >点击播放</a>
-              <span v-if="!scope.row.project.video_desc_url">无</span>
+              <span v-if="!scope.row.video_desc_url">无</span>
             </template>
           </el-table-column>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable
-            prop="project.video_desc_url"
+            prop="video_desc_url"
             label="互动指数"
             min-width="100"
           >
             <template slot-scope="scope">
               <div>
                 <span>人气指数</span>
-                <span v-html="starShow(scope.row.project.top_num)"/>
+                <span v-html="starShow(scope.row.top_num)"/>
               </div>
               <div>
                 <span>幸运指数</span>
-                <span v-html="starShow(scope.row.project.luck_num)"/>
+                <span v-html="starShow(scope.row.luck_num)"/>
               </div>
               <div>
                 <span>推荐指数</span>
-                <span v-html="starShow(scope.row.project.invite_num)"/>
+                <span v-html="starShow(scope.row.invite_num)"/>
               </div>
             </template>
           </el-table-column>
@@ -259,7 +259,7 @@ export default {
     getSmartList() {
       this.setting.loading = true;
       let args = {
-        include: "template",
+        include: "project.template",
         page: this.pagination.currentPage,
         name: this.filters.name
       };
