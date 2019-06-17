@@ -82,8 +82,8 @@
           <el-table-column 
             sortable 
             prop="id" 
-            label="ID" 
-            width="80"/>
+            label="节目投放ID" 
+            width="120"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable

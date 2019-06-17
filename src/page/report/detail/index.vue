@@ -36,7 +36,29 @@
           </el-form-item>
           <el-form-item 
             label 
-            prop="date">
+            prop="versionname">
+            <el-select
+              v-model="searchForm.versionname"
+              :loading="searchLoading"
+              class="chart-data-select"
+              placeholder="请选择节目"
+              filterable
+              clearable
+            >
+              <i 
+                  slot="prefix" 
+                  class="el-input__icon el-icon-project el-icon-same"/>
+              <el-option
+                v-for="item in projectList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.versionname"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item 
+            label 
+            prop="dateTime">
             <el-date-picker
               v-model="searchForm.dateTime"
               :default-value="searchForm.dateTime"
@@ -59,7 +81,7 @@
             <el-button 
               size="small" 
               class="el-button-data-cancel" 
-              @click="resetSearch">重置</el-button>
+              @click="resetSearch('searchForm')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -82,7 +104,7 @@
   </div>
 </template>
 <script>
-import { getPoint } from "service";
+import { getPoint, getProject } from "service";
 import PeopleNum from "./com/people_num";
 import PersonTimes from "./com/person_times";
 
@@ -114,6 +136,7 @@ export default {
     return {
       searchForm: {
         point_id: "",
+        project_id: "",
         dateTime: [
           new Date().getTime() - 3600 * 1000 * 24 * 7,
           new Date().getTime() - 3600 * 1000 * 24
@@ -168,6 +191,7 @@ export default {
       },
       activeName: "first",
       pointList: [],
+      projectList: [],
       searchLoading: false
     };
   },
@@ -189,6 +213,7 @@ export default {
   },
   created() {
     this.getPoint();
+    this.getProject();
   },
   methods: {
     handleTab(tab, event) {
@@ -215,6 +240,21 @@ export default {
           this.searchLoading = false;
         });
     },
+    getProject() {
+      this.searchLoading = true;
+      getProject(this)
+        .then(res => {
+          this.projectList = res;
+          this.searchLoading = false;
+        })
+        .catch(err => {
+          this.searchLoading = false;
+          this.$message({
+            message: err.response.data.message,
+            type: "success"
+          });
+        });
+    },
     searchHandle() {
       if (this.activeName === "first") {
         this.$refs.personTimes.searchHandle();
@@ -222,12 +262,8 @@ export default {
         this.$refs.peopleCount.searchHandle();
       }
     },
-    resetSearch() {
-      this.searchForm.point_id = "";
-      this.searchForm.dateTime = [
-        new Date().getTime() - 3600 * 1000 * 24 * 7,
-        new Date().getTime() - 3600 * 1000 * 24
-      ];
+    resetSearch(formName) {
+      this.$refs[formName].resetFields();
       if (this.activeName === "first") {
         this.$refs.personTimes.resetSearch();
       } else {

@@ -133,8 +133,8 @@
           <el-table-column
             sortable
             prop="id"
-            label="ID"
-            width="80"
+            label="奖品投放ID"
+            width="120"
           />
           <el-table-column
             :show-overflow-tooltip="true"

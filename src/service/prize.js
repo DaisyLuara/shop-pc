@@ -2,6 +2,7 @@ const COUPONS_API = '/api/coupons'
 const COUPON_RULES_API = '/api/coupon/batches'
 const PRIZE_POLICIES_API = '/api/coupon/policies'
 const PRIZE_POLICIES_ENTRY_API = '/api/policies'
+const DELETE_PRIZE_API = '/api/coupon/batches'
 
 const HOST = process.env.SERVER_URL
 // 奖品核销列表
@@ -218,6 +219,19 @@ const deletePrizePolicyEntry = (context, pid, id) => {
       })
   })
 }
+// 奖品列表删除
+const deletePrize = (context, id) => {
+  return new Promise(function(resolve, reject) {
+    context.$http
+      .delete(`${HOST}${DELETE_PRIZE_API}/${id}`)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
 
 export {
   savePrizePolicyEntry,
@@ -234,5 +248,6 @@ export {
   prizeDetails,
   prizePolicyEntryDetails,
   getPrizePolicyEntryList,
-  savePrize
+  savePrize,
+  deletePrize
 }

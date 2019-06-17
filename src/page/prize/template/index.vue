@@ -51,7 +51,7 @@
       style="width: 100%">
       <el-table-column 
         prop="id" 
-        label="ID" 
+        label="奖品模板ID" 
         min-width="100"/>
       <el-table-column 
         prop="name" 
@@ -171,7 +171,8 @@ export default {
       this.$router.push({
         path: "/prize/template/policy",
         query: {
-          pid: item.id
+          pid: item.id,
+          name: item.name
         }
       });
     },

@@ -52,7 +52,7 @@
                 label-position="left" 
                 inline 
                 class="demo-table-expand">
-                <el-form-item label="ID:">
+                <el-form-item label="点位ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="点位名称:">
@@ -75,8 +75,8 @@
           <el-table-column 
             sortable 
             prop="id" 
-            label="ID" 
-            width="80"/>
+            label="点位ID" 
+            width="100"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable

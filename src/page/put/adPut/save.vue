@@ -109,13 +109,13 @@
           <div class="time">
             <el-date-picker
               v-model="prizeLaunchForm.sdate"
-              placeholder="任意时间点"
+              placeholder="开始时间点"
               type="datetime"
             />
             <div style="width:20px;text-align:center">-</div>
             <el-date-picker
               v-model="prizeLaunchForm.edate"
-              placeholder="任意时间点"
+              placeholder="结束时间点"
               type="datetime"
             />
           </div>

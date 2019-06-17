@@ -55,7 +55,7 @@
                 label-position="left" 
                 inline 
                 class="demo-table-expand">
-                <el-form-item label="ID:">
+                <el-form-item label="奖品ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="奖品名称:">
@@ -74,7 +74,7 @@
             :show-overflow-tooltip="true" 
             sortable 
             prop="id" 
-            label="ID" 
+            label="奖品ID" 
             width="100"/>
           <el-table-column
             :show-overflow-tooltip="true"
@@ -99,11 +99,14 @@
           />
           <el-table-column 
             label="操作" 
-            width="100">
+            width="160">
             <template slot-scope="scope">
               <el-button 
                 size="small" 
                 @click="linkToEdit(scope.row)">编辑</el-button>
+              <el-button 
+                size="small" 
+                @click="deleteEntry(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -121,7 +124,7 @@
   </div>
 </template>
 <script>
-import { getCouponRulesList } from "service";
+import { getCouponRulesList, deletePrize } from "service";
 import {
   Button,
   Input,
@@ -212,7 +215,37 @@ export default {
     search() {
       this.pagination.currentPage = 1;
       this.getCouponRulesList();
-    }
+    },
+    deleteEntry(item) {
+      this.$confirm("此操作将删除该条目, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          let id = item.id;
+          deletePrize(this, id)
+            .then(res => {
+              this.$message({
+                message: "删除成功",
+                type: "success"
+              });
+              this.getCouponRulesList();
+            })
+            .catch(err => {
+              this.$message({
+                type: "warning",
+                message: err.response.data.message
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
   }
 };
 </script>

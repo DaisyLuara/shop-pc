@@ -4,6 +4,7 @@
     :element-loading-text="setting.loadingText"
     class="schedule-wrap"
   >
+    <div class="prizeTemplate">模板名称:{{name}}</div>
     <div class="actions-wrap">
       <span class="label">子条目列表 ( {{ pagination.total }} )</span>
       <div>
@@ -18,26 +19,32 @@
     <el-table 
       :data="tableData" 
       :header-cell-style="headerStyle" 
-      style="width: 100%">
+      style="width: 100%;padding:0 20px">
       <el-table-column 
         prop="id" 
-        label="ID" 
-        min-width="100"/>
+        label="子条目ID" 
+        min-width="50"/>
       <el-table-column 
         prop="company" 
         label="公司名称" 
-        min-width="100">
+        min-width="80">
         <template slot-scope="scope">{{ scope.row.company.name }}</template>
       </el-table-column>
       <el-table-column 
         prop="name" 
         label="奖品名称" 
-        min-width="100"/>
+        min-width="60"/>
       <el-table-column 
         prop="icon" 
         label="概率" 
-        min-width="100">
+        min-width="50">
         <template slot-scope="scope">{{ scope.row.pivot.rate }}</template>
+      </el-table-column>
+      <el-table-column 
+        prop="real_reate" 
+        label="实际概率" 
+        min-width="50">
+        <template slot-scope="scope">{{ scope.row.pivot.real_reate }}%</template>
       </el-table-column>
       <el-table-column 
         label="操作" 
@@ -69,7 +76,6 @@ import {
   savePrizePolicyEntry,
   modifyPrizePolicyEntry,
   prizePolicyEntryDetails,
-  getCompanies,
   getPrizePolicyEntryList
 } from "service";
 import {
@@ -104,13 +110,14 @@ export default {
         currentPage: 1
       },
       tableData: [],
-      pid: null
+      pid: null,
+      name:''
     };
   },
   computed: {},
   created() {
-    // this.getCompanies();
     this.pid = this.$route.query.pid;
+    this.name = this.$route.query.name;
     this.getPrizePolicyEntryList();
   },
   methods: {
@@ -284,6 +291,10 @@ export default {
   .el-button.is-circle {
     padding: 5px;
   }
+  .prizeTemplate {
+    color: #6b3dc4;
+    font-weight: 600;
+  }
   .actions-wrap {
     display: flex;
     flex-direction: row;
@@ -291,6 +302,7 @@ export default {
     font-size: 16px;
     align-items: center;
     margin-bottom: 10px;
+    padding: 20px 20px;
     .label {
       color: #6b3dc4;
       font-size: 14px;

@@ -63,7 +63,7 @@
           </el-form>
         </div>
         <div class="actions-wrap">
-          <span class="label">素材列表（ {{ pagination.total }} ）</span>
+          <span class="label">广告素材列表（ {{ pagination.total }} ）</span>
           <el-button
             type="primary"
             icon="el-icon-circle-plus-outline"
@@ -86,14 +86,14 @@
                 inline
                 class="demo-table-expand"
               >
-                <el-form-item label="ID:">
+                <el-form-item label="广告素材ID:">
                   <span>{{ scope.row.aid }}</span>
                 </el-form-item>
                 <el-form-item label="广告素材名称:">
                   <span>{{ scope.row.name }}</span>
                 </el-form-item>
                 <el-form-item label="类型:">
-                  <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
+                  <span>{{ scope.row.type === 'static' ? '静态图': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
                 </el-form-item>
                 <el-form-item label="附件:">
                   <span>
@@ -117,8 +117,8 @@
             :show-overflow-tooltip="true"
             sortable
             prop="aid"
-            label="ID"
-            width="90"
+            label="广告素材ID"
+            width="120"
           />
           <el-table-column
             :show-overflow-tooltip="true"
@@ -137,7 +137,7 @@
             min-width="80"
           >
             <template slot-scope="scope">
-              <span>{{ scope.row.type === 'static' ? '通用': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
+              <span>{{ scope.row.type === 'static' ? '静态图': scope.row.type === 'gif' ? 'Gif' : scope.row.type === 'video' ? '视频' : '帧序列' }}</span>
             </template>
           </el-table-column>
           <el-table-column

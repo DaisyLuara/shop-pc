@@ -105,7 +105,7 @@
                 label-position="left" 
                 inline 
                 class="demo-table-expand">
-                <el-form-item label="ID:">
+                <el-form-item label="授权投放ID:">
                   <span>{{ scope.row.id }}</span>
                 </el-form-item>
                 <el-form-item label="区域:">
@@ -141,8 +141,8 @@
             :show-overflow-tooltip="true" 
             sortable 
             prop="id" 
-            label="ID" 
-            width="70"/>
+            label="授权投放ID" 
+            width="130"/>
           <el-table-column
             :show-overflow-tooltip="true"
             sortable

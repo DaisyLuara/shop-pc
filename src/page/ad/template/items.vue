@@ -24,7 +24,7 @@
               label-position="left" 
               inline 
               class="demo-table-expand">
-              <el-form-item label="ID:">
+              <el-form-item label="子条目ID:">
                 <span>{{ scope.row.id }}</span>
               </el-form-item>
               <el-form-item label="广告素材名称:">
@@ -58,8 +58,8 @@
           :show-overflow-tooltip="true" 
           sortable 
           prop="id" 
-          label="ID" 
-          width="100"/>
+          label="子条目ID" 
+          width="120"/>
         <el-table-column
           :show-overflow-tooltip="true"
           sortable

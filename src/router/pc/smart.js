@@ -1,9 +1,9 @@
 import auth from 'service/auth'
 let router = {
   path: 'smart',
-  name: '节目智造',
+  name: '节目订阅',
   meta: {
-    title: '节目智造',
+    title: '节目订阅',
     permission: 'shop_project'
   },
   component: () =>
@@ -12,7 +12,7 @@ let router = {
     {
       path: 'list',
       meta: {
-        title: '标准节目',
+        title: '模版订阅',
         permission: 'shop_project.project'
       },
       component: () =>
