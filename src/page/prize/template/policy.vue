@@ -36,7 +36,7 @@
         min-width="60"/>
       <el-table-column 
         prop="icon" 
-        label="概率" 
+        label="发放比例" 
         min-width="50">
         <template slot-scope="scope">{{ scope.row.pivot.rate }}</template>
       </el-table-column>
