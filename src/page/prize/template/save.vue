@@ -118,6 +118,7 @@ export default {
   created() {
     this.policyId = this.$route.params.uid;
     this.pid = this.$route.query.pid;
+    this.name = this.$route.query.name;
     this.getCompanies();
     if (this.policyId) {
       this.prizePolicyEntryDetails();
@@ -184,7 +185,8 @@ export default {
                 this.$router.push({
                   path: "/prize/template/policy",
                   query: {
-                    pid: this.pid
+                    pid: this.pid,
+                    name: this.name
                   }
                 });
                 this.setting.loading = false;
@@ -206,7 +208,8 @@ export default {
                 this.$router.push({
                   path: "/prize/template/policy",
                   query: {
-                    pid: this.pid
+                    pid: this.pid,
+                    name: this.name
                   }
                 });
                 this.setting.loading = false;
