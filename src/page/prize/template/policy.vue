@@ -125,7 +125,8 @@ export default {
       this.$router.push({
         path: "/prize/template/add",
         query: {
-          pid: this.pid
+          pid: this.pid,
+          name: this.name
         }
       });
     },
@@ -133,7 +134,8 @@ export default {
       this.$router.push({
         path: "/prize/template/edit/" + row.id,
         query: {
-          pid: this.pid
+          pid: this.pid,
+          name: this.name
         }
       });
     },
