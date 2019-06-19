@@ -20,10 +20,10 @@
             <el-form-item label="广告模板名称:">
               <span>{{ scope.row.name }}</span>
             </el-form-item>
-            <el-form-item label="节目运行状态">
+            <el-form-item label="节目运行状态:">
               <span>{{ scope.row.hardware === 1? '开启':'关闭' }}</span>
             </el-form-item>
-            <el-form-item label="类型">
+            <el-form-item label="类型:">
               <span>{{ scope.row.type === 'program'? '节目广告':'小屏广告' }}</span>
             </el-form-item>
             <el-form-item label="修改时间:">
