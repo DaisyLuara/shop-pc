@@ -75,21 +75,11 @@
           width="150"
         >
           <template slot-scope="scope">
-            <span>
-              <img
-                v-if="scope.row.media.type === 'image'"
-                :src="scope.row.media.link"
-                alt
-                class="icon-item"
-                @click="imgShow(scope.row)"
-              >
-              <video
-                v-if="scope.row.media.type === 'video'"
-                :src="scope.row.media.link"
-                controls="controls"
-                class="icon-item"
-              >您的浏览器不支持</video>
-            </span>
+            <a
+              :href="scope.row.media.link"
+              target="_blank"
+              style="color:#6b3ec2;font-weight:600;"
+            >点击查看</a>
           </template>
         </el-table-column>
         <el-table-column
