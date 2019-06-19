@@ -29,14 +29,14 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            :rules="[{ required: true, message: '请选择优惠券', trigger: 'submit'}]"
-            label="优惠券名称"
+            :rules="[{ required: true, message: '请选择奖品名称', trigger: 'submit'}]"
+            label="奖品名称"
             prop="coupon_batch_id"
           >
             <el-select
               v-model="policyForm.coupon_batch_id"
               :loading="searchLoading"
-              placeholder="请选择优惠券"
+              placeholder="请选择奖品名称"
               filterable
               clearable
             >
